@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <style>
+        /* 문서내 스타일 설정은 미세조정, 미세 오버라이드 내용을 담는다 */
+        .dental-tabs { margin-top: 0.3rem; }
+        .dental-tabs-nav .nav-item span i.fa.fa-gratipay { transform: translateY(1px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-envelope-open { font-size: 0.8rem; transform: translateY(-2px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-file-text { font-size: 0.8rem; transform: translateY(-1px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-star { font-size: 0.9rem; }
+
+        .dental-tabs .radio-box-non { background-color: #FFF; padding-left: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <div class="dental-tabs tabs-type1">
+        <input class="tabs-input" name="tabs" type="radio" value="1" id="tab-register" checked hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="2" id="tab-edit" hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="3" id="tab-upgrade" hidden>
+        <div class="dental-tabs-nav tabs-type1">
+            <label class="nav-item" for="tab-register"><span><i class="fal fa-file-plus"></i>공고 등록</span></label>
+            <label class="nav-item" for="tab-edit"><span><i class="fal fa-file-edit"></i>공고 수정</span></label>
+            <label class="nav-item" for="tab-upgrade"><span><i class="fal fa-newspaper"></i>공고 알리기</span></label>
+        </div>
+        <div class="dental-tabs-body tabs-type1">
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>신규로 공고를 등록할 수 있습니다.</p>
+                    <p class="typo-desc1" hidden>아래 기존 공고를 활용하면 편하게 등록할 수 있습니다.</p>
+                    <!-- 공고 등록 화면으로 보낼 때,
+                        1. 회원 여부 확인 
+                        2. 회원이라면, 병원 정보 등록 여부 확인
+                        이동 로직에서 각각 조건에 대한 공통(?) 체크 정리 필요
+                    -->
+                    <a href="register_jobad.html"><span class="btn btn-primary">신규 등록</span></a>
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input action-toggle" type="checkbox" id="radio-empty-register"> <!-- css로 노출 박스 스위치 -->
+                        <label for="radio-empty-register"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">기존 등록된 공고 리스트가 없습니다.</p>
+                            <p class="typo-desc2">채용 공고를 등록해 보세요.</p>
+                            <p class="typo-desc2">우리 병원 기본 정보가 등록되어 있어야 합니다.</p>
+                        </div>
+
+                        <div class="radio-box-checked" id="">
+                            <div class="jobpost-list">
+                                <div class="jobpost-list-bar">
+                                    <span class="typo-title2">등록된 공고 리스트</span>
+                                    <span class="jobpost-list-bar-counter">0</span> <!-- 리스트 건수 출력하면 '건' 은 css 가 처리 -->
+                                </div>
+                                <div class="jobpost-list-body" id="divJobAdCardListForRegister"></div>      <!-- 공고 등록 : 공고 리스팅 -->
+                                <script id="jobAdCardForRegisterTemplate" type="text/x-handlebars-template">
+                                    {{#each .}}
+                                    <div class="jobpost-list-card">
+                                        <div class="jobpost-list-card-header">
+                                            <div class="jobpost-list-card-title">{{hospitalName}}</div>
+                                            <div class="jobpost-list-card-subtitle">{{title}}</div>
+                                        </div>
+                                        <div class="jobpost-list-card-body">
+                                            <div class="dental-info">
+                                                <span class="info-detail txt-red" style="font-weight: bold"> 공고 등록일:{{hiringStartDate}}</span>
+                                                <span class="info-detail"> 채용 마감일: {{hiringEndDate}} ({{hiringEndDateDay}})</span>
+                                            </div>
+                                            <div class="dental-info" style="color: #212529;">
+                                                {{{renderAttrOnCard attr}}}
+                                            </div>
+                                        </div>
+                                        <div class="jobpost-list-card-footer">
+                                            <a href="jobad.html?jobAdId={{id}}"><span class="footer-item"><i class="fa fa-hand-pointer-o"></i>공고 보기</span></a>
+                                            <a href="register_jobad.html?jobAdId={{id}}&copyAndRegister=Y"><span class="footer-item"><i class="fa fa-share"></i>불러와서 등록</span></a>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </script>
+
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>현재 라이브 중인 채용 공고를 열람/수정할 수 있습니다.</p>
+                    <p class="typo-desc1" hidden>최근 등록된 공고를 먼저 볼 수 있습니다.</p>
+                    <p class="typo-desc1" hidden>마감된 공고는 수정이 안됩니다. 신규 등록을 이용해 주세요.</p>   
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input action-toggle" type="checkbox" id="radio-empty-edit"> <!-- css로 노출 박스 스위치 -->
+                        <label for="radio-empty-edit"></label><!-- dental-radio-box 와 세트임 -->
+
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">현재 라이브 중인 공고 리스트가 없습니다.</p>
+                            <p class="typo-desc2">채용 공고를 등록해 보세요.</p>
+                            <p class="typo-desc2">우리 병원 기본 정보가 등록되어 있어야 합니다.</p>
+                        </div>
+
+                        <div class="radio-box-checked">
+                                <div class="jobpost-list">
+                                    <div class="jobpost-list-bar">
+                                        <span class="typo-title2">등록된 공고 리스트</span>
+                                        <span class="jobpost-list-bar-counter">0</span> <!-- 리스트 건수 출력하면 '건' 은 css 가 처리 -->
+                                    </div>
+                                    <div class="jobpost-list-body" id="divJobAdCardListForEdit"></div>      <!-- 공고 수정 : 공고 리스팅 -->
+                                    <script id="jobAdCardForEditTemplate" type="text/x-handlebars-template">
+                                        {{#each .}}
+                                        <div class="jobpost-list-card">
+                                            <a href="jobad.html?jobAdId={{id}}">
+                                                <div class="jobpost-list-card-header">
+                                                    <div class="jobpost-list-card-title">{{hospitalName}}</div>
+                                                    <div class="jobpost-list-card-subtitle">{{title}}</div>
+                                                </div>
+                                                <div class="jobpost-list-card-body">
+                                                    <div class="dental-info">
+                                                        <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard locationCode}}</span>
+                                                        <span class="info-detail subway-line"> <!-- 시도, 시구군 정보, 교통정보 -->
+                                                            <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
+                                                            <span class="subway117"></span>
+                                                            <span>서울 3호선</span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
+                                                            <span class="subway120"></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
+                                                            <i></i> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 "외" 삽입됨 -->
+                                                        </span>
+                                                        <!-- <span class="info-detail">#강남역, #코엑스 외</span>  -->
+                                                        <span class="info-detail">
+                                                            {{#each hashTag}}
+                                                                <span>#{{.}}<i></i></span>
+                                                            {{/each}}
+                                                        </span>
+                                                    </div>
+                                                    <div class="dental-info">
+                                                        {{{renderAttrOnCard attr}}}
+                                                        <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div class="jobpost-list-card-footer">
+                                                <!-- <span class="footer-item"><label><input type="checkbox" name="scrap" value="{{id}}" hidden readonly><i class="fa fa-star"></i>스크랩</label></span> -->
+                                                <span class="footer-item"><label><i class="fa fa-star"></i>스크랩</label></span>
+                                                <span class="footer-item"><a href="#"><i class="fa fa-share"></i>바로지원</a></span>
+                                                <span class="footer-item"><a href="#"><i class="fa fa-phone"></i>전화문의</a></span>
+                                            </div>
+                                        </div>
+                                        {{/each}}
+                                    </script>
+                                </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>프리미어 광고를 통해 현재 노출 중인 채용 공고를 좀 더 노출 할 수 있습니다.</p>
+                    <p class="typo-desc1" hidden>신규 광고 등록 또는 기존 광고기간을 연장할 수 있습니다.</p>
+                    <p class="typo-desc1" hidden>기존 광고 중인 공고를 선택해 광고 상품을 구매하면 자동으로 기간이 추가됩니다.</p>
+                    <p class="typo-desc1" hidden>일반 회원의 경우, 연간 회원 가입을 통해 모든 광고 상품을 50% 할인 가격으로 구매할 수 있습니다.</p>  
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input action-toggle" type="checkbox" id="radio-empty-upgrade"> <!-- css로 노출 박스 스위치 -->
+                        <label for="radio-empty-upgrade"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">현재 노출 중인 공고 리스트가 없습니다.</p>
+                            <p class="typo-desc2">채용 공고를 등록해 보세요.</p>
+                            <p class="typo-desc2">우리 병원 기본 정보가 등록되어 있어야 합니다.</p>
+                        </div>
+                        <div class="radio-box-checked" id="">
+                            <div class="jobpost-list">
+                                <div class="jobpost-list-bar">
+                                    <span class="typo-title2">등록 공고 개수</span>
+                                    <span class="jobpost-list-bar-counter">0</span> <!-- 리스트 건수 출력하면 '건' 은 css 가 처리 -->
+                                </div>
+                                <div class="jobpost-list-body" id="divJobAdCardListForUpgrade"></div>      <!-- 공고 알리기 : 공고 리스팅 -->
+                                <script id="jobAdCardForUpgradeTemplate" type="text/x-handlebars-template">
+                                    {{#each .}}
+                                    <div class="jobpost-list-card">
+                                        <!-- <a href="jobad.html?jobAdId={{id}}"> -->
+                                            <div class="jobpost-list-card-header">
+                                                <div class="jobpost-list-card-title">{{hospitalName}} - {{renderAdTypeOnCard adType}} - {{adTypePremiere}}</div>
+                                                <div class="jobpost-list-card-subtitle">{{title}}</div>
+                                            </div>
+                                            <div class="jobpost-list-card-body">
+                                                <div class="dental-info">
+                                                    <span class="info-detail" style="font-weight: bold; color: #212529">서울, 강남구</span>
+                                                    <span class="info-detail subway-line"> <!-- 시도, 시구군 정보, 교통정보 -->
+                                                        <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
+                                                        <span class="subway117"></span>
+                                                        <span>서울 3호선</span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
+                                                        <span class="subway120"></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
+                                                        <i></i> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 "외" 삽입됨 -->
+                                                    </span> 
+                                                    <span class="info-detail">
+                                                        {{#each hashTag}}
+                                                            <span>#{{.}}<i></i></span>
+                                                        {{/each}}
+                                                    </span>
+                                                </div>
+                                                <div class="dental-info">
+                                                    {{{renderAttrOnCard attr}}}
+                                                    <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
+                                                </div>
+                                            </div>
+                                        <!-- </a> -->
+                                        <div class="jobpost-list-card-footer">
+                                            <a href="jobad.html?jobAdId={{id}}"><span class="footer-item"><label><i class="fa fa-hand-pointer-o"></i>공고보기</label></span></a>
+                                            {{#if adTypePremiere}}
+                                                <span class="footer-item"><i class="fa fa-share"></i>광고하기(안됨)</span> <!-- 흐리게 보여주는 등이 필요함 -->
+                                            {{else}}
+                                                <a href="register_jobad.html?jobAdId={{id}}&reqUpgrade=Y"><span class="footer-item"><i class="fa fa-share"></i>광고하기</span></a>
+                                            {{/if}}
+                                            
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </script>
+
+
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dental-tabs-footer"></div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+
+// 속도 느림. 그러나 ordering 됨
+function renderAttrOnCard(attrList) {
+    if ( attrList==null || attrList.length==0 ) return "";
+
+    var html = "";
+
+    var defAttrGroupList = CODE_CONTAINER.getAttrs();
+    defAttrGroupList.forEach(function(defAttrGroup) {
+        html += '<span class="info-detail">';
+        defAttrGroup.element.forEach(function(defAttr) {
+            var defAttrValue = defAttr.value;
+
+            attrList.forEach(function(attr) {
+                if ( defAttrValue == attr ) {
+                    html += "<span>" + defAttr.text + "<i></i></span>";
+                }
+            });
+        });
+        html += '</span>';
+    });
+
+    return html;
+}
+
+
+Handlebars.registerHelper("renderAttrOnCard", function(code) {
+    //console.log("renderAttrOnCard ", code);
+    return renderAttrOnCard(code);
+});
+Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
+    console.log("LOCATION_HELPER ", code);
+    var location = LOCATION_CODE.getByName(code);
+    if ( location ) return location.sidoName + " > " + location.siguName;
+    else return "입력안됨";
+});
+
+Handlebars.registerHelper("renderAdTypeOnCard", function(code) {
+    if ( code == '1' ) return "일반";
+    else if ( code == '2' ) return "프리미어";
+    else return "에러";
+});
+
+
+
+listJobAdCards();   // 페이지 로드시 호출
+
+
+
+/*******************************************************************************************/
+/*      화면 렌더링
+/*******************************************************************************************/
+
+
+var jobAdCardForRegisterTemplateCompiled    = Handlebars.compile( document.getElementById("jobAdCardForRegisterTemplate").innerHTML );
+var jobAdCardForEditTemplateCompiled        = Handlebars.compile( document.getElementById("jobAdCardForEditTemplate").innerHTML );
+var jobAdCardForUpgradeTemplateCompiled     = Handlebars.compile( document.getElementById("jobAdCardForUpgradeTemplate").innerHTML );
+
+
+function listJobAdCards() {
+
+    //TODO 권한 확인 할 것
+
+    var userId = LOGIN_INFO.getId();
+    callApi("GET", "/api/user/"+userId+"/hospital/jobAd/", null,
+        function(resData) {
+            console.log(resData);
+            if ( resData && Array.isArray(resData) && resData.length>0 ) {
+                
+                document.getElementById("divJobAdCardListForRegister").innerHTML = jobAdCardForRegisterTemplateCompiled(resData);
+                document.getElementById("divJobAdCardListForEdit").innerHTML = jobAdCardForEditTemplateCompiled(resData);
+                document.getElementById("divJobAdCardListForUpgrade").innerHTML = jobAdCardForUpgradeTemplateCompiled(resData);
+
+                // 공고 개수 삽입
+                document.querySelectorAll(".jobpost-list-bar-counter").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+                    el.innerText = resData.length;
+                });
+                
+                // 공고 리스트 영역 토글 ==> 보여주기
+                document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+                    el.checked = true;
+                });
+
+
+
+                function onClickJobAd(event) {
+                    console.log("adfasdf");
+
+                }
+                document.querySelectorAll(".jobpost-list-body").forEach(function(el) {
+                    el.addEventListener("click", onClickJobAd);
+                });
+
+
+            } else {
+                // 공고 리스트 영역 토글 ==> 감추기
+                document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+                    el.checked = false;
+                });
+            }
+        },
+        function(errorCode, errorMsg) {
+            alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+        }
+    );
+
+}
+
+</script>

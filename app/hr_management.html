@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+	<link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <style>
+        /* 문서내 스타일 설정은 미세조정, 미세 오버라이드 내용을 담는다 */
+        .dental-tabs { margin-top: 0.3rem; }
+        .dental-tabs-nav .nav-item span i.fa.fa-gratipay { transform: translateY(1px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-envelope-open { font-size: 0.8rem; transform: translateY(-2px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-file-text { font-size: 0.8rem; transform: translateY(-1px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-star { font-size: 0.9rem; }
+
+        .dental-tabs .radio-box-non { background-color: #FFF; padding-left: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <div class="dental-tabs tabs-type1">
+        <input class="tabs-input" name="tabs" type="radio" value="1" id="dental-tabs1" checked hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="2" id="dental-tabs2" hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="3" id="dental-tabs3" hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="4" id="dental-tabs4" hidden>
+        <div class="dental-tabs-nav tabs-type1">
+            <label class="nav-item" for="dental-tabs1"><span style="font-size: 0.7rem; line-height: 23px;"><i class="fal fa-user-circle"></i>지원자관리</span></label>
+            <label class="nav-item" for="dental-tabs2"><span><i class="fal fa-star"></i>스크랩</span></label>
+            <label class="nav-item" for="dental-tabs3"><span><i class="fal fa-address-book"></i>추천인재</span></label>
+            <label class="nav-item" for="dental-tabs4"><span><i class="fal fa-users"></i>인재열람</span></label>
+        </div>
+        <div class="dental-tabs-body tabs-type1">
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>우리 병원 전체 지원자를 확인합니다.</p>
+                    <p class="typo-desc1" hidden></p>
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox" name="radioBox" id="btnOpenContents1"> <!-- css로 노출 박스 스위치 -->
+                        <label for="btnOpenContents1"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">우리 병원을 지원한 인재가 없습니다.</p>
+                            <p class="typo-desc2"></p>
+                            <p class="typo-desc2"></p>
+                        </div>
+
+
+                        <div class="radio-box-checked">
+                            <!-- 공고별 지원자 보기, 일자별 지원자 보기 등 옵션을 줄 수 있으나
+                                일단 지원자 이력서만 리스팅 하는 것으로 마무리
+                            -->
+                            <div class="resume-list">
+                                <div class="resume-list-bar">
+                                    <span class="typo-title2">우리 병원 지원자</span>
+                                    <span class="resume-list-bar-counter" id="countOfResumeApplied">0</span>
+                                </div>
+
+
+                                <div class="resume-list-body" id="divResumeCardApplied"></div>
+                                <!-- <script id="resumeCardAppliedTemplate" type="text/x-handlebars-template"> -->
+                                <script id="resumeCardTemplate" type="text/x-handlebars-template">
+                                    {{#each .}}
+                                    <div class="resume-list-card">
+                                        <a href="#">
+                                            <div class="resume-list-card-header">
+                                                <div class="resume-list-photo">
+                                                    <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
+                                                        <div class="image-frame"><!-- <img src="images/user/jungwoo.jpg" alt=""> -->
+                                                            <img src="{{profileImageFullUrl}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="resume-list-card-title">{{title}}</div>
+                                            </div>
+                                            <div class="resume-list-card-body">
+                                                <div class="resume-info-box">
+                                                    <div class="resume-info">
+                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
+                                                    </div>
+                                                    <div class="resume-info">
+                                                        {{{renderAttrOnResumeCard attr}}}
+                                                    </div>
+                                                    <div class="resume-info">
+                                                        <span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span>
+                                                        {{#checkApplyDate}}<span class="apply-date">{{renderYYYYMMDDWithDot applyYYYYMMDD}}</span>{{/checkApplyDate}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="resume-list-card-footer">
+                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
+                                            {{#checkActionOffer}}<span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>{{/checkActionOffer}}
+                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+
+                                </script>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>프리미엄 회원 서비스입니다.</p>
+                    <p class="typo-desc1" hidden>스크랩 한 인재를 확인합니다.</p>
+                    <p class="typo-desc1" hidden></p>
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox" name="radioBox" id="btnOpenContents2"> <!-- css로 노출 박스 스위치 -->
+                        <label for="btnOpenContents2"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">스크랩한 인재가 없습니다.</p>
+                            <p class="typo-desc2"></p>
+                            <p class="typo-desc2"></p>
+                        </div>
+                        <div class="radio-box-checked">
+                            <div class="resume-list">
+                                <div class="resume-list-bar">
+                                    <span class="typo-title2">스크랩 한 이력서</span>
+                                    <span class="resume-list-bar-counter" id="countOfResumeScrapped">0</span>
+                                </div>
+
+                                <div class="resume-list-body" id="divResumeCardScrapped"></div>
+                                <!--
+                                <script id="resumeCardScrappedTemplate" type="text/x-handlebars-template">
+                                    {{#each .}}
+                                    <div class="resume-list-card">
+                                        <a href="#">
+                                            <div class="resume-list-card-header">
+                                                <div class="resume-list-photo">
+                                                    <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
+                                                        <div class="image-frame"><img src="{{profileImageFullUrl}}"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="resume-list-card-title">{{title}}</div>
+                                            </div>
+                                            <div class="resume-list-card-body">
+                                                <div class="resume-info-box">
+                                                    <div class="resume-info">
+                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
+                                                    </div>
+                                                    <div class="resume-info">
+                                                        {{{renderAttrOnResumeCard attr}}}
+                                                    </div>
+                                                    <div class="resume-info"><span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="resume-list-card-footer">
+                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
+                                            <span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>
+                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </script>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>프리미엄 회원 서비스입니다.</p>
+                    <p class="typo-desc1" hidden>인재매칭 알고리즘이 인재를 추천합니다.</p>
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox" name="radioBox" id="btnOpenContents3"> <!-- css로 노출 박스 스위치 -->
+                        <label for="btnOpenContents3"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">우리 병원 인재풀이 없습니다.</p>
+                            <p class="typo-desc2">인재풀을 늘리고 싶다면 아래 조언을 참고하세요</p>
+                            <p class="typo-desc2"></p>
+                        </div>
+                        <div class="radio-box-checked" id="">
+                            <p class="typo-desc1" hidden>병원 주변 인재.</p>
+                            <p class="typo-desc1" hidden>병원 팔로우한 인재.</p>
+                            <p class="typo-desc1" hidden>스크랩된 인재.</p>
+                            <p class="typo-desc1" hidden>우리 병원 채용 공고를 스크랩한 인재.</p>
+                            <p class="typo-desc1" hidden>등으로 설계.</p>                            
+                            <div class="resume-list">
+                                <div class="resume-list-bar">
+                                    <span class="typo-title2">추천 인재</span>
+                                    <span class="resume-list-bar-counter" id="countOfResumeRecommended">0</span>
+                                </div>
+                                <div class="resume-list-body" id="divResumeCardRecommended"></div>
+                                <!--
+                                <script id="resumeCardRecommendedTemplate" type="text/x-handlebars-template">
+                                    {{#each .}}
+                                    <div class="resume-list-card">
+                                        <a href="#">
+                                            <div class="resume-list-card-header">
+                                                <div class="resume-list-photo">
+                                                    <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
+                                                        <div class="image-frame"><img src="{{profileImageFullUrl}}"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="resume-list-card-title">{{title}}</div>
+                                            </div>
+                                            <div class="resume-list-card-body">
+                                                <div class="resume-info-box">
+                                                    <div class="resume-info">
+                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
+                                                    </div>
+                                                    <div class="resume-info">
+                                                        {{{renderAttrOnResumeCard attr}}}
+                                                    </div>
+                                                    <div class="resume-info"><span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="resume-list-card-footer">
+                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
+                                            <span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>
+                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </script>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>공개한 모든 이력서를 확인할 수 있습니다.</p>
+                    <p class="typo-desc1" hidden>프리미엄 회원 서비스입니다.</p>
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox" name="radioBox" id="btnOpenContents4"> <!-- css로 노출 박스 스위치 -->
+                        <label for="btnOpenContents4"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">현재 공개한 이력서가 없습니다.</p>
+                        </div>
+                        <div class="radio-box-checked" id="">
+                            <div class="resume-list">
+                                <div class="resume-list-bar">
+                                    <span class="typo-title2">인재 열람</span>
+                                    <span class="resume-list-bar-counter" id="countOfResumeSearched">0</span>
+                                </div>
+
+                                <div class="resume-list-body" id="divResumeCardSearched"></div>
+                                <!--
+                                <script id="resumeCardSearchedTemplate" type="text/x-handlebars-template">
+                                    {{#each .}}
+                                    <div class="resume-list-card">
+                                        <a href="#">
+                                            <div class="resume-list-card-header">
+                                                <div class="resume-list-photo">
+                                                    <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
+                                                        <div class="image-frame"><img src="{{profileImageFullUrl}}"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="resume-list-card-title">{{title}}</div>
+                                            </div>
+                                            <div class="resume-list-card-body">
+                                                <div class="resume-info-box">
+                                                    <div class="resume-info">
+                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
+                                                    </div>
+                                                    <div class="resume-info">
+                                                        {{{renderAttrOnResumeCard attr}}}
+                                                    </div>
+                                                    <div class="resume-info"><span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="resume-list-card-footer">
+                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
+                                            <span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>
+                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </script>
+                                -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="dental-tabs-footer"></div>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+// 속도 느림. 그러나 ordering 됨
+// <span class="info-detail"><span class="job-attr-chip">계약직</span><span class="job-attr-chip">아르바이트</span><i></i></span>
+function renderAttrOnResumeCard(attrList) {   // 지원 속성은 선택하지 않은 경우(DB에 데이터 없음)인 경우에는 나오지 말아야 한다.
+    if ( attrList==null || attrList.length==0 ) return "";
+
+    var html = "";
+
+    var defAttrGroupList = CODE_CONTAINER.getAttrs();
+    defAttrGroupList.forEach(function(defAttrGroup) {
+        var innerHtml = "";
+        defAttrGroup.element.forEach(function(defAttr) {
+            var defAttrValue = defAttr.value;
+            attrList.forEach(function(attr) {
+                if ( defAttrValue == attr ) {
+                    hasValue = true;
+                    innerHtml += "<span class='job-attr-chip'>" + defAttr.text + "</span>";
+                    //console.log(html);
+                }
+            });
+        });
+        if ( innerHtml.length > 2 ) {
+            html += '<span class="info-detail">';
+            html += innerHtml;
+            html += '<i></i></span>';
+        }
+    });
+
+    return html;
+}
+
+// var resumeCardAppliedTemplateCompiled       = Handlebars.compile( document.getElementById("resumeCardAppliedTemplate").innerHTML );
+// var resumeCardScrappedTemplateCompiled      = Handlebars.compile( document.getElementById("resumeCardScrappedTemplate").innerHTML );
+// var resumeCardRecommendedTemplateCompiled   = Handlebars.compile( document.getElementById("resumeCardRecommendedTemplate").innerHTML );
+// var resumeCardSearchedTemplateCompiled      = Handlebars.compile( document.getElementById("resumeCardSearchedTemplate").innerHTML );
+var resumeCardTemplateCompiled = Handlebars.compile( document.getElementById("resumeCardTemplate").innerHTML );
+
+function calLengthOfCareer(careerList) {
+    if ( !careerList || !Array.isArray(careerList) || careerList.length<1 ) {
+        return '신입';
+    } else {
+        return "경력";
+    }
+}
+Handlebars.registerHelper("renderLengthOfCareer", function(careerList) {
+    return calLengthOfCareer(careerList);
+});
+Handlebars.registerHelper("renderYYYYMMDDWithDot", function(yyyymmdd) {
+    return renderYYYYMMDDWithDot(yyyymmdd);     // from common.js
+});
+Handlebars.registerHelper("renderAttrOnResumeCard", function(code) {
+    return renderAttrOnResumeCard(code);
+});
+
+
+/***************** 탭 선택에 따라서 '이력서 카드'의 모양을 변경하기 위한 Helper들 *************************/
+
+Handlebars.registerHelper("checkApplyDate", function(options) {
+    // 화면의 탭 선택(.tabs-input)에서 선택된 것이 첫번째 탭(지원자관리)이면, '지원일자'항목을 보여주고
+    // 다른 탭이 선택된 것이라면 '지원일자' 항목을 숨긴다.
+    if ( document.querySelector("input[name='tabs'][value='1']").checked ) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+
+Handlebars.registerHelper("checkActionOffer", function(options) {
+    // 화면의 탭 선택(.tabs-input)에서 선택된 것이 첫번째 탭(지원자관리)이면, '면접제안'버튼을 숨기고
+    // 다른 탭이 선택된 것이라면 '면접제안' 버튼을 보여준다.
+    if ( !document.querySelector("input[name='tabs'][value='1']").checked ) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+/************************************************************************************************************/
+
+
+function listResume(tabNo) {
+    if ( !checkAuth() ) {
+        return;
+    }
+
+    var userId = LOGIN_INFO.getId();
+    var apiUrl = "";
+    if ( tabNo == 1 ) apiUrl = "/api/user/"+userId+"/hospital/listAppliedResume/";
+    else if ( tabNo == 2 ) apiUrl = "/api/user/"+userId+"/hospital/listResumeScrapped/";
+    else if ( tabNo == 3 ) apiUrl = "/api/user/"+userId+"/hospital/listResumeRecommended/";
+    else if ( tabNo == 4 ) apiUrl = "/api/user/"+userId+"/hospital/listResumeSearched/";
+    else {
+        console.log("잘못된 탭 번호 : ", tabNo);
+        return;
+    }
+
+    var apiParam = null;
+
+    callApi("GET", apiUrl, apiParam,
+        function(resData) {
+            console.log(resData);
+            if ( resData && Array.isArray(resData) && resData.length>0 ) {
+
+                if ( tabNo == 1) {
+                    document.getElementById("divResumeCardApplied").innerHTML = resumeCardTemplateCompiled(resData);
+                    document.getElementById("countOfResumeApplied").innerText = resData.length;
+                } else if ( tabNo == 2 ) {
+                    document.getElementById("divResumeCardScrapped").innerHTML = resumeCardTemplateCompiled(resData);
+                    document.getElementById("countOfResumeScrapped").innerText = resData.length;
+                } else if ( tabNo == 3 ) {
+                    document.getElementById("divResumeCardRecommended").innerHTML = resumeCardTemplateCompiled(resData);
+                    document.getElementById("countOfResumeRecommended").innerText = resData.length;
+                } else if ( tabNo == 4 ) {
+                    document.getElementById("divResumeCardSearched").innerHTML = resumeCardTemplateCompiled(resData);
+                    document.getElementById("countOfResumeSearched").innerText = resData.length;
+                }
+
+                document.getElementById("btnOpenContents"+tabNo).checked = true;
+
+            } else {
+                document.getElementById("btnOpenContents"+tabNo).checked = false;
+            }
+        },
+        function(errorCode, errorMsg) {
+            alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+        }
+    );
+}
+
+
+function onChangeTabs(event) {
+    console.log("변경 : ", this.value);
+
+    listResume(this.value);
+}
+document.querySelectorAll("input[name='tabs']").forEach(function(el) {
+    el.addEventListener('change', onChangeTabs);
+});
+
+
+function checkAuth() {
+    return true;
+}
+
+
+listResume(1);  // 1번 탭 실행
+
+
+
+
+    /**********************************************************************************************/
+    /*
+    /*      스크랩 처리
+    /*
+    /**********************************************************************************************/
+    // 스크랩 처리
+    function onClickScrap(event) {
+        //event.preventDefault();
+
+        if ( !checkAuth() ) {
+            return;
+        }
+        
+        var userId = LOGIN_INFO.getId();
+        console.log("이력서 스크랩 ", this.value , "  ==> ", this.checked);
+        var resumeId = this.value;
+
+        if ( this.checked ) {
+            console.log("서버에 스크랩 on 처리해야 함");
+            callApi("POST", "/api/user/"+userId+"/hospital/addResumeScrapped/", "resumeId="+resumeId,
+                function(resData) {
+                    document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resumeId + "']").forEach(function (el) {
+                        el.checked = true;
+                    });
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+
+
+        } else {
+            console.log("서버에 스크랩 off 처리해야 함");
+            callApi("POST", "/api/user/"+userId+"/hospital/deleteResumeScrapped/", "resumeId="+resumeId,
+                function(resData) {
+                    document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resumeId + "']").forEach(function (el) {
+                        el.checked = false;
+                    });
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+        }
+    }
+    $(".resume-list-body").on("click", "input[type=checkbox][name=resume-scrap]", onClickScrap);
+
+</script>

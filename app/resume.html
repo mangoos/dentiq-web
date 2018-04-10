@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <script src="js/common.js"></script>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <section class="resume-top">
+        <div class="dental-info-card">
+            <div class="info-card-header">
+                <div class="info-card-title-styled" id="title">
+                    ***욜씨미 일하겠습니다.욜씨미 일하겠습니다.
+                </div>
+            </div>
+            <div class="info-card-body">
+                <div class="user-info">
+                    <div class="user-info-box">
+                        <div class="user-photo-box" style="width: 120px; height: 120px; font-size: 120px;">
+                            <div class="image-frame">
+                                <img src="" id="userPic">
+                            </div>
+                            <span class="user-photo-box-icon"><i class="camera-icon"></i></span>
+                        </div>
+                    </div>
+                    <div class="user-info-box" style="align-items: flex-start; padding: 1rem;">
+                        <p class="resume-user-name" id="userName">**선정우</p>
+                        <p style="font-size: 0.8rem;" ><span id="gender">**여</span>, <span id="birthday">**1975</span>년 생</p>
+                        <p style="font-size: 0.7rem;"><span id="lastModDt">**2018.03.02</span> 최종수정</p>
+                    </div>
+                </div>
+                <div class="user-info" style="padding-left: 1rem;">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">전화번호</span>
+                            <p class="info-card-item-desc" id="telNo">**010-6731-7548</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">이메일</span>
+                            <p class="info-card-item-desc" id="email">**sjw0927@ gmail.com</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">주소</span>
+                            <!--<p class="info-card-item-desc"><span id="sidoName">서울</span>><span id="siguName">강남구</span></p>-->
+                            <p class="info-card-item-desc" id="addrText">**</p>
+                        </li>                     
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="resumeInfo" class="resume-info">
+        <div class="dental-info-card">
+            <div class="info-card-header">
+                <div class="info-card-header-title">희망근무조건</div>
+            </div>
+            <div class="info-card-body">
+                <ul id="divAttrs" class="info-card-list"></ul><!-- jobad 와 똑같은 방식으로 공고 속성 출력 -->
+                <ul class="info-card-list">
+
+                    <div id="divAttrs"></div>   <!-- 이력서 속성 영역 -->
+                    <script>
+                        function renderAttrs(attrVal) {
+                            //console.log("*** renderAttrs : ", attrVal);
+                            var htmlStr = "";
+                            var attrCodes = CODE_CONTAINER.getAttrs();
+                            attrCodes.forEach(function(group) {
+                                htmlStr += "<li class='info-card-item'>" + "<span class='info-card-item-title'>" + group.text + "</span>";
+                                htmlStr += "<p class='info-card-item-desc'>";
+                                var groupChecked = false;
+                                group.element.forEach(function(attr) {                        
+                                    for ( var i=0; attrVal && i<attrVal.length; i++ ) {
+                                        //console.log("attrVal [" + attrVal[i] + "] , attr.value [" + attr.value + "]");
+                                        if ( attrVal[i]==attr.value ) {
+                                            htmlStr += "<span class='info-card-item-desc-elm'>" + attr.text + "</span>&nbsp;";
+                                            groupChecked = true;
+                                            console.log("** renderAttrs : attrVal 잡았음 [" + attrVal[i] + "] , attr.value [" + attr.value + "](" + attr.text + ")");
+                                        }
+                                    }
+                                });
+                                if ( !groupChecked ) {
+                                    htmlStr += "<span>무관</span>";
+                                }
+        
+                                htmlStr += "</p></li>";
+        
+                            });
+                            
+                            //console.log(htmlStr);
+                            document.getElementById("divAttrs").innerHTML = htmlStr;
+                        }
+                    </script>
+                    
+
+
+                    <li class="info-card-item">
+                        <span class="info-card-item-title">희망직책</span>
+                        <p id="roleWanted" class="info-card-item-desc">**무관</p>
+                    </li>
+                    
+                    
+                    <li class="info-card-item">
+                        <span class="info-card-item-title">희망급여</span>
+                        <p id="salaryWanted" class="info-card-item-desc">***면접 후 협의</p>
+                    </li>
+                    
+                    <li class="info-card-item">
+                        <span class="info-card-item-title">희망지역</span>
+                        <ul class="info-card-sublist" id="divApplyLocation"></ul>   <!-- 희망지역 영역 -->
+                    </li>
+                    <script>
+                        function renderApplyLocation(applyLocationCodeList) {
+                            if ( !applyLocationCodeList ) return;
+
+                            var htmlStr = "";
+                            applyLocationCodeList.forEach(function(locationCode) {
+                                var location = LOCATION_CODE.getLocation(locationCode);
+                                if ( location.siguName )
+                                    htmlStr += "<li class='info-card-chip'><span>" + location.sidoName + "</span><span>" + location.siguName + "</span></li>";
+                                else
+                                    htmlStr += "<li class='info-card-chip'><span>" + location.sidoName + "</span><span>전체</span></li>";
+                            });
+
+                            document.getElementById("divApplyLocation").innerHTML = htmlStr;
+                        }
+                    </script>
+
+                </ul>
+            </div>
+        </div>
+        <div class="dental-info-card">
+            <div class="info-card-header">
+                <div class="info-card-header-title">주요 경력 사항</div>
+            </div>
+            <div class="info-card-body">
+                <ul class="info-card-list">
+                    <li class="info-card-item">
+                        <span class="info-card-item-title">최종학력</span>
+                        <p id="eduSchool" class="info-card-item-desc"><span>**오산대학교</span><span>**치위생과</span></p>
+                        <p id="eduStart"  class="info-card-item-desc"><span>**2018.03</span><span>**입학</span></p>
+                        <p id="eduEnd"    class="info-card-item-desc"><span>**2018.03</span><span>**졸업</span></p>
+                    </li>
+
+                    <li class="info-card-item">
+                        <span class="info-card-item-title">경력사항</span>
+
+                        <ul class="info-card-sublist2" id="divCareer">
+                            <!--
+                            <li class="info-card-subitem">
+                                <p class="info-card-subitem-title">**서울역 앞 치과병원</p>
+                                <p id="" class="info-card-item-desc3">**진료실, 상담</p>
+                                <p id="" class="info-card-item-desc3">**2018.03~2018.04</p>
+                            </li>
+                            <li class="info-card-subitem">
+                                <p class="info-card-subitem-title">**서울역 앞 치과병원</p>
+                                <p id="" class="info-card-item-desc3">**진료실, 상담</p>
+                                <p id="" class="info-card-item-desc3">**2018.03~2018.04</p>
+                            </li>
+                            -->
+                        </ul>                    
+                    </li>
+                    <script>
+                        function renderCareer(careerList) {
+                            if ( !careerList ) return;
+
+                            var htmlStr = "";
+                            careerList.forEach(function(career) {
+                                htmlStr += '<li class="info-card-subitem">';
+                                htmlStr +=      '<p class="info-card-subitem-title">' + getText(career.firmName) + '</p>';
+                                htmlStr +=      '<p id="" class="info-card-item-desc3">' + getText(career.task) + '</p>';
+                                htmlStr +=      '<p id="" class="info-card-item-desc3">' + formatDateString(career.joinYYYYMM) + '~' + formatDateString(career.retireYYYYMM) + '</p>';
+                                htmlStr += '</li>';
+                            });
+
+                            document.getElementById("divCareer").innerHTML = htmlStr;
+                        }
+                    </script>
+
+                    <li class="info-card-item">
+                        <span class="info-card-item-title">자격/면허</span>
+                        
+                        <ul class="info-card-sublist2" id="divLicense">
+                        <!--
+                            <li class="info-card-subitem">
+                                <p class="info-card-subitem-title">**치위생사 면허증</p>
+                                <span id="" class="info-card-item-desc3">**대한민국 정부</span>
+                                <span id="" class="info-card-item-desc3">**2018.04</span>
+                            </li>
+                            <li class="info-card-subitem">
+                                <p class="info-card-subitem-title">**운전면허증</p>
+                                <span id="" class="info-card-item-desc3">**경기 경찰서</span>
+                                <span id="" class="info-card-item-desc3">**2018.03</span>
+                            </li>
+                        -->
+                        </ul>             
+                    </li>
+                    <script>
+                        function renderLicense(licenseList) {
+                            if ( !licenseList ) return;
+
+                            var htmlStr = "";
+                            licenseList.forEach(function(license) {
+                                htmlStr += '<li class="info-card-subitem">';
+                                htmlStr +=      '<p class="info-card-subitem-title">' + getText(license.name) + '</p>';
+                                htmlStr +=      '<p id="" class="info-card-item-desc3">' + getText(license.issuer) + '</p>';
+                                htmlStr +=      '<p id="" class="info-card-item-desc3">' + formatDateString(license.issueYYYYMM) + '</p>';
+                                htmlStr += '</li>';
+                            });
+
+                            document.getElementById("divLicense").innerHTML = htmlStr;
+                        }
+                    </script>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="dental-info-card">
+            <div class="info-card-header">
+                <div class="info-card-header-title">자기소개</div>
+            </div>
+            <div class="info-card-body" id="content">
+                **열씨미 일할 수 있어요. 배우고 싶어요.
+            </div>
+        </div>
+    </section>
+    <section class="jobad-btm-layer">
+        <div class="jobad-btm-layer-btn" id="btnScrap">
+            <label class="scrap-box">
+                <input type="checkbox" name="scrap" hidden>
+                <i class="fa fa-star"></i>
+                스크랩
+            </label>
+        </div>
+        <div class="jobad-btm-layer-btn">
+            <label class="applying-box">
+                <input type="button" name="" hidden>
+                <i class="fa fa-hand-pointer-o"></i>
+                면접 요청
+            </label>
+        </div>
+        <div class="jobad-btm-layer-btn">
+            <label class="calling-box">
+                <input type="button" name="" hidden>
+                <i class="fa fa-phone-square"></i>
+                전화 하기
+            </label>
+        </div>
+        <div class="jobad-btm-float-btn">
+            <label class="go-to-top">
+                <input type="button" name="" hidden>
+                <i class="fa fa-arrow-circle-up"></i>
+            </label>
+        </div>
+    </section>
+    <footer class="footer">
+    footer
+    </footer>
+</body>
+</html>
+
+<script>
+
+
+
+// function setupData(initData, elementIdPrefix) {
+//     if ( !initData ) return;
+    
+//     Object.keys(initData).forEach(function(name, idx) {
+//         console.log("처리 중 : ", name, " ==> ", "#"+elementIdPrefix+name);
+
+//         document.querySelectorAll("#"+elementIdPrefix+name).forEach(function(el) {
+//             el.innerText = getText(initData[name]);
+//             console.log("                 설정됨 : ", "#"+elementIdPrefix+name, " ==> [" + getText(initData[name]) + "]");
+//         });
+
+//     });
+
+//     console.log("초기값 설정 완료");
+// }
+
+
+function getText(value) {
+    if ( value ) {
+        if ( typeof value === "string" ) return value.trim();
+        else return value;
+    } else return "";
+}
+
+function formatDateString(YYYYMMDD) {
+    if ( !YYYYMMDD ) return "";
+    if ( YYYYMMDD.trim().length < 4 ) return YYYYMMDD;
+
+    var temp = YYYYMMDD.trim();
+    if ( temp.length == 4 ) return temp;
+    if ( temp.length == 6 ) return temp.substring(0, 4) + "." + temp.substring(4, 6);
+    if ( temp.length == 8 ) return temp.substring(0, 4) + "." + temp.substring(4, 6) + "." + temp.substring(6, 8);
+    return temp;
+}
+
+// 문자열(str)이 특정문자열(search)로 끝나는 문자열인지 확인
+function stringEndsWith(str, search) {
+    if ( typeof str !== 'string' ) return str;
+    if ( typeof search !== 'string' ) search += "";
+
+    var len = str.length;
+    var lastIndex = str.indexOf(search, len-search.length-1);
+
+    if ( lastIndex > -1 ) return true;
+    else return false;
+}
+
+function fillData(resumeData) {
+    //setupData(resumeData, "");  // 기초적인 데이터를 셋업한다.
+
+
+    ///////////////////////////////// 첫번째 영역 (기본) //////////////////////////////////////
+    
+    if ( resumeData.profileImageFullUrl ) {
+        document.getElementById("userPic").src = resumeData.profileImageFullUrl;
+    }
+
+    // 제목 title
+    document.getElementById("title").innerText      = getText(resumeData.title);
+
+    // 이름
+    document.getElementById("userName").innerText   = getText(resumeData.userName);
+
+    // 성별
+    if ( resumeData.gender && resumeData.gender == 'M' )        document.getElementById("gender").innerText   = "남";
+    else if ( resumeData.gender && resumeData.gender == 'F' )   document.getElementById("gender").innerText   = "여";
+    else                                                        document.getElementById("gender").innerText   = ""; // 일단 없더라도 세팅
+
+    // 생년 birthday
+    if ( resumeData.birthday )      document.getElementById("birthday").innerText   = resumeData.birthday.substring(0, 4);
+
+    // 최종수정일 lastModDt
+    document.getElementById("lastModDt").innerText   = formatDateString(resumeData.lastModYYYYMMDD);
+
+    // 전화번호
+    if ( resumeData.telNo )         document.getElementById("telNo").innerText   = resumeData.telNo;
+
+    // 이메일
+    if ( resumeData.email )         document.getElementById("email").innerText   = resumeData.email;
+    
+    // 주소 
+    var location = LOCATION_CODE.getLocation(resumeData.locationCode);
+    document.getElementById("addrText").innerHTML      = "<span>" + location.sidoName + "</span> > <span>" + location.siguName + "</span>";
+
+
+
+
+    ///////////////////////////////// 두번째 영역 (희망근무지역 ) //////////////////////////////////////
+
+    // 속성
+    renderAttrs(resumeData.attr);
+
+    // 희망직책
+    if ( resumeData.roleWanted == '0' && resumeData.roleWantedText ) {
+        document.getElementById("roleWanted").innerText              = resumeData.roleWantedText;
+    } else {
+        document.getElementById("roleWanted").innerText              = CODE_CONTAINER.getCode(resumeData.roleWanted, CODE_CONTAINER.getRoleType).text;
+    }
+
+    // 희망급여
+    if ( resumeData.salaryWanted == '0' && resumeData.salaryWantedText ) {
+        // if ( stringEndsWith(resumeData.salaryWantedText.trim(), "만원") ) {
+            document.getElementById("salaryWanted").innerText =  resumeData.salaryWantedText;
+        // } else {
+        //     document.getElementById("salaryWanted").innerText =  resumeData.salaryWantedText + "만원";
+        // }
+    } else {
+        document.getElementById("salaryWanted").innerText = CODE_CONTAINER.getCode(resumeData.salaryWanted, CODE_CONTAINER.getSalaryType).text;
+    }
+
+    // 희망지역
+    renderApplyLocation(resumeData.applyLocationCode);
+
+
+    ///////////////////////////////// 세번째 영역 (주요 경력 사항) //////////////////////////////////////
+
+    // 최종학력
+    resumeData.eduLevel;
+    resumeData.eduStatus;
+
+    document.getElementById("eduSchool").innerHTML = "<span>" + getText(resumeData.eduSchoolName) + "</span><span>" + getText(resumeData.eduMajor) + "</span>";   // 예: 오산대학교 치위생학과
+    if ( resumeData.eduStartYYYYMM )        document.getElementById("eduStart").innerHTML = "<span>" + formatDateString(resumeData.eduStartYYYYMM) + "</span><span>입학</span></p>";
+    document.getElementById("eduEnd").innerHTML   = "<span>" + formatDateString(resumeData.eduEndYYYYMM) + "</span><span>" + CODE_CONTAINER.getCode(resumeData.eduStatus, CODE_CONTAINER.getEduStatus).text + "</span></p>";
+
+
+    // 경력사항
+    renderCareer(resumeData.career);
+
+
+    // 자격면허
+    renderLicense(resumeData.license);
+
+
+    ///////////////////////////////// 네번째 영역 (자기 소개) //////////////////////////////////////
+    
+    // 자기 소개 content
+    if ( resumeData.content )         document.getElementById("content").innerText   = resumeData.content;
+
+}
+
+// 공개된 이력서는 누구나 볼 수 있음.
+// 공개되지 않은 이력서는 자신이 볼 수 있고 + 자신이 지원한 병원만 볼 수 있음
+var ViewResumeApp = (function() {
+
+    
+
+    // 병원 기본 정보 수신
+    function loadJobAdWithHospital() {
+
+        var params = getHtmlCallParams();
+        if ( params && params.resumeId ) {   // 기존 공고 로드 후 수정
+            resumeId = params.resumeId;
+        } else {
+            alert("잘못된 접근입니다.");
+            return;
+        }
+
+        // ar viewUserId = LOGIN_INFO.getId();  // 현재 이 페이지에 접근한 조회자의 ID <== 보안상 문제 발생됨
+
+        // /user/{userId}/resume/
+        callApi("GET", "/api/resume/" + resumeId + "/", null,
+            function(resData) {
+                console.log(resData);
+                if ( !resData ) {
+                    alert("해당 이력서를 찾을 수 없습니다.");
+                }
+
+                fillData(resData);
+                
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+    }
+
+
+    loadJobAdWithHospital();
+})();
+
+</script>

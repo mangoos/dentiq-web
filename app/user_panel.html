@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+	<link rel="stylesheet" href="css/dentalBasic.css">
+
+	<script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+	<style>
+		.dental-panel .dental-icon-nav { border: 1px solid #c7c7c7; border-top: none; }
+		.dental-panel .icon-nav-item { flex-basis: 25%; border-radius: 0; padding: 4rem .2rem .3rem .2rem; }
+		.fa-thumbtack { transform: rotate(45deg); }
+		.dental-panel .dental-icon-nav .icon-nav-item { border: none; border-right: 1px solid #c7c7c7; border-top: 1px solid #c7c7c7; }
+		.dental-panel .dental-icon-nav .icon-nav-item:nth-child(4n) { border-right: 0; }
+		.dental-panel .icon-nav-item .nav-item-icon { font-size: 1.6rem; top: 40%; left: 50%; transform: translate(-50%, -50%); color: #0083cb;}
+		.dental-panel .icon-nav-item .nav-item-title { font-size: 0.8rem; }
+	</style>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <section class="user-panel-section dental-panel">
+		<div class="dental-panel-header">
+			<div class="user-photo">
+				<div class="user-photo-box">
+					<div class="image-frame">
+						<!-- 아래 처럼 이미지 넣어주면 됨 -->
+						<!-- 이미지는 자동으로 150px, 150px 사이즈로 재단됨 -->
+						<!-- 재단 기준은 최상단임, 가운데 정렬 -->
+						<!-- 이미지 없으면 사람 아이콘 그냥 나옴, 가상 클래스 사용 // 지금은 좀 우스꽝 스럽게 되어 있음 빅헤드 ㅋㅋ -->
+						<!-- <img src="images/user/jungwoo.jpg" id=""> -->
+						<img src="images/user/sample.png">
+					</div>
+					<span class="user-photo-box-icon"><i class="camera-icon"></i></span>
+				</div>
+				<div class="user-photo-title">sjw0927@ gmail.com</div>
+				<div class="user-photo-subtitle">선진혁</div>
+			</div>
+		</div>
+		<div class="panel-nav">
+			<nav class="dental-icon-nav">
+				<a class="icon-nav-item" href="register_user.html">
+					<span class="nav-item-icon"><i class="fal fa-thumbtack"></i></span>
+					<span class="nav-item-title">관심지역</span>
+				</a>
+				<a class="icon-nav-item" href="register_user.html">
+					<span class="nav-item-icon"><i class="fal fa-home"></i></span>
+					<span class="nav-item-title">우리동네</span>
+				</a>
+				<a class="icon-nav-item" href="user_interaction.html">
+					<span class="nav-item-icon"><i class="fal fa-heart"></i></span>
+					<span class="nav-item-title">관심병원</span>
+				</a>
+				<a class="icon-nav-item" href="user_interaction.html">
+					<span class="nav-item-icon"><i class="fal fa-star"></i></span>
+					<span class="nav-item-title">내스크랩</span>
+				</a>
+				<a class="icon-nav-item" href="user_interaction.html">
+					<span class="nav-item-icon"><i class="fal fa-envelope-open"></i></span>
+					<span class="nav-item-title">지원현황</span>
+				</a>
+				<a class="icon-nav-item" href="user_interaction.html">
+					<span class="nav-item-icon"><i class="fal fa-calendar-exclamation"></i></span>
+					<span class="nav-item-title">면접요청</span>
+				</a>
+				<a class="icon-nav-item" href="resume.html">
+					<span class="nav-item-icon"><i class="fal fa-file-alt"></i></span>
+					<span class="nav-item-title">이력서열람</span>
+				</a>
+				<a class="icon-nav-item" href="register_resume.html">
+					<span class="nav-item-icon"><i class="fal fa-file-edit"></i></span>
+					<span class="nav-item-title">이력서수정</span>
+				</a>
+			</nav>
+		</div>
+		<div class="panel-body">
+			<input type=radio name="dental-panel" id="dental-panel-tab1" hidden>
+			<input type=radio name="dental-panel" id="dental-panel-tab2" hidden>
+			<input type=radio name="dental-panel" id="dental-panel-tab3" hidden>
+			<input type=radio name="dental-panel" id="dental-panel-tab4" hidden>
+			<input type=radio name="dental-panel" id="dental-panel-tab5" hidden>
+			<input type=radio name="dental-panel" id="dental-panel-tab6" hidden>
+			<input type=radio name="dental-panel" id="dental-panel-tab7" hidden>
+			<input type=radio name="dental-panel" id="dental-panel-tab8" hidden>
+			<div class="tab-content"></div>
+			<div class="tab-content"></div>	
+			<div class="tab-content">관심병원 채용 정보</div>
+			<div class="tab-content">내 스크랩 공고</div>
+			<div class="tab-content">내 지원 현황</div>
+			<div class="tab-content">면접 요청 접수 현황</div>
+			<div class="tab-content">7번</div>
+			<div class="tab-content">register-resume 파일로 링크 또는 탭 아래에 보여주기</div>
+		</div>
+		<div class="panel-footer">
+		</div>
+    </section>
+</body>
+</html>
