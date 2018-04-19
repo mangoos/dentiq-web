@@ -31,7 +31,7 @@
     </header>
     <!-- loading spinner, 'active' 클래스로 활성화 -->
     <div class="dental-loading" id="loadingModal" hidden>
-        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+        <div class="fa-icon"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>
         <div class="loading-overlay" hidden></div>
     </div>
 
@@ -178,7 +178,7 @@
                 loadingModal.open();
                 
 
-                callApi("GET", "/api/addr/", apiParam, 
+                callApi("GET", "/api/location/", apiParam, 
                     function(resData) {
                         var errorCode = resData.common.errorCode;
                         if ( errorCode!="0" && errorCode!="00" ) {
@@ -192,13 +192,13 @@
 
                         totalJusoCount = resData.common.totalCount;
                         if ( currentPage!=null ) lastPageNo = currentPage;
-                        resData.juso.forEach(function(jusoItem) {
+                        resData.locationList.forEach(function(jusoItem) {
                             jusoContainer[jusoItem.jusoIdx] = jusoItem;
-                            console.log("데이터 세팅 결과 : ", jusoContainer[jusoItem.idx]);
+                            console.log("데이터 세팅 결과 : ", jusoContainer[jusoItem.jusoIdx]);
                             console.log("\t\t!!!! 현재까지의 jusoContainer : ", jusoContainer)
                         });
 
-                        var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.juso);
+                        var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.locationList);
                         if ( currentPage!=null && currentPage>1 ) {
                             $("#jusoList").append(jusoListContent);
                         } else {
@@ -281,7 +281,7 @@
     <!--                                    주소 모달 종료                                               -->
     <!--================================================================================================-->
 
-    <section class="register-section dental-steps">
+    <section class="register-dentist dental-steps">
         <input type="radio" name="steps" id="register-user-1" checked hidden>
         <input type="radio" name="steps" id="register-user-2" hidden>
         <div class="step">
@@ -296,34 +296,36 @@
             <!--================================================================================================-->
             <div class="step-content">
                 <div class="step-content-header">
-                    <div class="content-title"><i class="fa fa-thumb-tack"></i>우리병원 기본정보 등록</div>
-                    <div class="content-desc">구직자들에게 보다 정확한 정보를 제공합니다.</div>
+                    <div class="content-title"><i class="far fa-hospital-alt"></i>우리병원 기본정보 등록</div>
+                    <div class="content-desc">구직자들에게 제공할 병원 기본 정보를 등록합니다.</div>
+                    <div class="content-desc"> 덴탈 플러스 매칭 알고리즘을 통해 보다 정확한 인재 추천을 가능하게 합니다.</div>
+                    <div class="content-desc"><i class="fal fa-check" style="color: red; margin-right: 0.5rem; margin-left: 0.5rem;"></i> 항목은 최소 필수 입력값입니다.</div>
                 </div>
                 <form id="hospitalInfoForm"> <!-- 병원 선택 완료 후 또는 바로 입력 클릭 후 노출 처리 -->
-                    <div class="register-action-layer" style="position: fixed; top: 2rem; right: 2rem; z-index: 3;">
-                        <button class="" id="btnAction" type="submit" disabled hidden></button>
+                    <div class="fixed-layer-action">
+                        <button class="fixed-layer-action-btn" id="btnAction" type="submit" disabled hidden></button>
                     </div>
                     <div class="dental-card">
                         <div class="dental-card-header"><div class="dental-card-header-title h4">기본정보</div></div>
                         <div class="card-body">
                             <div class="form-group">
-                                <input type="text" class="styled-input" id="bizRegName" name="bizRegName" maxlength="12"  placeholder="사업자등록 상 사업장명">
+                                <input type="text" class="styled-input" id="bizRegName" name="bizRegName" maxlength="20"  placeholder="사업자등록 상 사업장명" required>
                                 <label class="styled-label">사업장명</label>
                                 <span class="form-group-desc">정확하게 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>이름을 정확하게 입력해주세요.</div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" id="bizRegName" name="name" maxlength="12"  placeholder="병원명 입력">
+                                <input type="text" class="styled-input" id="bizRegName" name="hospitalName" maxlength="20"  placeholder="병원명 입력" required>
                                 <label class="styled-label">병원명</label>
                                 <span class="form-group-desc">정확하게 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>이름을 정확하게 입력해주세요.</div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <select class="styled-select" name="hospitalTypeCode" id="hospitalTypeCode">
+                                <select class="styled-select" name="hospitalTypeCode" id="hospitalTypeCode" required>
                                     <!--
                                     <option value="">선택</option>
                                     <option value="HIRA_41">치과의원</option>
@@ -370,51 +372,51 @@
                                 <span class="form-group-desc">숫자로만 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>정확하게 입력해주세요.</div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="ceoName" maxlength="12"  placeholder="사업자등록상 대표자명">
+                                <input type="text" class="styled-input" name="ceoName" maxlength="10"  placeholder="사업자등록상 대표자명" required>
                                 <label class="styled-label">대표자명</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>정확하게 입력해주세요.</div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="hospUrl" maxlength="50"  placeholder="홈페이지 주소">
+                                <input type="text" class="styled-input" name="hospitalUrl" maxlength="50"  placeholder="홈페이지 주소">
                                 <label class="styled-label">홈페이지</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>정확하게 입력해주세요.</div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="addrMain" id="addrMain" placeholder="" readonly required>
+                                <input type="text" class="styled-input" name="location.addrMain" id="addrMain" placeholder="" readonly required>
                                 <label class="styled-label" >주소</label>
                                 <!-- <span class="form-group-desc"></span> -->
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                                 <span class="form-group-underline"></span>
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group-linked"> <!-- 바로 위 styled-form-group input 에 값 입력된 후에 enabled 처리 -->
-                                <input class="styled-input" type="text" name="addrDetail" id="addrDetail" placeholder="상세주소" required>
+                                <input class="styled-input" type="text" name="location.addrDetail" id="addrDetail" placeholder="상세주소" required>
                                 <span class="form-group-underline"></span>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="telNo" maxlentth="20" placeholder="예)0102349876">
+                                <input type="text" class="styled-input" name="hospitalTelNo" maxlentth="20" placeholder="예)0102349876" required>
                                 <label class="styled-label">대표 전화번호</label>
-                                <span class="form-group-desc"></span>
+                                <span class="form-group-desc">사업장 대표 전화번호</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>사업장 대표 전화번호</div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="email" maxlentth="50" placeholder="이메일 입력">
+                                <input type="text" class="styled-input" name="hospitalEmail" maxlentth="50" placeholder="이메일 입력" required>
                                 <label class="styled-label">대표 이메일</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>정확하게 입력해주세요.</div>
+                                <div class="form-group-msg2"></div>
                             </div>                            
                         </div>
                     </div>
@@ -432,9 +434,8 @@
                                 function renderDivHoliday() {
                                     var htmlStr = '';
                                     CODE_CONTAINER.getHolyday().forEach(function(el) {
-                                        htmlStr += '<label class="attr-checkbox"><input type="checkbox" name="holiday" value="' + el.value + '" hidden><span class="chip">' + el.text + '</span></label>';
+                                        htmlStr += '<label class="attr-checkbox"><input type="checkbox" name="holiday[]" value="' + el.value + '" hidden><span class="chip">' + el.text + '</span></label>';
                                     });
-                                    // htmlStr += '</fieldset>';
                                     document.getElementById("divHolyday").innerHTML = htmlStr;
                                 }
                                 renderDivHoliday();
@@ -451,17 +452,17 @@
                                         //target.value = null;
                                     }
                                 }
-                                document.querySelector("input[type='checkbox'][name='holiday'][value='0']").addEventListener("change", holidayTextToggle);
+                                document.querySelector("input[type='checkbox'][name='holiday[]'][value='0']").addEventListener("change", holidayTextToggle);
 
 
                                 function onChangeOrInputHolidayText(event) {
                                     console.log("holidayText 이벤트");
                                     if ( this.value && this.value!='' ) {
-                                        document.querySelector("input[type='checkbox'][name='holiday'][value='0']").checked = true;
+                                        document.querySelector("input[type='checkbox'][name='holiday[]'][value='0']").checked = true;
                                         this.disabled = false;
                                         this.hidden = false;
                                     } else {
-                                        document.querySelector("input[type='checkbox'][name='holiday'][value='0']").checked = false;
+                                        document.querySelector("input[type='checkbox'][name='holiday[]'][value='0']").checked = false;
                                         this.disabled = true;
                                         this.hidden = true;
                                     }
@@ -485,7 +486,7 @@
                                 </style>
                                 <div class="form-group-header"><div class="form-group-header-title">진료시간</div></div>
                                 <fieldset class="form-group-body">
-                                    <input id="weekday-oper-time" type="checkbox" hidden><label for="weekday-oper-time"><span class="chip">평일</span></label>
+                                    <input id="weekday-oper-time" type="checkbox" checked hidden required><label for="weekday-oper-time"><span class="chip">평일</span></label>
                                     <input id="weekend-oper-time" type="checkbox" hidden><label for="weekend-oper-time"><span class="chip">주말</span></label>
                                     <input id="etc-oper-time"     type="checkbox" hidden><label for="etc-oper-time"><span class="chip">기타/추가</span></label>
 
@@ -541,7 +542,7 @@
                                 </fieldset>
                             </div>
                             <div class="form-group">
-                                <select id="lunchTimeStart" name="lunchTimeStart" class="select-two styled-select"></select>
+                                <select id="lunchTimeStart" name="lunchTimeStart" class="select-two styled-select" required></select>
                                 <select id="lunchTimeEnd" name="lunchTimeEnd" class="select-two styled-select"disabled></select>
                                 <label class="styled-label">점심시간</label>
                             </div>
@@ -551,18 +552,18 @@
                             <div class="form-group">
                                 <input type="text" class="styled-input" name="totalMemberCnt" maxlength="3" placeholder="총구성원수 입력">
                                 <label class="styled-label">총구성원</label>
-                                <span class="form-group-desc"></span>
+                                <span class="form-group-desc">숫자만 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden>숫자만 입력</div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="clinicSubject" maxlength="50" placeholder="주요 진료과목 입력">
+                                <input type="text" class="styled-input" name="clinicSubject" maxlength="30" placeholder="주요 진료과목 입력">
                                 <label class="styled-label">진료과목</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                         </div>
                     </div>
@@ -570,28 +571,28 @@
                         <div class="dental-card-header"><div class="dental-card-header-title h4">진료정보</div></div>
                         <div class="card-body">
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="defaultHrOfficerName"  placeholder="채용공고 등록 시 기본값으로 사용됩니다.">
+                                <input type="text" class="styled-input" name="defaultHrOfficerName" maxlength="10" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
                                 <label class="styled-label">담당자</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="defaultHrTelNo"  placeholder="채용공고 등록 시 기본값으로 사용됩니다.">
+                                <input type="text" class="styled-input" name="defaultHrTelNo"  placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
                                 <label class="styled-label">채용문의 전화번호</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="styled-input" name="defaultHrEmail" placeholder="채용공고 등록 시 기본값으로 사용됩니다.">
+                                <input type="text" class="styled-input" name="defaultHrEmail" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
                                 <label class="styled-label">채용문의 이메일</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                         </div>
                     </div>
@@ -604,7 +605,7 @@
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
                                 <input type="text" class="styled-input" name="" placeholder="버스노선 정보입력">
@@ -612,7 +613,7 @@
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                             <div class="form-group">
                                 <input type="text" class="styled-input" name="" placeholder="주변명소 정보입력">
@@ -620,7 +621,7 @@
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
-                                <div class="form-group-msg2" hidden></div>
+                                <div class="form-group-msg2"></div>
                             </div>
                         </div>
                     </div>
@@ -689,12 +690,19 @@ var HospitaInfoApp = (function() {
             alert("병원 회원만 사용하실 수 있는 기능입니다.");
             window.history.back();
             return;
-        }
+		}
+
+		var hospitalId = LOGIN_INFO.getHospitalId();		// 없을 경우에는 다시 LOGIN_INFO를 로드?
+		if ( !hospitalId ) {	// 병원정보가 Session에 없으므로, 병원 정보를 로드불가함.
+			
+
+		}
 
         // 기존 정보를 로드해서 보여 준다.
         var userId = LOGIN_INFO.getId();
         // 병원 정보를 로딩한다.
-        callApi("GET", "/api/user/" + userId + "/hospital/", null,
+		callApi("GET", "/api/user/" + userId + "/hospital/", null,
+		//callApi("GET", "/api/hospital/" + hospitalId + "/", null,
             function(resData) {
                 if ( resData ) {    // 기존 병원 정보 수정
                     alert("기존 정보 있음 : 수정 모드");
@@ -739,25 +747,32 @@ var HospitaInfoApp = (function() {
 
     function updateHospital() {
 
+		var userId = LOGIN_INFO.getId();
+
         var data = createObjectFromFormData(document.getElementById("hospitalInfoForm"));
-        console.log(oldHospitalInfo.id);
-        data.id = oldHospitalInfo.id;
-        data.userId = oldHospitalInfo.userId;
+        console.log(oldHospitalInfo.hospitalId);
+		data.hospitalId = oldHospitalInfo.hospitalId;		
+		data.userId = userId;	// 현재 세션 사용자로 변경한다. ==> 서버에서 권한 확인 함.
+		
+		console.log("병원 ID : " + oldHospitalInfo.hospitalId + " ==> " + data.hospitalId);
+		console.log("회원 ID : " + userId + " ==> " + data.userId);
+
 
         // 주소가 변경되었는지 확인한다.
-
-        if ( selectedJusoResult ) {
-            // 주소 변경되었음.
-            data.addrJuso = selectedJusoResult;
+        if ( selectedJusoResult ) {		// 주소 변경되었음.
+			data.location = selectedJusoResult;
+			data.location.addrMain = document.getElementById("addrMain").value.trim();
+			data.location.addrDetail = document.getElementById("addrDetail").value.trim();
             console.log("주소 변경 되었음 : 신 데이터 : ", selectedJusoResult);
-        } else {
-            // 주소 변경 없음
-            console.log("주소 변경 없음 : 구 데이터 : ", oldHospitalInfo.addrJuso);
-            data.addrJuso = oldHospitalInfo.addrJuso;
-        }
+        } else {						// 주소 변경 없음
+            console.log("주소 변경 없음 : 구 데이터 : ", oldHospitalInfo.location);
+            data.location = oldHospitalInfo.location;
+		}
+		
+		console.log(data);
 
-        var userId = LOGIN_INFO.getId();
-        callApi("PUT", "/api/user/" + userId + "/hospital/", JSON.stringify(data),
+        
+        callApi("PUT", "/api/hospital/" + data.hospitalId + "/", JSON.stringify(data),
             function(resData) {
                 console.log(resData);
                 alert("수정되었습니다.");
@@ -785,19 +800,24 @@ var HospitaInfoApp = (function() {
 
     function registerHospital() {
         
-        var data = createObjectFromFormData(document.getElementById("hospitalInfoForm"));
+		var data = createObjectFromFormData(document.getElementById("hospitalInfoForm"));
+		
+		data.userId = LOGIN_INFO.getId();;	// 현재 세션 사용자로 변경한다. ==> 서버에서 권한 확인 함.
 
-        data.addrJuso = selectedJusoResult;
+		if ( !selectedJusoResult ) {
+			alert("병원 주소를 등록해 주세요.");
+			return;
+		}
 
-        // Object.keys(selectedJusoResult).forEach(function(key) {
-        //     data[key] = selectedJusoResult[key];
-        // });
+		data.location = selectedJusoResult;
+		data.location.addrMain = document.getElementById("addrMain").value.trim();
+		data.location.addrDetail = document.getElementById("addrDetail").value.trim();
 
+        
         console.log("서밋 직전 폼데이터 : ", data);
 
-
-        var userId = LOGIN_INFO.getId();
-        callApi("POST", "/api/user/" + userId + "/hospital/", JSON.stringify(data),
+		//callApi("POST", "/api/user/" + userId + "/hospital/", JSON.stringify(data),
+        callApi("POST", "/api/hospital/", JSON.stringify(data),
             function(resData) {
                 console.log(resData);
                 alert("등록되었습니다.");

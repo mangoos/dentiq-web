@@ -26,7 +26,7 @@
     </script>
 
 </head>
-<body class="view-type">
+<body>
     <header class="register-header navbar">
         <section class="navbar-section">
             <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
@@ -41,7 +41,7 @@
     </header>
     <!-- loading spinner, 'active' 클래스로 활성화 -->
     <div class="dental-loading" id="loadingModal" hidden>
-        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
         <div class="loading-overlay" hidden></div>
     </div>
 
@@ -188,7 +188,7 @@
                 loadingModal.open();
                 
 
-                callApi("GET", "/api/addr/", apiParam, 
+                callApi("GET", "/api/location/", apiParam, 
                     function(resData) {
                         var errorCode = resData.common.errorCode;
                         if ( errorCode!="0" && errorCode!="00" ) {
@@ -202,14 +202,14 @@
 
                         totalJusoCount = resData.common.totalCount;
                         if ( currentPage!=null ) lastPageNo = currentPage;
-                        resData.juso.forEach(function(jusoItem) {
+                        resData.locationList.forEach(function(jusoItem) {
                             jusoContainer[jusoItem.jusoIdx] = jusoItem;
                             console.log("데이터 세팅 결과 : ", jusoContainer[jusoItem.jusoIdx]);
                             console.log("\t\t!!!! 현재까지의 jusoContainer : ", jusoContainer)
                         });
                         
 
-                        var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.juso);
+                        var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.locationList);
                         if ( currentPage!=null && currentPage>1 ) {
                             $("#jusoList").append(jusoListContent);
                         } else {
@@ -251,7 +251,6 @@
             // 주소 모달에서 주소 선택했을 때, 부모 화면에 주소 값을 세팅해주고, 자신은 close.
             $("#jusoList").on("click", "li", function() {
                 var jusoIdx = $(this).attr("data-juso-idx");
-                console.log("TEST : ", jusoIdx, " ==> ", jusoContainer);
 
                 console.log("선택된 주소 ", jusoContainer[jusoIdx]);
                 if ( !jusoContainer[jusoIdx] ) {
@@ -300,7 +299,7 @@
     
     
         
-    <section class="dental-steps register-section">
+    <section class="dental-steps register-user">
         <input type="radio" name="steps" id="tabLocal" checked hidden>
         <input type="radio" name="steps" id="tabHome" hidden>
         <input type="radio" name="steps" id="tabBasic" hidden>
@@ -369,7 +368,7 @@
 
                 } else {
                     console.log("다중 탭 모드 ", htmlCallParamString);
-                    document.getElementById("tabNav").style.display = 'block';
+                    document.getElementById("tabNav").style.display = 'flex';
                     document.getElementById("tabLocal").checked = true;  // 관심지역 탭을 클릭함
                     document.getElementById("tabLocal").dispatchEvent(new Event("change"));
                     SPECIFIC_TAB_MODE = false;
@@ -421,7 +420,7 @@
                     
 
                     <!-- 특정 시도 전체 및 특정 시구를 선택하기 위한 checkbox 영역 -->
-                    <div class="tab-body" id="locationSelect" style="margin-bottom: 2rem;"></div>
+                    <div class="tab-body" id="locationSelect"></div>
                     <script id="locationSelectTemplate" type="text/x-handlebars-template">
                                             
                         {{#each .}}
@@ -579,12 +578,12 @@
                             return;
                         }
 
-                        callApi("GET", "/api/user/"+userId+"/concernedLocationCode/", null, 
+                        callApi("GET", "/api/user/"+userId+"/interestLocationCode/", null, 
                             function(resData) {
-                                resData.forEach(function(item) {
-                                    console.log("로딩됨 ", item);
+                                resData.forEach(function(locationCode) {
+                                    console.log("로딩됨 ", locationCode);
                                     //console.log(item.siguCode);
-                                    document.getElementById("location-"+item.locationCode).checked = true;      // 시구 선택 check
+                                    document.getElementById("location-"+locationCode).checked = true;      // 시구 선택 check
                                     //$(".chip[for='location-"+item.siguCode+"']").show();                    // 선택된 시구에 대한 chip 표시
                                     renderSelectedLocationChips();
                                 });
@@ -603,7 +602,7 @@
 
                         var userId = LOGIN_INFO.getId();
                         var apiParam = $("#interestingLocationForm").serialize();
-                        callApi("PUT", "/api/user/"+userId+"/concernedLocationCode/", apiParam,
+                        callApi("PUT", "/api/user/"+userId+"/interestLocationCode/", apiParam,
                             function(resData) {
                                 console.log(resData);
                                 alert("등록되었습니다.");
@@ -659,15 +658,15 @@
                         <div class="dental-card-header"><div class="dental-card-header-title h4">주소 검색</div></div>
                         <div class="card-body">
                             <div class="form-group">
-                                <input type="text" class="styled-input" maxlength="40" name="addrMain" id="addrMain" placeholder="주소 입력" required readonly>
-                                <!-- <label class="styled-label">주소</label> -->
+                                <input type="text" class="styled-input" maxlength="40" name="addrMain" id="addrMain" placeholder="주소 입력" readonly required>
+                                <!-- <label class="styled-label hasValue">주소를 검색해 주세요</label> -->
                                 <!-- <span class="form-group-desc">정확하게 입력</span> -->
                                 <!-- <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span> -->
-                                <!-- <span class="form-group-underline"></span> -->
+                                <span class="form-group-underline"></span>
                                 <!-- <div class="form-group-msg2" hidden></div> -->
                             </div>
                             <div class="form-group-linked">
-                                <input class="styled-input" type="text" name="addrDetail" id="addrDetail" placeholder="상세주소" required readonly>
+                                <input class="styled-input" type="text" name="addrDetail" id="addrDetail" placeholder="상세주소" required>
                                 <span class="form-group-underline"></span>
                             </div>
                         </div>
@@ -852,15 +851,15 @@
                         </script>
 
                         <div class="form-group">
-                            <input class="styled-input" type="email" id="myInfoEmail" readonly placeholder="가입한 아이디와 연동이 됩니다.">
+                            <input class="styled-input hasValue" type="email" id="myInfoEmail" placeholder="" readonly disabled required>
                             <label class="styled-label">이메일</label>
-                            <span class="form-group-desc">정확하게 입력</span>
+                            <span class="form-group-desc">가입한 아이디와 연동이 됩니다.</span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2" hidden></div>
                         </div>
                         <div class="form-group"> <!-- 앞에서 입력한 우리동네 주소를 가져온다? -->
-                            <input class="styled-input" type="text" id="myInfoAddrMain" readonly required placeholder="이력서에 입력되는 기본 주소입니다.">
+                            <input class="styled-input" type="text" id="myInfoAddrMain" placeholder="이력서에 입력되는 기본 주소입니다." required>
                             <label class="styled-label">주소</label>
                             <span class="form-group-desc">정확하게 입력</span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
@@ -868,7 +867,7 @@
                             <div class="form-group-msg2" hidden></div>
                         </div>
                         <div class="form-group-linked"> <!-- 바로 위 styled-form-group input 에 값 입력된 후에 enabled 처리 -->
-                            <input class="styled-input" type="text" id="myInfoAddrDetail" readonly required>
+                            <input class="styled-input" type="text" id="myInfoAddrDetail" placeholder="상세 주소입니다." required>
                             <span class="form-group-underline"></span>
                         </div>
 
@@ -900,7 +899,9 @@
                 var MyInfoApp = (function() {
                     var basicInfoForm = document.getElementById("basicInfoForm");
 
-                    var selectedJuso = null;
+					var selectedJuso = null;
+					
+					//var oldJuso = null;
 
                     // 먼저 기본 정보를 불러온다.
                     function loadMyInfo() {                        
@@ -908,26 +909,29 @@
                         if ( userId == null ) {
                             alert("로그인되어 있지 않음");
                             return;
-                        }
-                        
-                        // 기본 정보 로드
+						}
+						
+						// 기본 정보 로드
                         callApi("GET", "/api/user/"+userId+"/basicInfo/", null, 
                             function(resData) {
-                                console.log(resData);
-
-
+								console.log(resData);
+								
                                 basicInfoForm.querySelector("input[name='name']").value         = getValueString(resData.name);
                                 basicInfoForm.querySelector("input[name='telNo']").value        = getValueString(resData.telNo);
+								document.getElementById("myInfoEmail").value                    = getValueString(resData.email);
+								basicInfoForm.querySelector("input[name='birthday']").value     = getValueString(resData.birthday);
 
-                                document.getElementById("myInfoEmail").value                    = getValueString(resData.email);
-                                //document.getElementById("myInfoAddrMain").value                 = getValueString(resData.addrMain);
-                                //document.getElementById("myInfoAddrDetail").value               = getValueString(resData.addrDetail);
-
-                                basicInfoForm.querySelector("input[name='birthday']").value     = getValueString(resData.birthday);
-
-                                var gender = getValueString(resData.gender);
+								var gender = getValueString(resData.gender);
                                 if ( gender == 'M' ) document.getElementById("gender-M").checked = true;
-                                else if ( gender == 'F' ) document.getElementById("gender-F").checked = true;
+								else if ( gender == 'F' ) document.getElementById("gender-F").checked = true;
+								
+
+								if ( resData.location ) {
+									selectedJuso = resData.location;
+									document.getElementById("myInfoAddrMain").value                 = getValueString(selectedJuso.addrMain);
+									document.getElementById("myInfoAddrDetail").value               = getValueString(selectedJuso.addrDetail);
+								}
+
 
                             },
                             function(errorCode, errorMsg) {
@@ -935,22 +939,6 @@
                             }
                         );
                         
-                        // 주소 정보 로드
-                        callApi("GET", "/api/user/"+userId+"/addr/", null, 
-                            function(resData) {
-                                console.log("사용자 주소 로드 : ", resData);
-                                if ( resData==null ) return;        // 사용자의 주소가 없을 수도 있음.
-                
-                                selectedJuso = resData;
-                
-                                document.getElementById("myInfoAddrMain").value = selectedJuso.addrMain;          // 도로명주소(참고항목 제외) 
-                                document.getElementById("myInfoAddrDetail").value = selectedJuso.addrDetail;      // 상세주소
-                
-                            },
-                            function(errorCode, errorMsg) {
-                                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                            }
-                        );
                     }
 
                     
@@ -984,31 +972,23 @@
                         
                         
                         // 기본 정보 업데이트
-                        var data = createObjectFromFormData(basicInfoForm);
-                        console.log("기본 정보 전송 : ", data);
-                        callApi("PUT", "/api/user/"+userId+"/basicInfo/", JSON.stringify(data),
+						var data = createObjectFromFormData(basicInfoForm);
+						data.location = selectedJuso;
+						data.userId = userId;
+						
+
+						console.log("기본 정보 전송 : ", data);
+						callApi("PUT", "/api/user/"+userId+"/basicInfo/", JSON.stringify(data),
                             function(resData) {
                                 console.log(resData);
-                                
-                                // 기본 정보 업데이트 성공하면, 주소 정보 업데이트 한다.
-                                callApi("PUT", "/api/user/"+userId+"/addr/", JSON.stringify(selectedJuso),
-                                    function(resData) {
-                                        alert("성공");
-
-                                        // 등록 완료 후 이동.
-                                        if ( SPECIFIC_TAB_MODE ) {
-                                            window.history.back();
-                                        } else {
-                                            document.getElementById("tabBasic").checked = true;
-                                            document.getElementById("tabFinal").dispatchEvent(new Event("change"));
-                                        }
-
-                                    },
-                                    function(errorCode, errorMsg) {
-                                        alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                                    },
-                                    "application/json"
-                                );
+                                alert("성공");
+								// 등록 완료 후 이동.
+								if ( SPECIFIC_TAB_MODE ) {
+									window.history.back();
+								} else {
+									document.getElementById("tabBasic").checked = true;
+									document.getElementById("tabFinal").dispatchEvent(new Event("change"));
+								}
                                
                             },
                             function(errorCode, errorMsg) {

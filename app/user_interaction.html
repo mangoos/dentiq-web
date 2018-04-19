@@ -113,12 +113,12 @@
                                     <div class="jobpost-list-card">
                                         <a href="jobad.html?jobAdId={{id}}">
                                             <div class="jobpost-list-card-header">
-                                                <div class="jobpost-list-card-title">{{hospitalName}}</div>
+                                                <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
                                                 <div class="jobpost-list-card-subtitle">{{title}}</div>
                                             </div>
                                             <div class="jobpost-list-card-body">
                                                 <div class="dental-info">
-                                                    <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard locationCode}}</span>
+                                                    <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
                                                     <span class="info-detail subway-line"> <!-- 시도, 시구군 정보, 교통정보 -->
                                                         <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
                                                         <span class="subway117"></span>

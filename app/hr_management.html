@@ -13,6 +13,7 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
     <style>
         /* 문서내 스타일 설정은 미세조정, 미세 오버라이드 내용을 담는다 */
         .dental-tabs { margin-top: 0.3rem; }
@@ -41,12 +42,12 @@
         <input class="tabs-input" name="tabs" type="radio" value="1" id="dental-tabs1" checked hidden>
         <input class="tabs-input" name="tabs" type="radio" value="2" id="dental-tabs2" hidden>
         <input class="tabs-input" name="tabs" type="radio" value="3" id="dental-tabs3" hidden>
-        <input class="tabs-input" name="tabs" type="radio" value="4" id="dental-tabs4" hidden>
+        <!-- <input class="tabs-input" name="tabs" type="radio" value="4" id="dental-tabs4" hidden> -->
         <div class="dental-tabs-nav tabs-type1">
-            <label class="nav-item" for="dental-tabs1"><span style="font-size: 0.7rem; line-height: 23px;"><i class="fal fa-user-circle"></i>지원자관리</span></label>
+            <label class="nav-item" for="dental-tabs1"><span><i class="fal fa-user-circle"></i>지원자관리</span></label>
             <label class="nav-item" for="dental-tabs2"><span><i class="fal fa-star"></i>스크랩</span></label>
             <label class="nav-item" for="dental-tabs3"><span><i class="fal fa-address-book"></i>추천인재</span></label>
-            <label class="nav-item" for="dental-tabs4"><span><i class="fal fa-users"></i>인재열람</span></label>
+            <!-- <label class="nav-item" for="dental-tabs4"><span><i class="fal fa-users"></i>인재열람</span></label> -->
         </div>
         <div class="dental-tabs-body tabs-type1">
 
@@ -89,7 +90,7 @@
                                                 <div class="resume-list-photo">
                                                     <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
                                                         <div class="image-frame"><!-- <img src="images/user/jungwoo.jpg" alt=""> -->
-                                                            <img src="{{profileImageFullUrl}}">
+                                                            <img src="{{renderResumeProfileImage userId}}" onload="imageFit(this, 60)">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -98,9 +99,9 @@
                                             <div class="resume-list-card-body">
                                                 <div class="resume-info-box">
                                                     <div class="resume-info">
-                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-name">{{user.name}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-sex">{{user.gender}}</span></span>
+                                                        <span class="applicant-detail"><span class="applicant-age">{{user.age}}</span></span>
                                                         <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
                                                     </div>
                                                     <div class="resume-info">
@@ -108,14 +109,14 @@
                                                     </div>
                                                     <div class="resume-info">
                                                         <span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span>
-                                                        {{#checkApplyDate}}<span class="apply-date">{{renderYYYYMMDDWithDot applyYYYYMMDD}}</span>{{/checkApplyDate}}
+                                                        {{#checkApplyDate}}<span class="apply-date">{{renderYYYYMMDDWithDot appliedYYYYMMDD}}</span>{{/checkApplyDate}}
                                                     </div>
                                                 </div>
                                             </div>
                                         </a>
                                         <div class="resume-list-card-footer">
-                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
-                                            {{#checkActionOffer}}<span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>{{/checkActionOffer}}
+                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{resumeId}}" {{#if scrappedByCertainHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
+                                            {{#checkActionOffer}}<span class="footer-item" data-action="offer" data-action-value="{{resumeId}}"><i class="fa fa-share"></i>면접제안</span>{{/checkActionOffer}}
                                             <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
                                         </div>
                                     </div>
@@ -401,6 +402,10 @@ Handlebars.registerHelper("renderYYYYMMDDWithDot", function(yyyymmdd) {
 Handlebars.registerHelper("renderAttrOnResumeCard", function(code) {
     return renderAttrOnResumeCard(code);
 });
+Handlebars.registerHelper("renderResumeProfileImage", function(userId) {
+    	//console.log("renderResumeProfileImage ", userId);
+        return CONSTANTS.getProfileImageUrl(userId);
+    });
 
 
 /***************** 탭 선택에 따라서 '이력서 카드'의 모양을 변경하기 위한 Helper들 *************************/
@@ -432,12 +437,12 @@ function listResume(tabNo) {
         return;
     }
 
-    var userId = LOGIN_INFO.getId();
+	var hospitalId = LOGIN_INFO.getHospitalId();
     var apiUrl = "";
-    if ( tabNo == 1 ) apiUrl = "/api/user/"+userId+"/hospital/listAppliedResume/";
-    else if ( tabNo == 2 ) apiUrl = "/api/user/"+userId+"/hospital/listResumeScrapped/";
-    else if ( tabNo == 3 ) apiUrl = "/api/user/"+userId+"/hospital/listResumeRecommended/";
-    else if ( tabNo == 4 ) apiUrl = "/api/user/"+userId+"/hospital/listResumeSearched/";
+	if ( tabNo == 1 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeApplied/";
+	else if ( tabNo == 2 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeScrapped/";
+    else if ( tabNo == 3 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeRecommended/";
+    else if ( tabNo == 4 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeSearched/";
     else {
         console.log("잘못된 탭 번호 : ", tabNo);
         return;
@@ -497,51 +502,71 @@ listResume(1);  // 1번 탭 실행
 
 
 
-    /**********************************************************************************************/
-    /*
-    /*      스크랩 처리
-    /*
-    /**********************************************************************************************/
-    // 스크랩 처리
-    function onClickScrap(event) {
-        //event.preventDefault();
+/**********************************************************************************************/
+/*
+/*      스크랩 처리
+/*
+/**********************************************************************************************/
+// 스크랩 처리
+function onClickScrap(event) {
+	//event.preventDefault();
 
-        if ( !checkAuth() ) {
-            return;
-        }
-        
-        var userId = LOGIN_INFO.getId();
-        console.log("이력서 스크랩 ", this.value , "  ==> ", this.checked);
-        var resumeId = this.value;
+	if ( !checkAuth() ) {
+		return;
+	}
+	
+	var hospitalId = LOGIN_INFO.getHospitalId();
+	console.log("이력서 스크랩 ", this.value , "  ==> ", this.checked);
+	var resumeId = this.value;
 
-        if ( this.checked ) {
-            console.log("서버에 스크랩 on 처리해야 함");
-            callApi("POST", "/api/user/"+userId+"/hospital/addResumeScrapped/", "resumeId="+resumeId,
-                function(resData) {
-                    document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resumeId + "']").forEach(function (el) {
-                        el.checked = true;
-                    });
-                },
-                function(errorCode, errorMsg) {
-                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                }
-            );
+	if ( this.checked ) {
+		//console.log("서버에 스크랩 on 처리해야 함");
+		callApi("POST", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
+			function(resData) {
+
+				console.log("+=====> ", resData);
+				document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
+					el.checked = false;
+				});
+				
+				if ( !resData ) return;
+
+				resData.forEach(function(resume) {
+					document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
+						el.checked = true;
+					});
+				});
+
+				
+			},
+			function(errorCode, errorMsg) {
+				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+			}
+		);
 
 
-        } else {
-            console.log("서버에 스크랩 off 처리해야 함");
-            callApi("POST", "/api/user/"+userId+"/hospital/deleteResumeScrapped/", "resumeId="+resumeId,
-                function(resData) {
-                    document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resumeId + "']").forEach(function (el) {
-                        el.checked = false;
-                    });
-                },
-                function(errorCode, errorMsg) {
-                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                }
-            );
-        }
-    }
-    $(".resume-list-body").on("click", "input[type=checkbox][name=resume-scrap]", onClickScrap);
+	} else {
+		//console.log("서버에 스크랩 off 처리해야 함");
+		callApi("DELETE", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
+			function(resData) {
+				document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
+					el.checked = false;
+				});
+				
+				if ( !resData ) return;
+
+				resData.forEach(function(resume) {
+					document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
+						el.checked = true;
+					});
+				});
+			},
+			function(errorCode, errorMsg) {
+				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+			}
+		);
+	}
+}
+$(".resume-list-body").on("click", "input[type=checkbox][name=resume-scrap]", onClickScrap);
 
 </script>

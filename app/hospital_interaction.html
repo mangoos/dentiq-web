@@ -80,7 +80,7 @@
                                     {{#each .}}
                                     <div class="jobpost-list-card">
                                         <div class="jobpost-list-card-header">
-                                            <div class="jobpost-list-card-title">{{hospitalName}}</div>
+                                            <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
                                             <div class="jobpost-list-card-subtitle">{{title}}</div>
                                         </div>
                                         <div class="jobpost-list-card-body">
@@ -93,8 +93,8 @@
                                             </div>
                                         </div>
                                         <div class="jobpost-list-card-footer">
-                                            <a href="jobad.html?jobAdId={{id}}"><span class="footer-item"><i class="fa fa-hand-pointer-o"></i>공고 보기</span></a>
-                                            <a href="register_jobad.html?jobAdId={{id}}&copyAndRegister=Y"><span class="footer-item"><i class="fa fa-share"></i>불러와서 등록</span></a>
+                                            <a href="jobad.html?jobAdId={{jobAdId}}"><span class="footer-item"><i class="fa fa-hand-pointer-o"></i>공고 보기</span></a>
+                                            <a href="register_jobad.html?jobAdId={{jobAdId}}&copyAndRegister=Y"><span class="footer-item"><i class="fa fa-share"></i>불러와서 등록</span></a>
                                         </div>
                                     </div>
                                     {{/each}}
@@ -137,12 +137,12 @@
                                         <div class="jobpost-list-card">
                                             <a href="jobad.html?jobAdId={{id}}">
                                                 <div class="jobpost-list-card-header">
-                                                    <div class="jobpost-list-card-title">{{hospitalName}}</div>
+                                                    <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
                                                     <div class="jobpost-list-card-subtitle">{{title}}</div>
                                                 </div>
                                                 <div class="jobpost-list-card-body">
                                                     <div class="dental-info">
-                                                        <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard locationCode}}</span>
+                                                        <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
                                                         <span class="info-detail subway-line"> <!-- 시도, 시구군 정보, 교통정보 -->
                                                             <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
                                                             <span class="subway117"></span>
@@ -210,7 +210,7 @@
                                     <div class="jobpost-list-card">
                                         <!-- <a href="jobad.html?jobAdId={{id}}"> -->
                                             <div class="jobpost-list-card-header">
-                                                <div class="jobpost-list-card-title">{{hospitalName}} - {{renderAdTypeOnCard adType}} - {{adTypePremiere}}</div>
+                                                <div class="jobpost-list-card-title">{{hospital.hospitalName}} - {{renderAdTypeOnCard adType}} - {{adTypePremiere}}</div>
                                                 <div class="jobpost-list-card-subtitle">{{title}}</div>
                                             </div>
                                             <div class="jobpost-list-card-body">
@@ -263,112 +263,147 @@
 
 <script>
 
-
-// 속도 느림. 그러나 ordering 됨
-function renderAttrOnCard(attrList) {
-    if ( attrList==null || attrList.length==0 ) return "";
-
-    var html = "";
-
-    var defAttrGroupList = CODE_CONTAINER.getAttrs();
-    defAttrGroupList.forEach(function(defAttrGroup) {
-        html += '<span class="info-detail">';
-        defAttrGroup.element.forEach(function(defAttr) {
-            var defAttrValue = defAttr.value;
-
-            attrList.forEach(function(attr) {
-                if ( defAttrValue == attr ) {
-                    html += "<span>" + defAttr.text + "<i></i></span>";
-                }
-            });
-        });
-        html += '</span>';
-    });
-
-    return html;
-}
+var HospitaInteractionApp = (function() {
 
 
-Handlebars.registerHelper("renderAttrOnCard", function(code) {
-    //console.log("renderAttrOnCard ", code);
-    return renderAttrOnCard(code);
-});
-Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
-    console.log("LOCATION_HELPER ", code);
-    var location = LOCATION_CODE.getByName(code);
-    if ( location ) return location.sidoName + " > " + location.siguName;
-    else return "입력안됨";
-});
+	// 속도 느림. 그러나 ordering 됨
+	function renderAttrOnCard(attrList) {
+		if ( attrList==null || attrList.length==0 ) return "";
 
-Handlebars.registerHelper("renderAdTypeOnCard", function(code) {
-    if ( code == '1' ) return "일반";
-    else if ( code == '2' ) return "프리미어";
-    else return "에러";
-});
+		var html = "";
+
+		var defAttrGroupList = CODE_CONTAINER.getAttrs();
+		defAttrGroupList.forEach(function(defAttrGroup) {
+			html += '<span class="info-detail">';
+			defAttrGroup.element.forEach(function(defAttr) {
+				var defAttrValue = defAttr.value;
+
+				attrList.forEach(function(attr) {
+					if ( defAttrValue == attr ) {
+						html += "<span>" + defAttr.text + "<i></i></span>";
+					}
+				});
+			});
+			html += '</span>';
+		});
+
+		return html;
+	}
 
 
+	Handlebars.registerHelper("renderAttrOnCard", function(code) {
+		//console.log("renderAttrOnCard ", code);
+		return renderAttrOnCard(code);
+	});
+	Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
+		console.log("LOCATION_HELPER ", code);
+		var location = LOCATION_CODE.getByName(code);
+		if ( location ) return location.sidoName + " > " + location.siguName;
+		else return "입력안됨";
+	});
 
-listJobAdCards();   // 페이지 로드시 호출
+	Handlebars.registerHelper("renderAdTypeOnCard", function(code) {
+		if ( code == '1' ) return "일반";
+		else if ( code == '2' ) return "프리미어";
+		else return "에러";
+	});
 
 
 
-/*******************************************************************************************/
-/*      화면 렌더링
-/*******************************************************************************************/
+	function init() {
+
+		if ( !LOGIN_INFO.isLoggedIn() ) {
+			alert("로그인이 필요합니다.");
+			location.href = "login.html";
+			return;
+		}
+
+		if ( !LOGIN_INFO.isHospitalMember() ) {
+			alert("병원회원만 사용하실 수 있습니다.");
+			window.history.back();
+			return;
+		}
+
+		if ( !LOGIN_INFO.getHospitalId() ) {
+
+			
+			alert("병원 기본 정보가 등록되지 않았습니다.");
+			//location.href = "";
+			return;
+		}
+
+		listJobAdCards();
+	}
+
+	init();		// 페이지 로드시 호출
 
 
-var jobAdCardForRegisterTemplateCompiled    = Handlebars.compile( document.getElementById("jobAdCardForRegisterTemplate").innerHTML );
-var jobAdCardForEditTemplateCompiled        = Handlebars.compile( document.getElementById("jobAdCardForEditTemplate").innerHTML );
-var jobAdCardForUpgradeTemplateCompiled     = Handlebars.compile( document.getElementById("jobAdCardForUpgradeTemplate").innerHTML );
+	/*******************************************************************************************/
+	/*      화면 렌더링
+	/*******************************************************************************************/
 
 
-function listJobAdCards() {
-
-    //TODO 권한 확인 할 것
-
-    var userId = LOGIN_INFO.getId();
-    callApi("GET", "/api/user/"+userId+"/hospital/jobAd/", null,
-        function(resData) {
-            console.log(resData);
-            if ( resData && Array.isArray(resData) && resData.length>0 ) {
-                
-                document.getElementById("divJobAdCardListForRegister").innerHTML = jobAdCardForRegisterTemplateCompiled(resData);
-                document.getElementById("divJobAdCardListForEdit").innerHTML = jobAdCardForEditTemplateCompiled(resData);
-                document.getElementById("divJobAdCardListForUpgrade").innerHTML = jobAdCardForUpgradeTemplateCompiled(resData);
-
-                // 공고 개수 삽입
-                document.querySelectorAll(".jobpost-list-bar-counter").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
-                    el.innerText = resData.length;
-                });
-                
-                // 공고 리스트 영역 토글 ==> 보여주기
-                document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
-                    el.checked = true;
-                });
+	var jobAdCardForRegisterTemplateCompiled    = Handlebars.compile( document.getElementById("jobAdCardForRegisterTemplate").innerHTML );
+	var jobAdCardForEditTemplateCompiled        = Handlebars.compile( document.getElementById("jobAdCardForEditTemplate").innerHTML );
+	var jobAdCardForUpgradeTemplateCompiled     = Handlebars.compile( document.getElementById("jobAdCardForUpgradeTemplate").innerHTML );
 
 
+	function listJobAdCards() {
 
-                function onClickJobAd(event) {
-                    console.log("adfasdf");
+		//TODO 권한 확인 할 것
 
-                }
-                document.querySelectorAll(".jobpost-list-body").forEach(function(el) {
-                    el.addEventListener("click", onClickJobAd);
-                });
+		var hospitalId = LOGIN_INFO.getHospitalId();
+		
+		
+		callApi("GET", "/api/hospital/" + hospitalId + "/jobAd/", null,
+			function(resData) {
+				console.log(resData);
+				if ( resData && Array.isArray(resData) && resData.length>0 ) {
+					
+					document.getElementById("divJobAdCardListForRegister").innerHTML	= jobAdCardForRegisterTemplateCompiled(resData);
+					document.getElementById("divJobAdCardListForEdit").innerHTML		= jobAdCardForEditTemplateCompiled(resData);
+					document.getElementById("divJobAdCardListForUpgrade").innerHTML		= jobAdCardForUpgradeTemplateCompiled(resData);
+
+					// 공고 개수 삽입
+					document.querySelectorAll(".jobpost-list-bar-counter").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+						el.innerText = resData.length;
+					});
+					
+					// 공고 리스트 영역 토글 ==> 보여주기
+					document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+						el.checked = true;
+					});
 
 
-            } else {
-                // 공고 리스트 영역 토글 ==> 감추기
-                document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
-                    el.checked = false;
-                });
-            }
-        },
-        function(errorCode, errorMsg) {
-            alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-        }
-    );
 
-}
+					function onClickJobAd(event) {
+						console.log("adfasdf");
+
+					}
+					document.querySelectorAll(".jobpost-list-body").forEach(function(el) {
+						el.addEventListener("click", onClickJobAd);
+					});
+
+
+				} else {
+					// 공고 리스트 영역 토글 ==> 감추기
+					document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+						el.checked = false;
+					});
+				}
+			},
+			function(errorCode, errorMsg) {
+				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+			}
+		);
+
+	}
+
+
+})();
+
+
+
+
 
 </script>

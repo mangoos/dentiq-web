@@ -13,14 +13,7 @@
 	<script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
 	<script src="js/handlebars.min.js"></script>
-	<style>
-		.dental-panel .dental-icon-nav { border: 1px solid #c7c7c7; border-top: none; }
-		.dental-panel .icon-nav-item { flex-basis: 25%; border-radius: 0; padding: 4rem .2rem .3rem .2rem; }
-		.dental-panel .dental-icon-nav .icon-nav-item { border: none; border-right: 1px solid #c7c7c7; border-top: 1px solid #c7c7c7; }
-		.dental-panel .dental-icon-nav .icon-nav-item:nth-child(4n) { border-right: 0; }
-		.dental-panel .icon-nav-item .nav-item-icon { font-size: 1.6rem; top: 40%; left: 50%; transform: translate(-50%, -50%); color: #0083cb;}
-		.dental-panel .icon-nav-item .nav-item-title { font-size: 0.8rem; }
-	</style>
+	<script src="js/dental_ui.js"></script>
 </head>
 <body>
     <header class="register-header navbar">
@@ -35,7 +28,7 @@
             <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
-    <section class="user-panel-section dental-panel">
+    <section class="dentist-panel-section dental-panel">
 		<div class="dental-panel-header">
 			<div class="user-photo">
 				<div class="hospital-log-box">
@@ -52,9 +45,10 @@
                     
                 
                 </script>
-				<div class="user-photo-title" id="userEmail">sjw0927@ gmail.com</div>
+				<div class="user-photo-title" id="hospitalEmail">sjw0927@ gmail.com</div>
 				<div class="user-photo-subtitle" id="hospitalName">서울역 앞 치과 병원</div>
 			</div>
+			<div class="dental-panel-opt"><a href="user_setting.html"><i class="fas fa-cog"></i></a></div>
 		</div>
 		<div class="panel-nav">
 			<nav class="dental-icon-nav">
@@ -90,83 +84,30 @@
 					<span class="nav-item-icon"><i class="fal fa-credit-card"></i></span>
 					<span class="nav-item-title">결제내역</span>
 				</a>
+				<a class="icon-nav-item" href="find_password.html">
+					<span class="nav-item-icon"><i class="fal fa-key"></i></span>
+					<span class="nav-item-title">비밀번호</span> 
+				</a>
+				<!-- 비밀번호 변경 또는 찾기 비밀번호와 알림설정 그리고 아래 로그아웃은 한 페이지로 작성, 메뉴는 네비게이션으로 제공-->
+				<a class="icon-nav-item" href="user_setting.html">
+					<span class="nav-item-icon"><i class="fal fa-bell"></i></span>
+					<span class="nav-item-title">알림설정</span> <!-- 메시지 수신 동의 설정-->
+				</a>
+				<a class="icon-nav-item" href="">
+					<span class="nav-item-icon"><i class="fal fa-question-square"></i></span>
+					<span class="nav-item-title">고객센터</span> <!-- 카카오톡 플러스 친구 또는 메일 보내기 // 전화는 일단 X-->
+				</a>
+				<a class="icon-nav-item" href="dentalplus_inform.html">
+					<span class="nav-item-icon"><i class="fal fa-info-circle"></i></span>
+					<span class="nav-item-title">공지/안내</span> <!-- 공지/안내 -->
+				</a>
 			</nav>
 		</div>
-		<div class="panel-body">
-			<input type=radio name="dental-panel" id="dental-panel-tab1" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab2" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab3" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab4" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab5" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab6" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab7" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab8" hidden>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>
+		<div class="panel-body"></div>
+		<div class="panel-footer">
+			<a class="btn btn-sm" href="javaScript:void(0);" onclick="LOGIN_INFO.logout();"> <span>로그 아웃</span> </a>
 		</div>
-		<div class="panel-footer"></div>
 	</section>
-	<!-- dental need to login 모달 -->
-	<div class="dental-modal modal" id="loginModal">
-		<input type="checkbox" id="dental-modal-login" name="modal-toggle"> <!-- 모달 체크박스 -->
-		<label for="dental-modal-login">로그인 요청 모달</label> <!-- 모달 체크박스 레이블-->
-		<label for="dental-modal-login"><div class="modal-overlay"></div></label> <!-- 배경, 체크박스로 하면 배경을 레이블로 해서 모달 죽일 수 있음-->
-		<div class="modal-overlay-class"></div> <!-- 클래스로 오픈시 배경, 배경 누르면 모달 닫히게 이벤트 걸어야함-->
-		<div class="modal-container columns">
-			<div class="modal-header">
-				<div class="modal-title">로그인이 필요합니다.</div>
-				<label for="dental-modal-login" rel="dental-modal" title="닫기"><i class="fa fa-window-close"></i></label>
-			</div>
-			<div class="modal-body">
-				<div class="dental-form-card card login-section" style="padding-top: 1.2rem;">
-					<form id="" name="">
-						<div class="card-body">
-							<div class="basic col-11" style="background-color: #2a5082; line-height: 3rem; font-size: 0.9rem; color: #FFF; ">
-								<i class="fa fa-facebook-official" style="margin: 0 0.5rem; font-size: 1.2rem;"></i>
-								<span>페이스북으로 로그인 하기</span>
-							</div>
-							<div class="divider" data-content="또는"></div>
-							<div id="bizRegNoStatus"></div>
-							<div class="basic col-11">
-								<input type="text" id="email" name="email" placeholder="이메일 아이디" >
-								<span class="form-acc"></span>
-							</div>
-							<div id="emailStatus"></div>
-							<div class="basic col-11">
-								<input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호" >
-								<span class="form-acc"></span>
-							</div>
-							<div class="basic col-11">
-								<button type="submit" class="btn btn-primary" >로그인</button>
-								<label style="margin-left: 0.5rem"><input type="checkbox"><span style="margin-left: 0.5rem;">로그인 상태 유지</span></label>
-						   </div>
-						</div>
-			
-						<div class="card-footer loginFooter">
-							<div class="checkRegister">
-									<a href="divide_register.html">
-										<span>아직 회원이 아니세요?</span>
-										<span>회원가입</span>
-									</a>
-								</div>
-								<div class="findPassword">
-									<span>아이디 찾기</span>
-									<span class="spanVdivider"></span>
-									<span>비밀번호 찾기</span>
-								</div>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="modal-footer"></div>
-		</div>
-	</div>
 	<!-- dental need to premium register 모달 -->
 	<div class="dental-modal modal" id="regPremiumModal">
 		<input type="checkbox" id="dental-modal-reg-premium" name="modal-toggle"> <!-- 모달 체크박스 -->
@@ -206,6 +147,8 @@
 </html>
 
 <script>
+
+
 	
 var ResumeManagementApp = (function() {
 
@@ -228,22 +171,32 @@ var ResumeManagementApp = (function() {
 			return;
 		}
 
-		// 기존 정보를 로드해서 보여 준다.
+		
+
 		var userId = LOGIN_INFO.getId();
-		// 병원 정보를 로드한다.
-		// 기본 정보 로드
-        callApi("GET", "/api/user/"+userId+"/basicHospitalInfo/", null,
+        callApi("GET", "/api/user/"+userId+"/hospital/basicInfo/", null,
             function(basicInfo) {
 				console.log(basicInfo);
-				
-				hospitalId = basicInfo.id;
 
-                document.getElementById("userEmail").innerText = basicInfo.email;
-				document.getElementById("hospitalName").innerText  = basicInfo.name;
-				
-				if ( basicInfo.fullLogoUrl ) {
-					document.getElementById("hospitalLogo").src = basicInfo.fullLogoUrl;
+				if ( !basicInfo || !basicInfo.hospitalId ) {
+					hospitalId = null;
+
+					document.getElementById("hospitalEmail").innerText = "";
+					document.getElementById("hospitalName").innerText  = "";
+					document.getElementById("hospitalLogo").src = "";
+
+
+					alert("병원정보가 등록되어 있지 않습니다. 먼저 병원 정보를 등록하여 주십시오.");
+					return;
 				}
+				
+
+				hospitalId = basicInfo.hospitalId;
+
+                document.getElementById("hospitalEmail").innerText = basicInfo.hospitalEmail;
+				document.getElementById("hospitalName").innerText  = basicInfo.hospitalName;
+				document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(basicInfo.hospitalId);
+
             },
             function(errorCode, errorMsg) {
                 alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
@@ -285,31 +238,15 @@ var ResumeManagementApp = (function() {
 		var formData = new FormData();
 		formData.append("file", file);
 
-		//console.log(formData);
-
-		var userId = LOGIN_INFO.getId();
 		uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
 			function(resData) {
 				console.log("파일 업로드 성공 : ", resData);
-				document.getElementById("userPic").src = resData + "?" + (Math.random()*1000);
+				document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
 			},
 			function(errorCode, errorMsg) {
-				alert("사용자 프로필 이미지 등록에 실패했습니다. [" + errorCode + "]");
+				alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
 			}
 		);
-		
-		// $.ajax({
-		// 	url : API_SERVER_URL + "/api/hospital/"+hospitalId+"/logo/",
-		// 	processData: false,
-		// 	contentType: false,
-		// 	data: formData,
-		// 	type: 'POST',
-		// 	success: function(result) {
-		// 		console.log("성공 : ", result);
-				
-		// 		document.getElementById("hospitalLogo").src = result._RESPONSE_ + "?" + (Math.random()*1000);                                
-		// 	}
-		// });
 
 	}
 

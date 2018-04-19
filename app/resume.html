@@ -347,25 +347,27 @@ function fillData(resumeData) {
     document.getElementById("userName").innerText   = getText(resumeData.userName);
 
     // 성별
-    if ( resumeData.gender && resumeData.gender == 'M' )        document.getElementById("gender").innerText   = "남";
-    else if ( resumeData.gender && resumeData.gender == 'F' )   document.getElementById("gender").innerText   = "여";
-    else                                                        document.getElementById("gender").innerText   = ""; // 일단 없더라도 세팅
+    if ( resumeData.user && resumeData.user.gender && resumeData.user.gender == 'M' )		document.getElementById("gender").innerText   = "남";
+    else if ( resumeData.user && resumeData.user.gender && resumeData.user.gender == 'F' )	document.getElementById("gender").innerText   = "여";
+    else                                                        							document.getElementById("gender").innerText   = ""; // 일단 없더라도 세팅
 
     // 생년 birthday
-    if ( resumeData.birthday )      document.getElementById("birthday").innerText   = resumeData.birthday.substring(0, 4);
+    if ( resumeData.user && resumeData.user.birthday )      document.getElementById("birthday").innerText   = resumeData.user.birthday.substring(0, 4);
 
     // 최종수정일 lastModDt
     document.getElementById("lastModDt").innerText   = formatDateString(resumeData.lastModYYYYMMDD);
 
     // 전화번호
-    if ( resumeData.telNo )         document.getElementById("telNo").innerText   = resumeData.telNo;
+    if ( resumeData.user &&  resumeData.user.telNo )         document.getElementById("telNo").innerText   = resumeData.user.telNo;
 
     // 이메일
-    if ( resumeData.email )         document.getElementById("email").innerText   = resumeData.email;
+    if ( resumeData.user && resumeData.user.email )         document.getElementById("email").innerText   = resumeData.user.email;
     
-    // 주소 
-    var location = LOCATION_CODE.getLocation(resumeData.locationCode);
-    document.getElementById("addrText").innerHTML      = "<span>" + location.sidoName + "</span> > <span>" + location.siguName + "</span>";
+	// 주소 
+	if ( resumeData.user && resumeData.user.location ) {
+		var location = LOCATION_CODE.getLocation(resumeData.user.location.locationCode);
+		document.getElementById("addrText").innerHTML      = "<span>" + location.sidoName + "</span> > <span>" + location.siguName + "</span>";
+	}
 
 
 

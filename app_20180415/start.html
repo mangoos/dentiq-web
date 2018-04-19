@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/spectre-exp.min.css">
+    <link rel="stylesheet" href="css/dentalBasic.css">
+    
+	<script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
+    <style>
+        .carousel .carousel-container::before { padding-bottom: 45%; }
+        .carousel .carousel-nav { bottom: 0.1rem; }
+        .main-middle-nav .icon-nav-item .nav-item-icon { top: 35%; left: 50%; transform: translate(-50%, -50%); }
+    </style>
+</head>
+<body>
+    <input id="sidebar" type="checkbox" name="sidebar" hidden>
+    <header>
+        <div class="main-header navbar">
+            <section class="navbar-section">
+                <!-- 사이드바 버튼 -->
+                <label for="sidebar" class="main-header-icon"><i class="fal fa-bars"></i></label>
+            </section>
+            <input class="search-checkbox" type="checkbox" id="main-search-checkbox" hidden>
+            <section class="navbar-center">
+                <!-- 브랜드 로고 -->
+                <a class="navbar-brand main-header-brand" href="start.html">Dental+</a>
+                <div class="main-search">
+                    <input class="main-search-input" type="search" name="main-search" placeholder="키워드 입력">
+                    <label class="main-search-submit"><input type=submit hidden><i class="far fa-search"></i></label> <!-- 버튼 방식으로 변경 해야하남? -->
+                </div>
+                <script>
+                    var searchWindow = document.querySelector(".main-search-input");
+                    var checkboxForSearch = document.querySelector(".search-checkbox");
+                    // 선정우 - 검색창에서 포커스 아웃할 때, 값 없으면 검색창 안보이게 처리, 체크박스로 on/off 하고 있음
+                    searchWindow.addEventListener("focusout", function(e) {
+                        if (!searchWindow.value) { checkboxForSearch.checked = false; }
+                        else { console.log("search keyword: ", searchWindow.value); }
+                    });
+                </script>
+            </section>
+            <section class="navbar-section">
+                <!-- 사이드바 버튼 -->
+                <label for="main-search-checkbox"><span class="main-header-icon"><i class="far fa-search"></i></span></label>
+                <a href="user_panel.html" class="main-header-icon"><i class="fal fa-user-alt"></i></a>
+                <script>
+                    var labelForSearch = document.querySelector(".search-checkbox");
+                    labelForSearch.addEventListener("change", function(e) {
+                        console.log(searchWindow, this);
+                        searchWindow.focus();
+                    });
+                </script>
+            </section>
+        </div>
+    </header>
+    <div class="off-canvas">
+        <div id="sidebar" class="off-canvas-sidebar">  <!-- 사이드바 -->
+            <ul class="menu">
+                <li class="menu-item">
+                    <div class="tile tile-centered">
+                      <div class="tile-icon"><img src="img/avatar-4.png" class="avatar" alt="Avatar"></div>
+                      <div class="tile-content">Lee, Juhyun@gmail.com</div>
+                    </div>
+                </li>
+                <li class="divider" data-content="개인회원"></li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">설정하러가기</label></div>
+                    <a href="liveboard_local.html">관심 지역</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><span>(채용중/병원수)</span><label class="label label-primary">2/30</label></div>
+                    <a href="liveboard_home.html">우리 동네</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">설정하러가기</label></div>
+                    <a href="user_interaction.html">관심 병원</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">스크랩없음</label></div>
+                    <a href="user_interaction.html">내 스크랩</a>
+                </li>
+                <li class="menu-item"><a href="register_resume.html">이력서 관리</a></li>
+                <li class="divider" data-content="병원회원"></li>
+                <li class="menu-item"><a href="register_dentist.html">우리병원 기본 정보</a></li>
+                <li class="menu-item"><a href="register_jobad.html">채용공고 등록</a></li>
+                <li class="menu-item"><a href="jobAd_interaction.html">채용공고 관리</a></li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">2</label></div>
+                    <a href="dentist_panel.html">면접 제안</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">2</label></div>
+                    <a href="dentist_panel.html">지원자 관리</a>
+                </li>
+                <li class="divider"></li>
+                <li class="menu-item"><a href="login.html">로그인</a></li>
+                <li class="menu-item"><a href="signup.html">회원가입</a></li>
+                <li class="menu-item"><a href="start.html">로그아웃</a></li>
+                <li class="menu-item"><a href="#menus">설정</a></li>
+            </ul>
+        </div>
+        <label for="sidebar"><div class="off-canvas-overlay"></div></label>   <!-- 메뉴 close -->
+    </div>
+    <!-- ======================== Top 배너 ======================== -->
+    <section id="section-topBanner" class="top-banner container carousel">
+        <input type="radio" id="slide-1" name="carousel-radio" hidden="" class="carousel-locator" checked="">
+        <input type="radio" id="slide-2" name="carousel-radio" hidden="" class="carousel-locator">
+        <input type="radio" id="slide-3" name="carousel-radio" hidden="" class="carousel-locator">
+        <input type="radio" id="slide-4" name="carousel-radio" hidden="" class="carousel-locator">
+        <div class="carousel-container">
+            <figure class="carousel-item">
+                <label class="item-prev btn btn-action btn-lg" for="slide-4"><i class="icon icon-arrow-left"></i></label>
+                <label class="item-next btn btn-action btn-lg" for="slide-2"><i class="icon icon-arrow-right"></i></label>
+                <img src="images/mainHeaderBanner/main.jpg" class="img-responsive rounded">
+            </figure>
+
+            <figure class="carousel-item">
+                <label class="item-prev btn btn-action btn-lg" for="slide-1"><i class="icon icon-arrow-left"></i></label>
+                <label class="item-next btn btn-action btn-lg" for="slide-3"><i class="icon icon-arrow-right"></i></label>
+                <img src="images/mainHeaderBanner/main.jpg" class="img-responsive rounded">
+            </figure>
+
+            <figure class="carousel-item">
+                <label class="item-prev btn btn-action btn-lg" for="slide-2"><i class="icon icon-arrow-left"></i></label>
+                <label class="item-next btn btn-action btn-lg" for="slide-4"><i class="icon icon-arrow-right"></i></label>
+                <img src="images/mainHeaderBanner/main.jpg" class="img-responsive rounded">
+            </figure>
+
+            <figure class="carousel-item">
+                <label class="item-prev btn btn-action btn-lg" for="slide-3"><i class="icon icon-arrow-left"></i></label>
+                <label class="item-next btn btn-action btn-lg" for="slide-1"><i class="icon icon-arrow-right"></i></label>
+                <img src="images/mainHeaderBanner/main.jpg" class="img-responsive rounded">
+            </figure>
+        </div>
+
+        <div class="carousel-nav">
+            <label class="nav-item text-hide c-hand" for="slide-1">1</label>
+            <label class="nav-item text-hide c-hand" for="slide-2">2</label>
+            <label class="nav-item text-hide c-hand" for="slide-3">3</label>
+            <label class="nav-item text-hide c-hand" for="slide-4">4</label>
+        </div>
+
+    </section>
+    <section class="main-inform" hidden>
+        <span class="main-inform-icon" style="font-size: 0.9rem; color: red; margin-right: 0.1rem;"><i class="fas fa-info-circle"></i></span>
+        <!-- <span style="font-size: 0.8rem; color: #212529; margin-right: 0.3rem;"></span> -->
+        <span>관심지역을 설정 후, 실시간 채용정보 알림을 받아보세요.</span>
+    </section>
+    <section class="main-inform">
+        <span class="main-inform-icon" style="font-size: 0.9rem; color: #0083cb; margin-right: 0.1rem;"><i class="fas fa-info-circle"></i></span>
+        <!-- <span style="font-size: 0.8rem; color: #212529; margin-right: 0.3rem;"></span> -->
+        <span>우리동네를 설정 후, 주변 채용중인 병원을 찾아보세요.</span>
+    </section>
+    <section class="main-inform" hidden>
+        <span class="main-inform-icon" style="font-size: 0.9rem; color: green; margin-right: 0.1rem;"><i class="fas fa-info-circle"></i></span>
+        <!-- <span style="font-size: 0.8rem; color: #212529; margin-right: 0.3rem;"></span> -->
+        <span>이력서를 등록하고, 면접제안을 받아보세요.</span>
+    </section>
+    <section class="main-inform" hidden>
+        <span class="main-inform-icon" style="font-size: 0.9rem; color: #0083cb; margin-right: 0.1rem;"><i class="fas fa-info-circle"></i></span>
+        <!-- <span style="font-size: 0.8rem; color: #212529; margin-right: 0.3rem;"></span> -->
+        <span>쉽고 빠른 라이브보드 채용정보를 활용해보세요.</span>
+    </section>
+    <section class="main-inform">
+        <span class="main-inform-icon" style="font-size: 0.9rem; color: #FF9C00; margin-right: 0.1rem;"><i class="fal fa-gift"></i></span>
+        <span style="font-size: 0.8rem; color: #212529; font-weight: bold; margin-right: 0.3rem;">EVENT!</span>
+        <span>베타서비스기간동안 써포터즈를 모집합니다.</span>
+    </section>
+    <section id="" class="main-middle-nav">
+        <nav class="dental-icon-nav">
+            <a class="icon-nav-item" href="liveboard.html">
+                <span class="nav-item-icon"><i class="fal fa-laptop"></i></span>
+                <span class="nav-item-title">라이브보드</span>
+            </a>
+            <a class="icon-nav-item" href="liveboard_local.html">
+                <span class="nav-item-icon"><i class="fal fa-thumbtack" style="transform: rotate(45deg);"></i></span>
+                <span class="nav-item-title">관심지역</span>
+            </a>
+            <a class="icon-nav-item" href="liveboard_home.html">
+                <span class="nav-item-icon"><i class="fal fa-home"></i></span>
+                <span class="nav-item-title">우리동네</span>
+            </a>
+            <a class="icon-nav-item" href="user_panel.html">
+                <span class="nav-item-icon" style="font-size: 1.3rem;"><i class="fal fa-pen-square"></i></span>
+                <span class="nav-item-title">내이력서</span>
+            </a>
+        </nav>
+    </section>
+    <!-- ======================== Shortcut 네비게이션 ======================== -->
+    <section id="" class="liveboard" hidden>
+        <div class="liveboardBar">
+            <a href="liveboard.html"><h5>LiveBoard</h5></a>
+            <span> 실시간 채용정보 News 영역[전광판]! </span>
+        </div>
+        <div class="liveboardBox columns">
+            <div class="column col-4 card">
+                <a href="liveboard.html">
+                    <h6>전체구인</h6>
+                    <span>1,340</span>
+                </a>
+            </div>
+            <div class="column col-4 card">
+                <a href="liveboard.html">
+                    <h6>관심지역</h6>
+                    <span>50</span>
+                </a>
+            </div>
+            <div class="column col-4 card">
+                <a href="liveboard.html">
+                    <h6>우리동네</h6>
+                    <span>13</span>
+                </a>
+            </div>
+            <div class="column col-4 card">
+                <a href="liveboard.html">
+                    <h6>정규채용</h6>
+                    <span>458</span>
+                </a>
+            </div>
+            <div class="column col-4 card">
+                <a href="liveboard.html">
+                    <h6>계약직</h6>
+                    <span>390</span>
+                </a>
+            </div>
+            <div class="column col-4 card">
+                <a href="liveboard.html">
+                    <h6>아르바이트</h6>
+                    <span>289</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- ======================== Top 공고 ======================== -->
+    <section id="section-topAd" class="container">
+        <img src="images/mainMiddleBanner/kbsehr_640-170_faf3ea(1).png"  class="img-responsive" id="">
+    </section>
+
+    <!-- ======================== 프리미어 공고 ======================== -->
+    <section id="section-premiereAds" class="premiere-ad">
+        <div class="premiere-ad-bar">
+            <h5>프리미어 채용정보</h5>
+            <span>11건</span>
+        </div>
+
+        <div class="premiere-ad-box columns" id="premierJobAdsList"></div>
+        <script id="premierJobAdsTemplate" type="text/x-handlebars-template">
+            {{#each .}}
+            <a href="jobad.html?id={{id}}" class="column col-6 card">
+                <div class="card-image"><img src="/resources/hospital/{{logoUrl}}" class="img-responsive"></div>
+                <div class="card-header">
+                    <div class="card-title">{{hospitalName}}</div>
+                    <div class="card-subtitle">{{title}}</div>
+                </div>
+                <div class="card-body">
+                    <div class="dental-info">
+                        <span class="info-detail">{{renderLocation siguCode}}</span>
+                        <!-- 시도, 시구군 정보 -->
+                        <span class="info-detail txt-red"> 12 / 26 (화) </span>
+                        <!-- 마감날짜 -->
+                    </div>
+                    <div class="dental-info">
+                        <span class="info-detail">
+                            <span>치위생사</span>
+                            <span>치기공사</span>
+                            <i></i>
+                        </span>
+                        <!-- 채용부문 -->
+                        <span class="info-detail">
+                            <span>진료실</span>
+                            <span>상담</span>
+                            <i></i>
+                        </span>
+                        <!-- 채용업무 -->
+                    </div>
+                </div>
+                <label class="companyScrap"><input type="checkbox" name="scrap" hidden><span class="scrapIcon" title="관심 공고를 스크랩하세요!"></span></label>
+            </a>
+            {{/each}}
+        </script>
+
+    </section>
+    
+    <!-- ======================== 일반 공고 ======================== -->
+    <section id="section-generalAds" class="general-ad container">
+        <div class="general-ad-bar">
+            <h5>라이브 채용정보</h5><span id="countOfGeneralAds">0</span>건</div>
+
+
+        <div class="general-ad-box" id="generalJobAdsList"></div>
+        <script id="generalJobAdsTemplate" type="text/x-handlebars-template">
+            {{#each .}}
+            <div class="card">
+                <a href="jobad.html?id={{id}}">
+                    <div class="card-header">
+                        <div class="card-title">{{hospitalName}}</div>
+                        <div class="card-subtitle">{{title}}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dental-info">
+                            <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocation siguCode}}</span>
+                            <span class="info-detail subway-line">
+                                <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
+                                <span class="subway117"></span>
+                                <span>서울 3호선</span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
+                                <span class="subway120"></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
+                                <i></i> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 "외" 삽입됨 -->
+                            </span>
+                            <!-- 시도, 시구군 정보, 교통정보 -->
+                            <span class="info-detail">
+                                <span>#강남역</span> <!-- 'span.info-detail' 하위 첫번째 스팬 뒤에 ", " 자동으로 붙어요 -->
+                                <span>#코엑스</span>
+                                <span>#삼성역</span>
+                                <i></i>
+                            </span>
+                            <!-- 주변 핫플레이스 -->
+                        </div>
+                        <div class="dental-info">
+                            <span class="info-detail">
+                                <span>치위생사</span>
+                                <i></i>
+                            </span>
+                            <!-- 채용업무 -->
+                            <span class="info-detail">
+                                <span>진료실</span>
+                                <i></i>
+                            </span>
+                            <!-- 채용업무 -->
+                            <span class="info-detail">12 / 26 (화)</span>
+                            <!-- 마감날짜 -->
+                        </div>
+                    </div>
+                </a>
+                <div class="card-footer">
+                    <!-- a 태그 추가하고 클래스 단순하게 정리 해야함 -->
+                    <label class="footer-item"><input type="checkbox" name="scrap" hidden><i class="fa fa-star" aria-hidden="true" style="margin-right: 5px;"></i>스크랩</label>
+                    <a href="#" class="footer-item"><i class="fa fa-share" aria-hidden="true" style="margin-right: 5px;"></i>바로지원</a>
+                    <a href="#" class="footer-item"><i class="fa fa-phone" aria-hidden="true" style="margin-right: 5px;"></i>전화문의</a>
+                </div>
+            </div>
+            
+            {{/each}}
+        </script>
+    </section>
+    <!-- loading spinner, 'active' 클래스로 활성화 -->
+    <div class="dental-loading" id="loadingModal" hidden>
+        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+        <div class="loading-overlay" hidden></div>
+    </div>
+    <!-- Alert Modal 'active' 클래스로 활성화, alert 모달은 텍스트 안내 및 확인/취소 클릭 용도로 사용 -->
+    <div class="dental-modal dental-alert" id="alertModal" hidden>
+        <div class="dental-modal-container">
+            <div class="modal-container-header">
+                <div class="modal-container-header-title" id="alertModalTitle"></div> <!-- modal title 기본은 텍스트 없으면 안보임, type2 는 기본 타이틀 그냥 보임 -->
+                <div class="modal-container-header-desc" id="alertModalTitleDesc"></div> <!-- sub title 텍스트 없으면 안보임 -->
+                <input class="modal-close-input" type="checkbox" id="modalCloseBtn" hidden> <!-- 우측 상단 닫기 버튼 스위치, 기본은 display: none, check 하면 닫기 버튼 보임 -->
+                <label for=""class="modal-close-label" title="close"><i class="fa fa-window-close" title="close"></i></label>
+            </div>
+            <div class="modal-container-body" id="alertModalBody"></div>
+            <div class="modal-container-footer" id="alertModalFooter">
+                <button class="btn btn-action" title="confirm">확인</button>
+                <button class="btn btn-action" title="cancel">취소</button>
+            </div>
+        </div>
+        <div class="dental-modal-overlay" hidden></div>
+    </div>
+    <div class="dental-toast" id="dentalToast">
+        <div class="toast-alert" id="toastAlert"></div>
+        <div class="toast-alert-overlay"></div>
+        <div class="toast-inform" id="toastInform"></div>
+    </div>
+    <footer class="container">
+        FOOTER
+    </footer>
+    <script>
+        var dModal = dentalModal();
+    </script>
+</body>
+</html>

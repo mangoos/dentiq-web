@@ -13,10 +13,6 @@
     <script src="js/common.js"></script>
     <script src="js/handlebars.min.js"></script>
     <script src="js/dental_ui.js"></script>
-    <!-- <style>
-        .form-group, .form-group-linked { width: 95%; margin: 0 auto; margin-bottom: 0.3rem; }
-        .form-group:last-of-type { margin-bottom: 2rem; }
-    </style> -->
     <script>
 
 //*************************************************** 카드 추가/삭제 공통 **************************************************************
@@ -139,6 +135,10 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
         }
     }
 }
+
+// function CONSTANTS.getProfileImageUrl(jobSeekerUserId) {
+// 	return JOB_SEEKER_RESOURCE_URL + "/" + jobSeekerUserId + "/" + JOB_SEEKER_REROURCE_PROFILE_SMALL_FILE_NAME
+// }
     </script>
 </head>
 <body>
@@ -161,12 +161,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                 
                 <div class="user-photo-box" >
                     <div class="image-frame">
-                        <!-- 아래 처럼 이미지 넣어주면 됨 -->
-                        <!-- 이미지는 자동으로 150px, 150px 사이즈로 재단됨 -->
-                        <!-- 재단 기준은 최상단임, 가운데 정렬 -->
-                        <!-- 이미지 없으면 사람 아이콘 그냥 나옴, 가상 클래스 사용 // 지금은 좀 우스꽝 스럽게 되어 있음 빅헤드 ㅋㅋ -->
-                        <!-- <img src="images/user/jungwoo.jpg" id=""> -->
-                        <img src="" id="userPic">
+                        <img src="" id="userPic" onload="imageFit(this, 150);">
                     </div>
                     <span class="user-photo-box-icon" id="userPicArea"><i class="camera-icon"></i></span>
                     
@@ -177,7 +172,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                     function onChangeUserPic(event) {
                         event.preventDefault();
 
-                        //console.log("업로드 대상 : ", this.value);
+                        console.log("업로드 대상 : ", this.value);
                         var files = event.target.files;
                         var filesArr = Array.prototype.slice.call(files);
 
@@ -199,8 +194,8 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         var userId = LOGIN_INFO.getId();
                         uploadFile("/api/user/"+userId+"/pic/", formData,
                             function(resData) {
-                                console.log("파일 업로드 성공 : ", resData);
-                                document.getElementById("userPic").src = resData + "?" + (Math.random()*1000);
+								console.log("파일 업로드 성공 : ", resData);
+								document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(LOGIN_INFO.getId()) + "?" + (Math.random()*1000);
                             },
                             function(errorCode, errorMsg) {
                                 alert("사용자 프로필 이미지 등록에 실패했습니다. [" + errorCode + "]");
@@ -218,11 +213,13 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                 <div class="user-photo-title" id="userEmail">**</div>
                 <div class="user-photo-subtitle" id="userName"><span>이름이 입력되지 않았습니다.</font></div>
             </div>
-            
-            <button type="submit" id="btnAction" disabled hidden></button>
+            <div class="fixed-layer-action">
+                <button class="fixed-layer-action-btn" id="btnAction" type="submit" disabled hidden></button>
+            </div>
             <div class="dental-card">
                 <div class="dental-card-header">
                     <div class="dental-card-header-title h4">이력서 제목</div>
+                    <div class="dental-card-header-subtitle">돋보이는 제목을 50자 이내로 작성해 주세요.</div>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
@@ -231,7 +228,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         <!-- 아래 아이콘, form element가 focus 일때 활성화, :invalid 이면 붉은 아이콘, :valid 이면 파란색 아이콘 -->
                         <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                         <span class="form-group-underline"></span> <!-- '.error' 상태일때 form element가 focus 상태이면 붉은 줄, 그외는 노란줄 -->
-                        <div class="form-group-msg2" hidden>돋보이는 제목을 50자 이내로 작성해주세요.</div>
+                        <div class="form-group-msg2"></div>
                     </div>
                 </div>
             </div>
@@ -297,7 +294,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                     
                     
                     <div class="form-group">
-                        <select class="styled-select" name="salaryWanted" id="salaryWanted">
+                        <select class="styled-select" name="salaryWanted" id="salaryWanted" required>
                             <!--<option value="" disabled selected>*선택</option>
                             <option value="1">협의 후 선택</option>
                             <option value="2">내규에 따름</option>
@@ -315,7 +312,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         document.getElementById("salaryWanted").addEventListener("change", function() {
                             if ( this.value != null && this.value=='0' ) {
                                 document.getElementById("salaryWantedText").disabled = false;
-                                document.getElementById("divSalaryWantedText").hidden = false;
+                                document.getElementById("divSalaryWantedText").hidden = false; // hidden = true or false 방식 explore 10에서 안됨 ㅠ
                             } else {
                                 document.getElementById("salaryWantedText").disabled = true;
                                 document.getElementById("divSalaryWantedText").hidden = true;
@@ -325,7 +322,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
 
 
                     <div class="form-group">
-                        <select class="styled-select" name="roleWanted" id="roleWanted">
+                        <select class="styled-select" name="roleWanted" id="roleWanted" required>
                         </select>
                         <label class="styled-label">희망직책</label>
                     </div>
@@ -356,10 +353,10 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                 <div class="dental-card-header">
                     <div class="dental-card-header-title h4">
                         희망근무지역
-                        <label class="card-header-opt">
+                        <label class="dental-card-header-opt">
                             <!--<input type="checkbox" name="resume-local" id="btnAddHomeOnApplyLocation" hidden>-->
                             <input type="checkbox" id="btnAddHomeOnApplyLocation" hidden >
-                            <span class="btn btn-sm">우리동네 추가<i class="icon icon-arrow-down"></i></span>
+                            <span class="btn btn-sm">우리동네<i class="fal fa-plus-square" style="margin-left: 5px;"></i></span>
                         </label>
                     </div>
                     <div class="dental-card-header-subtitle">우리 동네와 추가로 3개까지 선택할 수 있습니다.</div>
@@ -368,16 +365,24 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         function onChangeAddHomeOnApplyLocation(event) {
                             event.preventDefault();
 
-                            var homeLocatinCode = ResumeManagementApp.getHomeLocationCode();
+                            var homeLocation = ResumeManagementApp.getHomeLocation();
                             
-                            if ( this.checked && homeLocatinCode && !homeCardOnApplyLocation ) {
+                            if ( this.checked && homeLocation && !homeCardOnApplyLocation ) {
 
                                 // 기존에 선택한 동일한 값이 있는지 확인한다.
                                 var elementsApplyLocationCode = document.querySelectorAll("#applyLocationCode");
                                 for ( var i=0; elementsApplyLocationCode && i<elementsApplyLocationCode.length; i++ ) {
-                                    if ( elementsApplyLocationCode[i].value && elementsApplyLocationCode[i].value==homeLocatinCode ) {
-                                        var temp = LOCATION_CODE.getByName(homeLocatinCode);
-                                        var msg = "이미 선택한 지역(" + temp.sidoName + "/" + temp.siguName + ")입니다.";
+                                    // if ( elementsApplyLocationCode[i].value && elementsApplyLocationCode[i].value==homeLocatinCode ) {
+                                    //     var temp = LOCATION_CODE.getByName(homeLocatinCode);
+                                    //     var msg = "이미 선택한 지역(" + temp.sidoName + "/" + temp.siguName + ")입니다.";
+                                    //     alert(msg);
+                                    //     this.checked = false;
+                                    //     return;
+									// }
+									if ( elementsApplyLocationCode[i].value && elementsApplyLocationCode[i].value==homeLocation.locationCode ) {
+                                        //var temp = LOCATION_CODE.getByName(homeLocatinCode);
+										//var msg = "이미 선택한 지역(" + temp.sidoName + "/" + temp.siguName + ")입니다.";
+										var msg = "이미 선택한 지역(" + homeLocation.sidoName + "/" + homeLocation.siguName + ")입니다.";
                                         alert(msg);
                                         this.checked = false;
                                         return;
@@ -386,7 +391,8 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
 
                                 homeCardOnApplyLocation = addApplyLocationCard();
                                 var elementHomeLocationCode = homeCardOnApplyLocation.querySelector("#applyLocationCode");
-                                elementHomeLocationCode.value = homeLocatinCode;
+								//elementHomeLocationCode.value = homeLocatinCode;
+								elementHomeLocationCode.value = homeLocation.locationCode;
                                 elementHomeLocationCode.dispatchEvent(new Event('change'));
                                 homeCardOnApplyLocation.querySelector("#applySido").disabled = true;
                                 homeCardOnApplyLocation.querySelector("#applySigu").disabled = true;
@@ -419,7 +425,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                             </select>
                         </div>
                         <input type="hidden" id="applyLocationCode" name="applyLocationCode[]"> <!-- 2018.04.04 이주현 추가. '카드'형식으로 변경하면 직접 'applySigu'와 'applySido'를 컨트롤할 수 없어서, hidden 필드를 추가함 -->
-                        <button type="button" id="btnDeleteApplyLocation">삭제</button>
+                        <button class="delete-selected-local-btn" type="button" id="btnDeleteApplyLocation">삭제</button>
                     </div>
 
                 </div>
@@ -736,7 +742,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         <span class="form-group-desc"></span>
                         <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                         <span class="form-group-underline"></span>
-                        <div class="form-group-msg2" hidden></div>
+                        <div class="form-group-msg2"></div>
                     </div>
                     
                     <div class="form-group">
@@ -789,15 +795,15 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         * 카드 내의 FORM 요소는 disabled로 처리  (예: input disabled)
                                 - disabled가 아니면, JSON 추출시에 템플릿의 FORM 요소가 추출됨
                     -->
-                    <div class="card-body" id="career" hidden>
-                        <button type="button" id="btnDeleteCareer">삭제</button>
+                    <div class="card-body" id="career" style="border-radius: 0.2rem; padding: 1rem 0; border: 1px solid #e6e6e6; width: 98%; margin: 0 auto; margin-bottom: 0.4rem;" hidden>
+                        <button class="dental-card-body-btn btn btn-sm" type="button" id="btnDeleteCareer">삭제</button>
                         <div class="form-group">
                             <input class="styled-input group-item" type="text" name="career[]firmName" id="career-firmName" disabled>
                             <label class="styled-label">직장명</label>
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
-                            <div class="form-group-msg2" hidden></div>
+                            <div class="form-group-msg2"></div>
                         </div>
                         <div class="form-group">
                             <input class="styled-input group-item" type="text" name="career[]task" id="career-task" disabled>
@@ -805,7 +811,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
-                            <div class="form-group-msg2" hidden></div>
+                            <div class="form-group-msg2"></div>
                         </div>
                         <div class="form-group">                            
                             <select class="select-two styled-select" id="joinYYYYMM" name="career[]joinYYYYMM" disabled>
@@ -885,15 +891,15 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
 
                 <div id='divLicense'>
 
-                    <div class="card-body" id="license" hidden>
-                        <button type="button" id="btnDeleteLicense">삭제</button>
+                    <div class="card-body" id="license" style="border-radius: 0.2rem; padding: 1rem 0; border: 1px solid #e6e6e6; width: 98%; margin: 0 auto; margin-bottom: 0.4rem;" hidden>
+                        <button class="dental-card-body-btn btn btn-sm" type="button" id="btnDeleteLicense">삭제</button>
                         <div class="form-group">
                             <input class="styled-input" id="licenseName" type="text" name="license[]name" disabled>
                             <label class="styled-label">자격증명</label>
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
-                            <div class="form-group-msg2" hidden></div>
+                            <div class="form-group-msg2"></div>
                         </div>
                         <div class="form-group">
                             <input class="styled-input" id="licenseIssuer" type="text" name="license[]issuer" disabled>
@@ -901,7 +907,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
-                            <div class="form-group-msg2" hidden></div>
+                            <div class="form-group-msg2"></div>
                         </div>
                         <div class="form-group">
                             <select class="styled-select" id="licenseIssueYYYYMM" name="license[]issueYYYYMM" disabled>
@@ -1003,7 +1009,8 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
 
 var ResumeManagementApp = (function() {
 
-    
+	var resumeId;
+	
     var form = document.getElementById("resumeForm");
 
     
@@ -1076,7 +1083,7 @@ var ResumeManagementApp = (function() {
 
 
 
-
+		
         var userId = LOGIN_INFO.getId();
         
         // 이력서 정보 로드
@@ -1084,16 +1091,19 @@ var ResumeManagementApp = (function() {
             function(resData) {
                 console.log(resData);
                 
-                if ( resData ) {    // 기존 이력서가 존재하므로 화면에 출력한다.
-                    homeLocationCode = resData.locationCode;
+				if ( resData ) {    // 기존 이력서가 존재하므로 화면에 출력한다.
+					resumeId = resData.resumeId;
+                    homeLocation = resData.user.location;
 
                     initFormData(form, resData);
 
                     document.getElementById("resumeContent").dispatchEvent(new Event('keyup'));
 
-                    document.getElementById("userEmail").innerText = resData.email;
-                    document.getElementById("userName").innerText  = resData.userName;
-                    if ( resData.profileImageFullUrl ) document.getElementById("userPic").src = resData.profileImageFullUrl;
+                    document.getElementById("userEmail").innerText = resData.user.email;
+					document.getElementById("userName").innerText  = resData.user.name;
+					
+					document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
+                    //if ( resData.profileImageFullUrl ) document.getElementById("userPic").src = resData.profileImageFullUrl;
 
                     initFormCardData("career",  resData.career,     addCareerCard);
                     initFormCardData("license", resData.license,    addLicenseCard);
@@ -1114,17 +1124,17 @@ var ResumeManagementApp = (function() {
 
                     callApi("GET", "/api/user/"+userId+"/basicInfo/", null,
                         function(resData) {
-                            homeLocationCode = resData.locationCode;
+                            homeLocation = resData.location;
                             
                             // 회원 기본 정보가 미입력 상태(또는 부족)인 경우에는 회원 기본 정보를 입력하도록 한다.
-                            if ( !resData.name || !resData.telNo || !resData.birthday || !resData.gender || !resData.locationCode ) {
-                                alert("회원님의 기본 정보를 입력해 주세요.");
-                                location.href='register_user.html?BASIC';
+                            if ( !resData.name || !resData.telNo || !resData.birthday || !resData.gender || !resData.location ) {
+								alert("회원님의 기본 정보를 입력해 주세요.");
+								location.href='register_user.html?BASIC';
                                 return;
                             }
                             document.getElementById("userEmail").innerText = resData.email;
                             document.getElementById("userName").innerText  = resData.name;
-                            if ( resData.profileImageFullUrl ) document.getElementById("userPic").src = resData.profileImageFullUrl;
+                            document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
                         },
                         function(errorCode, errorMsg) {
                             alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
@@ -1155,7 +1165,9 @@ var ResumeManagementApp = (function() {
 
         var data = createObjectFromFormData(form);
         var userId = LOGIN_INFO.getId();
-        data.userId = userId;
+		data.userId = userId;
+		data.resumeId = resumeId;
+
         console.log(data);
         
         // 지원 속성에서 각 그룹별로 1개는 선택하여야 한다. 이에 대한 검증을 실시한다.
@@ -1176,16 +1188,14 @@ var ResumeManagementApp = (function() {
                 console.log(resData);
                 alert("등록되었습니다.");
 
-                homeLocationCode = resData.locationCode;
+                homeLocation = resData.user.location;
 
                 // 성공하면, 현재 페이지 그대로 보여준다.
                 initFormData(form, resData);
 
-                document.getElementById("userEmail").innerText = resData.email;
-                document.getElementById("userName").innerText  = resData.userName;
-                if ( resData.profileImageFullUrl ) {
-                    document.getElementById("userPic").src = resData.profileImageFullUrl + "?" + (Math.random()*1000);
-                }
+                document.getElementById("userEmail").innerText = resData.user.email;
+				document.getElementById("userName").innerText  = resData.user.name;
+				document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId)  + "?" + (Math.random()*1000); 
 
                 deleteAllFormCards(document.getElementById("divCareer"));   // 기존 카드 삭제
                 initFormCardData("career",  resData.career,     addCareerCard);
@@ -1218,11 +1228,11 @@ var ResumeManagementApp = (function() {
     init();
 
 
-    var homeLocationCode;
+    var homeLocation;
 
     return {
-        getHomeLocationCode: function() {
-            return homeLocationCode;
+        getHomeLocation: function() {
+            return homeLocation;
         }
     };
 

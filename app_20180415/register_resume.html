@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
+    <!-- <style>
+        .form-group, .form-group-linked { width: 95%; margin: 0 auto; margin-bottom: 0.3rem; }
+        .form-group:last-of-type { margin-bottom: 2rem; }
+    </style> -->
+    <script>
+
+//*************************************************** 카드 추가/삭제 공통 **************************************************************
+// 카드 입력 항목 Clear - 공통
+function clearFormCardValues(cardElement) {
+    var formElementTags = ['input', 'textarea', 'select'];
+
+    formElementTags.forEach(function(tag) {
+        cardElement.querySelectorAll(tag).forEach(function(el) {
+            el.value = '';
+        });
+    });
+}
+
+// 카드 입력 항목 숨기기 - 공통 
+function disableFormCardValues(cardElement, flag) {
+    var formElementTags = ['input', 'textarea', 'select'];
+
+    formElementTags.forEach(function(tag) {
+        cardElement.querySelectorAll(tag).forEach(function(el) {
+            if ( flag ) el.disabled = true;
+            else el.disabled = false;
+        });
+    });
+}
+
+
+// 카드 추가 - 공통
+function addFormCard(parentDivElement, firstCardElement) {
+    var cardClone = firstCardElement.cloneNode(true);
+    clearFormCardValues(cardClone);         // form 엘리먼트들의 값을 초기화한다.
+    disableFormCardValues(cardClone, false); // form 엘리먼트들을 활성화한다. (disabled = false)
+
+    parentDivElement.appendChild(cardClone);
+
+    cardClone.hidden = false;
+
+    return cardClone;
+}
+
+
+// 카드 삭제 - 공통
+function deleteFormCard(parentDivElement, targetCard) {
+    parentDivElement.removeChild(targetCard);
+}
+
+
+// 카드 전체 삭제 - 공통
+function deleteAllFormCards(parentDivElement) {
+    while ( parentDivElement.children.length > 1 ) {        // 템플릿은 남겨둔다.
+        parentDivElement.removeChild(parentDivElement.lastChild);
+    }
+}
+//*************************************************** 카드 추가/삭제 공통 **************************************************************
+
+
+
+
+function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defaultOptionText, defaultOptionValue, reverse) {
+
+    var DEFAULT_YYYYMM_START  = (Number( (new Date()).getFullYear() ) - 50) + "01";         // <== 수정 가능
+    var DEFAULT_YYYYMM_END    = (Number( (new Date()).getFullYear() ) + 2)  + "12";         // <== 현재 년도에서 2년 이후. 수정가능
+
+    if ( !startYYYYMM ) startYYYYMM = DEFAULT_YYYYMM_START;
+    if ( !endYYYYMM )   endYYYYMM   = DEFAULT_YYYYMM_END;
+
+    var startYYYY   = Number(("" + startYYYYMM).substring(0,4));
+    var endYYYY     = Number(("" + endYYYYMM).substring(0,4));
+    var startMM     = Number(("" + startYYYYMM).substring(4,6));
+    var endMM       = Number(("" + endYYYYMM).substring(4,6));
+
+    //clearSelectOptions(elementYYYYMM, "선택", "");
+    clearSelectOptions(elementYYYYMM, defaultOptionText, defaultOptionValue);
+
+    // console.log("startYYYYMM : [" + startYYYYMM + "]    endYYYYMM: [" + endYYYYMM + "]");
+    // console.log("startYYYY : [" + startYYYY + "]    endYYYY: [" + endYYYY + "]");
+    // console.log("startMM : [" + startMM + "]    endMM: [" + endMM + "]");
+
+    if ( reverse ) {        // 날짜 역순 출력
+
+        for ( var year=endYYYY; year>=startYYYY; year-- ) {
+            
+            var startMMofThisYear = 1;
+            var endMMofThisYear = 12;
+            if ( year==startYYYY ) startMMofThisYear = Number(startMM);
+            else if ( year==endYYYY) endMMofThisYear = Number(endMM);
+
+            for ( var month=endMMofThisYear; month>=startMMofThisYear; month-- ) {
+                var option = document.createElement("option");
+                option.text = year + "년 " + month + "월";
+                if ( month < 10 )
+                    option.value = year + "0" + month;
+                else
+                    option.value = year + "" + month;
+                
+                elementYYYYMM.options.add(option);
+            }
+        }
+        
+        return;
+    }
+
+
+    for ( var year=startYYYY; year<=endYYYY; year++ ) {
+        
+        var startMMofThisYear = 1;
+        var endMMofThisYear = 12;
+        if ( year==startYYYY ) startMMofThisYear = Number(startMM);
+        else if ( year==endYYYY) endMMofThisYear = Number(endMM);
+
+        for ( var month=startMMofThisYear; month<=endMMofThisYear; month++ ) {
+            var option = document.createElement("option");
+            option.text = year + "년 " + month + "월";
+            if ( month < 10 )
+                option.value = year + "0" + month;
+            else
+                option.value = year + "" + month;
+            
+            elementYYYYMM.options.add(option);
+        }
+    }
+}
+    </script>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+
+    <form id="resumeForm">
+        <section class="resume-reg register-section">
+            <div class="user-photo">
+                
+                <div class="user-photo-box" >
+                    <div class="image-frame">
+                        <!-- 아래 처럼 이미지 넣어주면 됨 -->
+                        <!-- 이미지는 자동으로 150px, 150px 사이즈로 재단됨 -->
+                        <!-- 재단 기준은 최상단임, 가운데 정렬 -->
+                        <!-- 이미지 없으면 사람 아이콘 그냥 나옴, 가상 클래스 사용 // 지금은 좀 우스꽝 스럽게 되어 있음 빅헤드 ㅋㅋ -->
+                        <!-- <img src="images/user/jungwoo.jpg" id=""> -->
+                        <img src="" id="userPic">
+                    </div>
+                    <span class="user-photo-box-icon" id="userPicArea"><i class="camera-icon"></i></span>
+                    
+                </div>
+                
+                <input type="file" id="uploadUserPic" hidden>
+                <script>
+                    function onChangeUserPic(event) {
+                        event.preventDefault();
+
+                        //console.log("업로드 대상 : ", this.value);
+                        var files = event.target.files;
+                        var filesArr = Array.prototype.slice.call(files);
+
+                        filesArr.forEach(function(file) {
+                            if ( !file.type.match("image.*") ) {
+                                alert("이미지 파일만 업로드 가능합니다.");
+                                return;
+                            }
+                            //console.log("업로드 대상 파일 확인 완료 : ", file);
+                            //console.log("AAA : ", file.name, "   ", file.type);
+                        });
+
+                        var file = files[0];    // 첫번째 파일만 처리
+                        //console.log("업로드할 파일 ", file);
+                        var formData = new FormData();
+                        formData.append("file", file);
+                        //console.log(formData);
+
+                        var userId = LOGIN_INFO.getId();
+                        uploadFile("/api/user/"+userId+"/pic/", formData,
+                            function(resData) {
+                                console.log("파일 업로드 성공 : ", resData);
+                                document.getElementById("userPic").src = resData + "?" + (Math.random()*1000);
+                            },
+                            function(errorCode, errorMsg) {
+                                alert("사용자 프로필 이미지 등록에 실패했습니다. [" + errorCode + "]");
+                            }
+                        );
+                    }
+
+                    document.getElementById("uploadUserPic").addEventListener("change", onChangeUserPic);
+                    document.getElementById("userPicArea").addEventListener("click", function(e) {
+                        document.getElementById("uploadUserPic").click();
+                    });
+                
+                </script>
+
+                <div class="user-photo-title" id="userEmail">**</div>
+                <div class="user-photo-subtitle" id="userName"><span>이름이 입력되지 않았습니다.</font></div>
+            </div>
+            
+            <button type="submit" id="btnAction" disabled hidden></button>
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">이력서 제목</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <input class="styled-input" type="text" name="title" placeholder="이력서 제목" required>
+                        <span class="form-group-desc on"><span class="spellCounting">0/50</span>( 50자 이내 )</span>
+                        <!-- 아래 아이콘, form element가 focus 일때 활성화, :invalid 이면 붉은 아이콘, :valid 이면 파란색 아이콘 -->
+                        <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                        <span class="form-group-underline"></span> <!-- '.error' 상태일때 form element가 focus 상태이면 붉은 줄, 그외는 노란줄 -->
+                        <div class="form-group-msg2" hidden>돋보이는 제목을 50자 이내로 작성해주세요.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">희망근무조건</div>
+                </div>
+                <div class="card-body">
+                    <div id="divAttr"></div>    <!-- 이 부분에 속성 선택 영역이 생성될 것임 -->
+                    <script>
+                        var htmlStr = "";
+                        var attrCodes = CODE_CONTAINER.getAttrs();
+                        attrCodes.forEach(function(group) {
+                            htmlStr += `
+                                <div class="form-group">
+                                    <div class="form-group-header"><div class="form-group-header-title">${group.text}</div></div>
+                                    <fieldset  class="form-group-body">
+                                `;
+    
+                            group.element.forEach(function(attr) {
+                                var checkedStr ="";         if ( attr.default ) checkedStr = "checked";
+                                htmlStr += `
+                                        <label class="attr-checkbox"><input type="checkbox" name="attr[]" value="${attr.value}"   data-checkbox-group="${attr.group}"  hidden ${checkedStr}><span class="chip">${attr.text}</span></label>
+                                    `;
+                            });
+    
+                            htmlStr += `
+                                    </fieldset>
+                                </div>
+                                `;
+    
+                        });
+                        //console.log(htmlStr);
+                        document.getElementById("divAttr").innerHTML = htmlStr;
+                    </script>
+    
+                    <script>
+        
+                        // 해당 속성 그룹내에서 최소 1개는 선택되었는지 검증한다.
+                        function validateDivAttrSelected(attrGroupName) {
+                            var checkedMemberCount = document.getElementById("divAttr").querySelectorAll("input[type=checkbox][data-checkbox-group='" + attrGroupName + "']:checked").length;
+                            //console.log("checkedMemberCount : ", checkedMemberCount);
+                            if ( checkedMemberCount === 0 ) {
+                                var groupText = CODE_CONTAINER.getAttrMap()[attrGroupName].text;
+                                alert(groupText + "에서 하나 이상의 조건을 선택하셔야 합니다.");
+                                //document.getElementById("divAttr").focus();
+                                return false;
+                            }
+
+                            return true;
+                        }
+                        function onClickDivAttr(event) {
+                            var target = event.target;
+                            if ( !target.type || target.type!=="checkbox" ) return;
+
+                            var attrGroupName = target.dataset.checkboxGroup;
+                            validateDivAttrSelected(attrGroupName);
+                        }
+                        document.getElementById("divAttr").addEventListener("click", onClickDivAttr);
+
+                    </script>
+        
+                    
+                    
+                    <div class="form-group">
+                        <select class="styled-select" name="salaryWanted" id="salaryWanted">
+                            <!--<option value="" disabled selected>*선택</option>
+                            <option value="1">협의 후 선택</option>
+                            <option value="2">내규에 따름</option>
+                            <option value="0">직접 입력</option>-->
+                        </select>
+                        <label class="styled-label">희망급여</label>
+                    </div>
+                    <div class="form-group-linked" id="divSalaryWantedText" hidden> <!-- 바로 위 styled-select 에 직접입력 선택되면 enabled 처리 -->
+                        <input class="styled-input" type="text" name="salaryWantedText" id="salaryWantedText" placeholder="직접입력" disabled>
+                        <span class="form-group-underline"></span>
+                    </div>
+                    <script>
+                        setSelectOptions(document.getElementById("salaryWanted"), CODE_CONTAINER.getSalaryWanted());
+
+                        document.getElementById("salaryWanted").addEventListener("change", function() {
+                            if ( this.value != null && this.value=='0' ) {
+                                document.getElementById("salaryWantedText").disabled = false;
+                                document.getElementById("divSalaryWantedText").hidden = false;
+                            } else {
+                                document.getElementById("salaryWantedText").disabled = true;
+                                document.getElementById("divSalaryWantedText").hidden = true;
+                            }
+                        });
+                    </script>
+
+
+                    <div class="form-group">
+                        <select class="styled-select" name="roleWanted" id="roleWanted">
+                        </select>
+                        <label class="styled-label">희망직책</label>
+                    </div>
+                    <div class="form-group-linked" id="divRoleWantedText" hidden> <!-- 바로 위 styled-select 에 직접입력 선택되면 enabled 처리 -->
+                        <input class="styled-input" type="text" name="roleWantedText" id="roleWantedText" placeholder="직접입력" disabled>
+                        <span class="form-group-underline"></span>
+                    </div>
+                    <script>                        
+                        setSelectOptions(document.getElementById("roleWanted"), CODE_CONTAINER.getRoleType());
+
+                        document.getElementById("roleWanted").addEventListener("change", function() {
+                            if ( this.value != null && this.value=='0' ) {
+                                document.getElementById("roleWantedText").disabled = false;
+                                document.getElementById("divRoleWantedText").hidden = false;
+                            } else {
+                                document.getElementById("roleWantedText").disabled = true;
+                                document.getElementById("divRoleWantedText").hidden = true;
+                            }
+                        });
+                    </script>
+
+
+                </div>
+            </div>
+
+            <div class="dental-card">
+                <button class="dental-card-btn btn btn-sm" type="button" id="btnAddApplyLocation">추가</button>
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">
+                        희망근무지역
+                        <label class="card-header-opt">
+                            <!--<input type="checkbox" name="resume-local" id="btnAddHomeOnApplyLocation" hidden>-->
+                            <input type="checkbox" id="btnAddHomeOnApplyLocation" hidden >
+                            <span class="btn btn-sm">우리동네 추가<i class="icon icon-arrow-down"></i></span>
+                        </label>
+                    </div>
+                    <div class="dental-card-header-subtitle">우리 동네와 추가로 3개까지 선택할 수 있습니다.</div>
+                    <script>
+                        var homeCardOnApplyLocation;
+                        function onChangeAddHomeOnApplyLocation(event) {
+                            event.preventDefault();
+
+                            var homeLocatinCode = ResumeManagementApp.getHomeLocationCode();
+                            
+                            if ( this.checked && homeLocatinCode && !homeCardOnApplyLocation ) {
+
+                                // 기존에 선택한 동일한 값이 있는지 확인한다.
+                                var elementsApplyLocationCode = document.querySelectorAll("#applyLocationCode");
+                                for ( var i=0; elementsApplyLocationCode && i<elementsApplyLocationCode.length; i++ ) {
+                                    if ( elementsApplyLocationCode[i].value && elementsApplyLocationCode[i].value==homeLocatinCode ) {
+                                        var temp = LOCATION_CODE.getByName(homeLocatinCode);
+                                        var msg = "이미 선택한 지역(" + temp.sidoName + "/" + temp.siguName + ")입니다.";
+                                        alert(msg);
+                                        this.checked = false;
+                                        return;
+                                    }
+                                }
+
+                                homeCardOnApplyLocation = addApplyLocationCard();
+                                var elementHomeLocationCode = homeCardOnApplyLocation.querySelector("#applyLocationCode");
+                                elementHomeLocationCode.value = homeLocatinCode;
+                                elementHomeLocationCode.dispatchEvent(new Event('change'));
+                                homeCardOnApplyLocation.querySelector("#applySido").disabled = true;
+                                homeCardOnApplyLocation.querySelector("#applySigu").disabled = true;
+
+                                homeCardOnApplyLocation.querySelector("#btnDeleteApplyLocation").hidden = true;
+
+                                this.checked = true;
+
+                            } else if ( !this.checked && homeCardOnApplyLocation ) {
+                                deleteFormCard(document.getElementById("divApplyLocation"), homeCardOnApplyLocation);
+                                homeCardOnApplyLocation = null;
+                                this.checked = false;
+                            } else {
+                                this.checked = false;
+                            }
+                        }
+                        document.getElementById("btnAddHomeOnApplyLocation").addEventListener("change", onChangeAddHomeOnApplyLocation);
+                    </script>
+                </div>
+
+                <div class="card-body" id="divApplyLocation">
+
+                    <div class="form-group" id="applyLocation" hidden>
+                        <div class="form-group-body">
+                            <select class="select-two styled-select" id="applySido" disabled>
+                                <option value="" disabled selected>*희망시도</option>
+                            </select>
+                            <select class="select-two styled-select" id="applySigu" disabled>
+                                <option value="" disabled selected>*시/구/군</option>
+                            </select>
+                        </div>
+                        <input type="hidden" id="applyLocationCode" name="applyLocationCode[]"> <!-- 2018.04.04 이주현 추가. '카드'형식으로 변경하면 직접 'applySigu'와 'applySido'를 컨트롤할 수 없어서, hidden 필드를 추가함 -->
+                        <button type="button" id="btnDeleteApplyLocation">삭제</button>
+                    </div>
+
+                </div>
+                <script>
+                    var sidoCodeList = LOCATION_CODE.listSidoCode();
+
+                    var sidoCodeListOptionsHtml = '<option value="" selected>*희망시도</option>';
+                    Object.keys(sidoCodeList).forEach(function(key) {
+                        sidoCodeListOptionsHtml += '<option value="' + sidoCodeList[key].sidoCode + '">' + sidoCodeList[key].sidoName + '</option>';
+                    });
+
+
+                    // 희망근무지역 카드 추가
+                    function addApplyLocationCard(evt) {
+                        var applyLocationCardCount = document.getElementById("divApplyLocation").querySelectorAll("#applyLocation").length - 1; // 템플릿용으로 hidden 설정된 것의 개수(1개)는 제외
+                        if ( applyLocationCardCount >= 3 ) {
+                            alert("희망근무지역은 최대 3개까지 설정할 수 있습니다.");
+                            return;
+                        }
+
+                        var cardCloned = addFormCard(document.getElementById("divApplyLocation"), document.getElementById("applyLocation"));
+
+                        var elementApplySido = cardCloned.querySelector("#applySido");
+                        var elementApplySigu = cardCloned.querySelector("#applySigu");
+                        var elementApplyLocationCode = cardCloned.querySelector("#applyLocationCode");
+                        
+                        elementApplySido.required = true;
+                        elementApplySigu.required = true;
+                        elementApplySido.innerHTML = sidoCodeListOptionsHtml;
+
+                        // 시도 select가 변경될 때 처리를 위한 이벤트 리스너 추가
+                        function onChangeApplySido(event) {                           
+                            if ( !elementApplySigu ) return;
+
+                            if ( !this.value || this.value=='' ) {
+                                elementApplySigu.value = '';
+                                elementApplySigu.disabled = true;
+                                return;
+                            }
+
+                            var siguCodeListOptionsHtml = '<option value="" selected>*시/구/군</option>';
+                            var siguCodeList = LOCATION_CODE.listSiguCode(this.value);                            
+                            
+                            // 2018.03.27 이주현 추가 : 시도 전체를 선택할 수 있도록 변경
+                            //var selected = this.options[this.options.selectedIndex];
+                            //console.log("선택된 옵션 : ", selected);
+                            siguCodeListOptionsHtml += '<option value="' + this.value + '">전체</option>';
+                            
+                            Object.keys(siguCodeList.children).forEach(function(key) {
+                                siguCodeListOptionsHtml += '<option value="' + siguCodeList.children[key].locationCode + '">' + siguCodeList.children[key].siguName + '</option>';
+                            });
+
+                            elementApplySigu.innerHTML = siguCodeListOptionsHtml;
+                            elementApplySigu.disabled = false;
+
+                            //elementApplyLocationCode.value = '';
+                        }
+                        elementApplySido.addEventListener('change', onChangeApplySido);
+
+                        // 시구 select가 변경될 때 처리를 위한 이벤트 리스너 추가
+                        function onChangeApplySigu(event) {
+                            if ( !this.value || this.value=='' ) {
+                                elementApplyLocationCode.value = '';
+                                return;
+                            }
+
+                            // 기존에 선택한 동일한 값이 있는지 확인한다.
+                            var elementsApplyLocationCode = document.querySelectorAll("#applyLocationCode");
+                            for ( var i=0; elementsApplyLocationCode && i<elementsApplyLocationCode.length; i++ ) {
+                                if ( elementsApplyLocationCode[i].value && elementsApplyLocationCode[i].value==this.value ) {
+                                    alert("이미 동일한 지역을 선택하였습니다.");
+                                    this.value = "";
+                                    return;
+                                }
+                            }
+
+                            elementApplyLocationCode.value = this.value;
+                        }
+                        elementApplySigu.addEventListener("change", onChangeApplySigu);
+                        
+
+                        // 서버로부터 수신된 기등록 값을 세팅할 때 사용됨
+                        function onChangeApplyLocationCode(event) {
+                            console.log("**  onChangeApplyLocationCode 호출됨 ==> ", this.value);
+
+                            if ( !this.value || this.value=='' ) {
+                                elementApplySido.value = '';
+                                elementApplySigu.value = '';
+                                return;
+                            }
+
+                            
+
+                            var sidoCode = '';
+                            var siguCode = siguCode = this.value;
+                            if ( this.value.indexOf(".")>-1 ) { // 시구선택값이 '전체'(시도)가 아닌 경우.
+                                sidoCode = this.value.split(".")[0];
+                            } else {
+                                sidoCode = this.value;
+                            } 
+                            console.log("설정될 시도/시구코드 : " + sidoCode + "/" + siguCode);
+                            
+                            elementApplySido.value = sidoCode;
+                            elementApplySido.dispatchEvent(new Event('change'));   // CHANGE 이벤트를 넣어야만, '시구' select가 생성된다.
+                            elementApplySigu.value = siguCode;
+                            console.log("시구 설정됨 : ", elementApplySigu, " ===> ", elementApplySigu.value, " ("+this.value+")");
+
+                        }
+                        elementApplyLocationCode.addEventListener("change", onChangeApplyLocationCode);
+
+
+                        return cardCloned;
+                    }
+                    document.getElementById("btnAddApplyLocation").addEventListener("click", addApplyLocationCard);
+
+
+                    // 희망근무지역 카드 삭제
+                    function deleteApplyLocationCard(event) {
+                        var target = event.target;
+                        if ( target.id == 'btnDeleteApplyLocation' ) {    // 위임 처리를 위해서
+                            // 이벤트리스너가 있다면 먼저 제거
+                            //TODO 날짜 항목에 걸려 있는 이벤트 리스너 제거 일단 안함. 귀찮...  SPA 변경 시에는 반드시 처리하여야 함
+
+                            deleteFormCard(this, target.parentNode);
+                        }
+                    }
+                    document.getElementById("divApplyLocation").addEventListener("click", deleteApplyLocationCard);
+                
+                </script>
+            </div>
+
+
+
+
+            <!-- 기존 코드
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">
+                        희망근무지역
+                        <label class="card-header-opt">
+                            <input type="checkbox" name="resume-local" hidden checked>
+                            <span class="btn btn-sm"><i class="icon icon-arrow-down"></i></span>
+                        </label>
+                    </div>
+                    <div class="dental-card-header-subtitle">우리 동네와 추가로 3개까지 선택할 수 있습니다.</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="form-group-body">
+                            <select class="select-two styled-select" id="applySido1" data-on-change-target='applySigu1'>
+                                <option value="" disabled selected>*희망시도</option>
+                            </select>
+                            <select class="select-two styled-select" id="applySigu1" name="applyLocationCode" disabled>
+                                <option value="" disabled selected>*시/구/군</option>
+                            </select>
+                            <button class="btn btn-sm" type="button">추가</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group-body">
+                            <select class="select-two styled-select" id="applySido2" data-on-change-target='applySigu2'>
+                                <option value="" disabled selected>*희망시도</option>
+                            </select>
+                            <select class="select-two styled-select" id="applySigu2" name="applyLocationCode" disabled>
+                                <option value="" disabled selected>*시/구/군</option>
+                            </select>
+                            <!-- <button class="btn btn-sm">추가</button> --
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group-body">
+                            <select class="select-two styled-select" id="applySido3" data-on-change-target='applySigu3'>
+                                <option value="" disabled selected>*희망시도</option>
+                            </select>
+                            <select class="select-two styled-select" id="applySigu3" name="applyLocationCode" disabled>
+                                <option value="" disabled selected>*시/구/군</option>
+                            </select>
+                            <!-- <button class="btn btn-sm">추가</button> --
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <script>
+                    
+                    var sidoCodeList = LOCATION_CODE.listSidoCode();
+
+                    var sidoCodeListOptionsHtml = '<option value="" selected>*희망시도</option>';
+                    Object.keys(sidoCodeList).forEach(function(key) {
+                        sidoCodeListOptionsHtml += '<option value="' + sidoCodeList[key].sidoCode + '">' + sidoCodeList[key].sidoName + '</option>';
+                    });
+                    //console.log(sidoCodeListOptionsHtml);
+                    document.getElementById("applySido1").innerHTML = sidoCodeListOptionsHtml;
+                    document.getElementById("applySido2").innerHTML = sidoCodeListOptionsHtml;
+                    document.getElementById("applySido3").innerHTML = sidoCodeListOptionsHtml;
+
+
+                    function onChangeApplySido(event) {
+                        var target = document.getElementById(this.dataset.onChangeTarget);
+                        //console.log("TARGET : ", target);
+
+                        if ( !target ) return;
+
+                        if ( !this.value || this.value=='' ) {
+                            target.value = '';
+                            target.disabled = true;
+                            return;
+                        }
+
+                        var siguCodeListOptionsHtml = '<option value="" selected>*시/구/군</option>';
+                        var siguCodeList = LOCATION_CODE.listSiguCode(this.value);
+                        
+                        // 2018.03.27 이주현 추가 : 시도 전체를 선택할 수 있도록 변경
+                        //var selected = this.options[this.options.selectedIndex];
+                        //console.log("선택된 옵션 : ", selected);
+                        siguCodeListOptionsHtml += '<option value="' + this.value + '">전체</option>';
+
+                        
+                        Object.keys(siguCodeList.children).forEach(function(key) {
+                            siguCodeListOptionsHtml += '<option value="' + siguCodeList.children[key].locationCode + '">' + siguCodeList.children[key].siguName + '</option>';
+                        });
+
+                        target.innerHTML = siguCodeListOptionsHtml;
+                        target.disabled = false;
+                    }
+                    document.getElementById("applySido1").addEventListener('change', onChangeApplySido);
+                    document.getElementById("applySido2").addEventListener('change', onChangeApplySido);
+                    document.getElementById("applySido3").addEventListener('change', onChangeApplySido);
+
+                    function setupSiguLocationCode(arr) {
+                        if ( !arr ) return;
+
+                        if ( Array.isArray(arr) ) {
+                            arr.forEach(function(locationCode, idx) {
+                                // 2018.03.27 이주현 수정 : 시도 전체를 선택할 수 있도록 변경
+                                var sido = locationCode;
+                                if ( locationCode.indexOf(".")>-1 ) {
+                                    sido = locationCode.split(".")[0];
+                                }
+
+                                document.getElementById("applySido"+(idx+1)).value = sido;
+                                document.getElementById("applySido"+(idx+1)).dispatchEvent(CHANGE_EVENT);
+                                
+                                document.getElementById("applySigu"+(idx+1)).value = locationCode;
+                            });
+
+                        } else {
+                            var sido = arr;
+                            if ( arr.indexOf(".")>-1 ) {
+                                sido = arr.split(".")[0];
+                            }
+                            document.getElementById("applySido1").value = sido;
+                            document.getElementById("applySido1").dispatchEvent(CHANGE_EVENT);
+
+                            document.getElementById("applySigu1").value = arr;
+                        }
+                    }
+                
+                </script>
+            </div>
+             -->
+
+
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">최종 학력</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <select class="select-two styled-select" id="eduLevel" name="eduLevel" required>
+                            <!-- <option value="" selected>선택</option>
+                            <option value="1">초등학교</option>
+                            <option value="2">중학교</option>
+                            <option value="3">고등학교</option>
+                            <option value="4">대학(2,3년)</option>
+                            <option value="5">대학교</option>
+                            <option value="6">대학원</option> -->
+                        </select>
+                        <select class="select-two styled-select" id="eduStatus" name="eduStatus" required disabled>
+                            <!-- <option value="" selected>선택</option>
+                            <option value="1">졸업</option>
+                            <option value="2">재학중</option>
+                            <option value="3">졸업예정</option>
+                            <option value="4">중퇴</option>
+                            <option value="5">검정고시</option> -->
+                        </select>
+                        <label class="styled-label">최종학력</label>
+                    </div>
+                    <script>
+                        setSelectOptions(document.getElementById("eduLevel"), CODE_CONTAINER.getEduLevelOnResume());
+                        setSelectOptions(document.getElementById("eduStatus"), CODE_CONTAINER.getEduStatus());
+
+                        document.getElementById("eduLevel").addEventListener("change", function() {
+                            if ( this.value && this.value!="" ) {
+                                document.getElementById("eduStatus").disabled = false;
+                            } else {
+                                document.getElementById("eduStatus").disabled = true;
+                            }
+                        });
+                    </script>
+
+                    <div class="form-group">
+                        <input class="styled-input" type="text" name="eduSchoolName" required>
+                        <label class="styled-label">학교 입력</label>
+                        <span class="form-group-desc"></span>
+                        <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
+                        <span class="form-group-underline"></span>
+                        <div class="form-group-msg2" hidden></div>
+                    </div>
+                    <div class="form-group">
+                        <input class="styled-input" type="text" name="eduMajor">
+                        <label class="styled-label">전공 입력</label>
+                        <span class="form-group-desc"></span>
+                        <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
+                        <span class="form-group-underline"></span>
+                        <div class="form-group-msg2" hidden></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <select class="select-two styled-select" name="eduStartYYYYMM" id="eduStartYYYYMM" required>
+                            <option value="0" selected disabled>입학년월</option>
+                        </select>
+                        <select class="select-two styled-select" name="eduEndYYYYMM" id="eduEndYYYYMM" disabled >
+                            <option value="0" selected disabled>졸업년월</option>
+                        </select>
+                        <label class="styled-label">재학기간</label>
+                    </div>
+                    <script>
+                        renderCalendarSelectYYYYMM(document.getElementById("eduStartYYYYMM"), 
+                                                    (Number((new Date()).getFullYear())-40)+"01", (new Date()).getFullYear()+"12",    // 40년 전부터 이번 년도 마지막 달까지
+                                                    "입학년월", "", true);
+        
+                        function onChangeEntranceElement(event) {
+                            if ( !this.value || this.value=="" ) {
+                                clearSelectOptions(document.getElementById("eduEndYYYYMM"), "입학년월", "");
+                                document.getElementById("eduEndYYYYMM").disabled = true;
+                                return;
+                            }
+        
+                            renderCalendarSelectYYYYMM(document.getElementById("eduEndYYYYMM"), this.value, (new Date()).getFullYear()+"12",        // 시작년월부터 이번 년도 마지막 달까지
+                                                    "졸업년월", "",true);
+                            document.getElementById("eduEndYYYYMM").disabled = false;
+        
+                        }
+                        document.getElementById("eduStartYYYYMM").addEventListener("change", onChangeEntranceElement);                    
+                    </script>
+                </div>
+            </div>
+            
+            <div class="dental-card card">
+                <!-- <button class="btn btn-sm" type="button" id="btnAddCareer">추가</button> -->
+                <!-- <button class="dental-card-btn btn btn-sm" id="btnAddCareer">추가</button> -->
+                <button class="dental-card-btn btn btn-sm" type="button" id="btnAddCareer">추가</button>
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">경력사항</div>
+                </div>
+
+                <div id='divCareer'>
+                    <!-- 추가/삭제 가능 카드 마크업 주의 사항 -->
+                    <!--
+                        * 카드는 반드시 hidden으로 처리 (예: card-body ==> hidden)
+                                - hidden이 아니면, 
+                                                a. 템플릿이 화면에 보여지고, 
+                                                b. 해당 템플릿 자체가 '삭제'가 가능해져서 모든 카드 삭제된 후에는 카드 '추가'가 불가능함(복제할 템플릿도 삭제되었으므로)
+
+                        * 카드 내의 FORM 요소는 disabled로 처리  (예: input disabled)
+                                - disabled가 아니면, JSON 추출시에 템플릿의 FORM 요소가 추출됨
+                    -->
+                    <div class="card-body" id="career" hidden>
+                        <button type="button" id="btnDeleteCareer">삭제</button>
+                        <div class="form-group">
+                            <input class="styled-input group-item" type="text" name="career[]firmName" id="career-firmName" disabled>
+                            <label class="styled-label">직장명</label>
+                            <span class="form-group-desc"></span>
+                            <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2" hidden></div>
+                        </div>
+                        <div class="form-group">
+                            <input class="styled-input group-item" type="text" name="career[]task" id="career-task" disabled>
+                            <label class="styled-label">담당업무</label>
+                            <span class="form-group-desc"></span>
+                            <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2" hidden></div>
+                        </div>
+                        <div class="form-group">                            
+                            <select class="select-two styled-select" id="joinYYYYMM" name="career[]joinYYYYMM" disabled>
+                                <option value="" selected disabled >입사 년월</option>
+                            </select>
+                            <select class="select-two styled-select" id="retireYYYYMM" name="career[]retireYYYYMM" disabled>
+                                <option value="" selected disabled >퇴사 년월</option>
+                            </select>
+                            <label class="styled-label">근무기간</label>                        
+                        </div>
+                    </div>
+
+                </div>
+
+                <script>
+                    // 경력 카드 추가
+                    function addCareerCard(event) {
+                        var careerCardCount = document.getElementById("divCareer").querySelectorAll("#career").length - 1; // 템플릿용으로 hidden 설정된 것의 개수(1개)는 제외
+                        if ( careerCardCount >= 10 ) {
+                            alert("경력사항은 최대 10개까지 설정할 수 있습니다.");
+                            return;
+                        }
+
+                        var cardCloned = addFormCard(document.getElementById("divCareer"), document.getElementById("career"));
+                        
+                        // 이벤트리스너가 필요하다면, 생성 후 추가
+
+                        cardCloned.querySelector("#career-firmName").required = true;
+                        cardCloned.querySelector("#career-task").required = true;
+                        cardCloned.querySelector("#joinYYYYMM").required = true;
+                        cardCloned.querySelector("#retireYYYYMM").required = true;
+
+
+                        var elementStartYYYYMM = cardCloned.querySelector("#joinYYYYMM");
+                        var elementEndYYYYMM   = cardCloned.querySelector("#retireYYYYMM");
+
+                        renderCalendarSelectYYYYMM(elementStartYYYYMM, (Number((new Date()).getFullYear())-40)+"01", (new Date()).getFullYear()+"12", "입사 년월", "");  // 40년 전부터 이번달까지
+
+                        function onChangeStartElement(event) {
+                            console.log("트리거 실행");
+                            if ( !this.value || this.value=="" ) {
+                                clearSelectOptions(elementEndYYYYMM, "퇴사년월", "");
+                                elementEndYYYYMM.disabled = true;
+                                return;
+                            }
+
+                            renderCalendarSelectYYYYMM(elementEndYYYYMM, this.value, (new Date()).getFullYear()+"12", "퇴사년월", "");  // 시작년월부터 이번달까지
+                            elementEndYYYYMM.disabled = false;
+
+                        }
+                        elementStartYYYYMM.addEventListener("change", onChangeStartElement);
+                        
+                        return cardCloned;
+                    }
+                    document.getElementById("btnAddCareer").addEventListener("click", addCareerCard);
+
+
+                    // 경력 카드 삭제
+                    function deleteCareerCard(event) {
+                        var target = event.target;
+                        if ( target.id == 'btnDeleteCareer' ) {    // 위임 처리를 위해서
+                            // 이벤트리스너가 있다면 먼저 제거
+                            //TODO 날짜 항목에 걸려 있는 이벤트 리스너 제거 일단 안함. 귀찮...  SPA 변경 시에는 반드시 처리하여야 함
+
+                            deleteFormCard(this, target.parentNode);
+                        }
+                    }
+                    document.getElementById("divCareer").addEventListener("click", deleteCareerCard);                
+                </script>
+
+            </div>
+            <div class="dental-card">
+                <button class="dental-card-btn btn btn-sm" type="button" id="btnAddLicense">추가</button>
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">자격/면허 사항</div>
+                </div>
+
+                <div id='divLicense'>
+
+                    <div class="card-body" id="license" hidden>
+                        <button type="button" id="btnDeleteLicense">삭제</button>
+                        <div class="form-group">
+                            <input class="styled-input" id="licenseName" type="text" name="license[]name" disabled>
+                            <label class="styled-label">자격증명</label>
+                            <span class="form-group-desc"></span>
+                            <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2" hidden></div>
+                        </div>
+                        <div class="form-group">
+                            <input class="styled-input" id="licenseIssuer" type="text" name="license[]issuer" disabled>
+                            <label class="styled-label">발행처</label>
+                            <span class="form-group-desc"></span>
+                            <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2" hidden></div>
+                        </div>
+                        <div class="form-group">
+                            <select class="styled-select" id="licenseIssueYYYYMM" name="license[]issueYYYYMM" disabled>
+                                <option value="0" selected disabled>*선택</option>
+                            </select>
+                            <label class="styled-label">취득년도</label>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    // 자격/면허 카드 추가
+                    function addLicenseCard(event) {
+                        var licenseCardCount = document.getElementById("divLicense").querySelectorAll("#license").length - 1; // 템플릿용으로 hidden 설정된 것의 개수(1개)는 제외
+                        if ( licenseCardCount >= 10 ) {
+                            alert("자격/면허 사항은 최대 10개까지 설정할 수 있습니다.");
+                            return;
+                        }
+
+                        var cardCloned = addFormCard(document.getElementById("divLicense"), document.getElementById("license"));
+
+                        cardCloned.querySelector("#licenseName").required = true;
+                        cardCloned.querySelector("#licenseIssuer").required = true;
+                        cardCloned.querySelector("#licenseIssueYYYYMM").required = true;
+
+
+                        // 이벤트리스너가 필요하다면, 생성 후 추가
+
+                        renderCalendarSelectYYYYMM(cardCloned.querySelector("#licenseIssueYYYYMM"), (Number((new Date()).getFullYear())-40)+"01", (new Date()).getFullYear()+"12");  // 40년 전부터 이번달까지
+                        return cardCloned;
+                    }
+                    document.getElementById("btnAddLicense").addEventListener("click", addLicenseCard);
+
+
+                    // 경력 카드 삭제
+                    function deleteLicenseCard(event) {
+                        var target = event.target;
+                        if ( target.id == 'btnDeleteLicense' ) {    // 위임 처리를 위해서
+                            // 이벤트리스너가 있다면 먼저 제거
+                            //TODO 날짜 항목에 걸려 있는 이벤트 리스너 제거 일단 안함. 귀찮...  SPA 변경 시에는 반드시 처리하여야 함
+
+                            deleteFormCard(this, target.parentNode);
+                        }
+                    }
+                    document.getElementById("divLicense").addEventListener("click", deleteLicenseCard);
+
+                </script>
+            </div>
+
+            <div class="dental-card card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">자기 소개</div>
+                    <div class="dental-card-header-subtitle">자신을 어필할 수 있는 어쩌구~~~ (<span id="contentCharCounter"></span>)</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <textarea id="resumeContent" name="content" placeholder="안녕하십니까? 저는" maxlength="1000"></textarea>                        
+                    </div>
+                </div>
+                <script>
+                    document.getElementById("resumeContent").addEventListener("keyup", function(event) {
+                        document.getElementById("contentCharCounter").innerText = this.value.length + "/" + this.maxLength + "자";
+                    });
+                </script>
+            </div>
+
+            <div class="dental-card card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">이력서 설정</div>
+                    <div class="dental-card-header-subtitle">기업, 병원으로부터 입사 제안을 받으시겠어요?</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <select class="styled-select" name="confirmRecommendation">
+                            <option value="" selected disabled>*선택</option>
+                            <option value="Y">네(인재정보 등록)</option>
+                            <option value="N">아니요</option>
+                        </select>
+                        <label class="styled-label">제안 접수 선택</label>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </form>
+    <!-- loading spinner, 'active' 클래스로 활성화 -->
+    <div class="dental-loading" id="loadingModal" hidden>
+        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+        <div class="loading-overlay" hidden></div>
+    </div>
+</body>
+<script>
+    // form 꾸미기 초기화 함수 .styled-label, .styled-input, .styled-select ui 세팅
+    formUIInit();
+</script>
+</html>
+
+<script>
+
+
+var ResumeManagementApp = (function() {
+
+    
+    var form = document.getElementById("resumeForm");
+
+    
+    function initFormCardData(cardDataName, cardData, callbackForAddingCard) {
+        if ( !cardData )        return;
+
+        if ( !callbackForAddingCard )       throw "카드 추가를 위한 콜백함수가 입력되지 않았습니다.";
+        if ( !Array.isArray(cardData) )     throw "형식 오류 (initFormCardData) : " + cardData;
+        
+
+        cardData.forEach(function(element) {
+            console.log("\t initFormCardData : ", element);
+            
+            // 카드 추가
+            var targetCard = callbackForAddingCard();
+            console.log("\t initFormCardData : CARD ", targetCard);
+
+            console.log("\t initFormCardData : 데이터 유형 : ", typeof element);
+            
+            if ( typeof element === "string" ) {
+                var formElementName = cardDataName + "[]";
+                var formElementValue = element;
+                console.log("\t\t initFormCardData : 대상 '" + formElementName + "' ==> '" + formElementValue + "'");
+
+                var formElement = targetCard.querySelector("[name='" + formElementName + "']");
+                formElement.value = formElementValue;
+                formElement.dispatchEvent(CHANGE_EVENT);
+
+                console.log("\t\t initFormCardData : 완료 " + formElementName + " " + formElement.value);
+
+            } else {
+
+                Object.keys(element).forEach(function(key) {
+                    var formElementName = cardDataName + "[]" + key;
+                    var formElementValue = element[key];
+                    console.log("\t\t initFormCardData : 대상 '" + formElementName + "' ==> '" + formElementValue + "'");
+
+                    var formElement = targetCard.querySelector("[name='" + formElementName + "']");
+                    formElement.value = formElementValue;
+                    formElement.dispatchEvent(CHANGE_EVENT);
+
+                    console.log("\t\t initFormCardData : 완료 " + formElementName + " " + formElementValue);
+                });
+            }
+        });
+
+    }
+
+
+    // 1. 먼저 기존 이력서를 로드한다.
+    // 2. 기존 이력서가 존재하면, 수정 모드
+    // 3. 기존 이력서가 존재하지 않으면, 등록 모드
+
+    function init() {
+        
+        // 로그인 확인
+        if ( !LOGIN_INFO.isLoggedIn() ) {
+            alert("로그인이 필요합니다.");
+            location.href='login.html';
+            // 로그인 페이지 이동
+            return;
+        }
+
+        if ( !LOGIN_INFO.isPersonalMember() ) {
+            alert("이력서 등록은 개인 회원만 가능합니다.");
+            window.history.back();
+            return;
+        }
+
+
+
+
+
+        var userId = LOGIN_INFO.getId();
+        
+        // 이력서 정보 로드
+        callApi("GET", "/api/user/"+userId+"/resume/", null,
+            function(resData) {
+                console.log(resData);
+                
+                if ( resData ) {    // 기존 이력서가 존재하므로 화면에 출력한다.
+                    homeLocationCode = resData.locationCode;
+
+                    initFormData(form, resData);
+
+                    document.getElementById("resumeContent").dispatchEvent(new Event('keyup'));
+
+                    document.getElementById("userEmail").innerText = resData.email;
+                    document.getElementById("userName").innerText  = resData.userName;
+                    if ( resData.profileImageFullUrl ) document.getElementById("userPic").src = resData.profileImageFullUrl;
+
+                    initFormCardData("career",  resData.career,     addCareerCard);
+                    initFormCardData("license", resData.license,    addLicenseCard);
+                    initFormCardData("applyLocationCode", resData.applyLocationCode, addApplyLocationCard);
+
+                    // 버튼을 수정으로 변경한다.
+                    var btnAction = document.getElementById("btnAction");
+                    btnAction.innerText = "수정";
+                    btnAction.value = "update";
+                    btnAction.disabled = false;
+                    btnAction.hidden = false;
+
+                    // 문서를 view type 으로 변경
+                    document.body.classList.add("view-type");
+                    return;
+
+                } else {            // 기존 이력서가 존재하지 않으므로, 버튼을 '등록'으로 변경한다.
+
+                    callApi("GET", "/api/user/"+userId+"/basicInfo/", null,
+                        function(resData) {
+                            homeLocationCode = resData.locationCode;
+                            
+                            // 회원 기본 정보가 미입력 상태(또는 부족)인 경우에는 회원 기본 정보를 입력하도록 한다.
+                            if ( !resData.name || !resData.telNo || !resData.birthday || !resData.gender || !resData.locationCode ) {
+                                alert("회원님의 기본 정보를 입력해 주세요.");
+                                location.href='register_user.html?BASIC';
+                                return;
+                            }
+                            document.getElementById("userEmail").innerText = resData.email;
+                            document.getElementById("userName").innerText  = resData.name;
+                            if ( resData.profileImageFullUrl ) document.getElementById("userPic").src = resData.profileImageFullUrl;
+                        },
+                        function(errorCode, errorMsg) {
+                            alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                        }
+                    );
+
+
+                    var btnAction = document.getElementById("btnAction");
+                    btnAction.innerText = "등록";
+                    btnAction.value = "register";
+                    btnAction.disabled = false;
+                    btnAction.hidden = false;
+                    
+                    // 문서를 view type 삭제
+                    document.body.classList.remove("view-type");
+                }
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+        
+    }
+
+    function onSubmit() {
+        event.preventDefault();
+
+        var data = createObjectFromFormData(form);
+        var userId = LOGIN_INFO.getId();
+        data.userId = userId;
+        console.log(data);
+        
+        // 지원 속성에서 각 그룹별로 1개는 선택하여야 한다. 이에 대한 검증을 실시한다.
+        var attrGroups = CODE_CONTAINER.getAttrs();
+        for ( var i=0; i<attrGroups.length; i++ ) {
+            if ( !validateDivAttrSelected(attrGroups[i].group) ) {
+                return;
+            }
+        }
+
+        // 
+
+
+        
+
+        callApi("PUT", "/api/user/"+userId+"/resume/", JSON.stringify(data),
+            function(resData) {
+                console.log(resData);
+                alert("등록되었습니다.");
+
+                homeLocationCode = resData.locationCode;
+
+                // 성공하면, 현재 페이지 그대로 보여준다.
+                initFormData(form, resData);
+
+                document.getElementById("userEmail").innerText = resData.email;
+                document.getElementById("userName").innerText  = resData.userName;
+                if ( resData.profileImageFullUrl ) {
+                    document.getElementById("userPic").src = resData.profileImageFullUrl + "?" + (Math.random()*1000);
+                }
+
+                deleteAllFormCards(document.getElementById("divCareer"));   // 기존 카드 삭제
+                initFormCardData("career",  resData.career,     addCareerCard);
+
+                deleteAllFormCards(document.getElementById("divLicense"));  // 기존 카드 삭제
+                initFormCardData("license", resData.license,    addLicenseCard);
+
+                deleteAllFormCards(document.getElementById("divApplyLocation"));  // 기존 카드 삭제
+                initFormCardData("applyLocationCode", resData.applyLocationCode, addApplyLocationCard);
+
+                // 버튼을 수정으로 변경한다.
+                var btnAction = document.getElementById("btnAction");
+                btnAction.innerText = "수정";
+                btnAction.value = "update";
+                btnAction.disabled = false;
+                btnAction.hidden = false;
+
+                // 문서를 view type 으로 변경
+                document.body.classList.add("view-type");
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            },
+            "application/json"
+        );
+    }
+    form.addEventListener("submit", onSubmit);
+
+
+    init();
+
+
+    var homeLocationCode;
+
+    return {
+        getHomeLocationCode: function() {
+            return homeLocationCode;
+        }
+    };
+
+})();
+
+</script>

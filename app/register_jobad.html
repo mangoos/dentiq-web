@@ -48,20 +48,20 @@
                 <div class="user-photo-title">sjw0927@ gmail.com</div>
                 <div class="user-photo-subtitle">서울역 앞 치과 병원</div>
             </div>
-            <div class="register-action-layer" style="position: fixed; top: 2rem; right: 2rem; z-index: 3;">
-                <button class="" id="btnSubmit" type="submit" disabled hidden></button>
+            <div class="fixed-layer-action">
+                <button class="fixed-layer-action-btn" id="btnSubmit" type="submit" disabled hidden></button>
             </div>
             <div class="dental-card">
                 <div class="dental-card-header">
                     <div class="dental-card-header-title h4">채용공고 제목</div>
-                    <div class="dental-card-header-subtitle"></div>
+                    <div class="dental-card-header-subtitle">구직자들을 위해 돋보이는 제목으로 작성해 주세요.</div>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
                         <input class="styled-input" type="text" maxlength="50" name="title" required placeholder="채용공고 제목 입력">
                         <span class="form-group-desc on"><span class="spellCounting">0/50</span>( 50자 이내 )</span>
                         <span class="form-group-underline"></span>
-                        <div class="form-group-msg2">돋보이는 문구로 매력적인 채용공고 제목을 만들어 보세요.</div>
+                        <div class="form-group-msg2"></div>
                     </div>
                 </div>
             </div>
@@ -149,37 +149,41 @@
     
     
                     <fieldset class="form-group">
-                        <input class="styled-input" type="text" name="hiringCnt" class="recruitNum" maxlength="3" max="3">
+                        <input class="styled-input" type="text" name="hiringCnt" class="recruitNum" maxlength="3" max="3" required>
                         <span class="form-group-underline"></span>
-                        <div class="form-group-msg2">숫자로 입력해주세요</div>
+                        <div class="form-group-msg2"></div>
                         <label class="styled-label">채용인원</label>
                     </fieldset>
                     <fieldset>
                         <div class="form-group">
-                            <select class="styled-select" id="salarySelect" name="salaryType">
+                            <select class="styled-select" id="salarySelect" name="salaryType" required>
                                 <!--<option value="1" selected>면접 후 협의</option>
                                 <option value="0">직접 입력</option>-->
                             </select>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
-                            <label class="styled-label">급여</label>
+                            <label class="styled-label" for="salarySelect">급여</label>
                         </div>
-                        <input class="more-comment" id="salaryText" name="salaryText" type="text" placeholder="예) 2,500만원" style="display: none;">
+                        <div class="form-group-linked" hidden> <!-- 바로 위 styled-form-group input 에 값 입력된 후에 enabled 처리 -->
+                            <input class="styled-input more-comment" id="salaryText" name="salaryText" type="text" placeholder="예) 2,500만원">
+                            <span class="form-group-underline"></span>
+                        </div>
+                        
                         <script>
                             setSelectOptions(document.getElementById("salarySelect"), CODE_CONTAINER.getSalaryType());
     
                             document.getElementById("salarySelect").addEventListener("change", function() {
                                 if ( this.value != null && this.value=='0' ) {
-                                    document.getElementById("salaryText").style.display = 'block';
+                                    document.getElementById("salaryText").parentElement.style.display = 'block';
                                 } else {
-                                    document.getElementById("salaryText").style.display = 'none';
+                                    document.getElementById("salaryText").parentElement.style.display = 'none';
                                 }
                             });                    
                         </script>
                     </fieldset>
                     <fieldset>
                         <div class="form-group">
-                            <select class="styled-select" id="roleSelect" name="hiringRoleType">
+                            <select class="styled-select" id="roleSelect" name="hiringRoleType" required>
                                 <!--
                                 <option value="" selected>무관</option>
                                 <option value="1">팀장</option>
@@ -213,7 +217,7 @@
                 </div>
                 <div class="card-body">
                     <fieldset class="form-group">
-                        <select class="styled-select" id="eduSelect" name="eduLevel">
+                        <select class="styled-select" id="eduSelect" name="eduLevel" required>
                             <!--
                             <option value="" selected>학력 무관</option>
                             <option value="1">고졸 이상</option>
@@ -228,7 +232,7 @@
                         setSelectOptions(document.getElementById("eduSelect"), CODE_CONTAINER.getEduLevel());
                     </script>
                     <fieldset class="form-group">
-                        <select class="styled-select" id="expSelect" name="expType">
+                        <select class="styled-select" id="expSelect" name="expType" required>
                             <!--
                             <option value="" selected>경력무관</option>
                             <option value="1">신입</option>
@@ -246,7 +250,7 @@
                             <span class="form-group-desc">필요사항 입력</span>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
-                            <label class="styled-label">자격/면허사항</label>
+                            <label class="styled-label" for="license">자격/면허사항</label>
                     </fieldset>
                 </div>
             </div>
@@ -254,22 +258,22 @@
                 <div class="dental-card-header"><div class="dental-card-header-title h4">근무환경</div></div>
                 <div class="card-body">
                     <fieldset class="form-group">
-                        <input class="styled-input" type="text" name="workingDay">
+                        <input class="styled-input" type="text" name="jobWorkingDay" placeholder="구직자들을 위해 정확하게 입력해 주세요." required>
                         <span class="form-group-desc">예) 월~금, 월/수/금 등</span>
                         <span class="form-group-underline"></span>
-                        <div class="form-group-msg2">구직자들을 위해 정확하게 입력해 주세요.</div>
+                        <div class="form-group-msg2"></div>
                         <label class="styled-label">근무일</label>
                     </fieldset>
                     <div class="form-group">
                         <div class="form-group-header"><div class="form-group-header-title">근무시간</div></div>
                         <fieldset class="form-group-body">
-                            <input id="chkWorkingTimeWeekday" type="checkbox" hidden><label for="chkWorkingTimeWeekday"><span class="chip" style="width: 5rem;">평일</span></label>
+                            <input id="chkWorkingTimeWeekday" type="checkbox" checked hidden><label for="chkWorkingTimeWeekday"><span class="chip" style="width: 5rem;">평일</span></label>
                             <input id="chkWorkingTimeWeekend" type="checkbox" hidden><label for="chkWorkingTimeWeekend"><span class="chip" style="width: 5rem;">주말</span></label>
                             <input id="chkWorkingTimeText"    type="checkbox" hidden><label for="chkWorkingTimeText"><span class="chip" style="width: 5rem;">기타/추가</span></label>
             
                             <div class="operation-time form-group" id="divWorkingTimeWeekday" hidden>   <!-- 평일 근무시간 -->
-                                <select class="select-two styled-select" id="workingTimeWeekdayStart" name="workingTimeWeekdayStart"></select>
-                                <select class="select-two styled-select" id="workingTimeWeekdayEnd"   name="workingTimeWeekdayEnd" disabled></select>
+                                <select class="select-two styled-select" id="workingTimeWeekdayStart" name="jobWorkingTimeWeekdayStart"></select>
+                                <select class="select-two styled-select" id="workingTimeWeekdayEnd"   name="jobWorkingTimeWeekdayEnd" disabled></select>
                                 <label class="styled-label">평일 근무시간</label>
                             </div>
                             <script>
@@ -289,8 +293,8 @@
                                 });
                             </script>
                             <div class="operation-time form-group" id="divWorkingTimeWeekend" style="display: none; position: relative;">   <!-- 주말 근무시간 -->
-                                <select class="select-two styled-select" id="workingTimeWeekendStart" name="workingTimeWeekendStart"></select>
-                                <select class="select-two styled-select" id="workingTimeWeekendEnd"   name="workingTimeWeekendEnd" disabled></select>
+                                <select class="select-two styled-select" id="workingTimeWeekendStart" name="jobWorkingTimeWeekendStart"></select>
+                                <select class="select-two styled-select" id="workingTimeWeekendEnd"   name="jobWorkingTimeWeekendEnd" disabled></select>
                                 <label class="styled-label">주말 근무시간</label>
                             </div>
                             <script>
@@ -310,7 +314,7 @@
                                 });
                             </script>
                             <div class="operation-time form-group" id="divWorkingTimeText" style="display: none">   <!-- 기타/추가사항 -->
-                                <textarea rows="4" id="workingTimeText" name="workingTimeText"  placeholder="기타/추가사항이 있을 때 입력해 주세요."></textarea>
+                                <textarea rows="4" id="workingTimeText" name="jobWorkingTimeText"  placeholder="기타/추가사항이 있을 때 입력해 주세요."></textarea>
                             </div>
                             <script>
                                 document.getElementById("chkWorkingTimeText").addEventListener("change", function() {
@@ -328,8 +332,8 @@
                         </fieldset>
                     </div>
                     <fieldset class="form-group">
-                        <select class="select-two styled-select" id="lunchTimeStart" name="lunchTimeStart"></select>
-                        <select class="select-two styled-select" id="lunchTimeEnd"   name="lunchTimeEnd" disabled></select>
+                        <select class="select-two styled-select" id="lunchTimeStart" name="jobLunchTimeStart" required></select>
+                        <select class="select-two styled-select" id="lunchTimeEnd"   name="jobLunchTimeEnd" disabled></select>
                         <label class="styled-label">점심시간</label>
                     </fieldset>
                     <script>
@@ -341,8 +345,8 @@
                 <div class="dental-card-header">
                     <div class="dental-card-header-title h4">
                         접수기간 및 방법
-                        <label class="card-header-opt"><input type="radio" id="chkHiringTermType1" name="hiringTermType" value="1" checked hidden><span class="btn btn-sm">상시채용</span></label>
-                        <label class="card-header-opt"><input type="radio" id="chkHiringTermType2" name="hiringTermType" value="2" hidden><span class="btn btn-sm">기간채용</span></label>
+                        <label class="dental-card-header-opt"><input type="radio" id="chkHiringTermType2" name="hiringTermType" value="2" checked hidden><span class="btn btn-sm">기간채용</span></label>
+                        <label class="dental-card-header-opt"><input type="radio" id="chkHiringTermType1" name="hiringTermType" value="1" hidden><span class="btn btn-sm">상시채용</span></label>
                     </div>
                 </div>
                 <div class="card-body">
@@ -351,7 +355,7 @@
                             <!--
                             <input class="styled-input" type="text" id="hiringStartDate" name="hiringStartDate">
                             -->
-                            <select id="hiringStartDate" name="hiringStartDate" class="styled-select"></select>
+                            <select id="hiringStartDate" name="hiringStartDate" class="styled-select" required></select>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">채용 시작일</label>
@@ -365,7 +369,7 @@
                             <!--
                             <input class="styled-input" type="text" id="hiringEndDate" name="hiringEndDate">
                             -->
-                            <select id="hiringEndDate" name="hiringEndDate" class="styled-select"></select>
+                            <select id="hiringEndDate" name="hiringEndDate" class="styled-select" required></select>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">채용 종료일</label>
@@ -508,19 +512,19 @@
                 <div class="dental-card-header"><div class="dental-card-header-title h4">채용담당자(문의)</div></div>
                 <div class="card-body">
                     <div class="form-group">
-                            <input class="styled-input" id="hrOfficerName" name="hrOfficerName" type="text">
+                            <input class="styled-input" id="hrOfficerName" name="hrOfficerName" type="text" required>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">담당자</label>
                     </div>
                     <div class="form-group">
-                            <input class="styled-input" id="hrTelNo" name="hrTelNo" type="text">
+                            <input class="styled-input" id="hrTelNo" name="hrTelNo" type="text" required>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">문의전화</label>
                     </div>
                     <div class="form-group">
-                            <input class="styled-input" id="hrEmail" name="hrEmail" type="text">
+                            <input class="styled-input" id="hrEmail" name="hrEmail" type="text" required>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">문의이메일</label>
@@ -531,7 +535,7 @@
     </section>
     <!-- loading spinner, 'active' 클래스로 활성화 -->
     <div class="dental-loading" id="loadingModal" hidden>
-        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+        <div class="fa-icon"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>
         <div class="loading-overlay" hidden></div>
     </div>
 </body>
@@ -544,143 +548,6 @@
 
 <script>
 
-
-/**
- * Form Element들을 Javascript 객체로 만든다.
- *
- * checkbox와 radio의 경우에는 선택된(checked=true) Element의 값만 JS 객체에 포함된다.
- * 동일한 이름을 가진 element가 존재하는 경우(예: checkbox 또는 radio 등)에는, 해당 name이 배열로 생성된다.
- * 
- * 
- * 다음의 경우에는 JS 객체에 포함되지 않는다. 
- *  - name이 존재하지 않는 Form Element
- *  - value가 존재하지 않는 Form Element
- *  - button element, fieldset
- */
-// function createObjectFromFormData(formElement) {
-//     if ( !formElement ) throw '처리할 FORM이 지정되지 않았습니다.';
-
-//     var obj = {};
-
-//     function add(name, value) {
-//         if ( !value || value.trim()=='' ) return;   // 값이 null이거나 빈 값이면, skip 
-
-//         if ( obj[name] ) {  // 이미 존재하는데, 다른 값을 넣는 것이면, 이는 배열 처리
-            
-//             if ( !Array.isArray(obj[name]) ) {  // 기존 값이 배열이 아니라면, 배열로 만들고 기존 값을 push한다.
-//                 var oldValue = obj[name];
-//                 obj[name] = [];
-//                 obj[name].push(oldValue);
-//             }
-
-//             obj[name].push(value);
-
-//         } else {
-//             obj[name] = value;
-//         }
-//     }
-
-
-//     var len = formElement.elements.length;
-//     for ( var i=0; i<len; i++ ) {
-//         var element = formElement.elements[i];
-        
-//         if ( !element.name || element.name.trim()=='' ) continue;   // 엘리먼트의 이름이 없거나 빈 값이면 skip.
-
-//         if ( element.type=='checkbox' || element.type=='radio' ) {
-//             if ( element.checked ) {
-//                 add(element.name, element.value);
-//             }
-
-//         } else if ( element.type=='text' ) {
-//             add(element.name, element.value);
-
-//         } else if ( element.type=='textarea' ) {
-//             add(element.name, element.value);
-
-//         } else if ( element.type=='select-multiple' ) {
-//             for ( var j=0; element.options && j<element.options.length; j++ ) {
-//                 if ( element.options[i].selected ) {
-//                     add(element.name, element.options[i].value);
-//                 }
-//             }
-
-//         } else if ( element.type=='select-one' || element.type=='select' ) {
-//             add(element.name, element.value);
-//         }
-
-//     }
-
-//     console.log("변환값 ", obj);
-//     console.log(JSON.stringify(obj));
-
-//     return obj;
-
-// }
-
-
-/**
- * Javascript 객체의 내용대로 Form의 element(controls)의 값을 세팅한다.
- * 
- * 주의 : 현재 버전에서는 select-multiple가 지원되지 않음.
- */
-// function initFormData(formElement, initData) {
-//     if ( !formElement ) throw '처리할 FORM이 지정되지 않았습니다.';
-
-//     var changeEvent = new Event('change');
-//     Object.keys(initData).forEach(function(name, idx) {
-//         console.log("처리 중 : ", name);
-
-//         var val = initData[name];
-
-//         if ( Array.isArray(initData[name]) ) {      // ------------------- 입력 값이 배열인 경우
-//             console.log("    배열");                    
-
-//             // 해당 checkbox 그룹을 초기화한다.
-//             formElement.querySelectorAll("input[type='checkbox'][name='" + name + "']").forEach(function(el) {
-//                 if ( el.value=='' ) el.checked = true;
-//                 else el.checked = false;
-//             });
-
-//             // 값이 있는 것들만 check한다.
-//             val.forEach(function(eachVal, idx) {
-//                 var target = formElement.querySelector("input[type='checkbox'][name='" + name + "'][value='" + eachVal + "']");
-//                 if ( target ) {
-//                     target.checked = true;
-//                     target.dispatchEvent(changeEvent);
-//                 }
-//             });
-
-
-//         } else {                                    // ------------------- 입력 값이 단일 값(배열이 아님)인 경우
-//             console.log("    단일값");
-
-//             formElement.querySelectorAll("[name='" + name + "']").forEach(function(element) {
-//                 if ( element.type=='textarea' ) {
-//                     //element.innerHTML = val;
-//                     element.value = val;
-//                 } else if ( element.type=='radio' || element.type=='checkbox' ) {
-//                     console.log("    찾아봐 : ", element);
-//                     if ( element.value == val ) {
-//                         element.checked = true;
-//                     } else {
-//                         element.checked = false;        // 이게 문제가 될 수도 있겠다.
-//                     }
-//                 } else if ( element.type=='fieldset' ) {
-//                     // Do Nothing.
-//                 } else {
-//                     element.value = val;
-//                 }
-
-//                 element.dispatchEvent(changeEvent);
-
-//             });
-            
-//         }
-//     });
-
-//     console.log("초기값 설정 완료");
-// }
 
 
     var JobAdManagementApp = (function() {
@@ -711,7 +578,6 @@
                     btnSubmit.hidden    = false;
                     
                     loadJobAd(params.jobAdId);      // 기존 공고 로드
-                    CURRENT_JOB_AD_ID = null;
 
                     jobAdForm.removeEventListener('submit', onSubmitForModify);
                     jobAdForm.addEventListener('submit', onSubmitForRegister);
@@ -798,7 +664,7 @@
 
             callApi("GET", "/api/jobAd/" + jobAdId + "/", null,
                 function(resData) {
-                    CURRENT_JOB_AD_ID = resData.id;
+                    CURRENT_JOB_AD_ID = resData.jobAdId;
                     //console.log(resData);
                     //console.log(JSON.stringify(resData));
                     initFormData(jobAdForm, resData);                    
@@ -851,13 +717,14 @@
             //var apiParam = $(jobAdForm).serialize();
             //console.log("등록 처리 수행 ", apiParam);
             var data = createObjectFromFormData(jobAdForm);
-            data.id = CURRENT_JOB_AD_ID;
+            data.jobAdId = CURRENT_JOB_AD_ID;
             var apiParam = JSON.stringify(data);
             console.log("수정 처리 수행 : ", apiParam);
             
             var userId = LOGIN_INFO.getId();
-            //callApi("PUT", "/api/jobAd/" + jobAdId + "/", apiParam,
-            callApi("PUT", "/api/user/"+userId+"/hospital/jobAd/"+ CURRENT_JOB_AD_ID+"/", apiParam,
+            //callApi("PUT", "/api/hospital/" + hospitalId + "/jobAd/" + data.jobAdId + "/", apiParam,
+			//callApi("PUT", "/api/user/"+userId+"/hospital/jobAd/"+ CURRENT_JOB_AD_ID+"/", apiParam,
+			callApi("PUT", "/api/jobAd/"+ CURRENT_JOB_AD_ID+"/", apiParam,
                 function(resData) {
                     console.log(resData);
                     initFormData(document.getElementById("jobAdForm"), resData);   // 수신된 값으로 다시 변경한다.
@@ -885,14 +752,15 @@
 
             // 서버 호출 및 다음 STEP 이동
 
-            //var apiParam = $(jobAdForm).serialize();
-            var apiParam = JSON.stringify(createObjectFromFormData(jobAdForm));
+			//var apiParam = $(jobAdForm).serialize();
+			var apiParam = createObjectFromFormData(jobAdForm);
+			apiParam.hospitalId = LOGIN_INFO.getHospitalId();
             console.log("등록 처리 수행 ", apiParam);
 
             //return;
             
             var userId = LOGIN_INFO.getId();
-            callApi("POST", "/api/user/"+userId+"/hospital/jobAd/", apiParam,
+            callApi("POST", "/api/jobAd/", JSON.stringify(apiParam),
                 function(resData) {
                     console.log(resData);
                     CURRENT_JOB_AD_ID = resData.id;

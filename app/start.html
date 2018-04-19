@@ -350,33 +350,6 @@
             {{/each}}
         </script>
     </section>
-    <!-- loading spinner, 'active' 클래스로 활성화 -->
-    <div class="dental-loading" id="loadingModal" hidden>
-        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
-        <div class="loading-overlay" hidden></div>
-    </div>
-    <!-- Alert Modal 'active' 클래스로 활성화, alert 모달은 텍스트 안내 및 확인/취소 클릭 용도로 사용 -->
-    <div class="dental-modal dental-alert" id="alertModal" hidden>
-        <div class="dental-modal-container">
-            <div class="modal-container-header">
-                <div class="modal-container-header-title" id="alertModalTitle"></div> <!-- modal title 기본은 텍스트 없으면 안보임, type2 는 기본 타이틀 그냥 보임 -->
-                <div class="modal-container-header-desc" id="alertModalTitleDesc"></div> <!-- sub title 텍스트 없으면 안보임 -->
-                <input class="modal-close-input" type="checkbox" id="modalCloseBtn" hidden> <!-- 우측 상단 닫기 버튼 스위치, 기본은 display: none, check 하면 닫기 버튼 보임 -->
-                <label for=""class="modal-close-label" title="close"><i class="fa fa-window-close" title="close"></i></label>
-            </div>
-            <div class="modal-container-body" id="alertModalBody"></div>
-            <div class="modal-container-footer" id="alertModalFooter">
-                <button class="btn btn-action" title="confirm">확인</button>
-                <button class="btn btn-action" title="cancel">취소</button>
-            </div>
-        </div>
-        <div class="dental-modal-overlay" hidden></div>
-    </div>
-    <div class="dental-toast" id="dentalToast">
-        <div class="toast-alert" id="toastAlert"></div>
-        <div class="toast-alert-overlay"></div>
-        <div class="toast-inform" id="toastInform"></div>
-    </div>
     <footer class="container">
         FOOTER
     </footer>

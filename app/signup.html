@@ -97,13 +97,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="step-content">
-                    <div class="dental-card login-section">
+                <div class="step-content login-section">
+                    <div class="dental-card">
                         <div class="dental-card-header">
                             <div class="dental-card-header-title h4" style="margin-bottom: 1.5rem;">가입정보 입력</div>
                         </div>
-                        <div class="dental-card-body">
-                            <div class="form-group" style="background-color: #2a5082; line-height: 3rem; font-size: 0.9rem; color: #FFF; ">
+                        <div class="login-section-body">
+                            <div class="form-group facebook-login">
                                 <i class="fab fa-facebook" style="margin: 0 0.5rem; font-size: 1.2rem;"></i>
                                 <span>페이스북으로 바로 이용하기</span>
                             </div>
@@ -118,7 +118,7 @@
                                 <input class="styled-input" type="email" id="email" name="email" required placeholder="이메일 아이디" >
                                 <span class="form-group-underline"></span>
                                 <span class="dental-btn confirmed-btn" hidden><i class="fal fa-check-circle"></i></span>
-                                <div id="emailStatus" class="form-group-msg2" hidden> 아이디로 사용할 이메일 주소를 입력해 주세요.</div>
+                                <div id="emailStatus" class="form-group-msg2"> 아이디로 사용할 이메일 주소를 입력해 주세요.</div>
                             </div>
                             <div id="emailStatus" class="form-msg"></div>
                             <div class="form-group">
@@ -131,14 +131,14 @@
                                 <!-- <input type="password" id="passwordConfirm" name="passwordConfirm" required pattern="[0-9a-fA-F]{8,12}" placeholder="비밀번호 확인" > <!-- 패턴은 테스트용 수정필요 -->
                                 <input class="styled-input" type="password" id="passwordConfirm" name="passwordConfirm" required  placeholder="비밀번호 확인" > <!-- 패턴은 테스트용 수정필요 -->
                                 <span class="form-group-underline"></span>
-                                <div id="passwordStatus" class="form-group-msg2" hidden> 비밀번호가 같지 않습니다.</div>
+                                <div id="passwordStatus" class="form-group-msg2"></div>
                             </div>
                             <div class="basic">
                                 <button type="submit" class="btn btn-primary" >가입하기</button>
                                 <label style="margin-left: 0.5rem"><input type="checkbox" name="keepingLoginType" value="1" ><span style="margin-left: 0.5rem;">로그인 상태 유지</span></label>
                             </div>
                         </div>
-                        <div class="card-footer loginFooter">
+                        <div class="login-section-footer">
                             <div class="checkRegister">
                                 <a href="login.html">
                                     <span>이미 회원이시라면?</span>
@@ -315,11 +315,11 @@
             // API 호출 ==> 완료되면, 다음 단계로
             // API 호출 ==> 실패하면?
 
-            var apiParam = $(signupForm).serialize();
+			var apiParam = createObjectFromFormData(signupForm);
             console.log("등록 처리 수행 ", apiParam);
 
             
-            callApi("POST", "/api/user/", apiParam,
+            callApi("POST", "/api/user/", JSON.stringify(apiParam),
                 function(resData) {
                     console.log(resData);
                     alert("등록되었습니다.");
@@ -351,7 +351,8 @@
                 },
                 function(errorCode, errorMsg) {
                     alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                }
+				},
+				"application/json"
             );
         }
 

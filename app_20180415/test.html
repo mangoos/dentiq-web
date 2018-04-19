@@ -1,0 +1,68 @@
+
+<style>
+#modal {display:none;background-color:#FFFFFF;position:absolute;top:300px;left:200px;padding:10px;border:2px solid #E2E2E2;z-Index:9999}
+	
+</style>
+<p>테스트</p>
+<input type = "text" name ="test" id="test" value="" maxlength="13"  />
+
+
+<div id="modal" style="display: none">    
+	<div id="modal-msg">이 창은 모달창입니다.</div>
+	<div>
+		<button id="btnModalConfirm">확인</button>
+		<button id="btnModalCancel">취소</button>
+		<button id="btnModalClose">닫기</button>
+	</div> 
+</div>
+
+<script>
+    
+    // function preventKorean(event) {
+    //     console.log("입력된 값 : ", this.value);
+    //     this.value = this.value.replace(/[(ㄱ-힣a-zA-Z)]/gi, '');
+    // }
+    
+	// document.getElementById("test").addEventListener("keyup", preventKorean);
+	
+	var Dialog = (function() {
+
+		var background;
+
+		var MODAL = document.getElementById("modal");
+
+		var addOveray = function() {
+			var overayHtml = "<div id='modalOverlay' style='display:none;width:100%;position:absolute;top:0px;left:0px;opacity:0.5;background-color:#000000;z-Index:999'></div>";
+			$("#modal").before(overayHtml);
+			//$("#")
+			
+		}
+
+		return {
+			alert: function(msg) {
+				
+			},
+			confirm: function(msg, callbackAction) {
+				if ( !callbackAction || typeof callbackAction !== 'function' ) throw "콜백함수가 지정되지 않았습니다.";
+
+				MODAL.style.display = "block";
+				addOveray();
+
+				// 닫기 버튼
+				function onClickClose(event) {
+					MODAL.style.display = "none";
+				}
+				document.getElementById("btnModalClose").addEventListener("click", onClickClose);
+				
+				function onClickConfirm(event) {
+					MODAL.style.display = "none";
+					callbackAction();
+					document.getElementById("btnModalConfirm").removeEventListener("click", onClickConfirm);
+				}
+				document.getElementById("btnModalConfirm").addEventListener("click", onClickConfirm);
+			}
+		}
+
+	})();
+
+</script>

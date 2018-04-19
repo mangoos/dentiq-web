@@ -12,16 +12,8 @@
 
 	<script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
-    <script src="js/handlebars.min.js"></script>
-	<style>
-		.dental-panel .dental-icon-nav { border: 1px solid #c7c7c7; border-top: none; }
-		.dental-panel .icon-nav-item { flex-basis: 25%; border-radius: 0; padding: 4rem .2rem .3rem .2rem; }
-		.fa-thumbtack { transform: rotate(45deg); }
-		.dental-panel .dental-icon-nav .icon-nav-item { border: none; border-right: 1px solid #c7c7c7; border-top: 1px solid #c7c7c7; }
-		.dental-panel .dental-icon-nav .icon-nav-item:nth-child(4n) { border-right: 0; }
-		.dental-panel .icon-nav-item .nav-item-icon { font-size: 1.6rem; top: 40%; left: 50%; transform: translate(-50%, -50%); color: #0083cb;}
-		.dental-panel .icon-nav-item .nav-item-title { font-size: 0.8rem; }
-	</style>
+	<script src="js/handlebars.min.js"></script>
+	<script src="js/dental_ui.js"></script>
 </head>
 <body>
     <header class="register-header navbar">
@@ -53,6 +45,7 @@
 				<div class="user-photo-title">sjw0927@ gmail.com</div>
 				<div class="user-photo-subtitle">선진혁</div>
 			</div>
+			<div class="dental-panel-opt"><a href="user_setting.html"><i class="fas fa-cog"></i></a></div>
 		</div>
 		<div class="panel-nav">
 			<nav class="dental-icon-nav">
@@ -88,27 +81,28 @@
 					<span class="nav-item-icon"><i class="fal fa-file-edit"></i></span>
 					<span class="nav-item-title">이력서수정</span>
 				</a>
+				<a class="icon-nav-item" href="find_password.html">
+					<span class="nav-item-icon"><i class="fal fa-key"></i></span>
+					<span class="nav-item-title">비밀번호</span> 
+				</a>
+				<!-- 비밀번호 변경 또는 찾기 비밀번호와 알림설정 그리고 아래 로그아웃은 한 페이지로 작성, 메뉴는 네비게이션으로 제공-->
+				<a class="icon-nav-item" href="user_setting.html">
+					<span class="nav-item-icon"><i class="fal fa-bell"></i></span>
+					<span class="nav-item-title">알림설정</span> <!-- 메시지 수신 동의 설정-->
+				</a>
+				<a class="icon-nav-item" href="">
+					<span class="nav-item-icon"><i class="fal fa-question-square"></i></span>
+					<span class="nav-item-title">고객센터</span> <!-- 카카오톡 플러스 친구 또는 메일 보내기 // 전화는 일단 X-->
+				</a>
+				<a class="icon-nav-item" href="dentalplus_inform.html">
+					<span class="nav-item-icon"><i class="fal fa-info-circle"></i></span>
+					<span class="nav-item-title">공지/안내</span> <!-- 공지/안내 -->
+				</a>
 			</nav>
 		</div>
-		<div class="panel-body">
-			<input type=radio name="dental-panel" id="dental-panel-tab1" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab2" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab3" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab4" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab5" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab6" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab7" hidden>
-			<input type=radio name="dental-panel" id="dental-panel-tab8" hidden>
-			<div class="tab-content"></div>
-			<div class="tab-content"></div>	
-			<div class="tab-content">관심병원 채용 정보</div>
-			<div class="tab-content">내 스크랩 공고</div>
-			<div class="tab-content">내 지원 현황</div>
-			<div class="tab-content">면접 요청 접수 현황</div>
-			<div class="tab-content">7번</div>
-			<div class="tab-content">register-resume 파일로 링크 또는 탭 아래에 보여주기</div>
-		</div>
+		<div class="panel-body"></div>
 		<div class="panel-footer">
+			<a class="btn btn-sm" href="javaScript:void(0);" onclick="LOGIN_INFO.logout();"> <span>로그 아웃</span> </a>
 		</div>
     </section>
 </body>
