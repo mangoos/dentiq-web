@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <!-- loading spinner, 'active' 클래스로 활성화 -->
+    <div class="dental-loading" id="loadingModal" hidden>
+        <div class="fa-icon"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>
+        <div class="loading-overlay" hidden></div>
+    </div>
+
+    <!--================================================================================================-->
+    <!--                                                                                                -->
+    <!--                                         주소 모달                                               -->
+    <!--                                                                                                -->
+    <!--================================================================================================-->
+    <div class="dental-modal juso-modal" id="jusoModal">
+        <input type="checkbox" id="modal-juso" name="modal-toggle" hidden><!-- 모달 체크박스 -->
+        <label for="modal-juso"><div class="dental-modal-overlay"></div></label> <!-- 배경, 체크박스로 하면 배경을 레이블로 해서 모달 죽일 수 있음-->
+        <div class="dental-modal-container">
+            <div class="modal-container-header">
+                <div class="modal-container-header-title">주소 검색</div>
+                <div class="modal-container-header-desc">예시에 따라 검색하면 빠르게 찾을 수 있습니다.</div>
+                <label class="modal-close-label" for="modal-juso" rel="dental-modal" title="닫기"><i class="fa fa-window-close"></i></label>
+            </div>
+            <div class="modal-container-body address_search">
+                <form id="jusoSearchForm">  <!-- 주소검색 Form -->
+                    <div class="form-group">
+                        <input type="text" class="styled-input" name="keyword" id="jusoSearchKeyword" maxlength="40" placeholder="예) 판교역로 235, 운중 산운마을" required>
+                        <!-- <label class="styled-label">주소</label> -->
+                        <!-- <span class="form-group-desc">정확하게 입력</span> -->
+                        <!-- <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span> -->
+                        <span class="form-group-btn"><button type="submit" class="btn btn-primary">검색</button></span>
+                        <span class="form-group-underline"></span>
+                        <!-- <div class="form-group-msg2" hidden></div> -->
+                    </div>
+                </form>
+                <div class="adderss-search-tip on" id="addrTip" hidden> 
+                    <div class="info_body">
+                        <p class="tit_tip">tip</p>
+                        <p class="desc_tip">아래와 같은 조합으로 검색을 하시면 더욱 정확한 결과가 검색됩니다.</p>
+                        <p class="desc_tip">도로명 + 건물번호</p>
+                        <span class="txt_example">예) 판교역로 235, 제주 첨단로 242</span>
+                        <p class="desc_tip2">지역명(동/리) + 번지</p>
+                        <span class="txt_example">예) 삼평동 681, 제주 영평동 2181</span>
+                        <p class="desc_tip2">지역명(동/리) + 건물명(아파트명)</p>
+                        <span class="txt_example">예) 분당 주공, 연수동 주공3차</span>
+                        <p class="desc_tip2">사서함명 + 번호</p>
+                        <span class="txt_example">예) 분당우체국사서함 1~100</span>
+                    </div>
+                </div>
+                <div class="address-search-result" id="addrResult" hidden>
+                    <p class="result-amount">총 <strong id="totalCount">0</strong>건</p>
+                    <ul id="jusoList" class="result_list"></ul>
+                    <script id="jusoListTemplate" type="text/x-handlebars-template">
+                        {{#each .}}
+                        <li data-juso-idx="{{jusoIdx}}">
+                            <div class="address-item road-name"><span>도로명</span><p>{{roadAddr}}</p></div>
+                            <div class="address-item jibun"><span>지번</span><p>{{jibunAddr}}</p></div>
+                            <div class="zip-code">{{zipNo}}</div>                                
+                        </li>
+                        {{/each}}
+                    </script>
+                </div>
+            </div>
+            <div class="modal-container-footer"></div>
+        </div>
+    </div>
+    <script>
+        /**
+         * 주소 모달 화면
+         */
+        //var JusoModal = function(selectedJuso, funcAfterSelecting) {
+        var JusoModal = function(funcAfterSelecting) {
+
+            var loadingModal = new LoadingModal(document.getElementById("loadingModal"));
+
+            var JUSO_PER_PAGE = 10;         // 한번에 조회할 주소 아이템의 개수
+            var SCROLL_LOCK = false;        // 주소 선택 영역 스크롤 락
+
+            var lastPageNo = 1;             // 마지막 주소 아이템 페이지의 번호
+            var lastJusoKeyword;            // 마지막 주소 검색 키워드 
+
+            var totalJusoCount = 0;         // 검색된 주소 아이템의 개수
+            var jusoContainer = {};         // 검색된 주소의 누적
+
+            /******************************************************************************/
+            /*  스크롤했을 때, 주소 아이템에 대한 append 처리
+            /*  
+            /*******************************************************************************/
+            $("#jusoList").scroll(function() {
+                //console.log(this);
+                
+                if ( totalJusoCount == 0 ) return;
+
+                var maxPageNo = totalJusoCount / JUSO_PER_PAGE + 1;  // 한 페이지에 10개의 목록 지정 (개수 조정 시 변경 필요)
+                if ( (lastPageNo+1) >= maxPageNo ) return;
+
+                if ( SCROLL_LOCK ) {
+                    console.log("SCROLL : LOCKED" );
+                    setTimeout(function() {
+                        SCROLL_LOCK = false;
+                        console.log("SCROLL_LOCK 풀렸음");
+                    }, 500);
+                    return;
+                }
+
+                var element = document.getElementById("jusoList");
+                console.log(element.scrollHeight, ", ", Math.ceil(element.scrollTop), ", ", element.clientHeight);
+                
+                if ( element.scrollHeight - Math.ceil(element.scrollTop) == element.clientHeight ) {
+                    console.log("바닥");
+                    searchJuso(lastJusoKeyword, (lastPageNo+1));
+                }
+                
+            });
+
+
+            // 주소 모달 submit (검색 실행)
+            $("#jusoSearchForm").submit(function(e) {
+                e.preventDefault();
+                lastJusoKeyword = $("#jusoSearchForm input[name=keyword]").val();
+                lastPageNo = 1;         // 초기화
+                jusoContainer = {};     // 초기화
+                selectedJuso = null;    // 초기화
+                $("#jusoList").html('');
+                searchJuso(lastJusoKeyword, 1);
+            });
+
+
+
+            // 지역코드 - 시도 선택 템플릿 객체
+            var jusoListTemplate = $("#jusoListTemplate").html();
+
+            // 주소 모달에서 주소 검색 실행
+            function searchJuso(keyword, currentPage) {
+
+                if ( SCROLL_LOCK ) {
+                    console.log("SCROLL LOCKED - in JS");
+                    setTimeout(function() {
+                        SCROLL_LOCK = false;
+                        console.log("listJobAds:SCROLL_LOCK 풀렸음");
+                    }, 500);
+                    return;
+                }
+                SCROLL_LOCK = true;
+
+                var apiParam = "keyword=" + keyword;
+                if ( currentPage!=null ) apiParam += "&currentPage=" + currentPage;
+
+                // LOADING 표시 - 시작
+                loadingModal.open();
+                
+
+                callApi("GET", "/api/location/", apiParam, 
+                    function(resData) {
+                        var errorCode = resData.common.errorCode;
+                        if ( errorCode!="0" && errorCode!="00" ) {
+                            // 에러 팝업 띄울 것
+                            alert("juso.go.kr 에러 ", errorCode);
+                            loadingModal.close(); // LOADING 표시 - 끝
+                            return;
+                        }
+
+                        console.log("주소 처리 시작");
+
+                        totalJusoCount = resData.common.totalCount;
+                        if ( currentPage!=null ) lastPageNo = currentPage;
+                        resData.locationList.forEach(function(jusoItem) {
+                            jusoContainer[jusoItem.jusoIdx] = jusoItem;
+                            console.log("데이터 세팅 결과 : ", jusoContainer[jusoItem.jusoIdx]);
+                            console.log("\t\t!!!! 현재까지의 jusoContainer : ", jusoContainer)
+                        });
+
+                        var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.locationList);
+                        if ( currentPage!=null && currentPage>1 ) {
+                            $("#jusoList").append(jusoListContent);
+                        } else {
+                            $("#jusoList").html(jusoListContent);
+                        }
+
+                        $("#totalCount").html(totalJusoCount);
+                        //console.log(jusoList);
+
+                        SCROLL_LOCK = false;
+                        loadingModal.close(); // LOADING 표시 - 끝
+                        if( addrTip.classList.contains("on") ) { addrTip.classList.remove("on"); } // 선정우가 한땀, 주소 검색 팀박스 hidden 처리
+                        if( !addrResult.classList.contains("on") ) { addrResult.classList.add("on"); } // 선정우가 한땀, 주소 검색 결과 박스 on 처리
+                    },
+                    function(errorCode, errorMsg) {
+                        alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                        SCROLL_LOCK = false;
+                        loadingModal.close(); // LOADING 표시 - 끝
+                    }
+                );
+            }
+
+            // 주소모달을 Open한다.
+            function _openJusoModal() {
+                document.getElementById("modal-juso").checked = true;
+                document.getElementById("jusoSearchKeyword").focus();
+            }
+            // 주소모달을 close한다.
+            function _closeJusoModal() {
+                document.getElementById("modal-juso").checked = false;
+                // 클로즈 하면서 주소 모달 초기화(검색결과 날리고 결과 박스 hidden, tip 박스 on) 필요 -- 선정우 코멘트
+                addrTip.classList.add("on"); // 선정우가 한땀, 주소 검색 팀박스 on 처리 이미 있으면 무시함
+                addrResult.classList.remove("on"); // 선정우가 한땀, 주소 검색 결과 박스 hidden 처리, 이미 없으면 패쓰
+                jusoList.innerHTML = ""; // 선정우가 한땀, 주소 검색 결과 리스트 초기화
+            }
+
+
+            // 주소 모달에서 주소 선택했을 때, 부모 화면에 주소 값을 세팅해주고, 자신은 close.
+            $("#jusoList").on("click", "li", function() {
+                var jusoIdx = $(this).attr("data-juso-idx");
+
+                console.log("선택된 주소 ", jusoContainer[jusoIdx]);
+
+                // 1. 좌표 검색 수행
+                //getCoordiate(jusoContainer[jusoIdx]);
+                var coordinateParam = convertObjectToFormDataString(jusoContainer[jusoIdx]);
+                console.log("보낼 데이터 ", coordinateParam);
+
+                callApi("GET", "/api/coordinate/", coordinateParam, 
+                    function(resData) {
+                        console.log(resData);
+
+                        jusoContainer[jusoIdx].entX          =   resData[0].entX;           // 출입구 X좌표
+                        jusoContainer[jusoIdx].entY          =   resData[0].entY;           // 출입구 X좌표
+                        console.log("주소 & 좌표 검색 완료 : ", jusoContainer[jusoIdx]);
+
+                        _closeJusoModal();              // 자신을 닫기
+
+                        funcAfterSelecting(jusoContainer[jusoIdx]);     // 추가 Callback 함수 실행
+                    },
+                    function(errorCode, errorMsg) {
+                        alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                    }
+                );
+                
+            });
+
+            return {
+                closeJusoModal : function() {
+                    _closeJusoModal();
+                },
+                openJusoModal : function() {
+                    _openJusoModal();
+                }
+            }
+        }
+    
+    </script>
+    <!--================================================================================================-->
+    <!--                                    주소 모달 종료                                               -->
+    <!--================================================================================================-->
+
+    <section class="register-dentist dental-steps">
+        <input type="radio" name="steps" id="register-user-1" checked hidden>
+        <input type="radio" name="steps" id="register-user-2" hidden>
+        <div class="step">
+            <label class="step-item" for="register-user-1"><span>병원정보</span></label>
+            <label class="step-item" for="register-user-2"><span>이용안내</span></label>
+        </div>
+        <div class="step-body">
+            <!--================================================================================================-->
+            <!--                                                                                                -->
+            <!--                                             병원 정보                                           -->
+            <!--                                                                                                -->
+            <!--================================================================================================-->
+            <div class="step-content">
+                <div class="step-content-header">
+                    <div class="content-title"><i class="far fa-hospital-alt"></i>우리병원 기본정보 등록</div>
+                    <div class="content-desc">구직자들에게 제공할 병원 기본 정보를 등록합니다.</div>
+                    <div class="content-desc"> 덴탈 플러스 매칭 알고리즘을 통해 보다 정확한 인재 추천을 가능하게 합니다.</div>
+                    <div class="content-desc"><i class="fal fa-check" style="color: red; margin-right: 0.5rem; margin-left: 0.5rem;"></i> 항목은 최소 필수 입력값입니다.</div>
+                </div>
+                <form id="hospitalInfoForm"> <!-- 병원 선택 완료 후 또는 바로 입력 클릭 후 노출 처리 -->
+                    <div class="fixed-layer-action">
+                        <button class="fixed-layer-action-btn" id="btnAction" type="submit" disabled hidden></button>
+                    </div>
+                    <div class="dental-card">
+                        <div class="dental-card-header"><div class="dental-card-header-title h4">기본정보</div></div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="text" class="styled-input" id="bizRegName" name="bizRegName" maxlength="20"  placeholder="사업자등록 상 사업장명" required>
+                                <label class="styled-label">사업장명</label>
+                                <span class="form-group-desc">정확하게 입력</span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" id="bizRegName" name="hospitalName" maxlength="20"  placeholder="병원명 입력" required>
+                                <label class="styled-label">병원명</label>
+                                <span class="form-group-desc">정확하게 입력</span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <select class="styled-select" name="hospitalTypeCode" id="hospitalTypeCode" required>
+                                    <!--
+                                    <option value="">선택</option>
+                                    <option value="HIRA_41">치과의원</option>
+                                    <option value="HIRA_51">치과병원</option>
+                                    <option value="DP_10">치과기공소</option>
+                                    <option value="HIRA_11">종합병원</option>
+                                    <option value="DP_45">네트워크치과</option>
+                                    <option value="DP_00">개원예정</option>
+                                    <option value="0">기타(직접 입력)</option>
+                                    -->
+                                </select>
+                                <input type="text" name="hospitalTypeText" id="hospitalTypeText" maxlength="50" placeholder="사업장구분(직접입력)" disabled hidden>
+                                <span class="form-group-underline"></span>
+                                <div class="form-group-msg2"></div>
+                                <label class="styled-label">사업장구분</label>
+                            </div>
+                            <script>
+                                setSelectOptions(document.getElementById("hospitalTypeCode"), CODE_CONTAINER.getHospitalTypeCode());
+
+                                // function renderHospitalTypeCode() {
+                                //     var htmlStr = "";
+                                //     CODE_CONTAINER.getHospitalTypeCode().forEach(function(el) {
+                                //         htmlStr += '<option value="' + el.value + '">' + el.text + '</option>';
+                                //     });
+
+                                //     document.getElementById("hospitalTypeCode").innerHTML = htmlStr;
+                                // }
+                                // renderHospitalTypeCode();
+
+                                document.getElementById("hospitalTypeCode").addEventListener("change", function() {
+                                    var hospitalTypeText = document.getElementById("hospitalTypeText");
+                                    if ( this.value && this.value=="0" ) {
+                                        hospitalTypeText.disabled = false;
+                                        hospitalTypeText.hidden = false;
+                                    } else {
+                                        hospitalTypeText.disabled = true;
+                                        hospitalTypeText.hidden = true;
+                                    }
+                                });
+                            </script>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="estDate" placeholder="예) 20180309">
+                                <label class="styled-label">설립일</label>
+                                <span class="form-group-desc">숫자로만 입력</span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="ceoName" maxlength="10"  placeholder="사업자등록상 대표자명" required>
+                                <label class="styled-label">대표자명</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="hospitalUrl" maxlength="50"  placeholder="홈페이지 주소">
+                                <label class="styled-label">홈페이지</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="location.addrMain" id="addrMain" placeholder="" readonly required>
+                                <label class="styled-label" >주소</label>
+                                <!-- <span class="form-group-desc"></span> -->
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
+                                <span class="form-group-underline"></span>
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group-linked"> <!-- 바로 위 styled-form-group input 에 값 입력된 후에 enabled 처리 -->
+                                <input class="styled-input" type="text" name="location.addrDetail" id="addrDetail" placeholder="상세주소" required>
+                                <span class="form-group-underline"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="hospitalTelNo" maxlentth="20" placeholder="예)0102349876" required>
+                                <label class="styled-label">대표 전화번호</label>
+                                <span class="form-group-desc">사업장 대표 전화번호</span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="hospitalEmail" maxlentth="50" placeholder="이메일 입력" required>
+                                <label class="styled-label">대표 이메일</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="dental-card">
+                        <div class="dental-card-header"><div class="dental-card-header-title h4">진료정보</div></div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-group-header"><div class="form-group-header-title">휴일/휴진</div></div>
+                                <fieldset class="form-group-body">
+                                    <div id="divHolyday"></div>
+                                    <textarea class="dentist-holiday" id="holidayText" name="holidayText" rows="4"  placeholder="기타/추가 내용을 입력해 주세요." hidden></textarea>
+                                </fieldset>
+                            </div> 
+                            <script>
+                                function renderDivHoliday() {
+                                    var htmlStr = '';
+                                    CODE_CONTAINER.getHolyday().forEach(function(el) {
+                                        htmlStr += '<label class="attr-checkbox"><input type="checkbox" name="holiday[]" value="' + el.value + '" hidden><span class="chip">' + el.text + '</span></label>';
+                                    });
+                                    document.getElementById("divHolyday").innerHTML = htmlStr;
+                                }
+                                renderDivHoliday();
+
+
+                                function holidayTextToggle(event) {
+                                    var target = document.getElementById("holidayText");
+                                    if ( this.checked ) {
+                                        target.hidden = false;
+                                        target.disabled = false;
+                                    } else {
+                                        target.hidden = true;
+                                        target.disabled = true;
+                                        //target.value = null;
+                                    }
+                                }
+                                document.querySelector("input[type='checkbox'][name='holiday[]'][value='0']").addEventListener("change", holidayTextToggle);
+
+
+                                function onChangeOrInputHolidayText(event) {
+                                    console.log("holidayText 이벤트");
+                                    if ( this.value && this.value!='' ) {
+                                        document.querySelector("input[type='checkbox'][name='holiday[]'][value='0']").checked = true;
+                                        this.disabled = false;
+                                        this.hidden = false;
+                                    } else {
+                                        document.querySelector("input[type='checkbox'][name='holiday[]'][value='0']").checked = false;
+                                        this.disabled = true;
+                                        this.hidden = true;
+                                    }
+                                }
+                                document.getElementById("holidayText").addEventListener("change", onChangeOrInputHolidayText);
+                                document.getElementById("holidayText").addEventListener("input", onChangeOrInputHolidayText);
+                                document.getElementById("holidayText").addEventListener("focusout", onChangeOrInputHolidayText);
+                            </script>
+                            <div class="form-group">
+                                <style>
+                                    fieldset.form-group-body label { display: inline-block; overflow: hidden; white-space: nowrap;
+                                        text-overflow: ellipsis; margin-bottom: 4px; width: calc( 100%/3 - 4px); }
+                                    #weekday-oper-time ~ div.operation-time[data-tag=weekday] { display: none; }
+                                    #weekday-oper-time:checked ~ div.operation-time[data-tag=weekday] { display: block; }
+                                    #weekend-oper-time ~ div.operation-time[data-tag=weekend] { display: none; }
+                                    #weekend-oper-time:checked ~ div.operation-time[data-tag=weekend] { display: block; }
+                                    #etc-oper-time ~ div.operation-time[data-tag=etc] { display: none; }
+                                    #etc-oper-time:checked ~ div.operation-time[data-tag=etc] { display: block; }
+                                    #holiday-etc ~ .dentist-holiday[data-tag=holiday-etc] { display: none; }
+                                    #holiday-etc:checked ~ .dentist-holiday[data-tag=holiday-etc] { display: block; }
+                                </style>
+                                <div class="form-group-header"><div class="form-group-header-title">진료시간</div></div>
+                                <fieldset class="form-group-body">
+                                    <input id="weekday-oper-time" type="checkbox" checked hidden required><label for="weekday-oper-time"><span class="chip">평일</span></label>
+                                    <input id="weekend-oper-time" type="checkbox" hidden><label for="weekend-oper-time"><span class="chip">주말</span></label>
+                                    <input id="etc-oper-time"     type="checkbox" hidden><label for="etc-oper-time"><span class="chip">기타/추가</span></label>
+
+                                    <div class="operation-time form-group" data-tag="weekday">
+                                        <select id="weekdayTimeStart" name="workingTimeWeekdayStart" class="select-two styled-select"></select>
+                                        <select id="weekdayTimeEnd" name="workingTimeWeekdayEnd" class="select-two styled-select"disabled></select>
+                                        <label class="styled-label">평일 진료 시간</label>
+                                    </div>
+                                    <script>
+                                        createTimeSelectPair(document.getElementById("weekdayTimeStart"), document.getElementById("weekdayTimeEnd"));
+        
+                                        document.getElementById("weekdayTimeStart").addEventListener("change", function(event) {
+                                            if ( this.value && this.value!='' ) {
+                                                document.getElementById("weekday-oper-time").checked = true;
+                                            } else {
+                                                document.getElementById("weekday-oper-time").checked = false;
+                                            }
+                                        });
+                                    </script>
+                                    <div class="operation-time form-group" data-tag="weekend">
+                                        <select id="weekendTimeStart" name="workingTimeWeekendStart" class="select-two styled-select"></select>
+                                        <select id="weekendTimeEnd" name="workingTimeWeekendEnd" class="select-two styled-select"disabled></select>
+                                        <label class="styled-label">주말 진료 시간</label>
+                                    </div>
+                                    <script>
+                                        createTimeSelectPair(document.getElementById("weekendTimeStart"), document.getElementById("weekendTimeEnd"));
+        
+                                        document.getElementById("weekendTimeStart").addEventListener("change", function(event) {
+                                            if ( this.value && this.value!='' ) {
+                                                document.getElementById("weekend-oper-time").checked = true;
+                                            } else {
+                                                document.getElementById("weekend-oper-time").checked = false;
+                                            }
+                                        });
+                                    </script>
+        
+                                    <div class="operation-time" data-tag="etc">
+                                        <!-- 기타/추가 진료 시간 -->
+                                        <textarea id="workingTimeText" name="workingTimeText" rows="4" placeholder="추가 코멘트를 입력해 주세요."></textarea>
+                                    </div>
+                                    <script>
+                                        function onChangeOrInputWorkingTimeText(event) {
+                                            if ( this.value && this.value.trim()!='' ) {
+                                                document.getElementById("etc-oper-time").checked = true;
+                                            } else {
+                                                document.getElementById("etc-oper-time").checked = false;
+                                            }
+                                        }
+                                        document.getElementById("workingTimeText").addEventListener("change", onChangeOrInputWorkingTimeText);
+                                        document.getElementById("workingTimeText").addEventListener("input", onChangeOrInputWorkingTimeText);
+                                        document.getElementById("workingTimeText").addEventListener("focusout", onChangeOrInputWorkingTimeText);
+                                    </script>                                    
+                                </fieldset>
+                            </div>
+                            <div class="form-group">
+                                <select id="lunchTimeStart" name="lunchTimeStart" class="select-two styled-select" required></select>
+                                <select id="lunchTimeEnd" name="lunchTimeEnd" class="select-two styled-select"disabled></select>
+                                <label class="styled-label">점심시간</label>
+                            </div>
+                            <script>
+                                createTimeSelectPair(document.getElementById("lunchTimeStart"), document.getElementById("lunchTimeEnd"));
+                            </script>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="totalMemberCnt" maxlength="3" placeholder="총구성원수 입력">
+                                <label class="styled-label">총구성원</label>
+                                <span class="form-group-desc">숫자만 입력</span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="clinicSubject" maxlength="30" placeholder="주요 진료과목 입력">
+                                <label class="styled-label">진료과목</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dental-card">
+                        <div class="dental-card-header"><div class="dental-card-header-title h4">진료정보</div></div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="defaultHrOfficerName" maxlength="10" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
+                                <label class="styled-label">담당자</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="defaultHrTelNo"  placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
+                                <label class="styled-label">채용문의 전화번호</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="defaultHrEmail" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
+                                <label class="styled-label">채용문의 이메일</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dental-card">
+                        <div class="dental-card-header"><div class="dental-card-header-title h4">위치/교통 정보</div></div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="" placeholder="지하철 정보입력">
+                                <label class="styled-label">지하철</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="" placeholder="버스노선 정보입력">
+                                <label class="styled-label">버스노선</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="styled-input" name="" placeholder="주변명소 정보입력">
+                                <label class="styled-label">주변명소</label>
+                                <span class="form-group-desc"></span>
+                                <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                                <span class="form-group-underline"></span> 
+                                <div class="form-group-msg2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+<script>
+    
+var HospitaInfoApp = (function() {
+/*
+    function validateRequired(element, msg) {
+        if ( element==null || element.value==undefined ) return;
+        //console.log(element.value);
+        element.value = element.value.trim();
+        if ( element.value.length<1 ) {
+            if ( msg!=null ) alert(msg);
+            else alert("필수값입니다.");
+
+            element.focus();
+            return;
+        }
+    }
+    // 기입력된 값이 숫자인지 확인한다.
+    function validateNumber(element, msg) {
+        if ( element==null || element.value==undefined ) return;
+        var regExp = /[^0-9]/g;
+        if ( regExp.test(element.value.trim()) ) {
+            alert("숫자만 입력 가능");
+            element.focus();
+            return;
+        }
+    }
+    // 입력시에 숫자만 입력되도록 한다. 숫자 외에는 입력 안됨.
+    function forceNumber(element, msg) {
+        if ( element==null || element.value==undefined ) return;
+        element.value = element.value.trim();
+        element.value = element.value.replace(/[^0-9]/g,'');
+    }
+
+    //document.getElementById("bizRegName").addEventListener("input", validRequired);
+    document.getElementById("bizRegName").addEventListener("input", function(event) {
+        event.preventDefault();
+        validateRequired(event.target, "사업장명은 필수입력항목입니다.");
+    });
+
+
+    //document.getElementById("bizRegName").addEventListener("input", validRequired);
+    document.getElementById("bizRegName").addEventListener("input", function(event) {
+        event.preventDefault();
+        validateRequired(event.target, "사업장명은 필수입력항목입니다.");
+    });
+*/
+
+    function init() {
+
+        // 로그인 확인
+        if ( !LOGIN_INFO.isLoggedIn() ) {
+            alert("로그인이 필요합니다.");
+            // 로그인 페이지 이동
+            location.href = "login.html";
+            return;
+        }
+
+        
+        if ( !LOGIN_INFO.isHospitalMember() ) {
+            alert("병원 회원만 사용하실 수 있는 기능입니다.");
+            window.history.back();
+            return;
+		}
+
+		var hospitalId = LOGIN_INFO.getHospitalId();		// 없을 경우에는 다시 LOGIN_INFO를 로드?
+		if ( !hospitalId ) {	// 병원정보가 Session에 없으므로, 병원 정보를 로드불가함.
+			
+
+		}
+
+        // 기존 정보를 로드해서 보여 준다.
+        var userId = LOGIN_INFO.getId();
+        // 병원 정보를 로딩한다.
+		callApi("GET", "/api/user/" + userId + "/hospital/", null,
+		//callApi("GET", "/api/hospital/" + hospitalId + "/", null,
+            function(resData) {
+                if ( resData ) {    // 기존 병원 정보 수정
+                    alert("기존 정보 있음 : 수정 모드");
+
+                    initFormData(document.getElementById("hospitalInfoForm"), resData);
+
+                    var btnAction = document.getElementById("btnAction");
+                    btnAction.innerText = "수정";
+                    btnAction.value = "update";
+                    btnAction.disabled = false;
+                    btnAction.hidden = false;
+                    
+                    oldHospitalInfo = resData;
+
+                    // 선정우 body 에 .viewType class 추가, 이미 있으면 아무 영향 없음.
+                    document.body.classList.add("view-type");
+
+                } else {        // 기존 병원 정보 없으므로 새로 등록
+                    alert("기존 정보 없음 : 등록 모드");
+
+                    var btnAction = document.getElementById("btnAction");
+                    btnAction.innerText = "등록";
+                    btnAction.value = "register";
+                    btnAction.disabled = false;
+                    btnAction.hidden = false;
+                    // 선정우 body 에서 .viewType class 삭제, 이미 없으면 아무 영향 없음.
+                    document.body.classList.remove("view-type");
+
+                }
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+        
+    }
+
+    init();
+
+    var oldHospitalInfo;
+
+    function updateHospital() {
+
+		var userId = LOGIN_INFO.getId();
+
+        var data = createObjectFromFormData(document.getElementById("hospitalInfoForm"));
+        console.log(oldHospitalInfo.hospitalId);
+		data.hospitalId = oldHospitalInfo.hospitalId;		
+		data.userId = userId;	// 현재 세션 사용자로 변경한다. ==> 서버에서 권한 확인 함.
+		
+		console.log("병원 ID : " + oldHospitalInfo.hospitalId + " ==> " + data.hospitalId);
+		console.log("회원 ID : " + userId + " ==> " + data.userId);
+
+
+        // 주소가 변경되었는지 확인한다.
+        if ( selectedJusoResult ) {		// 주소 변경되었음.
+			data.location = selectedJusoResult;
+			data.location.addrMain = document.getElementById("addrMain").value.trim();
+			data.location.addrDetail = document.getElementById("addrDetail").value.trim();
+            console.log("주소 변경 되었음 : 신 데이터 : ", selectedJusoResult);
+        } else {						// 주소 변경 없음
+            console.log("주소 변경 없음 : 구 데이터 : ", oldHospitalInfo.location);
+            data.location = oldHospitalInfo.location;
+		}
+		
+		console.log(data);
+
+        
+        callApi("PUT", "/api/hospital/" + data.hospitalId + "/", JSON.stringify(data),
+            function(resData) {
+                console.log(resData);
+                alert("수정되었습니다.");
+
+                initFormData(document.getElementById("hospitalInfoForm"), resData);
+
+                var btnAction = document.getElementById("btnAction");
+                btnAction.innerText = "수정";
+                btnAction.value = "update";
+                btnAction.disabled = false;
+                btnAction.hidden = false;
+                
+                oldHospitalInfo = resData;
+
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            },
+            "application/json"
+        );
+
+
+
+    }
+
+    function registerHospital() {
+        
+		var data = createObjectFromFormData(document.getElementById("hospitalInfoForm"));
+		
+		data.userId = LOGIN_INFO.getId();;	// 현재 세션 사용자로 변경한다. ==> 서버에서 권한 확인 함.
+
+		if ( !selectedJusoResult ) {
+			alert("병원 주소를 등록해 주세요.");
+			return;
+		}
+
+		data.location = selectedJusoResult;
+		data.location.addrMain = document.getElementById("addrMain").value.trim();
+		data.location.addrDetail = document.getElementById("addrDetail").value.trim();
+
+        
+        console.log("서밋 직전 폼데이터 : ", data);
+
+		//callApi("POST", "/api/user/" + userId + "/hospital/", JSON.stringify(data),
+        callApi("POST", "/api/hospital/", JSON.stringify(data),
+            function(resData) {
+                console.log(resData);
+                alert("등록되었습니다.");
+
+                initFormData(document.getElementById("hospitalInfoForm"), resData);
+
+                var btnAction = document.getElementById("btnAction");
+                btnAction.innerText = "수정";
+                btnAction.value = "update";
+                btnAction.disabled = false;
+                btnAction.hidden = false;
+                
+                oldHospitalInfo = resData;
+
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            },
+            "application/json"
+        );
+    }
+
+
+    function onSubmit(event) {
+        event.preventDefault();
+        var btnAction = document.getElementById("btnAction");
+        if ( btnAction && btnAction.value=='register') {
+            registerHospital();
+        } else if ( btnAction && btnAction.value=='update') {
+            updateHospital();
+        }
+    }
+    document.getElementById("hospitalInfoForm").addEventListener("submit", onSubmit);
+    
+
+
+    // 선택된 주소 정보 객체
+    var selectedJusoResult;
+
+    // 주소 모달 바인딩
+    var jusoModal = new JusoModal(function(newSelectedJuso) {
+        
+        selectedJusoResult = newSelectedJuso;
+        console.log(selectedJusoResult);
+        
+        
+        document.getElementById("addrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
+        document.getElementById("addrMain").classList.add("hasValue");
+        console.log("주소 앞부분 [" + document.getElementById("addrMain").value + "]");                        
+        
+        document.getElementById("addrDetail").focus();                                         // 포커스 이동
+
+    });
+
+    console.log("TEST : 주소모달의 정체 ", jusoModal);
+
+    // 주소 모달 띄우기
+    document.getElementById("addrMain").addEventListener("click", function(event) {
+        // this.disabled = true;
+        jusoModal.openJusoModal();
+        //this.disabled = true;
+        //document.getElementById("modal-juso").checked = true;
+    });
+
+
+
+})();
+
+</script>
+            <!--================================================================================================-->
+            <!--                                                                                                -->
+            <!--                                             완료                                               -->
+            <!--                                                                                                -->
+            <!--================================================================================================-->
+            <div class="step-content">
+                <div class="step-content-header">
+                    <div class="content-title"><i class="fa fa-thumb-tack"></i>이용안내</div>
+                    <div class="content-desc">쉽고 빠른 채용 정보 서비스 덴탈+ 를 편하게 이용해 주세요.</div>
+                    <div class="content-desc">모든 회원 공고 등록 무료! --> 어떤 느낌으로 노출할지 고민</div>
+                    <div class="content-desc">위치 중심 채용 정보 노출!</div>
+                    <div class="content-desc">pc부터 모바일까지 모든 채널에서!</div>
+                    <div class="content-desc">채용 광고하고 싶다면 합리적인 덴탈+!</div>
+                    <div class="content-desc">메인 카피 1개 + 양념 3개 기획할 것!</div>
+                </div>
+                이용안내: 무료등록 + 연간회원 + 광고 안내) <br> 
+                안쓰면 안되는 이유(why?) 3가지 느낌있게
+            </div>
+        </div>
+    </section>
+    <!-- 페이지 bottom layer -->
+    <!--
+    <section class="dental-btm-layer">
+    </section>
+    -->
+</body>
+<script>
+    // form 꾸미기 초기화 함수 .styled-label, .styled-input, .styled-select ui 세팅
+    formUIInit();
+</script>
+
+</html>

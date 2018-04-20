@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <section class="user-setting">
+        <div class="">
+            <span class="">공지/뉴스</span>
+            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+        </div>
+        <div class="">
+            <span class="">채용소식</span>
+            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+        </div>
+        <div class="">
+            <span class="">이벤트</span>
+            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+        </div>
+        <div class="">
+            <span class="">광고</span>
+            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+        </div>
+        <div>비밀번호 변경</div> <!-- modify_password.html-->
+        <div>내 기본정보 변경</div> <!-- user_register.html 링크-->
+        <div>로그아웃</div>
+        <div>앱버젼</div>
+    </section>
+</body>
+</html>

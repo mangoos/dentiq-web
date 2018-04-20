@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <style>
+        /* 문서내 스타일 설정은 미세조정, 미세 오버라이드 내용을 담는다 */
+        .dental-tabs { margin-top: 0.3rem; }
+        .dental-tabs-nav .nav-item span i.fa.fa-gratipay { transform: translateY(1px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-envelope-open { font-size: 0.8rem; transform: translateY(-2px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-file-text { font-size: 0.8rem; transform: translateY(-1px); }
+        .dental-tabs-nav .nav-item span i.fa.fa-star { font-size: 0.9rem; }
+
+        .dental-tabs .radio-box-non { background-color: #FFF; padding-left: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <div class="dental-tabs tabs-type1">
+        <input class="tabs-input" name="tabs" type="radio" value="1" id="tab-interest-hospital" checked hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="2" id="tab-scrap" hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="3" id="tab-apply" hidden>
+        <input class="tabs-input" name="tabs" type="radio" value="4" id="tab-offer" hidden>                
+        <div class="dental-tabs-nav tabs-type1">
+            <label class="nav-item" for="tab-interest-hospital"><span><i class="fal fa-heart"></i>관심병원</span></label>
+            <label class="nav-item" for="tab-scrap"><span><i class="fal fa-star"></i>내스크랩</span></label>
+            <label class="nav-item" for="tab-apply"><span><i class="fal fa-envelope-open"></i>지원현황</span></label>
+            <label class="nav-item" for="tab-offer"><span><i class="fal fa-calendar-exclamation"></i>면접요청</span></label>
+        </div>
+        <div class="dental-tabs-body tabs-type1">
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>팔로우한 관심 병원의 채용 현황 바로 확인</p>
+                    <p class="typo-desc1" hidden>마이메뉴에서 알림을 설정하면, 업데이트 시 받을 수 있습니다.</p>
+                    <p class="typo-desc1" hidden>마감된 채용공고는 확인 불가능합니다.</p>  
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox" id="radio-empty-interest-hospital"> <!-- css로 노출 박스 스위치 -->
+                        <label for="radio-empty-interest-hospital"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">현재 관심병원에서 채용 중이지 않습니다.</p>
+                            <p class="typo-desc2">관심 병원이 없다면 설정해보세요.</p>
+                        </div>
+                        <div class="radio-box-checked" id="">
+                            <div class="jobpost-list">
+                                <div class="jobpost-list-bar">
+                                    <span class="typo-title2">관심병원 채용공고 개수</span>
+                                    <span class="jobpost-list-bar-counter" id="interest-hospital-cnt">1</span> <!-- 리스트 건수 출력하면 '건' 은 css 가 처리 -->
+                                </div>
+
+                                <!-- 관심병원의 공고 리스트 -->
+                                <div class="jobpost-list-body" id="jobAdCardListForInterestHospital"></div>
+
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>내가 스크랩한 채용공고 확인</p>
+                    <p class="typo-desc1" hidden>마감된 채용공고는 확인 불가능합니다.</p>  
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox"  id="radio-empty-scrap"> <!-- css로 노출 박스 스위치 -->
+                        <label for="radio-empty-scrap"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">현재 스크랩한 채용공고가 없습니다.</p>
+                            <p class="typo-desc2">관심있는 공고가 있다면 스크랩 해보세요.</p>
+                        </div>
+                        <div class="radio-box-checked" id="">
+                            <div class="jobpost-list">
+                                <div class="jobpost-list-bar">
+                                    <span class="typo-title2">스크랩 공고 개수</span>
+                                    <span class="jobpost-list-bar-counter" id="scrap-cnt">1</span> <!-- 리스트 건수 출력하면 '건' 은 css 가 처리 -->
+                                </div>
+
+                                <!-- 스크랩된 공고 리스트 -->
+                                <div class="jobpost-list-body" id="jobAdCardListForScrap"></div>
+
+
+
+                                <script id="jobAdCardTemplate" type="text/x-handlebars-template">
+                                    {{#each .}}
+                                    <div class="jobpost-list-card">
+                                        <a href="jobad.html?jobAdId={{id}}">
+                                            <div class="jobpost-list-card-header">
+                                                <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
+                                                <div class="jobpost-list-card-subtitle">{{title}}</div>
+                                            </div>
+                                            <div class="jobpost-list-card-body">
+                                                <div class="dental-info">
+                                                    <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
+                                                    <span class="info-detail subway-line"> <!-- 시도, 시구군 정보, 교통정보 -->
+                                                        <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
+                                                        <span class="subway117"></span>
+                                                        <span>서울 3호선</span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
+                                                        <span class="subway120"></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
+                                                        <i></i> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 "외" 삽입됨 -->
+                                                    </span>
+                                                    <!-- <span class="info-detail">#강남역, #코엑스 외</span>  -->
+                                                    <span class="info-detail">{{renderHashTagOfJobAdCard hashTag}}</span> <!-- 주변 핫플레이스 -->
+                                                </div>
+                                                <div class="dental-info">
+                                                    <span class="info-detail">치위생사 외</span> <!-- 채용업무 -->
+                                                    <span class="info-detail">진료실 외</span> <!-- 채용업무 -->
+                                                    <span class="info-detail">12 / 26 (화)</span> <!-- 마감날짜 -->
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="jobpost-list-card-footer">
+                                            <span class="footer-item"><label><input type="checkbox" name="scrap" value="{{id}}" hidden><i class="fa fa-star"></i>스크랩</label></span>
+                                            <span class="footer-item"><a href="#"><i class="fa fa-share"></i>바로지원</a></span>
+                                            <span class="footer-item"><a href="#"><i class="fa fa-phone"></i>전화문의</a></span>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </script>
+
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>내가 지원한 공고 현황을 확인</p>
+                    <p class="typo-desc1" hidden>지원 취소한 경우, 지원한 병원 측에는 지원 취소로 표시</p>
+                    <p class="typo-desc1" hidden>지원 취소 시점부터 병원 측에서 이력서 확인 불가능</p>  
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox" name="radioBox" id="radio-empty-apply"> <!-- css로 노출 박스 스위치 -->
+                        <label for="radio-empty-apply"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">지원 내역이 없습니다.</p>
+                            <p class="typo-desc2">간편지원으로 쉽게 지원할 수 있습니다.</p>
+                        </div>
+                        <div class="radio-box-checked" id="">
+                            <div class="jobpost-list">
+                                <div class="jobpost-list-bar">
+                                    <span class="typo-title2">지원 공고 개수</span>
+                                    <span class="jobpost-list-bar-counter" id="apply-cnt">1</span> <!-- 리스트 건수 출력하면 '건' 은 css 가 처리 -->
+                                </div>
+
+                                <!-- 지원 공고 리스트 -->
+                                <div class="jobpost-list-body" id="jobAdCardListForApply"></div>
+
+                                
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dental-tabs-content">
+                <div class="content-header">
+                    <!-- typo-desc 는 모두 :not(:empty) 처리, 메시징 박스로 활용 가능 -->
+                    <p class="typo-desc1" hidden>병원 측에서 요청하는 면접 제안을 확인</p>
+                    <p class="typo-desc1" hidden>요청에 대한 응답을 회신할 수 있습니다.</p>
+                    <p class="typo-desc1" hidden></p>  
+                </div>
+                <div class="content-body">
+                    <div class="dental-radio-box">
+                        <input class="radio-box-input" type="checkbox" name="radioBox" id="radio-empty-offer"> <!-- css로 노출 박스 스위치 -->
+                        <label for="radio-empty-offer"></label><!-- dental-radio-box 와 세트임 -->
+                        <div class="radio-box-non">
+                            <p class="typo-desc2">면접 제안이 없습니다.</p>
+                            <p class="typo-desc2">이력서를 작성하고 공개해보세요.</p>
+                        </div>
+                        <div class="radio-box-checked" id="">
+                            <div class="jobpost-list">
+                                <div class="jobpost-list-bar">
+                                    <span class="typo-title2">면접요청 공고 개수</span>
+                                    <span class="jobpost-list-bar-counter" id="offer-cnt">1</span> <!-- 리스트 건수 출력하면 '건' 은 css 가 처리 -->
+                                </div>
+                                
+                                <!-- 면접 제안 공고 리스트 -->
+                                <div class="jobpost-list-body" id="jobAdCardListForOffer">    </div>
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dental-tabs-footer"></div>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+
+    Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
+        console.log("LOCATION_HELPER ", code);
+        var location = LOCATION_CODE.getByName(code);
+        if ( location ) return location.sidoName + " > " + location.siguName;
+        else return "입력안됨";
+    });
+    Handlebars.registerHelper("renderHashTagOfJobAdCard", function(hashTagArray) {
+        console.log("renderHashTag ", hashTagArray);
+        if ( !hashTagArray ) return "";
+
+        var text = "";
+        hashTagArray.forEach(function(el) {
+            text += "#" + el + " ";
+        });
+        return text;
+    });
+
+
+    var jobAdCardTemplate = $("#jobAdCardTemplate").html();
+    var jobAdCardTemplateCompiled = Handlebars.compile(jobAdCardTemplate);
+
+    // var genericJobAdCardTemplate = GenericJobAdCardTemplate();
+
+    //console.log(jobAdCardTemplate);
+    //console.log(jobAdCardTemplateCompiled);
+
+    
+    function renderScrapCheckbox(divElement) {
+        var scrappedJobAdIs = LOGIN_INFO.getScrappedJobAdIds();
+        //console.log(scrappedJobAdIs);
+        if ( scrappedJobAdIs && Array.isArray(scrappedJobAdIs) && scrappedJobAdIs.length>0 ) {
+            //console.log("들어왔음");
+            scrappedJobAdIs.forEach(function(_jobAdId) {
+                var target = divElement.querySelector("input[type='checkbox'][name='scrap'][value='" + _jobAdId + "']");
+                //console.log('검사 ', _jobAdId, " =====> ", target);
+                if ( target ) {
+                    target.checked = true;
+                    //console.log("스크랩 체크 박스 : ", target, " ==> ", target.checked );
+                }
+            });
+        }
+    }
+    
+    /**********************************************************************************************/
+    /*
+    /*      관심병원 탭 관련
+    /*
+    /**********************************************************************************************/
+    function getInterestHospitalJobAds() {
+
+        var userId = LOGIN_INFO.getId();
+        callApi("GET", "/api/user/"+userId+"/interestHospitalJobAd/", null,
+            function(resData) {
+                console.log(resData);
+                if ( resData && Array.isArray(resData) && resData.length>0 ) {
+
+                    // 화면에 출력한다.
+                    //var jobAdCardList = genericJobAdCardTemplate.render(resData);
+                    var jobAdCardList = jobAdCardTemplateCompiled(resData);
+                    $('#jobAdCardListForInterestHospital').html(jobAdCardList);
+
+                    // 탭의 내용을 변경한다.
+                    renderScrapCheckbox(document.getElementById("jobAdCardListForInterestHospital"));
+                    document.getElementById("interest-hospital-cnt").innerText = resData.length;
+                    document.getElementById("radio-empty-interest-hospital").checked = true;               
+                    
+
+
+                    // LOGIN_INFO의 내용을 업데이트한다.
+                    
+                } else {
+                    document.getElementById("radio-empty-interest-hospital").checked = false;
+                }
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+    }
+
+    function onClickInterestHospitalTab(event) {
+        getInterestHospitalJobAds();
+    }
+    document.getElementById("tab-interest-hospital").addEventListener("click", onClickInterestHospitalTab);
+
+
+
+
+    /**********************************************************************************************/
+    /*
+    /*      스크랩 탭 관련
+    /*
+    /**********************************************************************************************/
+    function getScrappedJobAds() {
+
+        var userId = LOGIN_INFO.getId();
+        callApi("GET", "/api/user/"+userId+"/scrappedJobAd/", null,
+            function(resData) {
+                console.log(resData);
+                if ( resData && Array.isArray(resData) && resData.length>0 ) {
+
+                    // 화면에 출력한다.
+                    var jobAdCardList = jobAdCardTemplateCompiled(resData);
+                    $('#jobAdCardListForScrap').html(jobAdCardList);
+
+                    // LOGIN_INFO의 스크랩 공고 내용을 업데이트한다.
+                    var jobAdIdArr = [];
+                    resData.forEach(function(_jobAd) {
+                        jobAdIdArr.push(_jobAd.id);
+                    });
+                    LOGIN_INFO.updateLocalScrappedJobAdId(jobAdIdArr);
+
+
+                    // 탭의 내용을 변경한다.
+                    renderScrapCheckbox(document.getElementById("jobAdCardListForScrap"));
+                    document.getElementById("scrap-cnt").innerText = resData.length;
+                    document.getElementById("radio-empty-scrap").checked = true;
+                                        
+                    
+                } else {
+                    document.getElementById("radio-empty-scrap").checked = false;
+                }
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+    }
+
+    function onClickScrapTab(event) {
+        getScrappedJobAds();
+    }
+    document.getElementById("tab-scrap").addEventListener("click", onClickScrapTab);
+
+
+
+
+    /**********************************************************************************************/
+    /*
+    /*      지원현황 탭 관련
+    /*
+    /**********************************************************************************************/
+    function getAppliedJobAds() {
+
+        var userId = LOGIN_INFO.getId();
+        callApi("GET", "/api/user/"+userId+"/appliedJobAd/", null,
+            function(resData) {
+                console.log(resData);
+                if ( resData && Array.isArray(resData) && resData.length>0 ) {
+
+                    // 화면에 출력한다.
+                    var jobAdCardList = jobAdCardTemplateCompiled(resData);
+                    $('#jobAdCardListForApply').html(jobAdCardList);
+
+                    // 탭의 내용을 변경한다.
+                    renderScrapCheckbox(document.getElementById("jobAdCardListForApply"));
+                    document.getElementById("apply-cnt").innerText = resData.length;
+                    document.getElementById("radio-empty-apply").checked = true;
+                    
+
+                    // LOGIN_INFO의 내용을 업데이트한다.
+                    
+                } else {
+                    document.getElementById("radio-empty-apply").checked = false;
+                }
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+    }
+
+    function onClickApplyTab(event) {
+        console.log("지원현황 클릭됐음");
+        getAppliedJobAds();
+    }
+    document.getElementById("tab-apply").addEventListener("click", onClickApplyTab);
+
+
+
+    /**********************************************************************************************/
+    /*
+    /*      면접 제안 탭
+    /*
+    /**********************************************************************************************/
+    function getOfferedJobAds() {
+
+        var userId = LOGIN_INFO.getId();
+        callApi("GET", "/api/user/"+userId+"/offeredJobAd/", null,
+            function(resData) {
+                console.log(resData);
+                if ( resData && Array.isArray(resData) && resData.length>0 ) {
+
+                    // 화면에 출력한다.
+                    var jobAdCardList = jobAdCardTemplateCompiled(resData);
+                    $('#jobAdCardListForOffer').html(jobAdCardList);
+
+                    // 탭의 내용을 변경한다.
+                    renderScrapCheckbox(document.getElementById("jobAdCardListForOffer"));
+                    document.getElementById("offer-cnt").innerText = resData.length;
+                    document.getElementById("radio-empty-offer").checked = true;
+                    
+
+
+                    // LOGIN_INFO의 내용을 업데이트한다.
+                    
+                } else {
+                    document.getElementById("radio-empty-offer").checked = false;
+                }
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+    }
+
+    function onClickOfferTab(event) {
+        getOfferedJobAds();
+    }
+    document.getElementById("tab-offer").addEventListener("click", onClickOfferTab);
+
+
+
+
+    /**********************************************************************************************/
+    /*
+    /*      스크랩 처리
+    /*
+    /**********************************************************************************************/
+    // 스크랩 처리
+    function onChangeScrap(event) {
+        if (!LOGIN_INFO.isLoggedIn()) {
+            e.preventDefault();
+            alert("스크랩을 위해서는 로그인이 필요합니다.");
+            return;
+        }
+
+        console.log("일반 공고 스크랩 ", this.value , "  ==> ", this.checked);
+        if ( this.checked ) {
+            LOGIN_INFO.addScrappedJobAdId(this.value);
+        } else {
+            LOGIN_INFO.removeScrappedJobAdId(this.value);
+        }
+    }
+    //$("#jobAdCardList").on("click", "input[type=checkbox][name=scrap]", onChangeScrap);
+    $(".jobpost-list-body").on("click", "input[type=checkbox][name=scrap]", onChangeScrap);
+    // 
+        
+</script>

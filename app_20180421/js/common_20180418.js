@@ -89,10 +89,6 @@ function uploadFile(apiUrl, formDataFileEncoded, callbackSuccessProcessFunction,
 
 }
 
-
-
-
-
 /******************************************************************************/
 /*  API 서버에 통신을 한다.
 /*
@@ -104,7 +100,7 @@ function uploadFile(apiUrl, formDataFileEncoded, callbackSuccessProcessFunction,
 /*  @param {*} callbackSuccessProcessFunction 응답이 정상적으로 수신(HTTP_status=OK)되고, API 서버의 응답코드가 정상(0000)일 때 처리할 콜백 함수
 /*  @param {*} callbackErrorProcessFunction   응답이 정상적으로 수신(HTTP_status=OK)되었지만, API 서버의 응답코드가 정상(0000)이 아닐 때 이 오류를 처리할 콜백 함수
 /******************************************************************************/
-function callApiOLD(httpMethodType, apiUrl, reqData,
+function callApi(httpMethodType, apiUrl, reqData,
 	callbackSuccessProcessFunction,
 	callbackErrorProcessFunction,
 	reqContentType) {
@@ -300,17 +296,17 @@ var LOCATION_CODE = (function() {
 			//locationCodeObj = storageItem;
 			console.log("load LOCATION_CODE from localStorage. ==> " + storageItemTree.length);
 		}
-	};
+	}
 
 	
 	var _listSidoCode = function() {
 		return locationCodeTree;
-	};
+	}
 
 	var _listSiguCode = function(sidoLocationCode) {
 		//if ( sidoLocationCode=null || sidoLocationCode.indexOf(".")==-1 ) return null;   // '.'이 있으면, 시도코드가 아님
 		return locationCodeTree[sidoLocationCode];
-	};
+	}
 
 	var CODE_FORMAT_LOCATION = 0;
 	var CODE_FORMAT_SIDO = 1;
@@ -358,16 +354,16 @@ var LOCATION_CODE = (function() {
 	var _getByName = function(locationCode) {
 		//return locationCodeList[locationCode];
 		return getLocation(locationCode);
-	};
+	}
 
 	var _isSiguCode = function(locationCode) {
 		// if ( locationCodeList[locationCode].type=='SIGU' ) return true;
 		// else return null;
 
 		var result = checkCodeFormat(locationCode);
-		if ( result==CODE_FORMAT_SIGU ) return true;
+		if ( result==CODE_FOMRAT_SIGU ) return true;
 		return false;
-	};
+	}
 
 
 
@@ -416,82 +412,314 @@ var LOCATION_CODE = (function() {
 
 		}
 
+
+
+
+
+		// extractSidoCode: function(sidoOrSiguCode) {
+		//     return sidoOrSiguCode.split(".")[0];
+		// }        
+		
+		// getSigu: function(siguCode) {
+		//     return _getSigu(siguCode);
+		// },
+		// getName: function(locationCodeStr) {
+		//     if ( _isSidoCode(locationCodeStr) ) {
+		//         var sido = _getSido(locationCodeStr);
+		//         if ( sido != null ) return sido.sidoCodeName;
+		//         return null;
+
+		//     } else {
+
+		//         var sigu = _getSigu(locationCodeStr);
+		//         if (sigu != null) return sigu.sidoCodeName + ", " + sigu.siguCodeName;
+		//         return null;
+		//     }
+		// },
+		// isSiguCode: function(locationCodeStr) {
+		//     return _isSiguCode(locationCodeStr);
+		// },
+		// isSidoCode: function(locationCodeStr) {
+		//     return _isSidoCode(locationCodeStr);
+		// },
+		// getLocation: function(locationCodeStr) {
+		//     if ( _isSiguCode(locationCodeStr) ) {
+		//         return _getSigu(locationCodeStr);
+		//     } else {
+		//         return _getSido(locationCodeStr);
+		//     }
+		// }
+		// 메소드 추가 시에는 각 메소드 사이에 콤파 필요
 	};
 
 })();
+// var LOCATION_CODE = (function() {
 
+//     var STORAGE_ITEM_NAME = "LOCATION_CODE";
+//     var API_URL = "/api/code/locationContainer/";
+
+//     var locationCodeObj;
+
+//     // 스토리지 또는 서버로부터 로드한다.
+//     var load = function(refresh) {
+//         console.log("LOCATION_CODE.load(", refresh, ") 호출됨");
+//         var storageItem = localStorage.getItem(STORAGE_ITEM_NAME);
+//         if (refresh == true || storageItem == null) {
+//             callApiSync("GET", API_URL, null,
+//                 function(resData) {
+//                     console.log(resData);
+//                     localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(resData));
+//                     //localStorage.setItem(STORAGE_ITEM_NAME, resData);
+//                     //locationCodeObj = JSON.parse(resData);
+//                     locationCodeObj = resData;
+//                     console.log("load LOCATION_CODE from SERVER. ==> " + resData.length);
+//                 },
+//                 function(resCode, resMsg) {
+//                     alert("ERROR");
+//                 }
+//             );
+//         } else {
+//             //console.log("지역코드 로드할 것임 ", storageItem);
+//             locationCodeObj = JSON.parse(storageItem);
+//             //locationCodeObj = storageItem;
+//             console.log("load LOCATION_CODE from localStorage. ==> " + storageItem.length);
+//         }
+//     }
+
+//     var _getSido = function(sidoCode) {
+//         for ( var i=0; locationCodeObj!=null && i<locationCodeObj.length; i++ ) {
+//             if ( locationCodeObj[i].sidoCode == sidoCode ) {
+//                 return locationCodeObj[i];
+//             }
+//         }
+//         return null;
+//     }
+
+//     var _getSigu = function(siguCode) {
+//         var temp = siguCode.split(".");
+//         var sidoCode = temp[0];
+//         for (var i = 0; locationCodeObj != null && i < locationCodeObj.length; i++) {
+//             if (locationCodeObj[i].sidoCode == sidoCode) {
+//                 var siguCodeList = locationCodeObj[i].siguCodeList;
+//                 for (var j = 0; siguCodeList != null && j < siguCodeList.length; j++) {
+//                     if (siguCodeList[j].siguCode == siguCode) {
+//                         return siguCodeList[j];
+//                     }
+//                 }
+//                 return null;
+//             }
+//         }
+//     }
+
+//     var _getSiguList = function(sidoCode) {
+//         for (var i = 0; locationCodeObj != null && i < locationCodeObj.length; i++) {
+//             if (locationCodeObj[i].sidoCode == sidoCode) {
+//                 return locationCodeObj[i].siguCodeList;
+//             }
+//         }
+//     }
+
+//     var _isSiguCode = function(locationCodeStr) {
+//         if ( locationCodeStr==null ) {
+//             alert("FATAL: LOCATION_CODE.isSiguCode() : 시구코드 입력되지 않음");
+//             throw "FATAL: LOCATION_CODE.isSiguCode() : 시구코드 입력되지 않음";
+//         }
+
+//         if ( locationCodeStr.indexOf(".") > 0 ) {
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
+//     var _isSidoCode = function(locationCodeStr) {
+//         if ( locationCodeStr==null ) {
+//             alert("FATAL: LOCATION_CODE.isSiguCode() : 시구코드 입력되지 않음");
+//             throw "FATAL: LOCATION_CODE.isSiguCode() : 시구코드 입력되지 않음";
+//         }
+
+//         if ( locationCodeStr.indexOf(".") > 0 ) {
+//             return false;
+//         } else {
+//             return true;
+//         }
+//     }
+
+
+//     // Initialize
+//     load(false);
+
+//     // public methods
+//     return {
+//         extractSidoCode: function(sidoOrSiguCode) {
+//             return sidoOrSiguCode.split(".")[0];
+//         },
+//         getSiguList: function(sidoCode) {
+//             return _getSiguList(sidoCode);
+//         },
+//         getSidoList: function() {
+//             console.log("getSidoList() 호출됨");
+//             return locationCodeObj;
+//         },
+//         refresh: function() {
+//             load(true);
+//         },
+//         getSigu: function(siguCode) {
+//             return _getSigu(siguCode);
+//         },
+//         getName: function(locationCodeStr) {
+//             if ( _isSidoCode(locationCodeStr) ) {
+//                 var sido = _getSido(locationCodeStr);
+//                 if ( sido != null ) return sido.sidoCodeName;
+//                 return null;
+
+//             } else {
+
+//                 var sigu = _getSigu(locationCodeStr);
+//                 if (sigu != null) return sigu.sidoCodeName + ", " + sigu.siguCodeName;
+//                 return null;
+//             }
+//         },
+//         isSiguCode: function(locationCodeStr) {
+//             return _isSiguCode(locationCodeStr);
+//         },
+//         isSidoCode: function(locationCodeStr) {
+//             return _isSidoCode(locationCodeStr);
+//         },
+//         getLocation: function(locationCodeStr) {
+//             if ( _isSiguCode(locationCodeStr) ) {
+//                 return _getSigu(locationCodeStr);
+//             } else {
+//                 return _getSido(locationCodeStr);
+//             }
+//         }
+//         // 메소드 추가 시에는 각 메소드 사이에 콤파 필요
+//     };
+
+// })();
+
+
+/******************************************************************************/
+/*  공고 속성 코드
+/*
+/*
+/******************************************************************************/
+// var JOB_AD_ATTR_CODE = (function() {
+// 	var STORAGE_ITEM_NAME = "JOB_AD_ATTR";
+// 	var API_URL = "/api/code/jobAdAttrContainer/";
+
+// 	var attrs;
+
+// 	// 스토리지 또는 서버로부터 로드한다.
+// 	var load = function(refresh) {
+// 		console.log("JOB_AD_ATTR_CODE.load(", refresh, ") 호출됨");
+// 		var storageItem = localStorage.getItem(STORAGE_ITEM_NAME);
+// 		if (refresh == true || storageItem == null) {
+// 			callApiSync("GET", API_URL, null,
+// 				function(resData) {
+// 					localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(resData));
+// 					attrs = resData;
+// 					console.log("load JOB_AD_ATTR_CODE from SERVER. ==> " + resData.length);
+// 				},
+// 				function(resCode, resMsg) {
+// 					alert("ERROR");
+// 				}
+// 			);
+// 		} else {
+// 			attrs = JSON.parse(storageItem);
+// 			console.log("load JOB_AD_ATTR_CODE from localStorage. ==> " + storageItem.length);
+// 		}
+// 	}
+
+// 	// Initialize
+// 	load(false);
+
+// 	// public methods
+// 	return {
+// 		getAttrList: function(groupId) {
+// 			for (var i = 0; attrs != null && i < attrs.length; i++) {
+// 				if (attrs[i].groupId == groupId) {
+// 					return attrs[i].attrList;
+// 				}
+// 			}
+// 		},
+// 		getGroupList: function() {
+// 			console.log("getGruopList() 호출됨");
+// 			return attrs;
+// 		},
+// 		refresh: function() {
+// 			load(true);
+// 		}
+// 		// 메소드 추가 시에는 각 메소드 사이에 콤파 필요
+// 	};
+
+// })();
 
 
 // var PAGE_LOGIN_NECESSITY = false; // 로그인 필요성. true: 반드시 로그인해야 함. false: 로그인하지 않아도 됨
 // var PAGE_SERVER_LOGIN_CHECK_NECESSTIY = false; // 로컬 로그인 상태를 무시하고 반드시 서버에 로그인하여야 하는지 여부. true:반드시 서버에 재로그인 필요. 예: 회원정보변경 등
 
 
-
-
-function callApi(httpMethodType, apiUrl, reqData,
-	callbackSuccessProcessFunction,
-	callbackErrorProcessFunction,
-	reqContentType) {
-
-	var myHeaders = {};
-	myHeaders[SESSION_TOKEN_NAME] = LOGIN_INFO.getToken();
-	//console.log("CALL API : <SEND> " + "[" + apiUrl + "] ", reqData, " HEADER: ", myHeaders);
-	console.log("CALL API : <SEND> " + httpMethodType + "  [" + apiUrl + "] ", reqData);
-	console.log("CALL API : <SEND> HEADER : " + myHeaders[SESSION_TOKEN_NAME]);
-
-	$.ajax({
-		type: httpMethodType,
-		url: API_SERVER_URL + apiUrl,
-		headers: myHeaders,
-		contentType: reqContentType,
-		data: reqData,
-		success: function(result, textStatus, jqXHR) {
-
-			if (result._RESPONSE_CODE_ != null && result._RESPONSE_CODE_ == "0000") {
-
-				console.log("CALL API : <RECV:HEADER> : ", jqXHR.getResponseHeader(SESSION_TOKEN_NAME));
-				var sessionToken = jqXHR.getResponseHeader(SESSION_TOKEN_NAME);
-				if ( sessionToken ) {		// 로그인 직후, 또는 로그인연장/로그인정보변경의 경우
-					LOGIN_INFO.setSessionToken(sessionToken);
-				}
-
-				console.log("CALL API : <RECV> 성공 [", result._RESPONSE_, "]");
-				callbackSuccessProcessFunction(result._RESPONSE_);
-			} else {
-				console.log("CALL API : <RECV> 논리 오류 [", result._RESPONSE_CODE, "] ==> [", result._RESPONSE_MSG_, "]");
-				callbackErrorProcessFunction(result._RESPONSE_CODE_, result._RESPONSE_MSG_);
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) { // 공통 통신 에러 및 HTTP 오류
-			console.log("AJAX_COMM_ERR [", jqXHR.status, ", ", jqXHR.statusText, ", ", jqXHR.statusCode(), "] : ", textStatus, " ERR [", errorThrown, "]");
-			console.log("HEADER : ", jqXHR.getResponseHeader(SESSION_TOKEN_NAME));
-			alert("통신 장애입니다. 콜센터로 연락주세요.");
-		}
-	});
-}
-
+/******************************************************************************/
+/*  로그인 사용자 정보 객체
+/*
+/*
+/******************************************************************************/
 var LOGIN_INFO = (function() {
 
-	var STORAGE_ITEM_NAME	= "USER_INFO";
-	var LOGIN_API_URL		= "/api/login2/";
-	var LOGOUT_API_URL		= "/api/logout/";
+	// var AFTER_LOGOUT_PAGE_URL = ""; // 로그아웃 후 이동할 페이지 URL
+	// var LOGIN_PAGE_URL = ""; // 로그인 페이지의 URL
 
+	var STORAGE_ITEM_NAME = "USER_INFO";
+	//var STORAGE_ITEM_NAME_SCRAP = STORAGE_ITEM_NAME + "_SCRAPPED_JOB_AD_IDS"
+	var LOGIN_API_URL = "/api/login/";
+	var LOGOUT_API_URL = "/api/logout/";
+
+	//var userInfo = {"id":"", "email":"", "name":""};
 	var userInfo;
+
+	// 스크랩된 공고 : 스토리지 관련하여 동일 디바이스에 여러 사용자 있을 경우, 문제 될 수 있음. ==> userInfo 안에 추가하는 방식으로 변경하여야 할 듯
+	//var userInfo.scrappedJobAdIds.
+
 
 	// 서버 로그인 처리
 	var callLogin = function(email, password, successProcFunc, errorProcFunc) {
 
+		
+		// $.ajax({
+		// 	type: "POST",
+		// 	url: API_SERVER_URL + LOGIN_API_URL,
+		// 	contentType: "application/x-www-form-urlencoded",
+		// 	data: "email="+email+"&password="+password,
+		// 	success: function(result, textStatus, jqXHR) {
+		// 		if (result._RESPONSE_CODE_ != null && result._RESPONSE_CODE_ == "0000") {	// 로그인 성공
+		// 			var tokenDecoded = result._RESPONSE_;
+		// 			userInfo = JSON.parse(window.atob(tokenDecoded));
+		// 			save();
+		// 			if (successProcFunc != null) successProcFunc();
+		// 		} else {	// 로그인 실패
+					
+				
+		// 		}
+		// 	},
+		// 	error: function(jqXHR, textStatus, errorThrown) { // 공통 통신 에러 및 HTTP 오류
+		// 		console.log("AJAX_COMM_ERR [", jqXHR.status, ", ", jqXHR.statusText, ", ", jqXHR.statusCode(), "] : ", textStatus, " ERR [", errorThrown, "]");
+		// 		console.log("HEADER : ", jqXHR.getResponseHeader(SESSION_TOKEN_NAME));
+		// 		alert("통신 장애입니다. 콜센터로 연락주세요.");
+		// 	}
+		// });
+
+
 		var loginParam = "email=" + email + "&" + "password=" + password;
 		callApi("POST", LOGIN_API_URL, loginParam,
 			function(resData) {
-
-				//_loadScrappedJobAdIds();
-
-				if ( successProcFunc ) successProcFunc();
+				userInfo = resData;
+				save(); // 로컬에 저장
+				if (successProcFunc != null) successProcFunc();
 			},
+
 			function(resCode, resMsg) {
 				clear();
-				if ( errorProcFunc ) errorProcFunc(resCode, resMsg);
+				if (errorProcFunc != null) errorProcFunc(resCode, resMsg);
 				else alert("로그인 ERROR " + resMsg);
 
 				//return false;
@@ -499,11 +727,11 @@ var LOGIN_INFO = (function() {
 		);
 
 		//return success;
-	};
+	}
 
 
 	var callLogout = function() {
-		if ( !userInfo ) {
+		if (userInfo == null) {
 			alert("로그인되어 있지 않습니다.");
 			return;
 		}
@@ -512,8 +740,6 @@ var LOGIN_INFO = (function() {
 			function(resData) { // 로그아웃 성공하면...
 				clear();
 				alert("로그아웃 성공");
-
-				fireScrapChageEventListeners();
 
 				//TODO JWT를 무효화한다!!! ==> 필요없다!
 			},
@@ -525,133 +751,116 @@ var LOGIN_INFO = (function() {
 
 		// 로컬 로그아웃
 		clear();
-	};
-
-
-	// SCRAP이 변경된 경우, 이에 대한 EventListener들
-	var funcScrapChangeEventListeners = [];
-
-	// SCRAP이 변경된 경우, 이에 대한 EventListener들을 처리한다.
-	function fireScrapChageEventListeners() {
-		if ( funcScrapChangeEventListeners && funcScrapChangeEventListeners.length>0 ) {	// 콜백이 등록되어 있으면, 실행한다.
-			funcScrapChangeEventListeners.forEach(function(scrapChangeEventListener) {
-				scrapChangeEventListener();
-			});
-			//funcScrapChangeEventListeners();
-		}
 	}
 
+
+
 	// 서버로부터 스크랩된 공고의 ID들을 가져온다.
-	var _loadScrappedJobAdIds = function() {
-		if ( !userInfo || !userInfo.userId ) {
-			alert("로그인되어 있지 않습니다. - 스크랩 못함");
+	var _getScrappedJobAdIds = function() {
+		if (userInfo == null) {
+			alert("로그인되어 있지 않습니다.");
 			return;
 		}
 
-		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/";
+		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.id + "/scrappedJobAdId/";
 		callApi("GET", SCRAPPED_JOB_AD_ID_URL, null,
 			function(resData) {
 				userInfo.scrappedJobAdIds = resData;
 				save();
-
-				fireScrapChageEventListeners();
 			},
 			function(resCode, resMsg) {
 				// clear();
 				alert("스크랩 가져오기 ERROR " + resMsg);
 			}
 		);
-	};
-	
-
-
-	var _addScrappedJobAdId = function(jobAdId) {
-		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
+	}
+	//  , callbackFunction
+	//var _addScrappedJobAdId = function(jobAdId, memo) {
+	var _addScrappedJobAdId = function(jobAdId, callbackFunction) {
+		if (userInfo == null) {
+			alert("로그인되어 있지 않습니다.");
+			return;
+		}
+		var memo = "";
 
 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-		callApi("POST", SCRAPPED_JOB_AD_ID_URL, null,
+		callApi("POST", SCRAPPED_JOB_AD_ID_URL, "memo=" + memo,
 			function(resData) {
 				userInfo.scrappedJobAdIds = resData;
 				save();
-				fireScrapChageEventListeners();
+				callbackFunction();
 			},
 			function(resCode, resMsg) {
 				// clear();
-				fireScrapChageEventListeners();
 				alert("스크랩 가져오기 ERROR " + resMsg);
 			}
 		);
-	};
-	var _removeScrappedJobAdId = function(jobAdId) {
-		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
+	}
+	var _removeScrappedJobAdId = function(jobAdId, callbackFunction) {
+		if (userInfo == null) {
+			alert("로그인되어 있지 않습니다.");
+			return;
+		}
 
 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
 		callApi("DELETE", SCRAPPED_JOB_AD_ID_URL, null,
 			function(resData) {
 				userInfo.scrappedJobAdIds = resData;
 				save();
-				fireScrapChageEventListeners();
+				callbackFunction();
 			},
 			function(resCode, resMsg) {
 				// clear();
-				fireScrapChageEventListeners();
 				alert("스크랩 가져오기 ERROR " + resMsg);
 			}
 		);
-	};
+	}
+	// var _updateScrappedJobAdId = function(jobAdId, memo, callbackFunction) {
+	var _updateScrappedJobAdId = function(jobAdId, callbackFunction) {
+		if (userInfo == null) {
+			alert("로그인되어 있지 않습니다.");
+			return;
+		}
+		var memo = "";
+		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
+		callApi("PUT", SCRAPPED_JOB_AD_ID_URL, "memo=" + memo,
+			function(resData) {
+				userInfo.scrappedJobAdIds = resData;
+				save();
+				callbackFunction();
+			},
+			function(resCode, resMsg) {
+				// clear();
+				alert("스크랩 가져오기 ERROR " + resMsg);
+			}
+		);
+	}
 	var _updateLocalScrappedJobAdId = function(jobAdIdArr) {
-		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
-		
+		if (userInfo == null) {
+			alert("로그인되어 있지 않습니다.");
+			return;
+		}
+
 		userInfo.scrappedJobAdIds = jobAdIdArr;
 		save();
-		fireScrapChageEventListeners();
 		console.log("스크랩 ID가 Local에서 업데이트되었음");
 
 
-	};
+	}
 	
-	
 
-	var _setSessionToken = function(newSessionToken) {
-
-		var partArray = newSessionToken.split(".");
-		console.log("디버그 : 토큰 분리 : ", partArray);
-
-		var newUserInfo = JSON.parse(atob(partArray[0]));
-
-
-		if ( userInfo && userInfo.scrappedJobAdIds ) {
-			var scrappedJobAdIds = userInfo.scrappedJobAdIds;
-
-			//userInfo = JSON.parse(atob(newSessionToken));
-			userInfo = newUserInfo;
-			userInfo.scrappedJobAdIds = scrappedJobAdIds;
-		} else {
-			//userInfo = JSON.parse(atob(newSessionToken));
-			userInfo = newUserInfo;
-		}
-		userInfo.token = newSessionToken;
-
-		save();	// 일단 save. 병원회원인 경우도 있으니...
-
-		if ( userInfo.userType && userInfo.userType==1 ) {		// 개인회원인 경우는 다시 SAVE하자. save() 한번만으로 할 수도 있지만, _loadScrappedJobAdIds()가 실패하면 세션정보 자체를 저장못하므로, 그렇게는 안 한다.
-			console.log("===> ", userInfo);
-			
-			_loadScrappedJobAdIds();		// 여기서 세션 세이브될 것임
-		}
-		
-	};
 
 	// 로컬 스토리지에 저장한다.
 	var save = function() { // return boolean
 		if (userInfo != null) {
+			//localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(userInfo));
 			localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(userInfo));
 
 			return true;
 		} else {
 			return false;
 		}
-	};
+	}
 
 	// 로컬 스토리지에서 불러온다.
 	var load = function() { // return boolean
@@ -663,13 +872,13 @@ var LOGIN_INFO = (function() {
 		} else {
 			return false;
 		}
-	};
+	}
 
 	// 로컬  스토리지와 현재 메로리 상의 사용자 정보를 삭제한다.
 	var clear = function() { // return void
 		localStorage.removeItem(STORAGE_ITEM_NAME);
 		userInfo = null;
-	};
+	}
 
 	// 로그인 상태 확인
 	var init = function() { // return void
@@ -685,26 +894,19 @@ var LOGIN_INFO = (function() {
 			// LOGIN_PAGE_URL
 		}
 
-	};
+	}
 
 	// Initialize
 	init();
 
 
-
 	return {
-		
-		setTokenForTest: function(tokenStr) {
-			userInfo.token = tokenStr;
-		},
-
-		setSessionToken: function(newSessionToken) {
-			_setSessionToken(newSessionToken);
-		},
-
 		login: function(email, password, successProcFunc, errorProcFunc) {
 			callLogin(email, password, successProcFunc, errorProcFunc);
 		},
+		// formLogin: function(queryString) {
+		//     return callFormLogin(queryString);
+		// },
 		logout: function() {
 			// 로그아웃 후에 이동할 초기 페이지를 지정해야 함.
 			return callLogout();
@@ -741,365 +943,59 @@ var LOGIN_INFO = (function() {
 			else return null;
 		},
 
-		isLoggedIn: function() {
-			if ( userInfo &&userInfo.userId ) return true;
-			return false;
+
+		// 스크랩된 공고의 LIST를 가져온다.
+		// 서버에서 가져오지 않고, 로컬 메모리에서만 처리한다.
+		// 주의 : 로그인 시에는 이 정보를 한번은 가져와야 한다. 다른 단말(App vs Mobile Web)과의 동기화 필요
+		getScrappedJobAdIds: function() {            
+			if ( userInfo && userInfo.scrappedJobAdIds ) 
+				return userInfo.scrappedJobAdIds;
+		},
+		// 공고를 스크랩한다.
+		// 서버에 추가 명령을 내린 후,
+		//      응답값으로 전체 스크랩 리스트를 받아 와서, 이를 로컬에 update하고,
+		//      화면단에서는 이를 가지고 화면에 보이는 전체 공고에 대해서 다시 별표 표시 처리하여야 함(동일 공고가 프리미엄과 일반에 나오는 경우가 문제됨)
+		addScrappedJobAdId: function(jobAdId, callbackFunction) {
+			_addScrappedJobAdId(jobAdId, callbackFunction);
+			return userInfo.scrappedJobAdIds;
+		},
+		// 스크랩된 공고를 삭제한다.
+		removeScrappedJobAdId: function(jobAdId, callbackFunction) {
+			_removeScrappedJobAdId(jobAdId, callbackFunction);
+			return userInfo.scrappedJobAdIds;
+		},
+		// 서버로부터 리로드한다.
+		refreshScrappedJobAdIds: function() {
+			//
+		},
+		updateLocalScrappedJobAdId : function(jobAdIdArr, callbackFunction) {
+			_updateLocalScrappedJobAdId(jobAdIdArr, callbackFunction);
 		},
 
-
-		addScrapChangeEventListener: function(callbackFunc) {
-			funcScrapChangeEventListeners.push(callbackFunc);
-		},
-		clearScrapChangeEventListener: function() {
-			funcScrapChangeEventListeners = [];
-		},
-		
-		getScrappedJobAdIds: function() {
-			if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
-
-			if ( userInfo.scrappedJobAdIds ) return userInfo.scrappedJobAdIds;
-			return null;
-		},
-		
-		addScrappedJobAdId: function(jobAdId) {
-			_addScrappedJobAdId(jobAdId);
-		},
-		removeScrappedJobAdId: function(jobAdId) {
-			_removeScrappedJobAdId(jobAdId);
-		},
-		updateLocalScrappedJobAdId : function(jobAdIdArr) {
-			_updateLocalScrappedJobAdId(jobAdIdArr);
-		},
-
-
-		// afterSignup: function(newUserInfo) {
-		// 	if ( newUserInfo ) {
-		// 		clear();
-		// 		userInfo = newUserInfo;                
-		// 		save();
-		// 	} else return false;
+		// 관심지역 리스트를 가져온다.
+		// getInterstingLocationList: function() {
+		//     return _getInterstingLocationList();
 		// },
 
+
+		isLoggedIn: function() {
+			if (userInfo != null) return true;
+			return false;
+		},
+		afterSignup: function(newUserInfo) {
+			if ( newUserInfo != null ) {
+				clear();
+				userInfo = newUserInfo;                
+				save();
+			} else return false;
+		},
+
 		getToken: function() {
-			if ( userInfo && userInfo.token ) return userInfo.token;
+			if ( userInfo != null && userInfo.token != null ) return userInfo.token;
 			else return null;
 		}
 	};
 })();
-
-
-/******************************************************************************/
-/*  로그인 사용자 정보 객체
-/*
-/*
-/******************************************************************************/
-// var LOGIN_INFO_OLD = (function() {
-
-// 	// var AFTER_LOGOUT_PAGE_URL = ""; // 로그아웃 후 이동할 페이지 URL
-// 	// var LOGIN_PAGE_URL = ""; // 로그인 페이지의 URL
-
-// 	var STORAGE_ITEM_NAME = "USER_INFO";
-// 	//var STORAGE_ITEM_NAME_SCRAP = STORAGE_ITEM_NAME + "_SCRAPPED_JOB_AD_IDS"
-// 	var LOGIN_API_URL = "/api/login/";
-// 	var LOGOUT_API_URL = "/api/logout/";
-
-// 	//var userInfo = {"id":"", "email":"", "name":""};
-// 	var userInfo;
-
-// 	// 스크랩된 공고 : 스토리지 관련하여 동일 디바이스에 여러 사용자 있을 경우, 문제 될 수 있음. ==> userInfo 안에 추가하는 방식으로 변경하여야 할 듯
-// 	//var userInfo.scrappedJobAdIds.
-
-
-// 	// 서버 로그인 처리
-// 	var callLogin = function(email, password, successProcFunc, errorProcFunc) {
-
-// 		var loginParam = "email=" + email + "&" + "password=" + password;
-// 		callApi("POST", LOGIN_API_URL, loginParam,
-// 			function(resData) {
-// 				userInfo = resData;
-// 				save(); // 로컬에 저장
-// 				if (successProcFunc != null) successProcFunc();
-// 			},
-
-// 			function(resCode, resMsg) {
-// 				clear();
-// 				if (errorProcFunc != null) errorProcFunc(resCode, resMsg);
-// 				else alert("로그인 ERROR " + resMsg);
-
-// 				//return false;
-// 			}
-// 		);
-
-// 		//return success;
-// 	};
-
-
-// 	var callLogout = function() {
-// 		if (userInfo == null) {
-// 			alert("로그인되어 있지 않습니다.");
-// 			return;
-// 		}
-// 		// 서버에 로그아웃 정보를 날려준다 (1. 혹시라도 ServerSession으로 바꿀까봐.    2. Client 세션이라고 해도 DB에 LOGOUT 기록 남기려고).
-// 		callApi("POST", LOGOUT_API_URL, "userId=" + userInfo.useId,
-// 			function(resData) { // 로그아웃 성공하면...
-// 				clear();
-// 				alert("로그아웃 성공");
-
-// 				//TODO JWT를 무효화한다!!! ==> 필요없다!
-// 			},
-// 			function(resCode, resMsg) { // 로그아웃 실패하면...
-// 				alert("로그아웃 실패");
-// 				//return false;
-// 			}
-// 		);
-
-// 		// 로컬 로그아웃
-// 		clear();
-// 	};
-
-
-
-// 	// 서버로부터 스크랩된 공고의 ID들을 가져온다.
-// 	var _getScrappedJobAdIds = function() {
-// 		if (userInfo == null) {
-// 			alert("로그인되어 있지 않습니다.");
-// 			return;
-// 		}
-
-// 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.id + "/scrappedJobAdId/";
-// 		callApi("GET", SCRAPPED_JOB_AD_ID_URL, null,
-// 			function(resData) {
-// 				userInfo.scrappedJobAdIds = resData;
-// 				save();
-// 			},
-// 			function(resCode, resMsg) {
-// 				// clear();
-// 				alert("스크랩 가져오기 ERROR " + resMsg);
-// 			}
-// 		);
-// 	};
-// 	//  , callbackFunction
-// 	//var _addScrappedJobAdId = function(jobAdId, memo) {
-// 	var _addScrappedJobAdId = function(jobAdId, callbackFunction) {
-// 		if (userInfo == null) {
-// 			alert("로그인되어 있지 않습니다.");
-// 			return;
-// 		}
-// 		var memo = "";
-
-// 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-// 		callApi("POST", SCRAPPED_JOB_AD_ID_URL, "memo=" + memo,
-// 			function(resData) {
-// 				userInfo.scrappedJobAdIds = resData;
-// 				save();
-// 				callbackFunction();
-// 			},
-// 			function(resCode, resMsg) {
-// 				// clear();
-// 				alert("스크랩 가져오기 ERROR " + resMsg);
-// 			}
-// 		);
-// 	};
-// 	var _removeScrappedJobAdId = function(jobAdId, callbackFunction) {
-// 		if (userInfo == null) {
-// 			alert("로그인되어 있지 않습니다.");
-// 			return;
-// 		}
-
-// 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-// 		callApi("DELETE", SCRAPPED_JOB_AD_ID_URL, null,
-// 			function(resData) {
-// 				userInfo.scrappedJobAdIds = resData;
-// 				save();
-// 				callbackFunction();
-// 			},
-// 			function(resCode, resMsg) {
-// 				// clear();
-// 				alert("스크랩 가져오기 ERROR " + resMsg);
-// 			}
-// 		);
-// 	};
-// 	// var _updateScrappedJobAdId = function(jobAdId, memo, callbackFunction) {
-// 	var _updateScrappedJobAdId = function(jobAdId, callbackFunction) {
-// 		if (userInfo == null) {
-// 			alert("로그인되어 있지 않습니다.");
-// 			return;
-// 		}
-// 		var memo = "";
-// 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-// 		callApi("PUT", SCRAPPED_JOB_AD_ID_URL, "memo=" + memo,
-// 			function(resData) {
-// 				userInfo.scrappedJobAdIds = resData;
-// 				save();
-// 				callbackFunction();
-// 			},
-// 			function(resCode, resMsg) {
-// 				// clear();
-// 				alert("스크랩 가져오기 ERROR " + resMsg);
-// 			}
-// 		);
-// 	};
-// 	var _updateLocalScrappedJobAdId = function(jobAdIdArr) {
-// 		if (userInfo == null) {
-// 			alert("로그인되어 있지 않습니다.");
-// 			return;
-// 		}
-
-// 		userInfo.scrappedJobAdIds = jobAdIdArr;
-// 		save();
-// 		console.log("스크랩 ID가 Local에서 업데이트되었음");
-
-
-// 	};
-	
-
-
-// 	// 로컬 스토리지에 저장한다.
-// 	var save = function() { // return boolean
-// 		if (userInfo != null) {
-// 			//localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(userInfo));
-// 			localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(userInfo));
-
-// 			return true;
-// 		} else {
-// 			return false;
-// 		}
-// 	};
-
-// 	// 로컬 스토리지에서 불러온다.
-// 	var load = function() { // return boolean
-// 		var storageItem = localStorage.getItem(STORAGE_ITEM_NAME);
-// 		if (storageItem != null) {
-// 			userInfo = JSON.parse(storageItem);
-
-// 			return true;
-// 		} else {
-// 			return false;
-// 		}
-// 	};
-
-// 	// 로컬  스토리지와 현재 메로리 상의 사용자 정보를 삭제한다.
-// 	var clear = function() { // return void
-// 		localStorage.removeItem(STORAGE_ITEM_NAME);
-// 		userInfo = null;
-// 	};
-
-// 	// 로그인 상태 확인
-// 	var init = function() { // return void
-
-// 		// 로드한다.
-// 		if (!load()) {
-// 			console.log("LOGIN_INFO : 로그인되지 않은 상태임");
-// 			// load가 실패하면 로그아웃 상태이므로, 현재 페이지가 로그인이 필요한 페이지인지 확인한다.
-
-// 			// 만일 로그인이 필요하지 않은 상태이면 바로 리턴한다.
-
-// 			// 로그인이 필요한 페이지이면, 현재 page를 history push하고 로그인 페이지로 이동한다.
-// 			// LOGIN_PAGE_URL
-// 		}
-
-// 	};
-
-// 	// Initialize
-// 	init();
-
-
-// 	return {
-// 		login: function(email, password, successProcFunc, errorProcFunc) {
-// 			callLogin(email, password, successProcFunc, errorProcFunc);
-// 		},
-// 		// formLogin: function(queryString) {
-// 		//     return callFormLogin(queryString);
-// 		// },
-// 		logout: function() {
-// 			// 로그아웃 후에 이동할 초기 페이지를 지정해야 함.
-// 			return callLogout();
-// 		},
-// 		getName: function() {
-// 			if (userInfo != null) return userInfo.name;
-// 			else return;
-// 		},
-// 		getEmail: function() {
-// 			if (userInfo != null) return userInfo.email;
-// 			else return;
-// 		},
-// 		getId: function() {
-// 			if (userInfo != null) return userInfo.userId;
-// 			else return;
-// 		},
-
-// 		getUserType: function() {   // 1:구직(개인)회원, 2:구인(병원)회원
-// 			if ( userInfo != null ) return userInfo.userType;
-// 			else return;
-// 		},
-		
-// 		isHospitalMember: function() {
-// 			if ( userInfo != null && userInfo.userType != null && userInfo.userType==2 ) return true;
-// 			return false;
-// 		},
-// 		isPersonalMember: function() {
-// 			if ( userInfo != null && userInfo.userType != null && userInfo.userType==1 ) return true;
-// 			return false;
-// 		},
-
-// 		getHospitalId: function() {
-// 			if ( userInfo != null && userInfo.userType != null && userInfo.userType==2 ) return userInfo.hospitalId;
-// 			else return null;
-// 		},
-
-
-// 		// 스크랩된 공고의 LIST를 가져온다.
-// 		// 서버에서 가져오지 않고, 로컬 메모리에서만 처리한다.
-// 		// 주의 : 로그인 시에는 이 정보를 한번은 가져와야 한다. 다른 단말(App vs Mobile Web)과의 동기화 필요
-// 		getScrappedJobAdIds: function() {            
-// 			if ( userInfo && userInfo.scrappedJobAdIds ) 
-// 				return userInfo.scrappedJobAdIds;
-// 		},
-// 		// 공고를 스크랩한다.
-// 		// 서버에 추가 명령을 내린 후,
-// 		//      응답값으로 전체 스크랩 리스트를 받아 와서, 이를 로컬에 update하고,
-// 		//      화면단에서는 이를 가지고 화면에 보이는 전체 공고에 대해서 다시 별표 표시 처리하여야 함(동일 공고가 프리미엄과 일반에 나오는 경우가 문제됨)
-// 		addScrappedJobAdId: function(jobAdId, callbackFunction) {
-// 			_addScrappedJobAdId(jobAdId, callbackFunction);
-// 			return userInfo.scrappedJobAdIds;
-// 		},
-// 		// 스크랩된 공고를 삭제한다.
-// 		removeScrappedJobAdId: function(jobAdId, callbackFunction) {
-// 			_removeScrappedJobAdId(jobAdId, callbackFunction);
-// 			return userInfo.scrappedJobAdIds;
-// 		},
-// 		// 서버로부터 리로드한다.
-// 		refreshScrappedJobAdIds: function() {
-// 			//
-// 		},
-// 		updateLocalScrappedJobAdId : function(jobAdIdArr, callbackFunction) {
-// 			_updateLocalScrappedJobAdId(jobAdIdArr, callbackFunction);
-// 		},
-
-// 		// 관심지역 리스트를 가져온다.
-// 		// getInterstingLocationList: function() {
-// 		//     return _getInterstingLocationList();
-// 		// },
-
-
-// 		isLoggedIn: function() {
-// 			if (userInfo != null) return true;
-// 			return false;
-// 		},
-// 		afterSignup: function(newUserInfo) {
-// 			if ( newUserInfo != null ) {
-// 				clear();
-// 				userInfo = newUserInfo;                
-// 				save();
-// 			} else return false;
-// 		},
-
-// 		getToken: function() {
-// 			if ( userInfo != null && userInfo.token != null ) return userInfo.token;
-// 			else return null;
-// 		}
-// 	};
-// })();
 
 
 var CODE_CONTAINER = (function() {
@@ -1979,6 +1875,67 @@ function clearSelectOptions(selectElement, defaultOptionText, defaultOptionValue
 
 }
 
+/**
+ *  동일한 name을 가진 checkbox들을 그룹으로 묶고, reset 기능을 붙인다.
+ *  
+ *  @param  formElement form element 객체
+ *  @param  elementName checkbox 엘리먼트들의 공통 name
+ *
+ *  동일한 name을 가진 checkbox들 중에서 value가 ''인 것을 reset기능을 가지게 한다.
+ *  reset 기능을 가진 checkbox가 checked되면, 동일한 이름의 다른 checkbox들은 unchecked된다.
+ *  reset이 아닌 동일한 name의 다른 checkbox들 중의 하나라로 check이면, reset이 unchecked된다.
+ *  reset이 아닌 동일한 name의 다른 checkbox들이 모두 checked되면, 해당 checkbox들이 모두 unchecked되고, reset이 checked된다.
+ *
+function bindCheckboxesWithResetByName(formElement, elementName) {
+
+	var targetElements = formElement.querySelectorAll("input[type=checkbox][name='" + elementName + "']:not([value=''])");
+	var resetElement   = formElement.querySelector("input[type=checkbox][name='" + elementName + "'][value='']");
+
+	if ( targetElements==null || resetElement==null ) {
+		console.log("bindCheckboxesWithReset : 대상 없음 ", targetElements, "    ", resetElement);
+		return;
+	}
+
+	// RESET Element에 이벤트 부착 : 자신이 checked이면, 다른 checkbox를 unchecked로 변경
+	resetElement.addEventListener('change', function(event) {
+		if ( this.checked ) {
+			targetElements.forEach(function(element) {
+				element.checked = false;
+			});
+
+		} else {
+			if ( formElement.querySelectorAll("input[type=checkbox][name='" + elementName + "']:not([value='']):checked").length==0 ) this.checked = true;
+		}
+	});
+
+
+	// Target Element에 이벤트 부착
+	var totalCnt = targetElements.length;        
+	targetElements.forEach(function(target) {
+		
+		target.addEventListener('change', function(event) {
+			var checkedCnt = formElement.querySelectorAll("input[type=checkbox][name='" + elementName + "']:not([value='']):checked").length;
+
+			if ( checkedCnt==totalCnt ) {       // 모두 checked이면 ==> 전체를 unchecked, 대신 reset을 checked
+				targetElements.forEach(function(element) {
+					element.checked = false;
+				});
+				resetElement.checked = true;
+			
+			} else if ( checkedCnt==0 ) {       // 모두 unchecked이면 ==> reset을 checked
+				resetElement.checked = true;
+
+			} else {                            // 하나라도 checked이면 ==> reset을 unchecked
+				resetElement.checked = false;
+			}
+		});
+
+
+	});
+
+}
+*/
+
 
 
 /**
@@ -2109,6 +2066,57 @@ function bindCheckableElementWithTextElement(checkableElementName, bidingValue, 
  * 
  *          
  */
+// function initFormElementValues(formElement, selectedValues) {
+
+//     //  {"holiday": ["a", "c", "text":"asdf"]}
+//     if ( formElement==undefined || formElement==null ) return;
+//     if ( selectedValues==undefined || selectedValues==null ) return;
+
+//     Object.keys(selectedValues).forEach(function(name) {
+		
+//         var value = selectedValues[name];
+//         console.log("form element name[", name , "]  value[", value, "]");
+
+//         var elements = formElement.querySelectorAll("[name='" + name + "']");
+
+		
+
+
+
+
+//         if ( typeof value === 'string' || typeof value === 'number') {
+
+//             //form.getElementsByName(name).forEach(function(element) {    // 보통은 1개일 것
+//             var elements = formElement.querySelectorAll("[name='" + name + "']");
+//             if ( elements==undefined || elements==null ) return;
+
+			
+//             console.log("name[", name, "]  element ", elements, "  length:", elements.length);
+
+//             elements.forEach(function(element) {
+//                 console.log("\t==>\t", element);
+
+//                 if ( element.type=='textarea' ) element.innerHTML = value;
+//                 else element.value = value;
+//             });
+			
+
+//         } else if ( Array.isArray(value) ) {                // 'choice':['a', 'c'] 형태
+//             console.log(">>> ", value);
+//             value.forEach(function(eachValue) {
+//                 var elements = formElement.querySelectorAll("input[name='" + name + "'][value='" + eachValue + "']");
+//                 if ( elements==undefined || elements==null ) return;
+
+//                 elements.forEach(function(element) {
+//                     element.checked = true;
+//                 });
+
+//             });
+
+//         }
+
+//     });
+// }
 function initFormElementValues(formElement, selectedValues) {
 	if ( formElement==undefined || formElement==null ) return;
 	if ( selectedValues==undefined || selectedValues==null ) return;
@@ -2168,6 +2176,18 @@ function getHtmlCallParamString() {
 		return null;
 	}
 
+
+	// var arr = (document.location + '').split('?');
+	// console.log("페이지 요청 URL : ", arr);
+	// if (arr.length == 1) {              // 파라미터 없이 직접 호출된 경우
+	//     return null;
+	// } else if (arr.length == 2) {       // 파라미터와 함께 호출된 경우
+	//     return arr[1];                
+	// } else {                            // 파라미터 시작인 '?'가 2개 이상인 경우
+	//     console.log("ERROR : 페이지 호출 시 '?'가 2개 이상임.");
+	//     //throw '잘못된 페이지 요청';  
+	//     return null;              
+	// }
 }
 /**
  * 현재 페이지가 호출될 때의 GET 방식 파라미터들을 객체로 변환하여 리턴한다.
@@ -2191,6 +2211,37 @@ function getHtmlCallParams() {
 
 	var paramString = getHtmlCallParamString();
 	return parseParamString(paramString);
+
+
+
+	// var paramMap = {};
+
+	// var paramString = getHtmlCallParamString();
+
+	// if ( paramString ) {
+	//     paramString.split('&').forEach(function(param) {
+	//         var token = param.split('=');
+
+	//         var key = token[0];
+	//         var val = token[1];
+
+	//         if ( paramMap[key] ) {
+	//             if ( Array.isArray(paramMap[key]) ) {
+	//                 paramMap[key].push(val);
+	//             } else {
+	//                 var tempVal = paramMap[key];
+	//                 paramMap[key] = [];
+	//                 paramMap[key].push(tempVal);
+	//                 paramMap[key].push(val);
+	//             }
+	//         } else {
+	//             paramMap[key] = val;
+	//         }
+			
+	//     });
+	// }
+	
+	// return paramMap;
 }
 
 function parseParamString(paramString) {

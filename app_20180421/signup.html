@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <div class="dental-steps">
+        <input type="radio" name="steps" id="member-register-1" checked hidden>
+        <input type="radio" name="steps" id="member-register-2" hidden>
+        <input type="radio" name="steps" id="member-register-3" hidden>
+        <div class="step">
+            <label class="step-item" for="member-register-1"><span>약관동의</span></label>
+            <label class="step-item" for="member-register-2"><span>정보입력</span></label>
+            <label class="step-item" for="member-register-3"><span>가입완료</span></label>
+        </div>
+        <div class="step-body">
+            <form id="signupForm">
+                <div class="step-content">
+                    <div class="step-content-header">
+                        <div class="content-title">회원 가입</div>
+                        <div class="content-desc">개인/치과 회원을 선택해 주세요</div>
+                    </div>
+                    <div class="dental-tabs">
+                        <input class="tabs-input" type="radio" name="userType" value="1" id="dental-tabs1" checked hidden>
+                        <input class="tabs-input" type="radio" name="userType" value="2" id="dental-tabs2" hidden> 
+                        <div class="tab tab-block">
+                            <label class="tab-item" for="dental-tabs1">
+                                <span>개인회원</span>
+                            </label>
+                            <label class="tab-item" for="dental-tabs2">
+                                <span>치과회원</span>
+                            </label>
+                        </div>
+                        <div class="tab-body">
+                            <div class="tab-content">
+                                <p>개인회원 약관</p>
+                                <p><label><input type="checkbox" id="personEula" name="eulaVer" value="eula_person_1" >이용약관 동의(필수)</label></p>
+                                <p><label><input type="checkbox" id="personCupi" name="cupiVer" value="cupi_person_1" >개인정보 수집 및 이용 동의(필수)</label></p>
+                            </div>
+                            <div class="tab-content">
+                                <p>치과회원 약관</p>
+                                <p><label><input type="checkbox" id="bizEula"  name="eulaVer" value="eula_biz_1" >이용약관 동의(필수)</label></p>
+                                <p><label><input type="checkbox" id="bizCupi" name="cupiVer" value="cupi_biz_1" >개인정보 수집 및 이용 동의(필수)</label></p>
+                            </div>
+                        </div>
+                        <div class="dental-tabs-footer">
+                            <div class="confirmMore">
+                                <div class="confirmMoreBox">
+                                    <div>정보 수신동의 <span>(선택)</span></div>
+                                    <ul class="confirmMoreList">
+                                        <li>
+                                            <span class="title">이메일/푸시</span>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="agreementNoticeNewsYn" value="Y">
+                                                <span class="element">공지/뉴스</span>
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="agreementHiringNewsYn" value="Y">
+                                                <span class="element">채용소식</span>
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="agreementEventYn" value="Y">
+                                                <span class="element">이벤트</span>
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="agreementAdYn" value="Y">
+                                                <span class="element">광고</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="button" id="btnPrepare">확인</button> 
+                        </div>
+                    </div>
+                </div>
+                <div class="step-content login-section">
+                    <div class="dental-card">
+                        <div class="dental-card-header">
+                            <div class="dental-card-header-title h4" style="margin-bottom: 1.5rem;">가입정보 입력</div>
+                        </div>
+                        <div class="login-section-body">
+                            <div class="form-group facebook-login">
+                                <i class="fab fa-facebook" style="margin: 0 0.5rem; font-size: 1.2rem;"></i>
+                                <span>페이스북으로 바로 이용하기</span>
+                            </div>
+                            <div class="divider" data-content="또는"></div>
+                            <div class="form-group" id="bizRegNoDiv" hidden>
+                                <input class="styled-input" type="number" id="bizRegNo" name="bizRegNo" maxlength=10 placeholder="사업자등록 번호 입력" >
+                                <span class="form-group-underline"></span>
+                                <span class="btn btn-primary input-rtt" id="checkBizRegNo">중복확인</span>
+                                <div id="bizRegNoStatus" class="form-group-msg" hidden></div>
+                            </div>
+                            <div class="form-group">
+                                <input class="styled-input" type="email" id="email" name="email" required placeholder="이메일 아이디" >
+                                <span class="form-group-underline"></span>
+                                <span class="dental-btn confirmed-btn" hidden><i class="fal fa-check-circle"></i></span>
+                                <div id="emailStatus" class="form-group-msg2"> 아이디로 사용할 이메일 주소를 입력해 주세요.</div>
+                            </div>
+                            <div id="emailStatus" class="form-msg"></div>
+                            <div class="form-group">
+                                <!-- <input type="password" id="password" name="password" required pattern="[0-9a-fA-F]{8,12}" placeholder="비밀번호 입력" > <!-- 패턴은 테스트용 수정필요 -->
+                                <input class="styled-input" type="password" id="password" name="password" required  placeholder="비밀번호 입력" > <!-- 패턴은 테스트용 수정필요 -->
+                                <span class="form-group-underline"></span>
+                                <div class="form-group-msg2" hidden></div>
+                            </div>
+                            <div class="form-group">
+                                <!-- <input type="password" id="passwordConfirm" name="passwordConfirm" required pattern="[0-9a-fA-F]{8,12}" placeholder="비밀번호 확인" > <!-- 패턴은 테스트용 수정필요 -->
+                                <input class="styled-input" type="password" id="passwordConfirm" name="passwordConfirm" required  placeholder="비밀번호 확인" > <!-- 패턴은 테스트용 수정필요 -->
+                                <span class="form-group-underline"></span>
+                                <div id="passwordStatus" class="form-group-msg2"></div>
+                            </div>
+                            <div class="basic">
+                                <button type="submit" class="btn btn-primary" >가입하기</button>
+                                <label style="margin-left: 0.5rem"><input type="checkbox" name="keepingLoginType" value="1" ><span style="margin-left: 0.5rem;">로그인 상태 유지</span></label>
+                            </div>
+                        </div>
+                        <div class="login-section-footer">
+                            <div class="checkRegister">
+                                <a href="login.html">
+                                    <span>이미 회원이시라면?</span>
+                                    <span>로그인</span>
+                                </a>
+                            </div>
+                            <div class="findPassword">
+                                <span>아이디 찾기</span>
+                                <span class="spanVdivider"></span>
+                                <span>비밀번호 찾기</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-content">
+                    가입완료
+                    <button class="btn btn-primary" type="button" id="btnSuccessSigunup">가입완료 확인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    var SignupApp = (new function() {
+
+        var bizRegNoDivElement = document.getElementById("bizRegNoDiv");    // 사업자 번호 입력 영역
+
+
+
+        /***********************************************************************************/
+        /*                                  약관동의 단계                                  */
+        /***********************************************************************************/
+
+        // 약관동의 단계에서 필수 선택 등의 확인
+        function checkPrepareStage() {
+            
+            
+
+            console.log("선택된 회원 유형 : " + signupForm.userType.value);
+
+            if ( signupForm.userType.value=='1' ) {
+                console.log(document.bizRegNoDiv);
+
+                bizRegNoDivElement.hidden = true;  // 사업자 번호 입력 영역 보이지 않게 한다.
+
+                if ( !signupForm.personEula.checked ) {
+                    alert("본 서비스를 이용하시려면 이용약관 동의가 필요합니다.");
+
+                    document.getElementById("member-register-1").checked = true;
+                    document.getElementById("dental-tabs1").checked = true;
+                    signupForm.personEula.focus();
+                    return false;
+                }
+                if ( !signupForm.personCupi.checked ) {
+                    alert("본 서비스를 이용하시려면 개인정보 수집 및 이용에 동의가 필요합니다.");
+
+                    document.getElementById("member-register-1").checked = true;
+                    document.getElementById("dental-tabs1").checked = true;
+                    signupForm.personCupi.focus();
+                    return false;
+                }
+
+                signupForm.bizEula.checked = false;
+                signupForm.bizCupi.checked = false;
+
+
+            } else if ( signupForm.userType.value=='2' ) {
+
+                bizRegNoDivElement.hidden = false;  // 사업자 번호 입력 영역 보이게 한다.
+
+                if ( !signupForm.bizEula.checked ) {
+                    alert("본 서비스를 이용하시려면 이용약관 동의가 필요합니다.");
+
+                    document.getElementById("member-register-1").checked = true;
+                    document.getElementById("dental-tabs2").checked = true;
+                    signupForm.bizEula.focus();
+                    return false;
+                }
+                if ( !signupForm.bizCupi.checked ) {
+                    alert("본 서비스를 이용하시려면 개인정보 수집 및 이용에 동의가 필요합니다.");
+
+                    document.getElementById("member-register-1").checked = true;
+                    document.getElementById("dental-tabs2").checked = true;
+                    signupForm.bizCupi.focus();
+                    return false;
+                }
+
+                signupForm.personEula.checked = false;
+                signupForm.personCupi.checked = false;
+                
+            }
+
+            return true;
+
+        }
+
+        // 개인회원/병원회원 탭 이동 이벤트 처리
+        document.getElementById("dental-tabs1").addEventListener("click", function(event) { // 개인 회원 선택
+            bizRegNoDivElement.hidden = true;       // 사업자 번호 입력 영역 보이지 않게 한다.
+            this.checked = true;                    // 탭 이동
+            signupForm.bizEula.checked = false;     // 병원 필수 선택 해제
+            signupForm.bizCupi.checked = false;
+        });
+        document.getElementById("dental-tabs2").addEventListener("click", function(event) { // 병원 회원 선택
+            bizRegNoDivElement.hidden = false;      // 사업자 번호 입력 영역 보이게 한다.
+            this.checked = true;                    // 탭 이동
+            signupForm.personEula.checked = false;  // 개인 필수 선택 해제
+            signupForm.personCupi.checked = false;
+        });
+        
+
+        // 약관동의 단계 입력값 검증
+        function prepareSignup(event) {
+            if ( !checkPrepareStage() ) {
+                return;
+            }
+            document.getElementById("member-register-2").checked = true;    // 다음 단계 이동
+        }
+        document.getElementById("btnPrepare").addEventListener("click", prepareSignup);
+
+
+        /***********************************************************************************/
+        /*                             ID, 비밀번호 입력 단계                              */
+        /***********************************************************************************/ 
+
+        // (사업자번호), EMAIL, 비밀번호 등 확인
+        function checkSignupInfo() {
+
+            if ( signupForm.userType.value=='2' ) {  // 병원회원
+                // 사업자 번호 필수값 검증
+
+                // 사업자 번호 없으면...
+                // document.getElementById("member-register-2").disabled = false;  // 정보입력 단계로 이동
+                // alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                // signupForm.bizRegNo.focus();
+                // return false;
+            }
+
+
+            // EMAIL 검증
+            email.value = email.value.trim();
+
+
+            // 비밀번호 검증
+            var password        = signupForm.password;
+            var passwordConfirm = signupForm.passwordConfirm;
+            password.value = password.value.trim();
+            passwordConfirm.value = passwordConfirm.value.trim();
+            if ( password.value !== passwordConfirm.value ) {
+                document.getElementById("member-register-2").disabled = false;  // 정보입력 단계로 이동
+                alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                password.focus();
+            }
+
+            console.log("입력정보 검증 완료");
+            return true;
+
+        }
+
+        // 회원 가입 처리
+        function doSignup(event) {
+            event.preventDefault();
+
+
+            if ( !checkSignupInfo() ) {
+                //document.getElementById("member-register-2").disabled = false;  // 정보입력 단계로 이동
+                return;
+            }
+
+            // API 호출 ==> 완료되면, 다음 단계로
+            // API 호출 ==> 실패하면?
+
+			var apiParam = createObjectFromFormData(signupForm);
+            console.log("등록 처리 수행 ", apiParam);
+
+            
+            callApi("POST", "/api/user/", JSON.stringify(apiParam),
+                function(resData) {
+                    console.log(resData);
+                    alert("등록되었습니다.");
+
+                    // 로그인 정보로 수신된 내용으로 로그인 처리한다.
+                    LOGIN_INFO.afterSignup(resData);
+
+                    //USER_INFO = new UserInfo(resData.id, resData.email, resData.name);
+                    //saveUserInfo(USER_INFO);
+                    //location.href = 'person/localSetting.html';
+
+                    document.getElementById("member-register-1").disabled = true;   // 약관동의 단계 이동 막기
+                    document.getElementById("member-register-2").disabled = true;   // 정보 입력 단계 이동 막기
+                    document.getElementById("member-register-3").checked = true;    // 가입완료 단계로 이동
+
+
+                    var btnSuccessSigunup = document.getElementById("btnSuccessSigunup");
+                    if ( LOGIN_INFO.getUserType()==1 ) {
+                        btnSuccessSigunup.addEventListener("click", function(event) {
+                            location.href = "register_user.html";
+                        });
+                    } else if ( LOGIN_INFO.getUserType()==2 ) {
+                        btnSuccessSigunup.addEventListener("click", function(event) {
+                            location.href = "register_dentist.html";
+                        });
+                    } else {
+                        alert("회원 유형을 확인할 수 없습니다.");
+                    }
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+				},
+				"application/json"
+            );
+        }
+
+        document.getElementById("signupForm").addEventListener("submit", doSignup);
+
+    });
+
+    
+
+</script>
+
+
