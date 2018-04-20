@@ -116,7 +116,13 @@
                                         </a>
                                         <div class="resume-list-card-footer">
                                             <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{resumeId}}" {{#if scrappedByCertainHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
-                                            {{#checkActionOffer}}<span class="footer-item" data-action="offer" data-action-value="{{resumeId}}"><i class="fa fa-share"></i>면접제안</span>{{/checkActionOffer}}
+											{{#checkActionOffer}}											
+												{{#if offeredByCertainHospital}}
+													<span class="footer-item"><i class="fa fa-share"></i>이미 제안!!!</span>	
+												{{else}}
+													<span class="footer-item" data-action="offer" data-action-value="{{resumeId}}"><i class="fa fa-share"></i>면접제안</span>	
+												{{/if}}
+											{{/checkActionOffer}}
                                             <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
                                         </div>
                                     </div>
@@ -157,43 +163,6 @@
                                 </div>
 
                                 <div class="resume-list-body" id="divResumeCardScrapped"></div>
-                                <!--
-                                <script id="resumeCardScrappedTemplate" type="text/x-handlebars-template">
-                                    {{#each .}}
-                                    <div class="resume-list-card">
-                                        <a href="#">
-                                            <div class="resume-list-card-header">
-                                                <div class="resume-list-photo">
-                                                    <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
-                                                        <div class="image-frame"><img src="{{profileImageFullUrl}}"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="resume-list-card-title">{{title}}</div>
-                                            </div>
-                                            <div class="resume-list-card-body">
-                                                <div class="resume-info-box">
-                                                    <div class="resume-info">
-                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
-                                                    </div>
-                                                    <div class="resume-info">
-                                                        {{{renderAttrOnResumeCard attr}}}
-                                                    </div>
-                                                    <div class="resume-info"><span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span></div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="resume-list-card-footer">
-                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
-                                            <span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>
-                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
-                                        </div>
-                                    </div>
-                                    {{/each}}
-                                </script>
-                                -->
                             </div>
                         </div>
                     </div>
@@ -229,43 +198,6 @@
                                     <span class="resume-list-bar-counter" id="countOfResumeRecommended">0</span>
                                 </div>
                                 <div class="resume-list-body" id="divResumeCardRecommended"></div>
-                                <!--
-                                <script id="resumeCardRecommendedTemplate" type="text/x-handlebars-template">
-                                    {{#each .}}
-                                    <div class="resume-list-card">
-                                        <a href="#">
-                                            <div class="resume-list-card-header">
-                                                <div class="resume-list-photo">
-                                                    <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
-                                                        <div class="image-frame"><img src="{{profileImageFullUrl}}"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="resume-list-card-title">{{title}}</div>
-                                            </div>
-                                            <div class="resume-list-card-body">
-                                                <div class="resume-info-box">
-                                                    <div class="resume-info">
-                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
-                                                    </div>
-                                                    <div class="resume-info">
-                                                        {{{renderAttrOnResumeCard attr}}}
-                                                    </div>
-                                                    <div class="resume-info"><span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span></div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="resume-list-card-footer">
-                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
-                                            <span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>
-                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
-                                        </div>
-                                    </div>
-                                    {{/each}}
-                                </script>
-                                -->
                             </div>
                         </div>
                     </div>
@@ -295,43 +227,6 @@
                                 </div>
 
                                 <div class="resume-list-body" id="divResumeCardSearched"></div>
-                                <!--
-                                <script id="resumeCardSearchedTemplate" type="text/x-handlebars-template">
-                                    {{#each .}}
-                                    <div class="resume-list-card">
-                                        <a href="#">
-                                            <div class="resume-list-card-header">
-                                                <div class="resume-list-photo">
-                                                    <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
-                                                        <div class="image-frame"><img src="{{profileImageFullUrl}}"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="resume-list-card-title">{{title}}</div>
-                                            </div>
-                                            <div class="resume-list-card-body">
-                                                <div class="resume-info-box">
-                                                    <div class="resume-info">
-                                                        <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
-                                                        <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
-                                                    </div>
-                                                    <div class="resume-info">
-                                                        {{{renderAttrOnResumeCard attr}}}
-                                                    </div>
-                                                    <div class="resume-info"><span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span></div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="resume-list-card-footer">
-                                            <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
-                                            <span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>
-                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
-                                        </div>
-                                    </div>
-                                    {{/each}}
-                                </script>
-                                -->
 
                             </div>
                         </div>
@@ -442,10 +337,6 @@ function renderAttrOnResumeCard(attrList) {   // 지원 속성은 선택하지 �
     return html;
 }
 
-// var resumeCardAppliedTemplateCompiled       = Handlebars.compile( document.getElementById("resumeCardAppliedTemplate").innerHTML );
-// var resumeCardScrappedTemplateCompiled      = Handlebars.compile( document.getElementById("resumeCardScrappedTemplate").innerHTML );
-// var resumeCardRecommendedTemplateCompiled   = Handlebars.compile( document.getElementById("resumeCardRecommendedTemplate").innerHTML );
-// var resumeCardSearchedTemplateCompiled      = Handlebars.compile( document.getElementById("resumeCardSearchedTemplate").innerHTML );
 var resumeCardTemplateCompiled = Handlebars.compile( document.getElementById("resumeCardTemplate").innerHTML );
 
 function calLengthOfCareer(careerList) {
@@ -579,11 +470,8 @@ function listResume(tabNo) {
         }
     );
 }
-
-
 function onChangeTabs(event) {
     console.log("변경 : ", this.value);
-
     listResume(this.value);
 }
 document.querySelectorAll("input[name='tabs']").forEach(function(el) {
@@ -604,6 +492,10 @@ function checkAuth() {
 		return false;
 	}
 
+	if ( !LOGIN_INFO.getHospitalId() ) {
+		alert("병원 기본정보가 등록되지 않았습니다.");
+	}
+
     return true;
 }
 
@@ -620,28 +512,6 @@ listResume(1);  // 1번 탭 실행
 /**********************************************************************************************/
 // 스크랩 처리
 function onClickScrap(scrapElementClicked) {
-
-	function redrawScrapElements(checkedResumes) {
-		console.log("+=====> ", checkedResumes);
-		document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
-			el.checked = false;
-		});
-		
-		if ( !checkedResumes ) return;
-
-		checkedResumes.forEach(function(resume) {
-			document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
-				el.checked = true;
-			});
-		});
-	}
-
-
-	if ( !checkAuth() ) {
-		return;
-	}
-	
-	
 	//console.log("이력서 스크랩 ", scrapElementClicked.value , "  ==> ", scrapElementClicked.checked);
 
 	var hospitalId = LOGIN_INFO.getHospitalId();
@@ -658,7 +528,6 @@ function onClickScrap(scrapElementClicked) {
 			}
 		);
 
-
 	} else {
 		//console.log("서버에 스크랩 off 처리해야 함");
 		callApi("DELETE", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
@@ -670,11 +539,30 @@ function onClickScrap(scrapElementClicked) {
 			}
 		);
 	}
+
+
+	function redrawScrapElements(checkedResumes) {
+		console.log("+=====> ", checkedResumes);
+		document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
+			el.checked = false;
+		});
+		
+		if ( !checkedResumes ) return;
+
+		checkedResumes.forEach(function(resume) {
+			document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
+				el.checked = true;
+			});
+		});
+	}
+	
 }
 
-
+// 공고 리스팅 모달
 var jobAdCardTemplateForOfferCompiled = Handlebars.compile( document.getElementById("jobAdCardTemplateForOffer").innerHTML );
 
+
+// 이력서를 클릭할 때 이벤트 처리
 function onClickResumeListBody(event) {
 	console.log("AADFASDfASDF ", event.target);
 	console.log("===> ", event.target.dataset);
@@ -687,6 +575,9 @@ function onClickResumeListBody(event) {
 		console.log("** ", target.dataset.action, "  ", target.dataset.actionValue);
 		
 		if ( target.dataset.action=="offer" ) {
+
+			SELECTED_RESUME_ID_FOR_OFFER =  target.dataset.actionValue;
+
 			// 공고를 가져온다.
 			var hospitalId = LOGIN_INFO.getHospitalId();
 			callApi("GET", "/api/hospital/"+hospitalId+"/jobAd/", null,
@@ -719,29 +610,49 @@ document.querySelectorAll(".resume-list-body").forEach(function(el) {
 });
 
 
+var SELECTED_RESUME_ID_FOR_OFFER;
 
 
 
-
-function selectJobAd(jobAdId) {
-	console.log("TEST OK ", jobAdId);
+function selectJobAd(jobAdId, resumeId) {
+	console.log("면접제안할 공고/이력서 : ", jobAdId, " / ", resumeId);
 
 	var process = confirm("해당 공고로 면접제안을 하시겠습니까?");
 	if ( process ) {
 		console.log("면접제안 한다.");
+		if ( !SELECTED_RESUME_ID_FOR_OFFER ) {
+			alert("면접제안할 이력서가 선택되지 않았습니다.");
+			return;
+		}
 
+		var hospitalId = LOGIN_INFO.getHospitalId();
+		callApi("POST", "/api/hospital/" + hospitalId + "/resumeOfferedId/", "jobAdId="+jobAdId+"&resumeId="+SELECTED_RESUME_ID_FOR_OFFER,
+				function(resumeOfferedIdAndJobAdIdList) {
+			console.log("성공   : ", resumeOfferedIdAndJobAdIdList);
+			// 결과를 가지고 화면을 면접제안 상태를 변경해 준다.
+
+			if ( !resumeOfferedIdAndJobAdIdList ) return;
+
+			resumeOfferedIdAndJobAdIdList.forEach(function(resumeIdAndJobAdId) {
+				document.querySelectorAll(".resume-list-body [data-action='offer'][data-action-value='" + resumeIdAndJobAdId.resumeId + "']").forEach(function (el) {
+					el.innerText = "기지원";
+					el.dataset.action = null;
+					el.dataset.actionValue = null;
+				});
+			});
+
+			alert("면접제안 되었습니다.");
+			document.getElementById("divOfferModal").classList.remove("active");
+
+		},
+		function(errorCode, errorMsg) {
+			alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+			document.getElementById("divOfferModal").classList.remove("active");
+		});
 
 	}
 
-
-	document.getElementById("divOfferModal").classList.remove("active");
+	
 }
 
-
-/*
-class="footer-item" data-action="offer"
-
-document.getElementById("divOfferModal").classList.add("active");
-document.getElementById("divOfferModal").classList.remove("active");
-*/
 </script>
