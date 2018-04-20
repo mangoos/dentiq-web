@@ -435,7 +435,8 @@ function callApi(httpMethodType, apiUrl, reqData,
 
 	var myHeaders = {};
 	myHeaders[SESSION_TOKEN_NAME] = LOGIN_INFO.getToken();
-	//console.log("LOGIN_TOKEN : " + myHeaders);
+	//console.log("CALL API : <SEND> " + "[" + apiUrl + "] ", reqData, " HEADER: ", myHeaders);
+	console.log("CALL API : <SEND> " + httpMethodType + "  [" + apiUrl + "] ", reqData);
 
 	$.ajax({
 		type: httpMethodType,
@@ -447,16 +448,16 @@ function callApi(httpMethodType, apiUrl, reqData,
 
 			if (result._RESPONSE_CODE_ != null && result._RESPONSE_CODE_ == "0000") {
 
-				console.log("HEADER : ", jqXHR.getResponseHeader(SESSION_TOKEN_NAME));
+				console.log("CALL API : <RECV:HEADER> : ", jqXHR.getResponseHeader(SESSION_TOKEN_NAME));
 				var sessionToken = jqXHR.getResponseHeader(SESSION_TOKEN_NAME);
 				if ( sessionToken ) {		// 로그인 직후, 또는 로그인연장/로그인정보변경의 경우
 					LOGIN_INFO.setSessionToken(sessionToken);
 				}
 
-				console.log("callApi : 성공 [", result._RESPONSE_, "]");
+				console.log("CALL API : <RECV> 성공 [", result._RESPONSE_, "]");
 				callbackSuccessProcessFunction(result._RESPONSE_);
 			} else {
-				console.log("callApi : 논리 오류 [", result._RESPONSE_CODE, "] ==> [", result._RESPONSE_MSG_, "]");
+				console.log("CALL API : <RECV> 논리 오류 [", result._RESPONSE_CODE, "] ==> [", result._RESPONSE_MSG_, "]");
 				callbackErrorProcessFunction(result._RESPONSE_CODE_, result._RESPONSE_MSG_);
 			}
 		},

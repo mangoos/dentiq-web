@@ -1188,7 +1188,8 @@ var ResumeManagementApp = (function() {
                 console.log(resData);
                 alert("등록되었습니다.");
 
-                homeLocation = resData.user.location;
+				homeLocation = resData.user.location;
+				resumeId = resData.resumeId;
 
                 // 성공하면, 현재 페이지 그대로 보여준다.
                 initFormData(form, resData);

@@ -343,13 +343,75 @@
 
         </div>
         <div class="dental-tabs-footer"></div>
-    </div>
-</body>
+	</div>
+	
 
+    <!-- interviewOfferModal 모달 -->
+    <div class="dental-modal" id="divOfferModal" hidden></div>
+	<script id="jobAdCardTemplateForOffer" type="text/x-handlebars-template">
+
+        <div class="dental-modal-container" style="top:10%;">
+            <div class="modal-container-header">
+                <div class="modal-container-header-title">
+                    공고선택
+                </div>
+                <div class="modal-container-header-desc">
+                    면접 제안할 공고를 선택해주세요
+                </div>
+            </div>
+            <div class="modal-container-body">
+
+				{{#each .}}
+                <div class="jobpost-list-card">
+                    <a href="javascript:selectJobAd({{jobAdId}});">
+                        <div class="jobpost-list-card-header">
+                            <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
+                            <div class="jobpost-list-card-subtitle">{{title}}</div>
+                        </div>
+                        <div class="jobpost-list-card-body">
+                            <div class="dental-info">
+                                <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
+                                <span class="info-detail subway-line">
+                                    <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
+                                    <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
+                                    <span>서울 3호선<i></i></span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
+                                    <span class="subway120"><i></i></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
+                                </span>
+                                <!-- 시도, 시구군 정보, 교통정보 -->
+                                <span class="info-detail">
+                                </span>
+								<!-- 주변 핫플레이스 -->
+								<span class="info-detail">
+									{{#each hashTag}}
+										<span>#{{.}}<i></i></span>
+									{{/each}}
+								</span>
+                            </div>
+                            <div class="dental-info">
+                                <span class="info-detail">{{{renderAttrOnCard attr}}}</span>
+                            </div>
+                        </div>
+                    </a>
+				</div>
+				{{/each}}
+
+            </div>
+        </div>
+		<div class="dental-modal-overlay" hidden></div>
+
+		
+	</script>
+
+	
+</body>
 </html>
 
 
 <script>
+var dModal = dentalModal(); // 선정우가 테스트로 넣음 , 지워도 됨
+
+
+
 // 속도 느림. 그러나 ordering 됨
 // <span class="info-detail"><span class="job-attr-chip">계약직</span><span class="job-attr-chip">아르바이트</span><i></i></span>
 function renderAttrOnResumeCard(attrList) {   // 지원 속성은 선택하지 않은 경우(DB에 데이터 없음)인 경우에는 나오지 말아야 한다.
@@ -403,9 +465,46 @@ Handlebars.registerHelper("renderAttrOnResumeCard", function(code) {
     return renderAttrOnResumeCard(code);
 });
 Handlebars.registerHelper("renderResumeProfileImage", function(userId) {
-    	//console.log("renderResumeProfileImage ", userId);
-        return CONSTANTS.getProfileImageUrl(userId);
+	//console.log("renderResumeProfileImage ", userId);
+	return CONSTANTS.getProfileImageUrl(userId);
+});
+
+
+
+// 공고 모달용
+Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
+	//console.log("LOCATION_HELPER ", code);
+	var location = LOCATION_CODE.getByName(code);
+	if ( location ) return location.sidoName + " > " + location.siguName ;
+	else return "입력안됨";
+});
+Handlebars.registerHelper("renderAttrOnCard", function(code) {
+	//console.log("renderAttrOnCard ", code);
+	return renderAttrOnCard(code);
+});
+// 속도 느림. 그러나 ordering 됨
+function renderAttrOnCard(attrList) {
+    if ( attrList==null || attrList.length==0 ) return "";
+
+    var html = "";
+
+    var defAttrGroupList = CODE_CONTAINER.getAttrs();
+    defAttrGroupList.forEach(function(defAttrGroup) {
+        html += '<span class="info-detail">';
+        defAttrGroup.element.forEach(function(defAttr) {
+            var defAttrValue = defAttr.value;
+
+            attrList.forEach(function(attr) {
+                if ( defAttrValue == attr ) {
+                    html += "<span>" + defAttr.text + "<i></i></span>";
+                }
+            });
+        });
+        html += '</span>';
     });
+
+    return html;
+}
 
 
 /***************** 탭 선택에 따라서 '이력서 카드'의 모양을 변경하기 위한 Helper들 *************************/
@@ -493,6 +592,18 @@ document.querySelectorAll("input[name='tabs']").forEach(function(el) {
 
 
 function checkAuth() {
+	if ( !LOGIN_INFO.isLoggedIn() ) {
+		alert("로그인이 필요합니다.");
+
+		return false;
+	}
+
+	if ( !LOGIN_INFO.isHospitalMember() ) {
+		alert("병원회원만 사용 가능합니다.");
+
+		return false;
+	}
+
     return true;
 }
 
@@ -508,36 +619,39 @@ listResume(1);  // 1번 탭 실행
 /*
 /**********************************************************************************************/
 // 스크랩 처리
-function onClickScrap(event) {
-	//event.preventDefault();
+function onClickScrap(scrapElementClicked) {
+
+	function redrawScrapElements(checkedResumes) {
+		console.log("+=====> ", checkedResumes);
+		document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
+			el.checked = false;
+		});
+		
+		if ( !checkedResumes ) return;
+
+		checkedResumes.forEach(function(resume) {
+			document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
+				el.checked = true;
+			});
+		});
+	}
+
 
 	if ( !checkAuth() ) {
 		return;
 	}
 	
-	var hospitalId = LOGIN_INFO.getHospitalId();
-	console.log("이력서 스크랩 ", this.value , "  ==> ", this.checked);
-	var resumeId = this.value;
+	
+	//console.log("이력서 스크랩 ", scrapElementClicked.value , "  ==> ", scrapElementClicked.checked);
 
-	if ( this.checked ) {
+	var hospitalId = LOGIN_INFO.getHospitalId();
+	var resumeId = scrapElementClicked.value;
+
+	if ( scrapElementClicked.checked ) {
 		//console.log("서버에 스크랩 on 처리해야 함");
 		callApi("POST", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
 			function(resData) {
-
-				console.log("+=====> ", resData);
-				document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
-					el.checked = false;
-				});
-				
-				if ( !resData ) return;
-
-				resData.forEach(function(resume) {
-					document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
-						el.checked = true;
-					});
-				});
-
-				
+				redrawScrapElements(resData);
 			},
 			function(errorCode, errorMsg) {
 				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
@@ -549,17 +663,7 @@ function onClickScrap(event) {
 		//console.log("서버에 스크랩 off 처리해야 함");
 		callApi("DELETE", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
 			function(resData) {
-				document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
-					el.checked = false;
-				});
-				
-				if ( !resData ) return;
-
-				resData.forEach(function(resume) {
-					document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
-						el.checked = true;
-					});
-				});
+				redrawScrapElements(resData);
 			},
 			function(errorCode, errorMsg) {
 				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
@@ -567,6 +671,77 @@ function onClickScrap(event) {
 		);
 	}
 }
-$(".resume-list-body").on("click", "input[type=checkbox][name=resume-scrap]", onClickScrap);
 
+
+var jobAdCardTemplateForOfferCompiled = Handlebars.compile( document.getElementById("jobAdCardTemplateForOffer").innerHTML );
+
+function onClickResumeListBody(event) {
+	console.log("AADFASDfASDF ", event.target);
+	console.log("===> ", event.target.dataset);
+
+	var target = event.target;
+	if ( target.type && target.type=="checkbox" && target.name=="resume-scrap" ) {
+		onClickScrap(target);
+
+	} else if ( target.dataset && target.dataset.action && target.dataset.actionValue ) {
+		console.log("** ", target.dataset.action, "  ", target.dataset.actionValue);
+		
+		if ( target.dataset.action=="offer" ) {
+			// 공고를 가져온다.
+			var hospitalId = LOGIN_INFO.getHospitalId();
+			callApi("GET", "/api/hospital/"+hospitalId+"/jobAd/", null,
+				function(resData) {
+					//redrawScrapElements(resData);
+					console.log(resData);
+
+					document.getElementById("divOfferModal").innerHTML = jobAdCardTemplateForOfferCompiled(resData);
+					document.getElementById("divOfferModal").classList.add("active");
+				},
+				function(errorCode, errorMsg) {
+					document.getElementById("divOfferModal").classList.remove("active")
+					alert("공고 목록을 가져올 수 없습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
+				}
+			);
+
+			return;
+		}
+
+		if ( target.action=="call" ) {
+
+
+			return;
+		}
+	}
+
+}
+document.querySelectorAll(".resume-list-body").forEach(function(el) {
+	el.addEventListener("click", onClickResumeListBody);
+});
+
+
+
+
+
+
+function selectJobAd(jobAdId) {
+	console.log("TEST OK ", jobAdId);
+
+	var process = confirm("해당 공고로 면접제안을 하시겠습니까?");
+	if ( process ) {
+		console.log("면접제안 한다.");
+
+
+	}
+
+
+	document.getElementById("divOfferModal").classList.remove("active");
+}
+
+
+/*
+class="footer-item" data-action="offer"
+
+document.getElementById("divOfferModal").classList.add("active");
+document.getElementById("divOfferModal").classList.remove("active");
+*/
 </script>
