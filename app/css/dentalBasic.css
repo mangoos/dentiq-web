@@ -1956,7 +1956,15 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 
 .jobpost-list-footer { position: relative; }
 
+.dental-btn { min-width: 4rem; text-align: center; color: #212529; border: 1px solid #e9e9e9; border-radius: 0.2rem; 
+    font-size: 0.6rem; padding: 0.2rem; margin-right: 0.3rem; cursor: pointer; }
+.dental-btn i { margin-right: 0.4rem; }
 
+.dental-btn[data-action-checked="true"]>i { color: #0083cb !important; }
+.dental-btn[data-action-checked="false"]>i { color: #5d5d5d !important; }
+
+.footer-item[data-action-checked="true"]>i { color: #0083cb !important; }
+.footer-item[data-action-checked="false"]>i { color: #5d5d5d !important; }
 
 
 /*****************************************************/
@@ -2254,6 +2262,11 @@ section.register-dentist ::-moz-input-placeholder { font-size: 0.7rem; font-styl
     line-height: 1rem; outline: 0; text-align: center; text-decoration: none; -webkit-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none; vertical-align: middle; white-space: nowrap; position: absolute; right: 0.3rem; top: 70%; 
     transform: translateY(-50%); }
+
+#career { background-color: #fafafa; border-radius: 0.2rem; padding: 1rem 0; border: 1px solid #e6e6e6; width: 98%; margin: 0 auto; 
+    margin-bottom: 0.4rem; }
+#career .form-group, #career .styled-input, #career .styled-select, #career .form-group label,
+#license .form-group, #license .styled-input, #license .styled-select, #license .form-group label { background-color: #fafafa; }
 
 
 

@@ -566,6 +566,8 @@ var LOGIN_INFO = (function() {
 
 
 	var _addScrappedJobAdId = function(jobAdId) {
+		if ( !jobAdId ) throw "addScrappedJobAdId : jobAdId가 없습니다.";
+
 		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
 
 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
@@ -583,6 +585,8 @@ var LOGIN_INFO = (function() {
 		);
 	};
 	var _removeScrappedJobAdId = function(jobAdId) {
+		if ( !jobAdId ) throw "removeScrappedJobAdId : jobAdId가 없습니다.";
+
 		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
 
 		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
@@ -745,6 +749,48 @@ var LOGIN_INFO = (function() {
 			if ( userInfo &&userInfo.userId ) return true;
 			return false;
 		},
+
+		checkAuthPersonal: function() {
+			if ( !userInfo || !userInfo.userId ) {
+				alert("로그인이 필요합니다.");
+				location.href = "login.html";
+				return false;
+			}
+
+			if ( !userInfo.userType || userInfo.userType!=1 ) {
+				alert("개인회원만 이용 가능합니다.");
+				window.history.back();
+				return false;
+			}
+	
+			return true;
+		},
+
+		checkAuthHospital: function(checkHospitalId) {
+			if ( !userInfo || !userInfo.userId ) {
+				alert("로그인이 필요합니다.");
+				location.href = "login.html";
+				return false;
+			}
+
+			if ( !userInfo.userType || userInfo.userType!=2 ) {
+				alert("병원회원만 이용 가능합니다.");
+				window.history.back();
+				return false;
+			}
+
+			if ( checkHospitalId && !userInfo.hospitalId ) {
+				alert("병원정보가 등록되지 않았습니다. 병원정보를 먼저 등록해 주십시오.");
+				location.href = "register_dentist.html";
+				return false;
+			}
+	
+			return true;
+		},
+
+		
+
+
 
 
 		addScrapChangeEventListener: function(callbackFunc) {
