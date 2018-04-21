@@ -28,26 +28,20 @@
         </section>
     </header>
     <section class="user-setting">
-        <div class="">
-            <span class="">공지/뉴스</span>
-            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+        <div>
+            <h5>알림 설정</h5>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around;">
+                <label class="" style="display: inline-flex; align-items: center;">공지/뉴스<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">채용소식<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">이벤트<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">광고<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+            </div>
         </div>
-        <div class="">
-            <span class="">채용소식</span>
-            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-        </div>
-        <div class="">
-            <span class="">이벤트</span>
-            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-        </div>
-        <div class="">
-            <span class="">광고</span>
-            <label class=""><input type="checkbox" checked hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-        </div>
-        <div>비밀번호 변경</div> <!-- modify_password.html-->
-        <div>내 기본정보 변경</div> <!-- user_register.html 링크-->
-        <div>로그아웃</div>
-        <div>앱버젼</div>
+        <a class="btn btn-sm" href="modify_password.html">비밀번호 변경</a> <!-- modify_password.html-->
+        <a class="btn btn-sm" href="register_user.html">내 기본정보 변경</a> <!-- 개인: register_user.html 링크, 사업자: register_dentist.html-->
+        <div class="btn btn-sm" >회원탈퇴</div>
+        <a class="btn btn-sm" href="javascript:void(0)" onclick="LOGIN_INFO.logout();">로그아웃</a>
+        <div>앱버젼: v 1.00<span>최종버젼입니다.<i class="fal fa-user-alt"></i></span></div>
     </section>
 </body>
 </html>

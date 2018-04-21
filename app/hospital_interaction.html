@@ -57,7 +57,7 @@
                         2. 회원이라면, 병원 정보 등록 여부 확인
                         이동 로직에서 각각 조건에 대한 공통(?) 체크 정리 필요
                     -->
-                    <a href="register_jobad.html"><span class="btn btn-primary">신규 등록</span></a>
+                    <p class="typo-desc1" hidden>바로 신규 등록하려면 <a href="register_jobad.html"><span class="btn btn-sm">CLICK!</span></a></p>
                 </div>
                 <div class="content-body">
                     <div class="dental-radio-box">
@@ -215,7 +215,7 @@
                                             </div>
                                             <div class="jobpost-list-card-body">
                                                 <div class="dental-info">
-                                                    <span class="info-detail" style="font-weight: bold; color: #212529">서울, 강남구</span>
+                                                    <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
                                                     <span class="info-detail subway-line"> <!-- 시도, 시구군 정보, 교통정보 -->
                                                         <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
                                                         <span class="subway117"></span>
@@ -236,11 +236,11 @@
                                             </div>
                                         <!-- </a> -->
                                         <div class="jobpost-list-card-footer">
-                                            <a href="jobad.html?jobAdId={{id}}"><span class="footer-item"><label><i class="fa fa-hand-pointer-o"></i>공고보기</label></span></a>
+                                            <a href="jobad.html?jobAdId={{jobAdId}}"><span class="footer-item"><label><i class="fa fa-hand-pointer-o"></i>공고보기</label></span></a>
                                             {{#if adTypePremiere}}
                                                 <span class="footer-item"><i class="fa fa-share"></i>광고하기(안됨)</span> <!-- 흐리게 보여주는 등이 필요함 -->
                                             {{else}}
-                                                <a href="register_jobad.html?jobAdId={{id}}&reqUpgrade=Y"><span class="footer-item"><i class="fa fa-share"></i>광고하기</span></a>
+                                                <a href="register_jobad.html?jobAdId={{jobAdId}}&reqUpgrade=Y"><span class="footer-item"><i class="fa fa-share"></i>광고하기</span></a>
                                             {{/if}}
                                             
                                         </div>

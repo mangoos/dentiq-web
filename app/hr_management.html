@@ -123,7 +123,7 @@
 													<span class="footer-item" data-action="offer" data-action-value="{{resumeId}}"><i class="fa fa-share"></i>면접제안</span>	
 												{{/if}}
 											{{/checkActionOffer}}
-                                            <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
+                                            <span class="footer-item" data-action="call" data-action-value="{{user.telNo}}"><i class="fa fa-phone"></i>전화하기</span>
                                         </div>
                                     </div>
                                     {{/each}}
@@ -340,11 +340,8 @@ function renderAttrOnResumeCard(attrList) {   // 지원 속성은 선택하지 �
 var resumeCardTemplateCompiled = Handlebars.compile( document.getElementById("resumeCardTemplate").innerHTML );
 
 function calLengthOfCareer(careerList) {
-    if ( !careerList || !Array.isArray(careerList) || careerList.length<1 ) {
-        return '신입';
-    } else {
-        return "경력";
-    }
+    if ( !careerList || !Array.isArray(careerList) || careerList.length<1 ) return '신입';
+    else return "경력";
 }
 Handlebars.registerHelper("renderLengthOfCareer", function(careerList) {
     return calLengthOfCareer(careerList);
@@ -597,9 +594,8 @@ function onClickResumeListBody(event) {
 			return;
 		}
 
-		if ( target.action=="call" ) {
-
-
+		if ( target.dataset.action=="call" ) {
+			document.location.href="tel:" + target.dataset.actionValue;
 			return;
 		}
 	}
@@ -608,6 +604,10 @@ function onClickResumeListBody(event) {
 document.querySelectorAll(".resume-list-body").forEach(function(el) {
 	el.addEventListener("click", onClickResumeListBody);
 });
+
+
+
+
 
 
 var SELECTED_RESUME_ID_FOR_OFFER;
@@ -627,27 +627,27 @@ function selectJobAd(jobAdId, resumeId) {
 
 		var hospitalId = LOGIN_INFO.getHospitalId();
 		callApi("POST", "/api/hospital/" + hospitalId + "/resumeOfferedId/", "jobAdId="+jobAdId+"&resumeId="+SELECTED_RESUME_ID_FOR_OFFER,
-				function(resumeOfferedIdAndJobAdIdList) {
-			console.log("성공   : ", resumeOfferedIdAndJobAdIdList);
-			// 결과를 가지고 화면을 면접제안 상태를 변경해 준다.
+			function(resumeOfferedIdAndJobAdIdList) {
+				console.log("성공   : ", resumeOfferedIdAndJobAdIdList);
+				// 결과를 가지고 화면을 면접제안 상태를 변경해 준다.
 
-			if ( !resumeOfferedIdAndJobAdIdList ) return;
+				if ( !resumeOfferedIdAndJobAdIdList ) return;
 
-			resumeOfferedIdAndJobAdIdList.forEach(function(resumeIdAndJobAdId) {
-				document.querySelectorAll(".resume-list-body [data-action='offer'][data-action-value='" + resumeIdAndJobAdId.resumeId + "']").forEach(function (el) {
-					el.innerText = "기지원";
-					el.dataset.action = null;
-					el.dataset.actionValue = null;
+				resumeOfferedIdAndJobAdIdList.forEach(function(resumeIdAndJobAdId) {
+					document.querySelectorAll(".resume-list-body [data-action='offer'][data-action-value='" + resumeIdAndJobAdId.resumeId + "']").forEach(function (el) {
+						el.innerText = "기지원";
+						el.dataset.action = null;
+						el.dataset.actionValue = null;
+					});
 				});
-			});
 
-			alert("면접제안 되었습니다.");
-			document.getElementById("divOfferModal").classList.remove("active");
+				alert("면접제안 되었습니다.");
+				document.getElementById("divOfferModal").classList.remove("active");
 
-		},
-		function(errorCode, errorMsg) {
-			alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-			document.getElementById("divOfferModal").classList.remove("active");
+			},
+			function(errorCode, errorMsg) {
+				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+				document.getElementById("divOfferModal").classList.remove("active");
 		});
 
 	}
