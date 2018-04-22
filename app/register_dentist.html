@@ -677,32 +677,13 @@ var HospitaInfoApp = (function() {
 
     function init() {
 
-        // 로그인 확인
-        if ( !LOGIN_INFO.isLoggedIn() ) {
-            alert("로그인이 필요합니다.");
-            // 로그인 페이지 이동
-            location.href = "login.html";
-            return;
-        }
-
-        
-        if ( !LOGIN_INFO.isHospitalMember() ) {
-            alert("병원 회원만 사용하실 수 있는 기능입니다.");
-            window.history.back();
-            return;
-		}
-
-		var hospitalId = LOGIN_INFO.getHospitalId();		// 없을 경우에는 다시 LOGIN_INFO를 로드?
-		if ( !hospitalId ) {	// 병원정보가 Session에 없으므로, 병원 정보를 로드불가함.
-			
-
-		}
+		if ( LOGIN_INFO.checkAuthHospital(false) ) return;
+		// 병원권한 확인에서 false로.... 아직까지 병원정보 등록이 안 되었을 수도 있으므로
+		
 
         // 기존 정보를 로드해서 보여 준다.
         var userId = LOGIN_INFO.getId();
-        // 병원 정보를 로딩한다.
 		callApi("GET", "/api/user/" + userId + "/hospital/", null,
-		//callApi("GET", "/api/hospital/" + hospitalId + "/", null,
             function(resData) {
                 if ( resData ) {    // 기존 병원 정보 수정
                     alert("기존 정보 있음 : 수정 모드");
