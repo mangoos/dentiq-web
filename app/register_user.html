@@ -160,7 +160,12 @@
                 lastPageNo = 1;         // 초기화
                 jusoContainer = {};     // 초기화
                 selectedJuso = null;    // 초기화
-                $("#jusoList").html('');
+				$("#jusoList").html('');
+				
+				// if ( !checkSearchedWord(lastJusoKeyword) ) {
+				// 	return;
+				// }
+
                 searchJuso(lastJusoKeyword, 1);
             });
 
@@ -286,7 +291,8 @@
                     }
                 );
                 
-            });
+			});
+			
 
             return {
                 closeJusoModal : function() {
@@ -795,25 +801,26 @@
                     //     document.getElementById("addrDetail").focus();                                         // 포커스 이동
 					// });
 					
-					JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {
-                        
-                        selectedJuso = newSelectedJuso;
-                        console.log(selectedJuso);
-                                                
-                        document.getElementById("addrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
-                        console.log("주소 앞부분 [" + document.getElementById("addrMain").value + "]");                        
-                        
 
-                        document.getElementById("addrDetail").value = "";
-                        document.getElementById("addrDetail").readOnly = false;
-                        document.getElementById("addrDetail").focus();                                         // 포커스 이동
-					});
 
                     //console.log("TEST : 주소모달의 정체 ", jusoModal);
 
                     // 주소 모달 띄우기
                     document.getElementById("addrMain").addEventListener("click", function(event) {
-                        // this.disabled = true;
+						// this.disabled = true;
+						JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {
+                        
+							selectedJuso = newSelectedJuso;
+							console.log("우리동네 - 콜백으로 받은 주소 객체 : ", selectedJuso);
+													
+							document.getElementById("addrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
+							console.log("우리동네 - 주소 앞부분 [" + document.getElementById("addrMain").value + "]");
+
+							document.getElementById("addrDetail").value = "";
+							document.getElementById("addrDetail").readOnly = false;
+							document.getElementById("addrDetail").focus();                                         // 포커스 이동
+						});
+						
                         JUSO_MODAL.openJusoModal();
                     });
 
@@ -1040,21 +1047,24 @@
                     //     document.getElementById("myInfoAddrDetail").focus();                                         // 포커스 이동
 					// });
 					
-					JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {                        
-                        selectedJuso = newSelectedJuso;
-                        console.log(selectedJuso);
-                                                
-                        document.getElementById("myInfoAddrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
-                        console.log("주소 앞부분 [" + document.getElementById("addrMain").value + "]");
-                        
-                        document.getElementById("myInfoAddrDetail").value = "";
-                        document.getElementById("myInfoAddrDetail").readOnly = false;
-                        document.getElementById("myInfoAddrDetail").focus();                                         // 포커스 이동
-					});
+					
 
                     // 주소 모달 띄우기
                     document.getElementById("myInfoAddrMain").addEventListener("click", function(event) {
-                        // this.disabled = true;
+						// this.disabled = true;
+						
+						JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {                        
+							selectedJuso = newSelectedJuso;
+							console.log("기본정보 - 콜백으로 받은 주소 객체 : ", selectedJuso);
+													
+							document.getElementById("myInfoAddrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
+							console.log("기본정보 - 주소 앞부분 [" + document.getElementById("addrMain").value + "]");
+							
+							document.getElementById("myInfoAddrDetail").value = "";
+							document.getElementById("myInfoAddrDetail").readOnly = false;
+							document.getElementById("myInfoAddrDetail").focus();                                         // 포커스 이동
+						});
+						
                         JUSO_MODAL.openJusoModal();
                     });
 
