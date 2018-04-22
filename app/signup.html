@@ -13,6 +13,7 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
 </head>
 <body>
     <header class="register-header navbar">
@@ -108,22 +109,22 @@
                                 <span>페이스북으로 바로 이용하기</span>
                             </div>
                             <div class="divider" data-content="또는"></div>
-                            <div class="form-group" id="bizRegNoDiv" hidden>
-                                <input class="styled-input" type="number" id="bizRegNo" name="bizRegNo" maxlength=10 placeholder="사업자등록 번호 입력" >
+                            <div class="form-group need-validator" id="bizRegNoDiv" hidden>
+                                <input class="styled-input d-reg-bizNum" type="text" id="bizRegNo" name="bizRegNo" pattern="\d{10}" maxlength=10 placeholder="사업자등록 번호 입력">
                                 <span class="form-group-underline"></span>
                                 <span class="btn btn-primary input-rtt" id="checkBizRegNo">중복확인</span>
-                                <div id="bizRegNoStatus" class="form-group-msg" hidden></div>
+                                <div id="bizRegNoStatus" class="form-group-msg2" hidden></div>
                             </div>
-                            <div class="form-group">
-                                <input class="styled-input" type="email" id="email" name="email" required placeholder="이메일 아이디" >
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-email" type="email" id="email" name="email" required placeholder="이메일 아이디" >
                                 <span class="form-group-underline"></span>
                                 <span class="dental-btn confirmed-btn" hidden><i class="fal fa-check-circle"></i></span>
                                 <div id="emailStatus" class="form-group-msg2"> 아이디로 사용할 이메일 주소를 입력해 주세요.</div>
                             </div>
                             <div id="emailStatus" class="form-msg"></div>
-                            <div class="form-group">
+                            <div class="form-group need-validator">
                                 <!-- <input type="password" id="password" name="password" required pattern="[0-9a-fA-F]{8,12}" placeholder="비밀번호 입력" > <!-- 패턴은 테스트용 수정필요 -->
-                                <input class="styled-input" type="password" id="password" name="password" required  placeholder="비밀번호 입력" > <!-- 패턴은 테스트용 수정필요 -->
+                                <input class="styled-input d-reg-password" type="password" id="password" name="password" title="UpperCase, LowerCase, Number/SpecialChar and min 8 Char" required  placeholder="비밀번호 입력" > <!-- 패턴은 테스트용 수정필요 -->
                                 <span class="form-group-underline"></span>
                                 <div class="form-group-msg2" hidden></div>
                             </div>

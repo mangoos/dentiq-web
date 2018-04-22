@@ -42,14 +42,18 @@
                     </div>
                     <div class="divider" data-content="또는"></div>
                     <div id="bizRegNoStatus"></div>
-                    <div class="form-group">
-                        <input class="styled-input" type="text" id="email" name="email" placeholder="이메일 아이디" >
+                    <div class="form-group need-validator">
+                        <input class="styled-input d-reg-email" type="text" id="email" name="email" placeholder="이메일 아이디" required>
+                        <!-- <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span> -->
                         <span class="form-group-underline"></span>
+                        <div class="form-group-msg2" hidden></div>
                     </div>
                     <div id="emailStatus"></div>
                     <div class="form-group">
-                        <input class="styled-input" type="password" id="password" name="password" placeholder="비밀번호" >
+                        <input class="styled-input d-reg-password" type="password" id="password" name="password" placeholder="비밀번호" >
+                        <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                         <span class="form-group-underline"></span>
+                        <div class="form-group-msg2" hidden></div>
                     </div>
                     <div class="basic">
                         <button type="submit" class="btn btn-primary" >로그인</button>
