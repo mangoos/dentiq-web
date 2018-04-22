@@ -1102,8 +1102,7 @@ var ResumeManagementApp = (function() {
                     document.getElementById("userEmail").innerText = resData.user.email;
 					document.getElementById("userName").innerText  = resData.user.name;
 					
-					document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
-                    //if ( resData.profileImageFullUrl ) document.getElementById("userPic").src = resData.profileImageFullUrl;
+					if ( resData.user.hasProfileImage ) document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
 
                     initFormCardData("career",  resData.career,     addCareerCard);
                     initFormCardData("license", resData.license,    addLicenseCard);
@@ -1133,8 +1132,9 @@ var ResumeManagementApp = (function() {
                                 return;
                             }
                             document.getElementById("userEmail").innerText = resData.email;
-                            document.getElementById("userName").innerText  = resData.name;
-                            document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
+							document.getElementById("userName").innerText  = resData.name;
+							if ( resData.hasProfileImage ) document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
+                            //document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
                         },
                         function(errorCode, errorMsg) {
                             alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");

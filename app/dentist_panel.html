@@ -157,21 +157,7 @@ var ResumeManagementApp = (function() {
 
 	function init() {
 
-		// 로그인 확인
-		if ( !LOGIN_INFO.isLoggedIn() ) {
-			alert("로그인이 필요합니다.");
-			location.href = "login.html";
-			// 로그인 페이지 이동
-			return;
-		}
-
-		if ( !LOGIN_INFO.isHospitalMember() ) {
-			alert("병원 회원만 사용하실 수 있는 기능입니다.")
-			window.history.back();
-			// 앞 페이지로 점프
-			return;
-		}
-
+		if ( !LOGIN_INFO.checkAuthHospital(false) ) return;
 		
 
 		var userId = LOGIN_INFO.getId();
@@ -196,7 +182,8 @@ var ResumeManagementApp = (function() {
 
                 document.getElementById("hospitalEmail").innerText = basicInfo.hospitalEmail;
 				document.getElementById("hospitalName").innerText  = basicInfo.hospitalName;
-				document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(basicInfo.hospitalId);
+				if ( basicInfo.hasLogoImage ) document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(basicInfo.hospitalId);
+
 
             },
             function(errorCode, errorMsg) {
