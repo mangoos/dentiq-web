@@ -206,6 +206,193 @@ var imageFit = function (arg, size) {
     }
 };
 
+var DRexPattern = {
+
+    "name" : {
+        "match" : /[ㄱ-힣a-zA-Z0-9\s]{2,15}/, 
+        "errMsg" : "2~15자 이내로 입력해 주세요. 특수문자 제외.", 
+        "delKey" : /[^ㄱ-힣a-zA-Z0-9\s]+/g,
+        "delMsg" : "",
+        "suffix" : "님"
+    },
+
+    "basicInfoTelNo" : {
+        "match" : /^\s?(02|0\d{2})[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
+        "errMsg" : "국번을 포함해서 정확한 전화번호를 입력해 주세요",
+        "delKey" : /[^\d]+/g,
+        "delMsg" : "",
+        "suffix" : null
+    },
+
+    "onlyNumber" : {
+        "match" : /^[\d]{1,}$/g, 
+        "errMsg" : "숫자만 입력할 수 있습니다.",
+        "delKey" : /[^\d]+/g,
+        "delMsg" : "",
+        "suffix" : null 
+    },
+
+    "email" : {
+        "match" : /^.{1,}@.*\.?[\w\d]+$/,   // ^(?:([\w-\.]+)@([\w-]+)\.?[\w-]{0,4})$
+        "errMsg" : "정확한 이메일을 입력해 주세요", 
+        "delKey" : null,
+        "delMsg" : "",
+        "suffix" : null 
+    },
+
+    "www" : {
+        "match" : /(www|\w+)?\.?(\w+\.{1}.*)/g, // 모든 경우의 수 소화 못함 ^https?://(?<domain>[^/?#]+)
+        "errMsg" : "정확한 홈페이지 url 을 입력해 주세요.",
+        "delKey" : null,
+        "delMsg" : "",
+        "suffix" : null 
+    },
+    
+    "birthday" : {
+        "match" : /^(?:(19|20)\d{2})(\d{1,2})(\d{1,2})$/, 
+        "errMsg" : "생일을 입력해 주세요.  (예 - 19980724)",
+        "delKey" : /[^\d]+/g,
+        "delMsg" : "",
+        "suffix" : null 
+    },
+
+    "bizNum" : {
+        "match" : /\d{10}/,
+        "errMsg" : "사업자 등록 번호를 정확하게 입력해 주세요",
+        "delKey" : /[^\d]+/g,
+        "delMsg" : "",
+        "suffix" : null
+    },
+
+    "password" : {
+        "match" : /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+        "errMsg" : "최소 1개 이상의 특수문자, 대문자를 포함해서 8자 이상",
+        "delKey" : null,
+        "delMsg" : "",
+        "suffix" : null
+    }
+}
+// var regExp = /[\{\}\[\]\/?,;:|\)*~`!^\_+<>@\#$%&\\\=\(\'\"]/gi  온나라에서 쓰는 정규표현식 모지?
+// ^(((http(?:s)?\:\/\/))?([a-zA-Z0-9\-]+\.?)+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/?|(?:\/[\w\-]+)*)(?:\/?|\/\w+((\.[a-zA-Z]{2,4})?)(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$ㄴ
+
+
+var dFormValidator = dFormValidator || {};
+var dModal = dModal || {};
+$(document).ready(function() {
+    dModal = dentalModal();  // 모달 세팅
+
+    var $card = $(".dental-card");
+    var $formCard= $card.find(".form-group");
+
+
+    function is$formCard () {
+
+        if( $formCard ) return true;
+    
+        return false;
+    }
+
+    if ( is$formCard() ) {
+
+        dFormValidator.$formInput = $formCard.find(".styled-input");
+        console.log("input " + dFormValidator.$formInput.length + " 개");
+
+        var $needValidator = $formCard.filter(".need-validator");
+        console.log( ".need-validator" + $needValidator.length + " 개");
+
+        var $needReplacer = $formCard.filter(".need-validator-replacer");
+        console.log( ".need-validator-replacer" + $needReplacer.length + " 개");
+    }
+
+    dFormValidator.validator = function (inputElm, pattern) {
+
+        "use strict";
+        var str = inputElm.value.trim();
+        var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
+        var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].match : "";
+
+        if( !regex ) return; 
+
+        var flag = regex.test(str);
+        var msgBox = inputElm.parentElement.querySelector(".form-group-msg2");
+
+        if (!flag) {
+            inputElm.classList.add("invalid");
+            msgBox.innerText = DRexPattern[tag].errMsg;
+        } else {
+            inputElm.classList.remove("invalid");
+            msgBox.innerText = "";
+        }
+    };
+
+    dFormValidator.stringReplacer = function ( str, pattern) {
+        if( typeof str !== "string") return;
+        var str = str.trim();
+        var pattern = new RegExp(pattern);
+        return str.replace(pattern,"");
+    }
+
+    dFormValidator.inputValueReplacer = function (inputElm, pattern) {
+
+        "use strict";
+        var str = inputElm.value.trim();
+        var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
+        var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].delKey : "";
+
+        if( !regex ) return;
+
+        var str = str.replace(regex,"").replace(/\s+/g," ");
+
+        inputElm.value = str;
+    };
+
+    dFormValidator.inputValueMatch = function (inputElm, pattern) {
+
+        "use strict";
+
+        var str = inputElm.value.trim();
+        var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
+        var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].match : "";
+
+        if ( !regex ) return;
+
+        var flag = regex.test(str);
+        var msgBox = inputElm.parentElement.querySelector(".form-group-msg2");
+        console.log("tag: ", tag, "regex: ",regex, "flag: ", flag, DRexPattern[tag]);
+
+        if (!flag && str.length > 0) {
+
+            inputElm.classList.add("invalid");
+            msgBox.innerText = DRexPattern[tag].errMsg;
+
+        } else {
+
+            inputElm.classList.remove("invalid");
+            inputElm.classList.add("valid");
+            msgBox.innerText = "";
+            // if( inputElm.value.length && DRexPattern[tag].suffix ) inputElm.value = inputElm.value + " " + DRexPattern[tag].suffix;
+        }
+    };
+
+    $needValidator.on("input", function(e) {  // 복붙 등 모든 인풋 발생하면 keyup trigger
+        this.dispatchEvent(new CustomEvent("keyup"));
+    });
+
+    $needValidator.on("keyup", function(e) {
+        console.log("keyup");
+        var self = $(this).find(".styled-input")[0];
+        this.classList.remove("valid");
+        dFormValidator.validator(self);
+    });
+
+    $needValidator.on("focusout", function(e) {
+        var self = $(this).find(".styled-input")[0];
+        console.log("focusout");
+        dFormValidator.inputValueReplacer(self);
+        dFormValidator.inputValueMatch(self);
+    });
+
+});
 
 
 
