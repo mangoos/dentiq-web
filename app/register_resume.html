@@ -389,14 +389,17 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                                     }
                                 }
 
-                                homeCardOnApplyLocation = addApplyLocationCard();
+								homeCardOnApplyLocation = addApplyLocationCard();
+								if ( !homeCardOnApplyLocation ) {
+									this.checked = false;
+									return;
+								}
+								//console.log("***************** 우리동네 추가 내용 : ", homeCardOnApplyLocation );
                                 var elementHomeLocationCode = homeCardOnApplyLocation.querySelector("#applyLocationCode");
-								//elementHomeLocationCode.value = homeLocatinCode;
 								elementHomeLocationCode.value = homeLocation.locationCode;
                                 elementHomeLocationCode.dispatchEvent(new Event('change'));
                                 homeCardOnApplyLocation.querySelector("#applySido").disabled = true;
                                 homeCardOnApplyLocation.querySelector("#applySigu").disabled = true;
-
                                 homeCardOnApplyLocation.querySelector("#btnDeleteApplyLocation").hidden = true;
 
                                 this.checked = true;
