@@ -524,6 +524,14 @@ function renderAttrOnCard(attrList) {
 var LiveBoardApp = (function() {
 
 
+	/******************************************************************************/
+    /* action 처리 (공고 스크랩, 원클릭지원, 전화하기)
+    /*
+	/******************************************************************************/
+
+	// 현재 사용자가 개인 회원인 경우, 사용자가 지원한 공고ID들
+	var CURRENT_USER_APPLIED_JOB_AD_ID_LIST;
+
 	// 스크랩 변경되었을 때, 스크랩버튼을 토글해준다.	LOGIN_INFO.addScrapChangeEventListener로 걸려있음
 	function renderScrapCheckbox() {
 		console.log("renderScrapCheckbox 호출됨");
@@ -649,139 +657,14 @@ var LiveBoardApp = (function() {
 	});
 
 	
-/*
-    // 스크랩된 공고에 별표시
-    function renderScrap() {
-        // 전체를 unchecked로 변경
-        document.querySelectorAll("input[type=checkbox][name='scrap']").forEach(function(element) {
-            element.checked = false;
-        });
-
-        // 스크랩된 것만 checked로 변경
-        var scrappedJobAdIds = LOGIN_INFO.getScrappedJobAdIds();
-        if ( scrappedJobAdIds ) {
-            scrappedJobAdIds.forEach(function(jobAdId) {
-                //console.log("스크랩 대상 : ", jobAdId);
-                document.querySelectorAll("input[type=checkbox][name='scrap'][value='" + jobAdId + "']").forEach(function(element) {
-                    //console.log("스크랩 대상 : ", jobAdId, " ==> TRUE");
-                    element.checked = true;
-                });
-            });
-        }
-	}
-	
-	//LOGIN_INFO.setOnResetScrappedJobAdCallback(renderScrap);
-	LOGIN_INFO.addScrapChangeEventListener(renderScrap);
 
 
-    function onClickForCardAction(event) {
-		var target = event.target;
-		
-		console.log("onClickForCardAction  ", target);
-
-        if ( (target.type && target.type=='checkbox' && target.name=='scrap') || (target.dataset && target.dataset.action && target.dataset.actionValue) ) {
-            if (!LOGIN_INFO.isLoggedIn()) {
-                event.preventDefault();
-                alert("로그인이 필요합니다.");
-                location.href = "login.html?returnUrl=liveboard.html";
-                return;
-            }
-
-            if ( !LOGIN_INFO.isPersonalMember() ) {
-                event.preventDefault();
-                alert("개인회원만 이용 가능합니다.");
-                return;
-            }
-        }
 
 
-        // 스크랩 처리
-        // input[type=checkbox][name=scrap]
-        if ( target.type && target.type=='checkbox' && target.name=='scrap' ) {
-            console.log("스크랩 잡았음 : ", target, " ==> ", target.checked);
-            event.preventDefault(); // 여기서 막아야지 checkbox가 checked되는 것을 방지할 수 있음
-         
-            console.log("일반 공고 스크랩 ", target.value , "  ==> ", target.checked);
-            if ( target.checked ) {
-                LOGIN_INFO.addScrappedJobAdId(target.value);       // 완료되고 난 후에는 checkbox의 checked 상태를 변경해야 함
-            } else {
-                LOGIN_INFO.removeScrappedJobAdId(target.value);    // 완료되고 난 후에는 checkbox의 checked 상태를 변경해야 함
-            }
-            
-            return;
-		}
-		
-
-        // 바로지원, 전화문의
-        if ( target.dataset && target.dataset.action && target.dataset.actionValue ) {            
-            
-            var userId = LOGIN_INFO.getId();
-            
-            console.log("잡았음 : ", target);
-            var action = target.dataset.action;
-            var jobAdId  = target.dataset.actionValue;
-
-            // ============== 바로 지원 ==============
-            if ( action=="apply" ) {
-
-				// 먼저 기등록 여부 판단하여야 함
-				callApi("GET", "/api/user/"+userId+"/appliedJobAdId/", null,
-					function(resData) {
-						console.log(resData);
-
-						var alreadyApplied = false;
-						if ( resData && Array.isArray(resData) ) {
-							for ( var i=0; i<resData.length; i++ ) {
-								if ( resData[i] == jobAdId ) {
-									alreadyApplied = true;
-									break;
-								}
-							}
-						}
-
-						if ( alreadyApplied ) {
-							alert("이미 지원한 공고입니다.");
-							return;
-						}
-
-						
-						var goApply = confirm("해당 공고에 바로 지원하시겠습니까?");
-                		if ( goApply ) {
-							callApi("POST", "/api/user/"+userId+"/appliedJobAdId/"+jobAdId+"/", null,
-								function(result) {
-									console.log(result);
-									alert("지원하셨습니다.");
-								},
-								function(errorCode, errorMsg) {
-									console.log("에러 2 [" + errorCode + "] ==> [" + errorMsg + "]");
-									alert("에러 2 [" + errorCode + "] ==> [" + errorMsg + "]");
-								}
-							);
-
-						} else {
-							alert("지원하지 않으셨습니다.");
-						}
-
-
-					},
-					function(errorCode, errorMsg) {
-						console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-						alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-					}
-				)
-
-
-            // ============== 전화 문의 ==============
-            } else if ( action=="call" ) {
-                document.location.href='tel:010-7209-3356';
-            }
-
-        }
-    }
-    document.getElementById("generalJobAdsList").addEventListener("click", onClickForCardAction);
-*/
-
-
+	/******************************************************************************/
+    /* 공고 카드 템플릿 Helper
+    /*
+	/******************************************************************************/
     Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
         //console.log("LOCATION_HELPER ", code);
         var location = LOCATION_CODE.getByName(code);
@@ -804,7 +687,6 @@ var LiveBoardApp = (function() {
     /* <ul class="liveplus-breadcrumb breadcrumb"> 영역 처리
     /*
 	/******************************************************************************/
-	
 	function resetClickDivLiveBoardSidoLabel() {
 		var sidoCodeCheckboxes = document.querySelectorAll("input[type=checkbox][name='sidoCode']:checked");
         sidoCodeCheckboxes.forEach(function(element) {
@@ -947,9 +829,7 @@ var LiveBoardApp = (function() {
     });
 
 
-
-	// 현재 사용자가 개인 회원인 경우, 사용자가 지원한 공고ID들
-	var CURRENT_USER_APPLIED_JOB_AD_ID_LIST;
+	
 
 	/******************************************************************************/
 	/*  
