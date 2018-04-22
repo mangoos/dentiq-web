@@ -135,7 +135,7 @@
                                     <script id="jobAdCardForEditTemplate" type="text/x-handlebars-template">
                                         {{#each .}}
                                         <div class="jobpost-list-card">
-                                            <a href="jobad.html?jobAdId={{id}}">
+                                            <a href="jobad.html?jobAdId={{jobAdId}}">
                                                 <div class="jobpost-list-card-header">
                                                     <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
                                                     <div class="jobpost-list-card-subtitle">{{title}}</div>
@@ -165,9 +165,12 @@
                                             </a>
                                             <div class="jobpost-list-card-footer">
                                                 <!-- <span class="footer-item"><label><input type="checkbox" name="scrap" value="{{id}}" hidden readonly><i class="fa fa-star"></i>스크랩</label></span> -->
-                                                <span class="footer-item"><label><i class="fa fa-star"></i>스크랩</label></span>
+												
+												<!-- 여기는 안 보여야 하나자
+												<span class="footer-item"><label><i class="fa fa-star"></i>스크랩</label></span>
                                                 <span class="footer-item"><a href="#"><i class="fa fa-share"></i>바로지원</a></span>
-                                                <span class="footer-item"><a href="#"><i class="fa fa-phone"></i>전화문의</a></span>
+												<span class="footer-item"><a href="#"><i class="fa fa-phone"></i>전화문의</a></span>
+												-->
                                             </div>
                                         </div>
                                         {{/each}}
@@ -310,32 +313,19 @@ var HospitaInteractionApp = (function() {
 
 
 
+
+
+	init();		// 페이지 로드시 호출
+
 	function init() {
 
-		if ( !LOGIN_INFO.isLoggedIn() ) {
-			alert("로그인이 필요합니다.");
-			location.href = "login.html";
-			return;
-		}
-
-		if ( !LOGIN_INFO.isHospitalMember() ) {
-			alert("병원회원만 사용하실 수 있습니다.");
-			window.history.back();
-			return;
-		}
-
-		if ( !LOGIN_INFO.getHospitalId() ) {
-
-			
-			alert("병원 기본 정보가 등록되지 않았습니다.");
-			//location.href = "";
-			return;
-		}
+		if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
 
 		listJobAdCards();
 	}
 
-	init();		// 페이지 로드시 호출
+
+
 
 
 	/*******************************************************************************************/
@@ -372,16 +362,6 @@ var HospitaInteractionApp = (function() {
 					// 공고 리스트 영역 토글 ==> 보여주기
 					document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
 						el.checked = true;
-					});
-
-
-
-					function onClickJobAd(event) {
-						console.log("adfasdf");
-
-					}
-					document.querySelectorAll(".jobpost-list-body").forEach(function(el) {
-						el.addEventListener("click", onClickJobAd);
 					});
 
 

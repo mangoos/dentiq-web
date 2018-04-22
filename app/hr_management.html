@@ -70,9 +70,7 @@
 
 
                         <div class="radio-box-checked">
-                            <!-- 공고별 지원자 보기, 일자별 지원자 보기 등 옵션을 줄 수 있으나
-                                일단 지원자 이력서만 리스팅 하는 것으로 마무리
-                            -->
+                            <!-- 공고별 지원자 보기, 일자별 지원자 보기 등 옵션을 줄 수 있으나 일단 지원자 이력서만 리스팅 하는 것으로 마무리 -->
                             <div class="resume-list">
                                 <div class="resume-list-bar">
                                     <span class="typo-title2">우리 병원 지원자</span>
@@ -115,6 +113,7 @@
                                             </div>
                                         </a>
                                         <div class="resume-list-card-footer">
+											<!--
                                             <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{resumeId}}" {{#if scrappedByCertainHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
 											{{#checkActionOffer}}											
 												{{#if offeredByCertainHospital}}
@@ -123,7 +122,17 @@
 													<span class="footer-item" data-action="offer" data-action-value="{{resumeId}}"><i class="fa fa-share"></i>면접제안</span>	
 												{{/if}}
 											{{/checkActionOffer}}
-                                            <span class="footer-item" data-action="call" data-action-value="{{user.telNo}}"><i class="fa fa-phone"></i>전화하기</span>
+											<span class="footer-item" data-action="call" data-action-value="{{user.telNo}}"><i class="fa fa-phone"></i>전화하기</span>
+											-->
+
+											
+											<span class="footer-item"     data-action="resume-scrap" data-action-value="{{resumeId}}" {{#if scrappedByCertainHospital}}data-action-checked="true"{{/if}} ><i class="fa fa-star"></i>스크랩</span>
+											{{#checkActionOffer}}	
+												<span class="footer-item" data-action="offer"        data-action-value="{{resumeId}}" {{#if offeredByCertainHospital}}data-action-checked="true"{{/if}}  ><i class="fa fa-share"></i>바로지원</span>
+											{{/checkActionOffer}}
+											<span class="dental-btn"      data-action="call"         data-action-value="{{user.telNo}}"><i class="fa fa-phone"></i>전화문의</span>
+
+
                                         </div>
                                     </div>
                                     {{/each}}
@@ -258,10 +267,10 @@
 
 				{{#each .}}
                 <div class="jobpost-list-card">
-                    <a href="javascript:selectJobAd({{jobAdId}});">
+                    <a href="javascript:HospitaHrManagementApp.selectJobAdToOffer({{jobAdId}});">
                         <div class="jobpost-list-card-header">
-                            <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
-                            <div class="jobpost-list-card-subtitle">{{title}}</div>
+							<div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
+							<div class="jobpost-list-card-subtitle">{{title}}</div>
                         </div>
                         <div class="jobpost-list-card-body">
                             <div class="dental-info">
@@ -303,356 +312,504 @@
 
 
 <script>
-var dModal = dentalModal(); // 선정우가 테스트로 넣음 , 지워도 됨
+// var dModal = dentalModal(); // 선정우가 테스트로 넣음 , 지워도 됨
 
 
-
-// 속도 느림. 그러나 ordering 됨
-// <span class="info-detail"><span class="job-attr-chip">계약직</span><span class="job-attr-chip">아르바이트</span><i></i></span>
-function renderAttrOnResumeCard(attrList) {   // 지원 속성은 선택하지 않은 경우(DB에 데이터 없음)인 경우에는 나오지 말아야 한다.
-    if ( attrList==null || attrList.length==0 ) return "";
-
-    var html = "";
-
-    var defAttrGroupList = CODE_CONTAINER.getAttrs();
-    defAttrGroupList.forEach(function(defAttrGroup) {
-        var innerHtml = "";
-        defAttrGroup.element.forEach(function(defAttr) {
-            var defAttrValue = defAttr.value;
-            attrList.forEach(function(attr) {
-                if ( defAttrValue == attr ) {
-                    hasValue = true;
-                    innerHtml += "<span class='job-attr-chip'>" + defAttr.text + "</span>";
-                    //console.log(html);
-                }
-            });
-        });
-        if ( innerHtml.length > 2 ) {
-            html += '<span class="info-detail">';
-            html += innerHtml;
-            html += '<i></i></span>';
-        }
-    });
-
-    return html;
-}
-
-var resumeCardTemplateCompiled = Handlebars.compile( document.getElementById("resumeCardTemplate").innerHTML );
-
-function calLengthOfCareer(careerList) {
-    if ( !careerList || !Array.isArray(careerList) || careerList.length<1 ) return '신입';
-    else return "경력";
-}
-Handlebars.registerHelper("renderLengthOfCareer", function(careerList) {
-    return calLengthOfCareer(careerList);
-});
-Handlebars.registerHelper("renderYYYYMMDDWithDot", function(yyyymmdd) {
-    return renderYYYYMMDDWithDot(yyyymmdd);     // from common.js
-});
-Handlebars.registerHelper("renderAttrOnResumeCard", function(code) {
-    return renderAttrOnResumeCard(code);
-});
-Handlebars.registerHelper("renderResumeProfileImage", function(userId) {
-	//console.log("renderResumeProfileImage ", userId);
-	return CONSTANTS.getProfileImageUrl(userId);
-});
+var HospitaHrManagementApp = (function() {
 
 
+	// 속도 느림. 그러나 ordering 됨
+	// <span class="info-detail"><span class="job-attr-chip">계약직</span><span class="job-attr-chip">아르바이트</span><i></i></span>
+	function renderAttrOnResumeCard(attrList) {   // 지원 속성은 선택하지 않은 경우(DB에 데이터 없음)인 경우에는 나오지 말아야 한다.
+		if ( attrList==null || attrList.length==0 ) return "";
 
-// 공고 모달용
-Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
-	//console.log("LOCATION_HELPER ", code);
-	var location = LOCATION_CODE.getByName(code);
-	if ( location ) return location.sidoName + " > " + location.siguName ;
-	else return "입력안됨";
-});
-Handlebars.registerHelper("renderAttrOnCard", function(code) {
-	//console.log("renderAttrOnCard ", code);
-	return renderAttrOnCard(code);
-});
-// 속도 느림. 그러나 ordering 됨
-function renderAttrOnCard(attrList) {
-    if ( attrList==null || attrList.length==0 ) return "";
+		var html = "";
 
-    var html = "";
-
-    var defAttrGroupList = CODE_CONTAINER.getAttrs();
-    defAttrGroupList.forEach(function(defAttrGroup) {
-        html += '<span class="info-detail">';
-        defAttrGroup.element.forEach(function(defAttr) {
-            var defAttrValue = defAttr.value;
-
-            attrList.forEach(function(attr) {
-                if ( defAttrValue == attr ) {
-                    html += "<span>" + defAttr.text + "<i></i></span>";
-                }
-            });
-        });
-        html += '</span>';
-    });
-
-    return html;
-}
-
-
-/***************** 탭 선택에 따라서 '이력서 카드'의 모양을 변경하기 위한 Helper들 *************************/
-
-Handlebars.registerHelper("checkApplyDate", function(options) {
-    // 화면의 탭 선택(.tabs-input)에서 선택된 것이 첫번째 탭(지원자관리)이면, '지원일자'항목을 보여주고
-    // 다른 탭이 선택된 것이라면 '지원일자' 항목을 숨긴다.
-    if ( document.querySelector("input[name='tabs'][value='1']").checked ) {
-        return options.fn(this);
-    } else {
-        return options.inverse(this);
-    }
-});
-
-Handlebars.registerHelper("checkActionOffer", function(options) {
-    // 화면의 탭 선택(.tabs-input)에서 선택된 것이 첫번째 탭(지원자관리)이면, '면접제안'버튼을 숨기고
-    // 다른 탭이 선택된 것이라면 '면접제안' 버튼을 보여준다.
-    if ( !document.querySelector("input[name='tabs'][value='1']").checked ) {
-        return options.fn(this);
-    } else {
-        return options.inverse(this);
-    }
-});
-/************************************************************************************************************/
-
-
-function listResume(tabNo) {
-    if ( !checkAuth() ) {
-        return;
-    }
-
-	var hospitalId = LOGIN_INFO.getHospitalId();
-    var apiUrl = "";
-	if ( tabNo == 1 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeApplied/";
-	else if ( tabNo == 2 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeScrapped/";
-    else if ( tabNo == 3 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeRecommended/";
-    else if ( tabNo == 4 ) apiUrl = "/api/hospital/"+hospitalId+"/resumeSearched/";
-    else {
-        console.log("잘못된 탭 번호 : ", tabNo);
-        return;
-    }
-
-    var apiParam = null;
-
-    callApi("GET", apiUrl, apiParam,
-        function(resData) {
-            console.log(resData);
-            if ( resData && Array.isArray(resData) && resData.length>0 ) {
-
-                if ( tabNo == 1) {
-                    document.getElementById("divResumeCardApplied").innerHTML = resumeCardTemplateCompiled(resData);
-                    document.getElementById("countOfResumeApplied").innerText = resData.length;
-                } else if ( tabNo == 2 ) {
-                    document.getElementById("divResumeCardScrapped").innerHTML = resumeCardTemplateCompiled(resData);
-                    document.getElementById("countOfResumeScrapped").innerText = resData.length;
-                } else if ( tabNo == 3 ) {
-                    document.getElementById("divResumeCardRecommended").innerHTML = resumeCardTemplateCompiled(resData);
-                    document.getElementById("countOfResumeRecommended").innerText = resData.length;
-                } else if ( tabNo == 4 ) {
-                    document.getElementById("divResumeCardSearched").innerHTML = resumeCardTemplateCompiled(resData);
-                    document.getElementById("countOfResumeSearched").innerText = resData.length;
-                }
-
-                document.getElementById("btnOpenContents"+tabNo).checked = true;
-
-            } else {
-                document.getElementById("btnOpenContents"+tabNo).checked = false;
-            }
-        },
-        function(errorCode, errorMsg) {
-            alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-        }
-    );
-}
-function onChangeTabs(event) {
-    console.log("변경 : ", this.value);
-    listResume(this.value);
-}
-document.querySelectorAll("input[name='tabs']").forEach(function(el) {
-    el.addEventListener('change', onChangeTabs);
-});
-
-
-function checkAuth() {
-	if ( !LOGIN_INFO.isLoggedIn() ) {
-		alert("로그인이 필요합니다.");
-
-		return false;
-	}
-
-	if ( !LOGIN_INFO.isHospitalMember() ) {
-		alert("병원회원만 사용 가능합니다.");
-
-		return false;
-	}
-
-	if ( !LOGIN_INFO.getHospitalId() ) {
-		alert("병원 기본정보가 등록되지 않았습니다.");
-	}
-
-    return true;
-}
-
-
-listResume(1);  // 1번 탭 실행
-
-
-
-
-/**********************************************************************************************/
-/*
-/*      스크랩 처리
-/*
-/**********************************************************************************************/
-// 스크랩 처리
-function onClickScrap(scrapElementClicked) {
-	//console.log("이력서 스크랩 ", scrapElementClicked.value , "  ==> ", scrapElementClicked.checked);
-
-	var hospitalId = LOGIN_INFO.getHospitalId();
-	var resumeId = scrapElementClicked.value;
-
-	if ( scrapElementClicked.checked ) {
-		//console.log("서버에 스크랩 on 처리해야 함");
-		callApi("POST", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
-			function(resData) {
-				redrawScrapElements(resData);
-			},
-			function(errorCode, errorMsg) {
-				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-			}
-		);
-
-	} else {
-		//console.log("서버에 스크랩 off 처리해야 함");
-		callApi("DELETE", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
-			function(resData) {
-				redrawScrapElements(resData);
-			},
-			function(errorCode, errorMsg) {
-				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-			}
-		);
-	}
-
-
-	function redrawScrapElements(checkedResumes) {
-		console.log("+=====> ", checkedResumes);
-		document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
-			el.checked = false;
-		});
-		
-		if ( !checkedResumes ) return;
-
-		checkedResumes.forEach(function(resume) {
-			document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
-				el.checked = true;
+		var defAttrGroupList = CODE_CONTAINER.getAttrs();
+		defAttrGroupList.forEach(function(defAttrGroup) {
+			var innerHtml = "";
+			defAttrGroup.element.forEach(function(defAttr) {
+				var defAttrValue = defAttr.value;
+				attrList.forEach(function(attr) {
+					if ( defAttrValue == attr ) {
+						hasValue = true;
+						innerHtml += "<span class='job-attr-chip'>" + defAttr.text + "</span>";
+						//console.log(html);
+					}
+				});
 			});
+			if ( innerHtml.length > 2 ) {
+				html += '<span class="info-detail">';
+				html += innerHtml;
+				html += '<i></i></span>';
+			}
 		});
-	}
-	
-}
 
-// 공고 리스팅 모달
-var jobAdCardTemplateForOfferCompiled = Handlebars.compile( document.getElementById("jobAdCardTemplateForOffer").innerHTML );
-
-
-// 이력서를 클릭할 때 이벤트 처리
-function onClickResumeListBody(event) {
-	console.log("AADFASDfASDF ", event.target);
-	console.log("===> ", event.target.dataset);
-
-	var target = event.target;
-	if ( target.type && target.type=="checkbox" && target.name=="resume-scrap" ) {
-		onClickScrap(target);
-
-	} else if ( target.dataset && target.dataset.action && target.dataset.actionValue ) {
-		console.log("** ", target.dataset.action, "  ", target.dataset.actionValue);
-		
-		if ( target.dataset.action=="offer" ) {
-
-			SELECTED_RESUME_ID_FOR_OFFER =  target.dataset.actionValue;
-
-			// 공고를 가져온다.
-			var hospitalId = LOGIN_INFO.getHospitalId();
-			callApi("GET", "/api/hospital/"+hospitalId+"/jobAd/", null,
-				function(resData) {
-					//redrawScrapElements(resData);
-					console.log(resData);
-
-					document.getElementById("divOfferModal").innerHTML = jobAdCardTemplateForOfferCompiled(resData);
-					document.getElementById("divOfferModal").classList.add("active");
-				},
-				function(errorCode, errorMsg) {
-					document.getElementById("divOfferModal").classList.remove("active")
-					alert("공고 목록을 가져올 수 없습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
-				}
-			);
-
-			return;
-		}
-
-		if ( target.dataset.action=="call" ) {
-			document.location.href="tel:" + target.dataset.actionValue;
-			return;
-		}
+		return html;
 	}
 
-}
-document.querySelectorAll(".resume-list-body").forEach(function(el) {
-	el.addEventListener("click", onClickResumeListBody);
-});
+	var resumeCardTemplateCompiled = Handlebars.compile( document.getElementById("resumeCardTemplate").innerHTML );
+
+	function calLengthOfCareer(careerList) {
+		if ( !careerList || !Array.isArray(careerList) || careerList.length<1 ) return '신입';
+		else return "경력";
+	}
+	Handlebars.registerHelper("renderLengthOfCareer", function(careerList) {
+		return calLengthOfCareer(careerList);
+	});
+	Handlebars.registerHelper("renderYYYYMMDDWithDot", function(yyyymmdd) {
+		return renderYYYYMMDDWithDot(yyyymmdd);     // from common.js
+	});
+	Handlebars.registerHelper("renderAttrOnResumeCard", function(code) {
+		return renderAttrOnResumeCard(code);
+	});
+	Handlebars.registerHelper("renderResumeProfileImage", function(userId) {
+		//console.log("renderResumeProfileImage ", userId);
+		return CONSTANTS.getProfileImageUrl(userId);
+	});
 
 
 
+	/***************** 탭 선택에 따라서 '이력서 카드'의 모양을 변경하기 위한 Helper들 *************************/
 
-
-
-var SELECTED_RESUME_ID_FOR_OFFER;
-
-
-
-function selectJobAd(jobAdId, resumeId) {
-	console.log("면접제안할 공고/이력서 : ", jobAdId, " / ", resumeId);
-
-	var process = confirm("해당 공고로 면접제안을 하시겠습니까?");
-	if ( process ) {
-		console.log("면접제안 한다.");
-		if ( !SELECTED_RESUME_ID_FOR_OFFER ) {
-			alert("면접제안할 이력서가 선택되지 않았습니다.");
-			return;
+	Handlebars.registerHelper("checkApplyDate", function(options) {
+		// 화면의 탭 선택(.tabs-input)에서 선택된 것이 첫번째 탭(지원자관리)이면, '지원일자'항목을 보여주고
+		// 다른 탭이 선택된 것이라면 '지원일자' 항목을 숨긴다.
+		if ( document.querySelector("input[name='tabs'][value='1']").checked ) {
+			return options.fn(this);
+		} else {
+			return options.inverse(this);
 		}
+	});
 
-		var hospitalId = LOGIN_INFO.getHospitalId();
-		callApi("POST", "/api/hospital/" + hospitalId + "/resumeOfferedId/", "jobAdId="+jobAdId+"&resumeId="+SELECTED_RESUME_ID_FOR_OFFER,
-			function(resumeOfferedIdAndJobAdIdList) {
-				console.log("성공   : ", resumeOfferedIdAndJobAdIdList);
-				// 결과를 가지고 화면을 면접제안 상태를 변경해 준다.
+	Handlebars.registerHelper("checkActionOffer", function(options) {
+		// 화면의 탭 선택(.tabs-input)에서 선택된 것이 첫번째 탭(지원자관리)이면, '면접제안'버튼을 숨기고
+		// 다른 탭이 선택된 것이라면 '면접제안' 버튼을 보여준다.
+		if ( !document.querySelector("input[name='tabs'][value='1']").checked ) {
+			return options.fn(this);
+		} else {
+			return options.inverse(this);
+		}
+	});
+	/************************************************************************************************************/
 
-				if ( !resumeOfferedIdAndJobAdIdList ) return;
 
-				resumeOfferedIdAndJobAdIdList.forEach(function(resumeIdAndJobAdId) {
-					document.querySelectorAll(".resume-list-body [data-action='offer'][data-action-value='" + resumeIdAndJobAdId.resumeId + "']").forEach(function (el) {
-						el.innerText = "기지원";
-						el.dataset.action = null;
-						el.dataset.actionValue = null;
+
+	/********************************************    공고 모달용    *********************************************/
+	// 공고 모달용
+	Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
+		//console.log("LOCATION_HELPER ", code);
+		var location = LOCATION_CODE.getByName(code);
+		if ( location ) return location.sidoName + " > " + location.siguName ;
+		else return "입력안됨";
+	});
+	Handlebars.registerHelper("renderAttrOnCard", function(code) {
+		//console.log("renderAttrOnCard ", code);
+		return renderAttrOnCard(code);
+	});
+	// 속도 느림. 그러나 ordering 됨
+	function renderAttrOnCard(attrList) {
+		if ( attrList==null || attrList.length==0 ) return "";
+
+		var html = "";
+
+		var defAttrGroupList = CODE_CONTAINER.getAttrs();
+		defAttrGroupList.forEach(function(defAttrGroup) {
+			html += '<span class="info-detail">';
+			defAttrGroup.element.forEach(function(defAttr) {
+				var defAttrValue = defAttr.value;
+
+				attrList.forEach(function(attr) {
+					if ( defAttrValue == attr ) {
+						html += "<span>" + defAttr.text + "<i></i></span>";
+					}
+				});
+			});
+			html += '</span>';
+		});
+
+		return html;
+	}
+	/************************************************************************************************************/
+
+
+
+	function toggleResumeScrap(_httpMethod, _resumeId) {
+
+		callApi(_httpMethod, "/api/hospital/"+LOGIN_INFO.getHospitalId()+"/resumeScrappedId/"+_resumeId+"/", null,
+			function(scrappedResumeIdList) {
+				console.log("스크랩 결과 ", scrappedResumeIdList);
+
+
+				document.querySelectorAll("[data-action='resume-scrap']").forEach(function(el) {
+					el.dataset.actionChecked = "false";
+				});
+				if ( !scrappedResumeIdList || scrappedResumeIdList.length<1 ) return;
+
+				scrappedResumeIdList.forEach(function(scrappedResumeId) {
+					document.querySelectorAll("[data-action='resume-scrap'][data-action-value='" + scrappedResumeId + "']").forEach(function(el) {
+						el.dataset.actionChecked = "true";
+						console.log("\t scrappedResumeCheckbox 체크됨 ", scrappedResumeId, "    ", el);
 					});
 				});
+
+			},
+			function(errorCode, errorMsg) {
+				alert("스크랩 에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+			}
+		);
+	}
+
+
+
+
+	// 제안하는 경우에 선택된 이력서의 ID
+	var SELECTED_RESUME_ID_FOR_OFFER;
+	
+	var jobAdCardTemplateForOfferCompiled = Handlebars.compile( document.getElementById("jobAdCardTemplateForOffer").innerHTML );	// 공고 리스팅 모달
+	// 면접 제안은 '제안'만 있고, '취소'는 없음 (apply와 다른 점)
+	function doOffer(_resumeId) {
+		
+		// 먼저 해당 병원의 공고를 가져온다.
+		callApi("GET", "/api/hospital/"+LOGIN_INFO.getHospitalId()+"/jobAd/", null,
+			function(resData) {
+				console.log(resData);
+
+				document.getElementById("divOfferModal").innerHTML = jobAdCardTemplateForOfferCompiled(resData);
+				document.getElementById("divOfferModal").classList.add("active");
+
+				SELECTED_RESUME_ID_FOR_OFFER = _resumeId;
+			},
+			function(errorCode, errorMsg) {
+				SELECTED_RESUME_ID_FOR_OFFER = null;
+
+				document.getElementById("divOfferModal").classList.remove("active")
+				alert("공고 목록을 가져올 수 없습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
+			}
+		);
+	}
+	function _selectJobAdToOffer(jobAdId) {
+		if ( !SELECTED_RESUME_ID_FOR_OFFER ) throw "이력서ID 선택 안됨";
+
+		callApi("POST", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/resumeOfferedId/", "jobAdId="+jobAdId+"&resumeId="+SELECTED_RESUME_ID_FOR_OFFER,
+			function(resumeOfferedIdAndJobAdIdList) {
+				console.log("성공   : ", resumeOfferedIdAndJobAdIdList);
+
+				// 결과를 가지고 actionChecked의 상태를 변경해 준다.
+				document.querySelectorAll("[data-action='offer']").forEach(function(el) {
+					el.dataset.actionChecked = "false";
+				});
+				if ( resumeOfferedIdAndJobAdIdList ) {
+					resumeOfferedIdAndJobAdIdList.forEach(function(resumeOfferedIdAndJobAdId) {
+						document.querySelectorAll("[data-action='offer'][data-action-value='" + SELECTED_RESUME_ID_FOR_OFFER + "']").forEach(function(el) {
+							el.dataset.actionChecked = "true";
+						});
+					});
+				}
+				
+				SELECTED_RESUME_ID_FOR_OFFER = null;
 
 				alert("면접제안 되었습니다.");
 				document.getElementById("divOfferModal").classList.remove("active");
 
 			},
 			function(errorCode, errorMsg) {
-				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-				document.getElementById("divOfferModal").classList.remove("active");
-		});
+				SELECTED_RESUME_ID_FOR_OFFER = null;
 
+				alert("면접제안 에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+				document.getElementById("divOfferModal").classList.remove("active");
+			}
+		);
 	}
 
-	
-}
 
+
+	function onClickAction(event) {	
+		var target = event.target;
+		console.log("====================>   ", target);
+		if ( !target.dataset || !target.dataset.action || !target.dataset.actionValue ) return;
+		
+		console.log("잡았다   ", target.dataset.action);
+
+
+		switch(target.dataset.action) {
+			case "resume-scrap":
+				console.log("스크랩 할 것임 : ", target.dataset.actionChecked);
+				if ( target.dataset.actionChecked && target.dataset.actionChecked=="true" ) {	// 스크랩O --> 스크랩X
+					console.log("스크랩O --> 스크랩X");
+					toggleResumeScrap("DELETE", target.dataset.actionValue);
+				} else {															// 스크랩X --> 스크랩O
+					console.log("스크랩X --> 스크랩O");
+					toggleResumeScrap("POST", target.dataset.actionValue);
+				}
+				
+				break;
+
+			case "offer":
+				if ( target.dataset.actionChecked && target.dataset.actionChecked=="true" ) {	// 이미 제안한 것 --> 제안 취소    <== ** 없음
+					alert("이미 제안한 이력서입니다.");
+				} else {															// 제안 안한 것 --> 제안
+					doOffer(target.dataset.actionValue);
+				}
+				break;
+
+			case "call":
+				console.log("전화걸기");
+				document.location.href="tel:"+target.dataset.actionValue;
+				break;
+
+			default:
+				throw "정의되지 않은 action [" + action + "]";
+		}
+
+	}
+	document.querySelectorAll(".resume-list-body").forEach(function(element) {
+		console.log("이벤트 걸었음 ", element);
+		element.addEventListener("click", onClickAction);
+	});
+
+
+
+
+
+
+
+
+
+	init();
+
+	function init() {
+		if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
+		listResume("1");  // 1번 탭 실행
+	}
+
+
+	function listResume(tabNo) {
+
+		var hospitalId = LOGIN_INFO.getHospitalId();
+		var apiUrl = "";
+
+		switch(tabNo) {
+			case "1":
+				apiUrl = "/api/hospital/"+hospitalId+"/resumeApplied/";
+				break;
+			case "2":
+				apiUrl = "/api/hospital/"+hospitalId+"/resumeScrapped/";
+				break;
+			case "3":
+				apiUrl = "/api/hospital/"+hospitalId+"/resumeRecommended/";
+				break;
+			case "4":
+				apiUrl = "/api/hospital/"+hospitalId+"/resumeSearched/";
+				break;
+			default:
+				throw "정의되지 않은 탭번호 [" + tabNo + "]";
+		}
+
+		callApi("GET", apiUrl, null,
+			function(resData) {
+				console.log(resData);
+				if ( resData && Array.isArray(resData) && resData.length>0 ) {
+
+					switch(tabNo) {
+						case "1":
+							document.getElementById("divResumeCardApplied").innerHTML = resumeCardTemplateCompiled(resData);
+							document.getElementById("countOfResumeApplied").innerText = resData.length;
+							break;
+						case "2":
+							document.getElementById("divResumeCardScrapped").innerHTML = resumeCardTemplateCompiled(resData);
+							document.getElementById("countOfResumeScrapped").innerText = resData.length;
+							break;
+						case "3":
+							document.getElementById("divResumeCardRecommended").innerHTML = resumeCardTemplateCompiled(resData);
+							document.getElementById("countOfResumeRecommended").innerText = resData.length;
+							break;
+						case "4":
+							document.getElementById("divResumeCardSearched").innerHTML = resumeCardTemplateCompiled(resData);
+							document.getElementById("countOfResumeSearched").innerText = resData.length;
+							break;
+						default:
+							throw "정의되지 않은 탭번호 [" + tabNo + "]";
+
+					}
+
+					document.getElementById("btnOpenContents"+tabNo).checked = true;
+
+				} else {
+					document.getElementById("btnOpenContents"+tabNo).checked = false;
+				}
+			},
+			function(errorCode, errorMsg) {
+				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+			}
+		);
+	}
+	document.querySelectorAll("input[name='tabs']").forEach(function(el) {
+		el.addEventListener('click', function(event) { listResume(this.value); } );
+	});
+
+
+
+	return {
+		selectJobAdToOffer : function(jobAdId) {
+			_selectJobAdToOffer(jobAdId);
+		}
+	};
+
+
+	// /**********************************************************************************************/
+	// /*
+	// /*      스크랩 처리
+	// /*
+	// /**********************************************************************************************/
+	// // 스크랩 처리
+	// function onClickScrap(scrapElementClicked) {
+	// 	//console.log("이력서 스크랩 ", scrapElementClicked.value , "  ==> ", scrapElementClicked.checked);
+
+	// 	var hospitalId = LOGIN_INFO.getHospitalId();
+	// 	var resumeId = scrapElementClicked.value;
+
+	// 	if ( scrapElementClicked.checked ) {
+	// 		//console.log("서버에 스크랩 on 처리해야 함");
+	// 		callApi("POST", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
+	// 			function(resData) {
+	// 				redrawScrapElements(resData);
+	// 			},
+	// 			function(errorCode, errorMsg) {
+	// 				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+	// 			}
+	// 		);
+
+	// 	} else {
+	// 		//console.log("서버에 스크랩 off 처리해야 함");
+	// 		callApi("DELETE", "/api/hospital/"+hospitalId+"/resumeScrapped/"+resumeId+"/", null,
+	// 			function(resData) {
+	// 				redrawScrapElements(resData);
+	// 			},
+	// 			function(errorCode, errorMsg) {
+	// 				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+	// 			}
+	// 		);
+	// 	}
+
+
+	// 	function redrawScrapElements(checkedResumes) {
+	// 		console.log("+=====> ", checkedResumes);
+	// 		document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap]").forEach(function (el) {
+	// 			el.checked = false;
+	// 		});
+			
+	// 		if ( !checkedResumes ) return;
+
+	// 		checkedResumes.forEach(function(resume) {
+	// 			document.querySelectorAll(".resume-list-body input[type=checkbox][name=resume-scrap][value='" + resume.resumeId + "']").forEach(function (el) {
+	// 				el.checked = true;
+	// 			});
+	// 		});
+	// 	}
+		
+	// }
+
+	// // 공고 리스팅 모달
+	// var jobAdCardTemplateForOfferCompiled = Handlebars.compile( document.getElementById("jobAdCardTemplateForOffer").innerHTML );
+
+
+	// // 이력서를 클릭할 때 이벤트 처리
+	// function onClickResumeListBody(event) {
+	// 	console.log("AADFASDfASDF ", event.target);
+	// 	console.log("===> ", event.target.dataset);
+
+	// 	var target = event.target;
+	// 	if ( target.type && target.type=="checkbox" && target.name=="resume-scrap" ) {
+	// 		onClickScrap(target);
+
+	// 	} else if ( target.dataset && target.dataset.action && target.dataset.actionValue ) {
+	// 		console.log("** ", target.dataset.action, "  ", target.dataset.actionValue);
+			
+	// 		if ( target.dataset.action=="offer" ) {
+
+	// 			SELECTED_RESUME_ID_FOR_OFFER =  target.dataset.actionValue;
+
+	// 			// 공고를 가져온다.
+	// 			var hospitalId = LOGIN_INFO.getHospitalId();
+	// 			callApi("GET", "/api/hospital/"+hospitalId+"/jobAd/", null,
+	// 				function(resData) {
+	// 					//redrawScrapElements(resData);
+	// 					console.log(resData);
+
+	// 					document.getElementById("divOfferModal").innerHTML = jobAdCardTemplateForOfferCompiled(resData);
+	// 					document.getElementById("divOfferModal").classList.add("active");
+	// 				},
+	// 				function(errorCode, errorMsg) {
+	// 					document.getElementById("divOfferModal").classList.remove("active")
+	// 					alert("공고 목록을 가져올 수 없습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
+	// 				}
+	// 			);
+
+	// 			return;
+	// 		}
+
+	// 		if ( target.dataset.action=="call" ) {
+	// 			document.location.href="tel:" + target.dataset.actionValue;
+	// 			return;
+	// 		}
+	// 	}
+
+	// }
+	// document.querySelectorAll(".resume-list-body").forEach(function(el) {
+	// 	el.addEventListener("click", onClickResumeListBody);
+	// });
+
+
+
+
+
+
+	// var SELECTED_RESUME_ID_FOR_OFFER;
+
+
+
+	// function selectJobAd(jobAdId, resumeId) {
+	// 	console.log("면접제안할 공고/이력서 : ", jobAdId, " / ", resumeId);
+
+	// 	var process = confirm("해당 공고로 면접제안을 하시겠습니까?");
+	// 	if ( process ) {
+	// 		console.log("면접제안 한다.");
+	// 		if ( !SELECTED_RESUME_ID_FOR_OFFER ) {
+	// 			alert("면접제안할 이력서가 선택되지 않았습니다.");
+	// 			return;
+	// 		}
+
+	// 		var hospitalId = LOGIN_INFO.getHospitalId();
+	// 		callApi("POST", "/api/hospital/" + hospitalId + "/resumeOfferedId/", "jobAdId="+jobAdId+"&resumeId="+SELECTED_RESUME_ID_FOR_OFFER,
+	// 			function(resumeOfferedIdAndJobAdIdList) {
+	// 				console.log("성공   : ", resumeOfferedIdAndJobAdIdList);
+	// 				// 결과를 가지고 화면을 면접제안 상태를 변경해 준다.
+
+	// 				if ( !resumeOfferedIdAndJobAdIdList ) return;
+
+	// 				resumeOfferedIdAndJobAdIdList.forEach(function(resumeIdAndJobAdId) {
+	// 					document.querySelectorAll(".resume-list-body [data-action='offer'][data-action-value='" + resumeIdAndJobAdId.resumeId + "']").forEach(function (el) {
+	// 						el.innerText = "기지원";
+	// 						el.dataset.action = null;
+	// 						el.dataset.actionValue = null;
+	// 					});
+	// 				});
+
+	// 				alert("면접제안 되었습니다.");
+	// 				document.getElementById("divOfferModal").classList.remove("active");
+
+	// 			},
+	// 			function(errorCode, errorMsg) {
+	// 				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+	// 				document.getElementById("divOfferModal").classList.remove("active");
+	// 		});
+
+	// 	}
+
+		
+	// }
+
+
+})();
 </script>
