@@ -501,7 +501,7 @@
 
 
                     function processCheckboxEvent1(event) {
-                        console.log("*** 시구코드 선택 : ", this.value, ", ", this.checked);                        
+                        console.log("*** 시구코드 선택 : ", this.value, ", ", this.checked);
 
                         var currentSidoCode = this.dataset.sidoCode;
 
@@ -511,7 +511,13 @@
                                 element.checked = false;
                             });
 
-                        } else {    // 이것은 '시구'
+						} else {    // 이것은 '시구'
+
+							if ( document.querySelectorAll("input[type=checkbox][name='locationCode']:checked").length > 6 ) {
+								this.checked = false;
+								alert("관심지역은 최대 6개까지 설정 가능합니다.");
+								return;
+							}
 
                             // 동일 시도 내의 체크된 개수 ('전체' 불포함)
                             var checkedCnt      = document.querySelectorAll("input[type=checkbox][name='locationCode'][data-sido-code='" + currentSidoCode + "']:not([value='" + currentSidoCode + "']):checked").length;
