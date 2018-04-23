@@ -295,7 +295,8 @@
             if ( password.value !== passwordConfirm.value ) {
                 document.getElementById("member-register-2").disabled = false;  // 정보입력 단계로 이동
                 alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-                password.focus();
+				password.focus();
+				return false;
             }
 
             console.log("입력정보 검증 완료");
