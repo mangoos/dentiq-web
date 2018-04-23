@@ -25,13 +25,13 @@
         </section>
         <section class="navbar-section">
             <a href="start.html"><i class="fal fa-home"></i></a>
-            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+            <a id="goPanel" href="user_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
     <div class="dental-steps">
-        <input type="radio" name="steps" id="member-register-1" checked hidden>
-        <input type="radio" name="steps" id="member-register-2" hidden>
-        <input type="radio" name="steps" id="member-register-3" hidden>
+        <input type="radio" name="steps" id="member-register-1" hidden checked>
+        <input type="radio" name="steps" id="member-register-2" hidden disabled>
+        <input type="radio" name="steps" id="member-register-3" hidden disabled>
         <div class="step">
             <label class="step-item" for="member-register-1"><span>약관동의</span></label>
             <label class="step-item" for="member-register-2"><span>정보입력</span></label>
@@ -326,7 +326,7 @@
                     alert("등록되었습니다.");
 
                     // 로그인 정보로 수신된 내용으로 로그인 처리한다.
-                    LOGIN_INFO.afterSignup(resData);
+                    //LOGIN_INFO.afterSignup(resData);
 
                     //USER_INFO = new UserInfo(resData.id, resData.email, resData.name);
                     //saveUserInfo(USER_INFO);
@@ -339,10 +339,13 @@
 
                     var btnSuccessSigunup = document.getElementById("btnSuccessSigunup");
                     if ( LOGIN_INFO.getUserType()==1 ) {
+						document.getElementById("goPanel").href = "user_panel.html";
+
                         btnSuccessSigunup.addEventListener("click", function(event) {
                             location.href = "register_user.html";
                         });
                     } else if ( LOGIN_INFO.getUserType()==2 ) {
+						document.getElementById("goPanel").href = "dentist_panel.html";
                         btnSuccessSigunup.addEventListener("click", function(event) {
                             location.href = "register_dentist.html";
                         });
