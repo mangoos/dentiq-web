@@ -511,14 +511,12 @@ var LOGIN_INFO = (function() {
 		callApi("POST", LOGOUT_API_URL, "userId=" + userInfo.useId,
 			function(resData) { // 로그아웃 성공하면...
 				clear();
-				alert("로그아웃 성공");
-
 				fireScrapChageEventListeners();
+				alert("로그아웃되었습니다.");
 
-				//TODO JWT를 무효화한다!!! ==> 필요없다!
 			},
 			function(resCode, resMsg) { // 로그아웃 실패하면...
-				alert("로그아웃 실패");
+				alert("로그아웃에 실패했습니다.");
 				//return false;
 			}
 		);
