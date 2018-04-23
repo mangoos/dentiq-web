@@ -11,19 +11,39 @@ Project dentiq - second revision.
 * liveboard.html에 우리동네/관심지역 통합 처리
 	- Summary를 서버에서 수신 받고 응답 값으로 다시 공고 목록 요청하는 방식으로 liveboard/우리동네/관심지역을 하나로 처리
 
+
 # TODO
 
 * 프리미어 공고 Rotation
 	- 프리미어 공고의 경우, 좌측 스와이프를 '랜덤+공정'하게 보여주어야 하는데, 이에 대한 처리 방법이 필요함
 
 * 공지 사항
-	- 이에 따르는 Admin화면도 개발하여야 하나?
+	- 공지사항 기능 개발 및 이에 따르는 Admin화면도 개발하여야 하나?
+
 
 # Road Map
 
+* Rev. 2. (current)
+	- 모바일 웹 개발
+		- iOS Safari 테스트
+	- Android App 개발
+		- Android 앱 스토어에서 다운 가능
+		- Android 앱 개발자 계정을 신규 개설
+	- PC용 웹 개발
+		- CSS 변경 및 JS 추가 (ie10 용)
+	- 웹 환경 설정
+		- Web 서버 및 API 서버, DB 서버 등을 신규 개설하여 환경 이관
+		- 도메인
+		- 이메일 서버 (or 서비스)
+		- 비즈콜 전화 서비스
+		- SMS 서비스
+	- Etc.
+
 * Rev. 3.
 	- 카드 결제
+		- 모바일 웹, PC 웹, iOS, Android 모두 가능
 	- iOS App 개발
+	- 이력서에 대한 liveboard 개발
 
 * Rev. 4.
 	- 외부 공고 스크래핑
