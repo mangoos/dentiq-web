@@ -216,7 +216,23 @@ var DRexPattern = {
         "suffix" : "님"
     },
 
-    "basicInfoTelNo" : {
+    "phone" : {
+        "match" : /^\s?(02|0\d{2})[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
+        "errMsg" : "국번을 포함해서 정확한 전화번호를 입력해 주세요",
+        "delKey" : /[^\d]+/g,
+        "delMsg" : "",
+        "suffix" : null
+    },
+
+    "mobile" : {
+        "match" : /^\s?(02|0\d{2})[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
+        "errMsg" : "국번을 포함해서 정확한 전화번호를 입력해 주세요",
+        "delKey" : /[^\d]+/g,
+        "delMsg" : "",
+        "suffix" : null
+    },
+
+    "telNo" : {
         "match" : /^\s?(02|0\d{2})[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
         "errMsg" : "국번을 포함해서 정확한 전화번호를 입력해 주세요",
         "delKey" : /[^\d]+/g,
@@ -225,9 +241,17 @@ var DRexPattern = {
     },
 
     "onlyNumber" : {
-        "match" : /^[\d]{1,}$/g, 
+        "match" : /^[\d]+$/, 
         "errMsg" : "숫자만 입력할 수 있습니다.",
         "delKey" : /[^\d]+/g,
+        "delMsg" : "",
+        "suffix" : null 
+    },
+
+    "onlyKor" : {
+        "match" : /^[ㄱ-힣,\s]{1,}$/, 
+        "errMsg" : "진료 과목을 정확하게 입력해주세요(한글, ' , ' , 공백 만 허용)",
+        "delKey" : /[^ㄱ-힣,\s]+/g,
         "delMsg" : "",
         "suffix" : null 
     },
@@ -240,17 +264,17 @@ var DRexPattern = {
         "suffix" : null 
     },
 
-    "www" : {
-        "match" : /(www|\w+)?\.?(\w+\.{1}.*)/g, // 모든 경우의 수 소화 못함 ^https?://(?<domain>[^/?#]+)
+    "url" : {
+        "match" : /^(www|\w+)?\.{1}([\w\S]*\.?[\w\S]+[^\.]+)$/, // 아직 불완전, <<<특수문자 허용 // ^(www|\w+)?\.{1}(\w*\.?\w+)$ << 특수문자 허용안함
         "errMsg" : "정확한 홈페이지 url 을 입력해 주세요.",
-        "delKey" : null,
+        "delKey" : /[^\S\.\w]/g,
         "delMsg" : "",
         "suffix" : null 
     },
     
-    "birthday" : {
+    "date" : {
         "match" : /^(?:(19|20)\d{2})(\d{1,2})(\d{1,2})$/, 
-        "errMsg" : "생일을 입력해 주세요.  (예 - 19980724)",
+        "errMsg" : "날짜를 예시 양식에 맞게 입력해 주세요.  (예 - 19980724)",
         "delKey" : /[^\d]+/g,
         "delMsg" : "",
         "suffix" : null 
@@ -317,6 +341,7 @@ $(document).ready(function() {
         var msgBox = inputElm.parentElement.querySelector(".form-group-msg2");
 
         if (!flag) {
+            inputElm.classList.remove("valid");
             inputElm.classList.add("invalid");
             msgBox.innerText = DRexPattern[tag].errMsg;
         } else {
@@ -361,9 +386,10 @@ $(document).ready(function() {
         console.log("tag: ", tag, "regex: ",regex, "flag: ", flag, DRexPattern[tag]);
 
         if (!flag && str.length > 0) {
-
+            inputElm.classList.remove("valid");
             inputElm.classList.add("invalid");
             msgBox.innerText = DRexPattern[tag].errMsg;
+            setTimeout( function() { msgBox.innerText="";}, 1500);
 
         } else {
 
@@ -374,22 +400,22 @@ $(document).ready(function() {
         }
     };
 
-    $needValidator.on("input", function(e) {  // 복붙 등 모든 인풋 발생하면 keyup trigger
+    $needValidator.on("input", function inputHandle(e) {  // 복붙 등 모든 인풋 발생하면 keyup trigger
         this.dispatchEvent(new CustomEvent("keyup"));
     });
 
-    $needValidator.on("keyup", function(e) {
-        console.log("keyup");
+    $needValidator.on("keyup", function keyupHandle(e) {
         var self = $(this).find(".styled-input")[0];
         this.classList.remove("valid");
         dFormValidator.validator(self);
     });
 
-    $needValidator.on("focusout", function(e) {
+    $needValidator.on("focusout", function focusoutHandle(e) {
+        console.log(e.type);
         var self = $(this).find(".styled-input")[0];
-        console.log("focusout");
         dFormValidator.inputValueReplacer(self);
         dFormValidator.inputValueMatch(self);
+        //this.removeEventListener("focusout", focusoutHandle);
     });
 
 });
