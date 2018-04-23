@@ -92,7 +92,8 @@
     }
 
     function onFail(errCode, errMsg) {
-        alert("로그인 실패 ", errCode, errMsg);
+		console.log("login.html 로그인 실패 : ", errCode, errMsg);
+		alert(errCode + "  [" + errMsg + "]");
     }
 
     function onSubmit(e) {

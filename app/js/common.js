@@ -486,10 +486,24 @@ var LOGIN_INFO = (function() {
 			function(resData) {
 
 				//_loadScrappedJobAdIds();
+				console.log("로그인 응답 : ", resData);
+				if ( resData && resData=="FORCE_CHANGE_PASSWORD" ) {
+					// 비밀번호 초기화 상태임
+					alert("임시 비밀번호로 로그인되었습니다. \n비밀번호를 변경해주십시오.");
+					location.href = "modify_password.html";
+					return;
+				}
+
+				if ( resData && resData=="CHANGE_PASSWORD" ) {
+					// 비밀번호 초기화 상태임
+					location.href = "modify_password.html";
+					return;
+				}
 
 				if ( successProcFunc ) successProcFunc();
 			},
 			function(resCode, resMsg) {
+				console.log("LOGIN_INFO 로그인 실패 : ", resCode, resMsg);
 				clear();
 				if ( errorProcFunc ) errorProcFunc(resCode, resMsg);
 				else alert("로그인 ERROR " + resMsg);
