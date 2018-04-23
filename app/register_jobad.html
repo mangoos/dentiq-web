@@ -30,7 +30,7 @@
         </section>
         <section class="navbar-section">
             <a href="start.html"><i class="fal fa-home"></i></a>
-            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+            <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
     <section class="register-section">
@@ -45,8 +45,8 @@
                         <span class="user-photo-box-icon" style=" width: auto; height: auto; font-size: 1.2rem; color: #c4c2c2;"><i class="fal fa-plus-circle"></i></span>
                     </div>
                 </div>
-                <div class="user-photo-title">sjw0927@ gmail.com</div>
-                <div class="user-photo-subtitle">서울역 앞 치과 병원</div>
+                <div class="user-photo-title"></div>
+                <div class="user-photo-subtitle"></div>
             </div>
             <div class="fixed-layer-action">
                 <button class="fixed-layer-action-btn" id="btnSubmit" type="submit" disabled hidden></button>
@@ -559,9 +559,7 @@
         var btnSubmit = document.getElementById("btnSubmit");
       
         function initPage() {
-
-            if ( !checkLoggedIn() ) return;
-
+			if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
 
 
             var params = getHtmlCallParams();
@@ -634,29 +632,29 @@
 
 
         
-        function checkLoggedIn() {
-            if ( !LOGIN_INFO.isLoggedIn() ) {
-                alert("로그인이 필요한 페이지입니다.");
-                location.href = "signup.html?returnUrl=register_jobad.html";
-                return false;
-            }
+        // function checkLoggedIn() {
+        //     if ( !LOGIN_INFO.isLoggedIn() ) {
+        //         alert("로그인이 필요한 페이지입니다.");
+        //         location.href = "signup.html?returnUrl=register_jobad.html";
+        //         return false;
+        //     }
 
-            if ( !LOGIN_INFO.isHospitalMember() ) {
-                alert("병원회원만 이용 가능합니다.");
-                location.href = "start.html";
-                return false;
-            }
+        //     if ( !LOGIN_INFO.isHospitalMember() ) {
+        //         alert("병원회원만 이용 가능합니다.");
+        //         location.href = "start.html";
+        //         return false;
+        //     }
 
-            // var hospitalId = LOGIN_INFO.getHospitalId();
-            // //console.log("===> hospitalId : ", hospitalId);
-            // if ( !hospitalId || hospitalId==0 ) {
-            //     // 병원 등록을 먼저 해야 합니다.
-            //     alert("병원이 등록되지 않았습니다.");
-            //     // return;  // 병원 등록 페이지로 이동!!!
-            // }
+        //     // var hospitalId = LOGIN_INFO.getHospitalId();
+        //     // //console.log("===> hospitalId : ", hospitalId);
+        //     // if ( !hospitalId || hospitalId==0 ) {
+        //     //     // 병원 등록을 먼저 해야 합니다.
+        //     //     alert("병원이 등록되지 않았습니다.");
+        //     //     // return;  // 병원 등록 페이지로 이동!!!
+        //     // }
             
-            return true;
-        }
+        //     return true;
+        // }
         
 
         // 공고 정보를 로드한다. 로드 후에는 ==> initFormData
@@ -690,10 +688,13 @@
                         if ( resData.defaultHrEmail )           document.getElementById("hrEmail").value        = resData.defaultHrEmail;
 
                     } else {
-                        alert("병원이 등록되지 않았습니다. \n공고를 등록하시려면 먼저 병원정보를 등록해주세요.");
-                        // 페이지 이동
-
-                        return;
+						//alert("병원이 등록되지 않았습니다. \n공고를 등록하시려면 먼저 병원정보를 등록해주세요.");
+						var goYn = confirm("병원정보가 등록되지 않았습니다. \n병원정보를 등록하시겠습니까?");
+                        if ( goYn ) {
+							location.href = "register_dentist.html";
+						} else {
+							window.history.back();
+						}
                     }
                     
                 },
