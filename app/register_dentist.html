@@ -677,7 +677,7 @@ var HospitaInfoApp = (function() {
 
     function init() {
 
-		if ( LOGIN_INFO.checkAuthHospital(false) ) return;
+		if ( !LOGIN_INFO.checkAuthHospital(false) ) return;
 		// 병원권한 확인에서 false로.... 아직까지 병원정보 등록이 안 되었을 수도 있으므로
 		
 
