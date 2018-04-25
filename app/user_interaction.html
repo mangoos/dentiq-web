@@ -105,9 +105,10 @@
                                             </div>
                                         </a>
                                         <div class="jobpost-list-card-footer">
-											<span class="footer-item" data-action="scrap" data-action-value="{{jobAdId}}" ><i class="fa fa-star"></i>스크랩</span>
-											<span class="footer-item" data-action="apply" data-action-value="{{jobAdId}}" {{#if appliedByCertainJobSeeker}}data-action-checked="true"{{/if}} ><i class="fa fa-share"></i>바로지원</span>
-											<span class="dental-btn" data-action="call"  data-action-value="{{hospital.hospitalTelNo}}"><i class="fa fa-phone"></i>전화문의</span>
+                                            <span class="footer-item">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
+                                            <span class="btn btn-icon btn-sm d-scrap" data-action="scrap" data-action-value="{{jobAdId}}">스크랩</span>
+                                            <span class="btn btn-icon btn-sm d-apply" data-action="apply" data-action-value="{{jobAdId}}"></span>
+                                            <span class="btn btn-icon btn-sm d-phone"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}">전화문의</span>
                                         </div>
                                     </div>
                                     {{/each}}

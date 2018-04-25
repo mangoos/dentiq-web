@@ -93,8 +93,8 @@
                                             </div>
                                         </div>
                                         <div class="jobpost-list-card-footer">
-                                            <a href="jobad.html?jobAdId={{jobAdId}}"><span class="footer-item"><i class="fa fa-hand-pointer-o"></i>공고 보기</span></a>
-                                            <a href="register_jobad.html?jobAdId={{jobAdId}}&copyAndRegister=Y"><span class="footer-item"><i class="fa fa-share"></i>불러와서 등록</span></a>
+                                            <a href="jobad.html?jobAdId={{jobAdId}}"><span class="btn btn-icon btn-sm d-bullseye">공고 보기</span></a>
+                                            <a href="register_jobad.html?jobAdId={{jobAdId}}&copyAndRegister=Y"><span class="btn btn-icon btn-sm d-share">불러와서 등록</span></a>
                                         </div>
                                     </div>
                                     {{/each}}
@@ -157,20 +157,12 @@
                                                             {{/each}}
                                                         </span>
                                                     </div>
-                                                    <div class="dental-info">
-                                                        {{{renderAttrOnCard attr}}}
-                                                        <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
-                                                    </div>
+                                                    <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
                                                 </div>
                                             </a>
                                             <div class="jobpost-list-card-footer">
-                                                <!-- <span class="footer-item"><label><input type="checkbox" name="scrap" value="{{id}}" hidden readonly><i class="fa fa-star"></i>스크랩</label></span> -->
-												
-												<!-- 여기는 안 보여야 하나자
-												<span class="footer-item"><label><i class="fa fa-star"></i>스크랩</label></span>
-                                                <span class="footer-item"><a href="#"><i class="fa fa-share"></i>바로지원</a></span>
-												<span class="footer-item"><a href="#"><i class="fa fa-phone"></i>전화문의</a></span>
-												-->
+                                                <span class="footer-item">등록일: {{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
+                                                <span class="footer-item">마감일: {{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
                                             </div>
                                         </div>
                                         {{/each}}
@@ -239,11 +231,11 @@
                                             </div>
                                         <!-- </a> -->
                                         <div class="jobpost-list-card-footer">
-                                            <a href="jobad.html?jobAdId={{jobAdId}}"><span class="footer-item"><label><i class="fa fa-hand-pointer-o"></i>공고보기</label></span></a>
+                                                <a href="jobad.html?jobAdId={{jobAdId}}"><span class="btn btn-icon btn-sm d-bullseye">공고 보기</span></a>
                                             {{#if adTypePremiere}}
-                                                <span class="footer-item"><i class="fa fa-share"></i>광고하기(안됨)</span> <!-- 흐리게 보여주는 등이 필요함 -->
+                                                <span class="btn btn-icon btn-sm d-bullhorn">광고하기(안됨)</span> <!-- 흐리게 보여주는 등이 필요함 -->
                                             {{else}}
-                                                <a href="register_jobad.html?jobAdId={{jobAdId}}&reqUpgrade=Y"><span class="footer-item"><i class="fa fa-share"></i>광고하기</span></a>
+                                                <a href="register_jobad.html?jobAdId={{jobAdId}}&reqUpgrade=Y"><span class="btn btn-icon btn-sm d-bullhorn">광고하기</span></a>
                                             {{/if}}
                                             
                                         </div>

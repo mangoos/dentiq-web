@@ -308,16 +308,16 @@
                     <div class="dental-card">
                         <div class="dental-card-header"><div class="dental-card-header-title h4">기본정보</div></div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <input type="text" class="styled-input" id="bizRegName" name="bizRegName" maxlength="20"  placeholder="사업자등록 상 사업장명" required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-name" type="text" id="bizRegName" name="bizRegName" maxlength="20"  placeholder="사업자등록 상 사업장명" required>
                                 <label class="styled-label">사업장명</label>
                                 <span class="form-group-desc">정확하게 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
                                 <div class="form-group-msg2"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" id="bizRegName" name="hospitalName" maxlength="20"  placeholder="병원명 입력" required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-name" type="text" id="bizRegName" name="hospitalName" maxlength="20"  placeholder="병원명 입력" required>
                                 <label class="styled-label">병원명</label>
                                 <span class="form-group-desc">정확하게 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
@@ -366,24 +366,24 @@
                                     }
                                 });
                             </script>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="estDate" placeholder="예) 20180309">
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-date" type="text" name="estDate" placeholder="예) 20180309">
                                 <label class="styled-label">설립일</label>
                                 <span class="form-group-desc">숫자로만 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
                                 <div class="form-group-msg2"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="ceoName" maxlength="10"  placeholder="사업자등록상 대표자명" required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-name" type="text" name="ceoName" maxlength="10"  placeholder="사업자등록상 대표자명" required>
                                 <label class="styled-label">대표자명</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
                                 <div class="form-group-msg2"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="hospitalUrl" maxlength="50"  placeholder="홈페이지 주소">
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-url" type="text" name="hospitalUrl" maxlength="50"  placeholder="홈페이지 주소">
                                 <label class="styled-label">홈페이지</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
@@ -402,16 +402,16 @@
                                 <input class="styled-input" type="text" name="location.addrDetail" id="addrDetail" placeholder="상세주소" required>
                                 <span class="form-group-underline"></span>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="hospitalTelNo" maxlentth="20" placeholder="예)0102349876" required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-phone" type="text" name="hospitalTelNo" maxlentth="20" placeholder="예)0102349876" required>
                                 <label class="styled-label">대표 전화번호</label>
                                 <span class="form-group-desc">사업장 대표 전화번호</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
                                 <div class="form-group-msg2"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="hospitalEmail" maxlentth="50" placeholder="이메일 입력" required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-email" type="email" name="hospitalEmail" maxlentth="50" placeholder="이메일 입력" required>
                                 <label class="styled-label">대표 이메일</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
@@ -549,16 +549,16 @@
                             <script>
                                 createTimeSelectPair(document.getElementById("lunchTimeStart"), document.getElementById("lunchTimeEnd"));
                             </script>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="totalMemberCnt" maxlength="3" placeholder="총구성원수 입력">
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-onlyNumber" type="text" name="totalMemberCnt" maxlength="3" placeholder="총구성원수 입력">
                                 <label class="styled-label">총구성원</label>
                                 <span class="form-group-desc">숫자만 입력</span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
                                 <div class="form-group-msg2"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="clinicSubject" maxlength="30" placeholder="주요 진료과목 입력">
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-onlyKor" type="text" name="clinicSubject" maxlength="30" placeholder="주요 진료과목 입력">
                                 <label class="styled-label">진료과목</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
@@ -570,24 +570,24 @@
                     <div class="dental-card">
                         <div class="dental-card-header"><div class="dental-card-header-title h4">진료정보</div></div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="defaultHrOfficerName" maxlength="10" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-name" type="text" name="defaultHrOfficerName" maxlength="10" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
                                 <label class="styled-label">담당자</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
                                 <div class="form-group-msg2"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="defaultHrTelNo"  placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-phone" type="text" name="defaultHrTelNo"  placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
                                 <label class="styled-label">채용문의 전화번호</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                                 <span class="form-group-underline"></span> 
                                 <div class="form-group-msg2"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="styled-input" name="defaultHrEmail" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
+                            <div class="form-group need-validator">
+                                <input class="styled-input d-reg-email" type="email" name="defaultHrEmail" placeholder="채용공고 등록 시 기본값으로 사용됩니다." required>
                                 <label class="styled-label">채용문의 이메일</label>
                                 <span class="form-group-desc"></span>
                                 <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
@@ -894,9 +894,4 @@ var HospitaInfoApp = (function() {
     </section>
     -->
 </body>
-<script>
-    // form 꾸미기 초기화 함수 .styled-label, .styled-input, .styled-select ui 세팅
-    formUIInit();
-</script>
-
 </html>

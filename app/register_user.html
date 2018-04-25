@@ -851,8 +851,8 @@
                         <div class="content-desc"><i class="fal fa-check" style="color: red; margin-right: 0.5rem; margin-left: 0.5rem;"></i> 항목은 최소 필수 입력값입니다.</div>
                     </div>
                     <div class="basic-info-card dental-card">
-                        <div class="form-group">
-                            <input class="styled-input" type="text" name="name" placeholder="예) 김영희, 홍철수 등" required>
+                        <div class="form-group need-validator">
+                            <input class="styled-input d-reg-name" type="text" name="name" placeholder="예) 김영희, 홍철수 등" required>
                             <label class="styled-label">이름</label>
                             <span class="form-group-desc">정확하게 입력해 주세요</span>
                             <!-- 아래 아이콘, form element가 focus 일때 활성화, :invalid 이면 붉은 아이콘, :valid 이면 파란색 아이콘 -->
@@ -860,31 +860,16 @@
                             <span class="form-group-underline"></span> <!-- '.error' 상태일때 form element가 focus 상태이면 붉은 줄, 그외는 노란줄 -->
                             <div class="form-group-msg2" hidden>이름을 정확하게 입력해주세요.</div>
                         </div>
-                        <div class="form-group">
-                            <input class="styled-input" type="tel" name="telNo" id="basicInfoTelNo" maxlength ="12" placeholder="예) 01024538594" required>
+                        <div class="form-group need-validator">
+                            <input class="styled-input d-reg-mobile" type="tel" name="telNo" id="basicInfoTelNo" maxlength ="12" placeholder="예) 01024538594" required>
                             <label class="styled-label">핸드폰번호</label>
                             <span class="form-group-desc">'-' 빼고 숫자만 입력</span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2" hidden>구인 제안을 받을 번호로 정확하게 입력해 주세요.</div>
                         </div>
-                        <script>
-                            /*
-                            $("#basicInfoTelNo").keydown(function(event) {
-                                //event.preventDefault();
-                                var code = event.which?event.which:event.keyCode;
-                                if ( code<48 || code>57 ) {
-                                    //event.preventDefault();
-                                    return false;
-                                } else {
-                                    //this.value += code;
-                                }
-                            });
-                            */
-                        </script>
-
-                        <div class="form-group">
-                            <input class="styled-input hasValue" type="email" id="myInfoEmail" placeholder="" readonly disabled required>
+                        <div class="form-group need-validator">
+                            <input class="styled-input hasValue d-reg-email" type="email" id="myInfoEmail" placeholder="" readonly disabled required>
                             <label class="styled-label">이메일</label>
                             <span class="form-group-desc">가입한 아이디와 연동이 됩니다.</span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
@@ -905,8 +890,8 @@
                         </div>
 
 
-                        <div class="form-group">
-                            <input class="styled-input" type="text" name="birthday" placeholder=" 예) 19950427" required >
+                        <div class="form-group need-validator">
+                            <input class="styled-input d-reg-date" type="text" name="birthday" placeholder=" 예) 19950427" required >
                             <label class="styled-label">생년월일</label>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>

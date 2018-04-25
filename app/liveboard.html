@@ -409,8 +409,7 @@
 						<div class="dental-info">{{{renderAttrOnCard attr}}}</div>
 					</div>
 				</a>
-				<!-- <label><input type="checkbox" name="scrap" value="{{jobAdId}}" hidden><i class="fas fa-star" title="관심 공고를 스크랩하세요!"></i></label> -->
-				<span class="footer-item" data-action="scrap" data-action-value="{{jobAdId}}" >눌러<i class="fa fa-star"></i></span>
+				<span class="btn-icon d-scrap" data-action="scrap" data-action-value="{{jobAdId}}" ></span>
 			</div>
             {{/each}}
         </script>
@@ -457,26 +456,18 @@
                 </a>
                 <div class="jobpost-list-card-footer">
 					<span class="footer-item">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
-					
-					<span class="footer-item" data-action="scrap" data-action-value="{{jobAdId}}" ><i class="fa fa-star"></i>스크랩</span>
-					<span class="footer-item" data-action="apply" data-action-value="{{jobAdId}}" ><i class="fa fa-share"></i>원클릭지원</span>
-					<span class="dental-btn"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}"><i class="fa fa-phone"></i>전화문의</span>
-
+					<span class="btn btn-icon btn-sm d-scrap" data-action="scrap" data-action-value="{{jobAdId}}" >스크랩</span>
+					<span class="btn btn-icon btn-sm d-apply" data-action="apply" data-action-value="{{jobAdId}}" ></span>
+					<span class="btn btn-icon btn-sm d-phone"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}">전화문의</span>
                 </div>
             </div>
             {{/each}}
         </script>
     </section>
-    <!-- loading spinner, 'active' 클래스로 활성화 -->
-    <div class="dental-loading" id="loadingModal" hidden>
-        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
-        <div class="loading-overlay" hidden></div>
-    </div>
 </body>
 </html>
 
 <script>
-var dModal = dentalModal();
 
 // 속도가 빠름. 그러나 ordering 안 됨 ==> 입력할 때의 ordering을 의지한다 ㅠㅠ
 function renderAttrOnCard2(attrList) {
