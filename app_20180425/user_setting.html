@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <section class="user-setting">
+        <div>
+            <h5>알림 설정</h5>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around;">
+                <label class="" style="display: inline-flex; align-items: center;">공지/뉴스<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">채용소식<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">이벤트<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">광고<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+            </div>
+        </div>
+        <a class="btn btn-sm" href="modify_password.html">비밀번호 변경</a> <!-- modify_password.html-->
+        <a class="btn btn-sm" href="register_user.html">내 기본정보 변경</a> <!-- 개인: register_user.html 링크, 사업자: register_dentist.html-->
+        <div class="btn btn-sm" >회원탈퇴</div>
+        <a class="btn btn-sm" href="javascript:void(0)" onclick="LOGIN_INFO.logout();">로그아웃</a>
+        <div>앱버젼: v 1.00<span>최종버젼입니다.<i class="fal fa-user-alt"></i></span></div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
+    <!-- <style>
+        .form-group, .form-group-linked { width: 95%; margin: 0 auto; margin-bottom: 0.3rem; }
+        .form-group:last-child { margin-bottom: 2rem; }
+    </style> -->
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+                <i class="fal fa-arrow-square-left"></i>
+                이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <section class="register-section">
+        <form id="jobAdForm">
+            <div class="user-photo">
+                <div class="hospital-log-box">
+                    <div class="logo-frame-hospital">
+                        <!-- 이미지 url 입력하면 됨 -->
+                        <!-- width: 최소 100px 최대 150xp, min-height: 50px, 가운데 정렬임 -->
+                        <!-- 사이즈 관련 디테일 좀 더 고민해야함 필요 -->
+                        <img src="" alt="">
+                        <span class="user-photo-box-icon" style=" width: auto; height: auto; font-size: 1.2rem; color: #c4c2c2;"><i class="fal fa-plus-circle"></i></span>
+                    </div>
+                </div>
+                <div class="user-photo-title"></div>
+                <div class="user-photo-subtitle"></div>
+            </div>
+            <div class="fixed-layer-action">
+                <button class="fixed-layer-action-btn" id="btnSubmit" type="submit" disabled hidden></button>
+            </div>
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">채용공고 제목</div>
+                    <div class="dental-card-header-subtitle">구직자들을 위해 돋보이는 제목으로 작성해 주세요.</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <input class="styled-input" type="text" maxlength="50" name="title" required placeholder="채용공고 제목 입력">
+                        <span class="form-group-desc on"><span class="spellCounting">0/50</span>( 50자 이내 )</span>
+                        <span class="form-group-underline"></span>
+                        <div class="form-group-msg2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">모집요강</div>
+                </div>
+                <div class="card-body">
+                    <div id="divAttr"></div>    <!-- 이 부분에 속성 선택 영역이 생성될 것임 -->
+                    <script>
+                        var htmlStr = "";
+                        var attrCodes = CODE_CONTAINER.getAttrs();
+                        attrCodes.forEach(function(group) {
+                            htmlStr += `
+                                <div class="form-group">
+                                    <div class="form-group-header"><div class="form-group-header-title">${group.text}</div></div>
+                                    <fieldset  class="form-group-body">
+                                `;
+    
+                            group.element.forEach(function(attr) {
+                                var checkedStr ="";         if ( attr.default ) checkedStr = "checked";
+                                htmlStr += `
+                                        <label class="attr-checkbox"><input type="checkbox" name="attr[]" value="${attr.value}"   data-checkbox-group="${attr.group}"  hidden ${checkedStr}><span class="chip">${attr.text}</span></label>
+                                    `;
+                            });
+    
+                            htmlStr += `
+                                    </fieldset>
+                                </div>
+                                `;
+    
+                        });
+                        //console.log(htmlStr);
+                        document.getElementById("divAttr").innerHTML = htmlStr;
+    
+                        
+    
+                        //TODO 고용형태, 채용부분, 담담업무 각각에 대하여 각 그룹에서 1개라도 선택하였는지를 submit 시에 확인하여야 한다.
+    
+                        //var attrCheckboxGroup = new DynamicCheckboxGroup(document.getElementById("jobAdForm"), "attr[]");
+                    </script>
+    
+                    <!--
+                    <div class="form-group">
+                        <div class="form-group-header"><div class="form-group-header-title">고용형태</div></div>
+                        <fieldset  class="form-group-body">
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value=""       data-checkbox-group="EMP"  hidden checked><span class="chip">무관</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="EMP.1"  data-checkbox-group="EMP"  hidden><span class="chip">정규직</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="EMP.2"  data-checkbox-group="EMP"  hidden><span class="chip">계약직</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="EMP.3"  data-checkbox-group="EMP"  hidden><span class="chip">아르바이트</span></label>
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group-header"><div class="form-group-header-title">채용부문</div></div>
+                        <fieldset class="form-group-body">
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value=""       data-checkbox-group="AREA"  hidden checked><span class="chip">무관</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="AREA.1" data-checkbox-group="AREA"  hidden><span class="chip">치위생사</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="AREA.2" data-checkbox-group="AREA"  hidden><span class="chip">간호조무사</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="AREA.3" data-checkbox-group="AREA"  hidden><span class="chip">치기공사</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="AREA.4" data-checkbox-group="AREA"  hidden><span class="chip">보험청구사</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="AREA.5" data-checkbox-group="AREA"  hidden><span class="chip">코디네이터</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="AREA.6" data-checkbox-group="AREA"  hidden><span class="chip">의사</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="AREA.7" data-checkbox-group="AREA"  hidden><span class="chip">기타</span></label>
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group-header"><div class="form-group-header-title">담당업무</div></div>
+                        <fieldset class="form-group-body">
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value=""       data-checkbox-group="TASK"  hidden checked><span class="chip">무관</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.1" data-checkbox-group="TASK"  hidden><span class="chip">진료실</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.2" data-checkbox-group="TASK"  hidden><span class="chip">데스크</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.3" data-checkbox-group="TASK"  hidden><span class="chip">상담</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.4" data-checkbox-group="TASK"  hidden><span class="chip">보험청구</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.5" data-checkbox-group="TASK"  hidden><span class="chip">치과내 기공실</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.6" data-checkbox-group="TASK"  hidden><span class="chip">치과기공소</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.7" data-checkbox-group="TASK"  hidden><span class="chip">관리및경영</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.8" data-checkbox-group="TASK"  hidden><span class="chip">의사</span></label>
+                            <label class="attr-checkbox"><input type="checkbox" name="attr" value="TASK.9" data-checkbox-group="TASK"  hidden><span class="chip">기타</span></label>
+                        </fieldset>
+                    </div>
+                    -->
+    
+    
+    
+    
+    
+                    <fieldset class="form-group">
+                        <input class="styled-input" type="text" name="hiringCnt" class="recruitNum" maxlength="3" max="3" required>
+                        <span class="form-group-underline"></span>
+                        <div class="form-group-msg2"></div>
+                        <label class="styled-label">채용인원</label>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <select class="styled-select" id="salarySelect" name="salaryType" required>
+                                <!--<option value="1" selected>면접 후 협의</option>
+                                <option value="0">직접 입력</option>-->
+                            </select>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label" for="salarySelect">급여</label>
+                        </div>
+                        <div class="form-group-linked" hidden> <!-- 바로 위 styled-form-group input 에 값 입력된 후에 enabled 처리 -->
+                            <input class="styled-input more-comment" id="salaryText" name="salaryText" type="text" placeholder="예) 2,500만원">
+                            <span class="form-group-underline"></span>
+                        </div>
+                        
+                        <script>
+                            setSelectOptions(document.getElementById("salarySelect"), CODE_CONTAINER.getSalaryType());
+    
+                            document.getElementById("salarySelect").addEventListener("change", function() {
+                                if ( this.value != null && this.value=='0' ) {
+                                    document.getElementById("salaryText").parentElement.style.display = 'block';
+                                } else {
+                                    document.getElementById("salaryText").parentElement.style.display = 'none';
+                                }
+                            });                    
+                        </script>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <select class="styled-select" id="roleSelect" name="hiringRoleType" required>
+                                <!--
+                                <option value="" selected>무관</option>
+                                <option value="1">팀장</option>
+                                <option value="2">실장</option>
+                                <option value="3">스텝</option>
+                                <option value="0">직접 입력</option>
+                                -->
+                            </select>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label">채용 직책</label>
+                        </div>
+                        <input class="more-comment" id="roleText" name="hiringRoleText" type="text" placeholder="입력" style="display: none;">
+                        <script>
+                            setSelectOptions(document.getElementById("roleSelect"), CODE_CONTAINER.getRoleType());
+                            document.getElementById("roleSelect").addEventListener("change", function() {
+                                if ( this.value != null && this.value=='0' ) {
+                                    document.getElementById("roleText").style.display = 'block';
+                                } else {
+                                    document.getElementById("roleText").style.display = 'none';
+                                }
+                            });                    
+                        </script>
+                    </fieldset>
+    
+                </div>
+            </div>
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">자격요건</div>
+                </div>
+                <div class="card-body">
+                    <fieldset class="form-group">
+                        <select class="styled-select" id="eduSelect" name="eduLevel" required>
+                            <!--
+                            <option value="" selected>학력 무관</option>
+                            <option value="1">고졸 이상</option>
+                            <option value="2">대학교 졸업 이상</option>
+                            <option value="3">대학원 이상</option> -->
+                        </select>
+                        <span class="form-group-underline"></span>
+                        <div class="form-group-msg2"></div>
+                        <label class="styled-label">학력</label>
+                    </fieldset>
+                    <script>
+                        setSelectOptions(document.getElementById("eduSelect"), CODE_CONTAINER.getEduLevel());
+                    </script>
+                    <fieldset class="form-group">
+                        <select class="styled-select" id="expSelect" name="expType" required>
+                            <!--
+                            <option value="" selected>경력무관</option>
+                            <option value="1">신입</option>
+                            <option value="2">경력</option>-->
+                        </select>
+                        <span class="form-group-underline"></span>
+                        <div class="form-group-msg2"></div>
+                        <label class="styled-label">경력</label>
+                    </fieldset>
+                    <script>
+                        setSelectOptions(document.getElementById("expSelect"), CODE_CONTAINER.getExpType());
+                    </script>
+                    <fieldset class="form-group">
+                            <input class="styled-input" id="license" name="licenseText" type="text">
+                            <span class="form-group-desc">필요사항 입력</span>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label" for="license">자격/면허사항</label>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="dental-card">
+                <div class="dental-card-header"><div class="dental-card-header-title h4">근무환경</div></div>
+                <div class="card-body">
+                    <fieldset class="form-group">
+                        <input class="styled-input" type="text" name="jobWorkingDay" placeholder="구직자들을 위해 정확하게 입력해 주세요." required>
+                        <span class="form-group-desc">예) 월~금, 월/수/금 등</span>
+                        <span class="form-group-underline"></span>
+                        <div class="form-group-msg2"></div>
+                        <label class="styled-label">근무일</label>
+                    </fieldset>
+                    <div class="form-group">
+                        <div class="form-group-header"><div class="form-group-header-title">근무시간</div></div>
+                        <fieldset class="form-group-body">
+                            <input id="chkWorkingTimeWeekday" type="checkbox" checked hidden><label for="chkWorkingTimeWeekday"><span class="chip" style="width: 5rem;">평일</span></label>
+                            <input id="chkWorkingTimeWeekend" type="checkbox" hidden><label for="chkWorkingTimeWeekend"><span class="chip" style="width: 5rem;">주말</span></label>
+                            <input id="chkWorkingTimeText"    type="checkbox" hidden><label for="chkWorkingTimeText"><span class="chip" style="width: 5rem;">기타/추가</span></label>
+            
+                            <div class="operation-time form-group" id="divWorkingTimeWeekday" hidden>   <!-- 평일 근무시간 -->
+                                <select class="select-two styled-select" id="workingTimeWeekdayStart" name="jobWorkingTimeWeekdayStart"></select>
+                                <select class="select-two styled-select" id="workingTimeWeekdayEnd"   name="jobWorkingTimeWeekdayEnd" disabled></select>
+                                <label class="styled-label">평일 근무시간</label>
+                            </div>
+                            <script>
+                                createTimeSelectPair(document.getElementById("workingTimeWeekdayStart"), document.getElementById("workingTimeWeekdayEnd"));
+    
+                                document.getElementById("chkWorkingTimeWeekday").addEventListener("change", function() {
+                                    if ( this.checked ) {
+                                        document.getElementById("divWorkingTimeWeekday").style.display = 'block';
+                                    } else {
+                                        document.getElementById("divWorkingTimeWeekday").style.display = 'none';
+                                    }
+                                });
+                                document.getElementById("workingTimeWeekdayStart").addEventListener("change", function() {
+                                    console.log("평일 이벤트");
+                                    document.getElementById("chkWorkingTimeWeekday").checked = true;
+                                    document.getElementById("chkWorkingTimeWeekday").dispatchEvent(new Event('change'));
+                                });
+                            </script>
+                            <div class="operation-time form-group" id="divWorkingTimeWeekend" style="display: none; position: relative;">   <!-- 주말 근무시간 -->
+                                <select class="select-two styled-select" id="workingTimeWeekendStart" name="jobWorkingTimeWeekendStart"></select>
+                                <select class="select-two styled-select" id="workingTimeWeekendEnd"   name="jobWorkingTimeWeekendEnd" disabled></select>
+                                <label class="styled-label">주말 근무시간</label>
+                            </div>
+                            <script>
+                                createTimeSelectPair(document.getElementById("workingTimeWeekendStart"), document.getElementById("workingTimeWeekendEnd"));
+    
+                                document.getElementById("chkWorkingTimeWeekend").addEventListener("change", function() {
+                                    if ( this.checked ) {
+                                        document.getElementById("divWorkingTimeWeekend").style.display = 'block';
+                                    } else {
+                                        document.getElementById("divWorkingTimeWeekend").style.display = 'none';
+                                    }
+                                });
+                                document.getElementById("workingTimeWeekendStart").addEventListener("change", function() {
+                                    console.log("주말 이벤트");
+                                    document.getElementById("chkWorkingTimeWeekend").checked = true;
+                                    document.getElementById("chkWorkingTimeWeekend").dispatchEvent(new Event('change'));
+                                });
+                            </script>
+                            <div class="operation-time form-group" id="divWorkingTimeText" style="display: none">   <!-- 기타/추가사항 -->
+                                <textarea rows="4" id="workingTimeText" name="jobWorkingTimeText"  placeholder="기타/추가사항이 있을 때 입력해 주세요."></textarea>
+                            </div>
+                            <script>
+                                document.getElementById("chkWorkingTimeText").addEventListener("change", function() {
+                                    if ( this.checked ) {
+                                        document.getElementById("divWorkingTimeText").style.display = 'block';
+                                    } else {
+                                        document.getElementById("divWorkingTimeText").style.display = 'none';
+                                    }
+                                });
+                                document.getElementById("workingTimeText").addEventListener("change", function() {
+                                    document.getElementById("chkWorkingTimeText").checked = true;
+                                    document.getElementById("chkWorkingTimeText").dispatchEvent(new Event('change'));
+                                });
+                            </script>                    
+                        </fieldset>
+                    </div>
+                    <fieldset class="form-group">
+                        <select class="select-two styled-select" id="lunchTimeStart" name="jobLunchTimeStart" required></select>
+                        <select class="select-two styled-select" id="lunchTimeEnd"   name="jobLunchTimeEnd" disabled></select>
+                        <label class="styled-label">점심시간</label>
+                    </fieldset>
+                    <script>
+                        createTimeSelectPair(document.getElementById("lunchTimeStart"), document.getElementById("lunchTimeEnd"));
+                    </script>
+                </div>
+            </div>
+            <div class="dental-card">
+                <div class="dental-card-header">
+                    <div class="dental-card-header-title h4">
+                        접수기간 및 방법
+                        <label class="dental-card-header-opt"><input type="radio" id="chkHiringTermType2" name="hiringTermType" value="2" checked hidden><span class="btn btn-sm">기간채용</span></label>
+                        <label class="dental-card-header-opt"><input type="radio" id="chkHiringTermType1" name="hiringTermType" value="1" hidden><span class="btn btn-sm">상시채용</span></label>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <fieldset class="" id="divHiringTermType">
+                        <div class="form-group">
+                            <!--
+                            <input class="styled-input" type="text" id="hiringStartDate" name="hiringStartDate">
+                            -->
+                            <select id="hiringStartDate" name="hiringStartDate" class="styled-select" required></select>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label">채용 시작일</label>
+                            <!--
+                            <select id="hiringStartYYYY"></select>
+                            <select id="hiringStartMM"></select>
+                            <select id="hiringStartDD"></select>
+                            -->
+                        </div>
+                        <div class="form-group">
+                            <!--
+                            <input class="styled-input" type="text" id="hiringEndDate" name="hiringEndDate">
+                            -->
+                            <select id="hiringEndDate" name="hiringEndDate" class="styled-select" required></select>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label">채용 종료일</label>
+                            <!--
+                            <select id="hiringEndYYYY"></select>
+                            <select id="hiringEndMM"></select>
+                            <select id="hiringEndDD"></select>
+                            -->
+                        </div>
+                    </fieldset>
+                    <script>
+    
+                        
+    
+    
+                        function renderCalendarSelectYYYYMMMM(elementDate, startDate, endDate, defaultOptionText, defaultOptionValue, reverse) {
+                            // startDate와 endDate는 모두 Date 타입
+                            //console.log("시작 : ", elementDate);
+    
+                            if ( !startDate ) startDate = new Date();
+                            if ( !endDate )   endDate   = (new Date(startDate)).setDate(startDate.getDate() + 30);  // 30일 이후
+    
+                            console.log("START : ", new Date(startDate), " END : ", new Date(endDate));
+    
+                            clearSelectOptions(elementDate, defaultOptionText, defaultOptionValue);
+    
+                            //console.log("limit: ", endDate);
+                            while ( startDate < endDate ) {
+                                //console.log(startDate);        
+    
+                                var yyyy = startDate.getFullYear();
+                                var mm   = startDate.getMonth() + 1;
+                                var dd   = startDate.getDate();
+    
+                                var option = document.createElement("option");
+                                var text = yyyy + "년 ";
+                                if ( mm < 10 ) text += " " + mm + "월 "; else text += mm + "월 ";
+                                if ( dd < 10 ) text += " " + dd + "일";  else text += dd + "일";
+                                
+                                var value = "" + yyyy
+                                if ( mm < 10 ) value += "0" + mm; else value += mm;
+                                if ( dd < 10 ) value += "0" + dd; else value += dd;
+    
+                                option.text = text;
+                                option.value = value;                            
+                                elementDate.options.add(option);
+    
+                                startDate.setDate(startDate.getDate() + 1);
+                            }
+                        }
+    
+                        // 채용 시작일 select를 렌더링한다.
+                        renderCalendarSelectYYYYMMMM(document.getElementById("hiringStartDate"), new Date());
+    
+                        // 채용 시작일이 변경되었을 때, 채용 종료일을 새로 렌더링 한다.
+                        function onChangeHiringStartDate(event) {
+                            if ( this.value && this.value!="" ) {
+                                //console.log("시작일 : " + this.value);
+                                var yyyy = this.value.substring(0, 4);
+                                var mm   = this.value.substring(4, 6);
+                                var dd   = this.value.substring(6, 8);
+    
+                                var endDateBegin = new Date();
+                                endDateBegin.setFullYear(Number(yyyy));
+                                endDateBegin.setMonth(Number(mm)-1);
+                                endDateBegin.setDate(Number(dd));
+    
+                                renderCalendarSelectYYYYMMMM(document.getElementById("hiringEndDate"), endDateBegin );
+                                document.getElementById("hiringEndDate").disabled = false;
+    
+                            } else {
+                                clearSelectOptions(document.getElementById("hiringEndDate"));
+                                document.getElementById("hiringEndDate").disabled = true;
+                            }
+                        }
+                        document.getElementById("hiringStartDate").addEventListener("change", onChangeHiringStartDate);
+    
+    
+                        // 상시채용/기간채용 선택할 경우에, 기간채용입력(시작일/종료일) 영역 보여주기를 토글한다.
+                        function onToggleHiringTerm(evnet) {
+                            if ( document.getElementById("chkHiringTermType1").checked ) {              // 상시 채용
+                                console.log("unckecked");
+                                document.getElementById("divHiringTermType").style.display = 'none';
+                                document.getElementById("hiringStartDate").required = false;            // 상시채용일 때는 필수항목이 아님
+                                document.getElementById("hiringStartDate").value = null;                // 상시채용일 때에는 값을 null로 변경
+                                document.getElementById("hiringEndDate").required = false;
+                                document.getElementById("hiringEndDate").value = null;
+                            } else if ( document.getElementById("chkHiringTermType2").checked ) {$      // 기간 채용
+                                console.log("ckecked");
+                                document.getElementById("divHiringTermType").style.display = 'block';
+                                document.getElementById("hiringStartDate").required = true;             // 기간채용일 때는 필수항목
+                                document.getElementById("hiringEndDate").required = true;
+                            }
+                        }                    
+                        document.getElementById("chkHiringTermType1").addEventListener("change", onToggleHiringTerm);
+                        document.getElementById("chkHiringTermType2").addEventListener("change", onToggleHiringTerm);
+    
+    
+                        // 기간채용입력(시작일/종료일) 영역의 값을 변경할 때, 위의 토글을 위한 이벤트를 발생시킨다.
+                        function onChangeHiringDates(evnet) {
+                            if ( !this.value || this.value.trim()=='' ) return;
+                            document.getElementById("chkHiringTermType2").checked = true;
+                            document.getElementById("chkHiringTermType2").dispatchEvent(new Event('change'));
+                        }
+                        document.getElementById("hiringStartDate").addEventListener("change", onChangeHiringDates);
+                        document.getElementById("hiringEndDate").addEventListener("change", onChangeHiringDates);
+    
+                        
+                        //TODO 시작일은 오늘 날짜 이후가 초기값
+                        //TODO 종료일은 오늘 날짜 이후로 보여줌
+                    </script>
+                    <div class="form-group">
+                        <div class="form-group-header"><div class="form-group-header-title">지원방법</div></div><!-- '전체'를 선택하는 경우, DB에는 해당 값이 null 임. 이 경우는 전체로 인식할 것. -->
+                        <fieldset  class="form-group-body" id="divApplyWay">
+                            <!--
+                            <label class="apply-way-checkbox"><input type="checkbox" name="applyWay" data-checkbox-group="APPLICATION_WAY" value=""         hidden checked="true" ><span class="chip">전체</span></label>
+                            <label class="apply-way-checkbox"><input type="checkbox" name="applyWay" data-checkbox-group="APPLICATION_WAY" value="homepage" hidden><span class="chip">병원홈페이지</span></label>
+                            <label class="apply-way-checkbox"><input type="checkbox" name="applyWay" data-checkbox-group="APPLICATION_WAY" value="oneclick" hidden><span class="chip">원클릭지원</span></label>
+                            <label class="apply-way-checkbox"><input type="checkbox" name="applyWay" data-checkbox-group="APPLICATION_WAY" value="email"    hidden><span class="chip">이메일지원</span></label>
+                            <label class="apply-way-checkbox"><input type="checkbox" name="applyWay" data-checkbox-group="APPLICATION_WAY" value="tel"      hidden><span class="chip">전화문의</span></label> -->
+                        </fieldset>
+                    </div>
+                    <script>
+                        var htmlApplyWay = "";
+                        CODE_CONTAINER.getApplyWay().forEach(function(code) {
+                            if ( code.default ) {
+                                htmlApplyWay += '<label class="apply-way-checkbox"><input type="checkbox" name="applyWay[]" data-checkbox-group="APPLICATION_WAY" value="' + code.value + '" hidden checked="true"><span class="chip">' + code.text + '</span></label>';
+                            } else {
+                                htmlApplyWay += '<label class="apply-way-checkbox"><input type="checkbox" name="applyWay[]" data-checkbox-group="APPLICATION_WAY" value="' + code.value + '" hidden><span class="chip">' + code.text + '</span></label>';
+                            }
+                        });
+                        document.getElementById("divApplyWay").innerHTML = htmlApplyWay;
+    
+    
+                        var applicationWayCheckboxGroup = new DynamicCheckboxGroup(document.getElementById("jobAdForm"), "applyWay[]");
+                    </script>
+                </div>
+            </div>
+            <div class="dental-card">
+                <div class="dental-card-header"><div class="dental-card-header-title h4">채용담당자(문의)</div></div>
+                <div class="card-body">
+                    <div class="form-group">
+                            <input class="styled-input" id="hrOfficerName" name="hrOfficerName" type="text" required>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label">담당자</label>
+                    </div>
+                    <div class="form-group">
+                            <input class="styled-input" id="hrTelNo" name="hrTelNo" type="text" required>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label">문의전화</label>
+                    </div>
+                    <div class="form-group">
+                            <input class="styled-input" id="hrEmail" name="hrEmail" type="text" required>
+                            <span class="form-group-underline"></span>
+                            <div class="form-group-msg2"></div>
+                            <label class="styled-label">문의이메일</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <!-- loading spinner, 'active' 클래스로 활성화 -->
+    <div class="dental-loading" id="loadingModal" hidden>
+        <div class="fa-icon"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>
+        <div class="loading-overlay" hidden></div>
+    </div>
+</body>
+<script> 
+    // form 꾸미기 초기화 함수 .styled-label, .styled-input, .styled-select ui 세팅
+    formUIInit();
+</script>
+</html>
+
+
+<script>
+
+
+
+    var JobAdManagementApp = (function() {
+
+        var CURRENT_JOB_AD_ID;
+
+        
+        var jobAdForm = document.getElementById("jobAdForm");
+        var btnSubmit = document.getElementById("btnSubmit");
+      
+        function initPage() {
+			if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
+
+
+            var params = getHtmlCallParams();
+            if ( params && params.jobAdId ) {   // 기존 공고 로드 후 수정
+                console.log("기존 공고 수정 : ", params.jobAdId);
+                console.log("기존 공고 수정 : ", params);
+                
+
+                // 만일 기존 공고 불러오기가 된 것이라면....        2018.03.07 추가
+                if ( params.copyAndRegister && params.copyAndRegister=='Y' ) {     // 불러오기이면, 데이터만 로드하고 사실은 '등록'임
+                    console.log("===> 불러오기");
+                    btnSubmit.innerText = "등록";
+                    btnSubmit.disabled  = false;
+                    btnSubmit.hidden    = false;
+                    
+                    loadJobAd(params.jobAdId);      // 기존 공고 로드
+
+                    jobAdForm.removeEventListener('submit', onSubmitForModify);
+                    jobAdForm.addEventListener('submit', onSubmitForRegister);
+
+                    // 선정우 추가 body 에 .viewType class 추가, 불러오기 모드일 경우
+                    document.body.classList.add("view-type");
+
+                    return;
+                }
+
+                if ( params.reqUpgrade && params.reqUpgrade=='Y' ) {            // 광고 업그레이드
+                    // 사실 광고 업그레이드는 수정과 동일한 듯 한데...
+                    alert("광고 업그레이드는 수정과 대동소이함. 업그레이드할 때에는 기존 내용을 수정못하게 하나?");
+
+                    //return;
+                }
+
+
+                // submit 버튼 변경
+                btnSubmit.innerText = "수정";
+                btnSubmit.disabled  = false;
+                btnSubmit.hidden    = false;
+
+                loadJobAd(params.jobAdId);      // 기존 공고 로드                
+
+                
+                jobAdForm.removeEventListener('submit', onSubmitForRegister);
+                jobAdForm.addEventListener('submit', onSubmitForModify);
+
+                // 선정우 추가 body 에 .viewType class 추가, 요기가 수정 모드 세팅하는 데 맞나요?
+                document.body.classList.add("view-type");
+
+            } else {                            // 신규 공고 등록
+                // submit 버튼 변경
+                btnSubmit.innerText = "등록";
+                btnSubmit.disabled  = false;
+                btnSubmit.hidden    = false;
+
+                // 기존 병원 정보 로드
+                loadHospitalInfo();
+
+                // 폼 submit 변경 ==> 등록
+                jobAdForm.removeEventListener('submit', onSubmitForModify);
+                jobAdForm.addEventListener('submit', onSubmitForRegister);
+
+                // 선정우 body 에 .viewType class 가 혹시 있다면 삭제, 요기는 등록이지요?
+                document.body.classList.remove("view-type");
+            }
+
+        }
+        
+        initPage();
+
+
+
+        
+        // function checkLoggedIn() {
+        //     if ( !LOGIN_INFO.isLoggedIn() ) {
+        //         alert("로그인이 필요한 페이지입니다.");
+        //         location.href = "signup.html?returnUrl=register_jobad.html";
+        //         return false;
+        //     }
+
+        //     if ( !LOGIN_INFO.isHospitalMember() ) {
+        //         alert("병원회원만 이용 가능합니다.");
+        //         location.href = "start.html";
+        //         return false;
+        //     }
+
+        //     // var hospitalId = LOGIN_INFO.getHospitalId();
+        //     // //console.log("===> hospitalId : ", hospitalId);
+        //     // if ( !hospitalId || hospitalId==0 ) {
+        //     //     // 병원 등록을 먼저 해야 합니다.
+        //     //     alert("병원이 등록되지 않았습니다.");
+        //     //     // return;  // 병원 등록 페이지로 이동!!!
+        //     // }
+            
+        //     return true;
+        // }
+        
+
+        // 공고 정보를 로드한다. 로드 후에는 ==> initFormData
+        function loadJobAd(jobAdId) {
+
+            callApi("GET", "/api/jobAd/" + jobAdId + "/", null,
+                function(resData) {
+                    CURRENT_JOB_AD_ID = resData.jobAdId;
+                    //console.log(resData);
+                    //console.log(JSON.stringify(resData));
+                    initFormData(jobAdForm, resData);                    
+                    
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+        }
+
+        // 병원 기본 정보 수신
+        function loadHospitalInfo() {
+
+            var userId = LOGIN_INFO.getId();
+            callApi("GET", "/api/user/" + userId + "/hospital/", null,
+                function(resData) {
+                    console.log(resData);
+
+                    if ( resData ) {
+                        if ( resData.defaultHrOfficerName )     document.getElementById("hrOfficerName").value  = resData.defaultHrOfficerName;
+                        if ( resData.defaultHrTelNo )           document.getElementById("hrTelNo").value        = resData.defaultHrTelNo;
+                        if ( resData.defaultHrEmail )           document.getElementById("hrEmail").value        = resData.defaultHrEmail;
+
+                    } else {
+						//alert("병원이 등록되지 않았습니다. \n공고를 등록하시려면 먼저 병원정보를 등록해주세요.");
+						var goYn = confirm("병원정보가 등록되지 않았습니다. \n병원정보를 등록하시겠습니까?");
+                        if ( goYn ) {
+							location.href = "register_dentist.html";
+						} else {
+							window.history.back();
+						}
+                    }
+                    
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+
+        }
+
+
+
+        function onSubmitForModify(e) {
+            e.preventDefault();
+
+            console.log("서밋 처리하는 중... ", this);
+            //return;
+
+            // 서버 호출 및 다음 STEP 이동
+
+            //var apiParam = $(jobAdForm).serialize();
+            //console.log("등록 처리 수행 ", apiParam);
+            var data = createObjectFromFormData(jobAdForm);
+            data.jobAdId = CURRENT_JOB_AD_ID;
+            var apiParam = JSON.stringify(data);
+            console.log("수정 처리 수행 : ", apiParam);
+            
+            var userId = LOGIN_INFO.getId();
+            //callApi("PUT", "/api/hospital/" + hospitalId + "/jobAd/" + data.jobAdId + "/", apiParam,
+			//callApi("PUT", "/api/user/"+userId+"/hospital/jobAd/"+ CURRENT_JOB_AD_ID+"/", apiParam,
+			callApi("PUT", "/api/jobAd/"+ CURRENT_JOB_AD_ID+"/", apiParam,
+                function(resData) {
+                    console.log(resData);
+                    initFormData(document.getElementById("jobAdForm"), resData);   // 수신된 값으로 다시 변경한다.
+                    CURRENT_JOB_AD_ID = resData.id;
+                    alert("수정되었습니다..");
+
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                },
+                'application/json'
+            );
+        }
+
+        
+
+        function onSubmitForRegister(e) {
+            e.preventDefault();
+
+            
+
+            //if ( !validate(this) ) return; 
+            console.log("서밋 처리하는 중... ", this);
+            //return;
+
+            // 서버 호출 및 다음 STEP 이동
+
+			//var apiParam = $(jobAdForm).serialize();
+			var apiParam = createObjectFromFormData(jobAdForm);
+			apiParam.hospitalId = LOGIN_INFO.getHospitalId();
+            console.log("등록 처리 수행 ", apiParam);
+
+            //return;
+            
+            var userId = LOGIN_INFO.getId();
+            callApi("POST", "/api/jobAd/", JSON.stringify(apiParam),
+                function(resData) {
+                    console.log(resData);
+                    CURRENT_JOB_AD_ID = resData.id;
+                    alert("등록되었습니다.");
+
+                    initFormData(document.getElementById("jobAdForm"), resData);
+
+                    
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                },
+                'application/json'
+            );
+
+
+        }
+
+    })();
+
+</script>
