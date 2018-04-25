@@ -217,7 +217,7 @@ var DRexPattern = {
     },
 
     "phone" : {
-        "match" : /^\s?(02|0\d{2})[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
+        "match" : /^\s?(02|0\d{2}|0505)[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
         "errMsg" : "국번을 포함해서 정확한 전화번호를 입력해 주세요",
         "delKey" : /[^\d]+/g,
         "delMsg" : "",
@@ -225,15 +225,7 @@ var DRexPattern = {
     },
 
     "mobile" : {
-        "match" : /^\s?(02|0\d{2})[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
-        "errMsg" : "국번을 포함해서 정확한 전화번호를 입력해 주세요",
-        "delKey" : /[^\d]+/g,
-        "delMsg" : "",
-        "suffix" : null
-    },
-
-    "telNo" : {
-        "match" : /^\s?(02|0\d{2})[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
+        "match" : /^\s?(010|011|0\d{2}|0505)[-\s]?(\d{3,4})[-\s]?(\d{4})$/,
         "errMsg" : "국번을 포함해서 정확한 전화번호를 입력해 주세요",
         "delKey" : /[^\d]+/g,
         "delMsg" : "",
@@ -304,6 +296,7 @@ var dFormValidator = dFormValidator || {};
 var dModal = dModal || {};
 $(document).ready(function() {
     dModal = dentalModal();  // 모달 세팅
+    formUIInit();
 
     var $card = $(".dental-card");
     var $formCard= $card.find(".form-group");
@@ -318,14 +311,9 @@ $(document).ready(function() {
 
     if ( is$formCard() ) {
 
-        dFormValidator.$formInput = $formCard.find(".styled-input");
-        console.log("input " + dFormValidator.$formInput.length + " 개");
-
         var $needValidator = $formCard.filter(".need-validator");
         console.log( ".need-validator" + $needValidator.length + " 개");
 
-        var $needReplacer = $formCard.filter(".need-validator-replacer");
-        console.log( ".need-validator-replacer" + $needReplacer.length + " 개");
     }
 
     dFormValidator.validator = function (inputElm, pattern) {
@@ -400,21 +388,21 @@ $(document).ready(function() {
         }
     };
 
-    $needValidator.on("input", function inputHandle(e) {  // 복붙 등 모든 인풋 발생하면 keyup trigger
+    $needValidator.on("input", ".styled-input", function inputHandle(e) {  // 복붙 등 모든 인풋 발생하면 keyup trigger
+        console.log(e.type, this);
         this.dispatchEvent(new CustomEvent("keyup"));
     });
 
-    $needValidator.on("keyup", function keyupHandle(e) {
-        var self = $(this).find(".styled-input")[0];
+    $needValidator.on("keyup", ".styled-input", function keyupHandle(e) {
+        console.log(e.type, this);
         this.classList.remove("valid");
-        dFormValidator.validator(self);
+        dFormValidator.validator(this);
     });
 
-    $needValidator.on("focusout", function focusoutHandle(e) {
-        console.log(e.type);
-        var self = $(this).find(".styled-input")[0];
-        dFormValidator.inputValueReplacer(self);
-        dFormValidator.inputValueMatch(self);
+    $needValidator.on("focusout", ".styled-input", function focusoutHandle(e) {
+        console.log(e.type, this);
+        dFormValidator.inputValueReplacer(this);
+        dFormValidator.inputValueMatch(this);
         //this.removeEventListener("focusout", focusoutHandle);
     });
 
