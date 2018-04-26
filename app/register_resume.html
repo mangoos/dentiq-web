@@ -144,13 +144,13 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
 <body>
     <header class="register-header navbar">
         <section class="navbar-section">
-            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='liveboard.html'; }">
                 <i class="fal fa-arrow-square-left"></i>
                 이전페이지
             </span>
         </section>
         <section class="navbar-section">
-            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="liveboard.html"><i class="fal fa-home"></i></a>
             <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
@@ -222,9 +222,9 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                     <div class="dental-card-header-subtitle">돋보이는 제목을 50자 이내로 작성해 주세요.</div>
                 </div>
                 <div class="card-body">
-                    <div class="form-group">
-                        <input class="styled-input" type="text" name="title" placeholder="이력서 제목" required>
-                        <span class="form-group-desc on"><span class="spellCounting">0/50</span>( 50자 이내 )</span>
+                    <div class="form-group need-validator" id="resumeTitle">
+                        <input class="styled-input d-reg-title" type="text" name="title" placeholder="이력서 제목" required>
+                        <span class="form-group-desc on"><span class="spellCounting">0</span>( 50자 이내 )</span>
                         <!-- 아래 아이콘, form element가 focus 일때 활성화, :invalid 이면 붉은 아이콘, :valid 이면 파란색 아이콘 -->
                         <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
                         <span class="form-group-underline"></span> <!-- '.error' 상태일때 form element가 focus 상태이면 붉은 줄, 그외는 노란줄 -->
@@ -731,16 +731,16 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         });
                     </script>
 
-                    <div class="form-group">
-                        <input class="styled-input" type="text" name="eduSchoolName" required>
+                    <div class="form-group need-validator">
+                        <input class="styled-input d-reg-onlyText" type="text" name="eduSchoolName" required>
                         <label class="styled-label">학교 입력</label>
                         <span class="form-group-desc"></span>
                         <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                         <span class="form-group-underline"></span>
                         <div class="form-group-msg2" hidden></div>
                     </div>
-                    <div class="form-group">
-                        <input class="styled-input" type="text" name="eduMajor">
+                    <div class="form-group need-validator">
+                        <input class="styled-input d-reg-onlyText" type="text" name="eduMajor">
                         <label class="styled-label">전공 입력</label>
                         <span class="form-group-desc"></span>
                         <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
@@ -798,18 +798,18 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         * 카드 내의 FORM 요소는 disabled로 처리  (예: input disabled)
                                 - disabled가 아니면, JSON 추출시에 템플릿의 FORM 요소가 추출됨
                     -->
-                    <div class="card-body" id="career" style="border-radius: 0.2rem; padding: 1rem 0; border: 1px solid #e6e6e6; width: 98%; margin: 0 auto; margin-bottom: 0.4rem;" hidden>
+                    <div class="card-body" id="career" hidden>
                         <button class="dental-card-body-btn btn btn-sm" type="button" id="btnDeleteCareer">삭제</button>
-                        <div class="form-group">
-                            <input class="styled-input group-item" type="text" name="career[]firmName" id="career-firmName" disabled>
+                        <div class="form-group need-validator">
+                            <input class="styled-input group-item d-reg-onlyText" type="text" name="career[]firmName" id="career-firmName" disabled>
                             <label class="styled-label">직장명</label>
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                         </div>
-                        <div class="form-group">
-                            <input class="styled-input group-item" type="text" name="career[]task" id="career-task" disabled>
+                        <div class="form-group need-validator">
+                            <input class="styled-input group-item d-reg-onlyText" type="text" name="career[]task" id="career-task" disabled>
                             <label class="styled-label">담당업무</label>
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
@@ -894,18 +894,18 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
 
                 <div id='divLicense'>
 
-                    <div class="card-body" id="license" style="border-radius: 0.2rem; padding: 1rem 0; border: 1px solid #e6e6e6; width: 98%; margin: 0 auto; margin-bottom: 0.4rem;" hidden>
+                    <div class="card-body" id="license" hidden>
                         <button class="dental-card-body-btn btn btn-sm" type="button" id="btnDeleteLicense">삭제</button>
-                        <div class="form-group">
-                            <input class="styled-input" id="licenseName" type="text" name="license[]name" disabled>
+                        <div class="form-group need-validator">
+                            <input class="styled-input d-reg-onlyText" id="licenseName" type="text" name="license[]name" disabled>
                             <label class="styled-label">자격증명</label>
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                         </div>
-                        <div class="form-group">
-                            <input class="styled-input" id="licenseIssuer" type="text" name="license[]issuer" disabled>
+                        <div class="form-group need-validator">
+                            <input class="styled-input d-reg-onlyText" id="licenseIssuer" type="text" name="license[]issuer" disabled>
                             <label class="styled-label">발행처</label>
                             <span class="form-group-desc"></span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
@@ -985,26 +985,15 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                     <div class="form-group">
                         <select class="styled-select" name="confirmRecommendation">
                             <option value="" selected disabled>*선택</option>
-                            <option value="Y">네(인재정보 등록)</option>
+                            <option value="Y">네(이력서 공개)</option>
                             <option value="N">아니요</option>
                         </select>
                         <label class="styled-label">제안 접수 선택</label>
                     </div>
                 </div>
             </div>
-
         </section>
     </form>
-    <!-- loading spinner, 'active' 클래스로 활성화 -->
-    <div class="dental-loading" id="loadingModal" hidden>
-        <div class="fa-icon"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
-        <div class="loading-overlay" hidden></div>
-    </div>
-</body>
-<script>
-    // form 꾸미기 초기화 함수 .styled-label, .styled-input, .styled-select ui 세팅
-    formUIInit();
-</script>
 </html>
 
 <script>
@@ -1100,6 +1089,7 @@ var ResumeManagementApp = (function() {
 
                     initFormData(form, resData);
 
+                    document.getElementById("resumeTitle").dispatchEvent(new CustomEvent('keyup')); // 선정우가 작업
                     document.getElementById("resumeContent").dispatchEvent(new Event('keyup'));
 
                     document.getElementById("userEmail").innerText = resData.user.email;

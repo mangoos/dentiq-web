@@ -28,13 +28,13 @@
 <body>
     <header class="register-header navbar">
         <section class="navbar-section">
-            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='liveboard.html'; }">
                 <i class="fal fa-arrow-square-left"></i>
                 이전페이지
             </span>
         </section>
         <section class="navbar-section">
-            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="liveboard.html"><i class="fal fa-home"></i></a>
             <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
@@ -128,7 +128,7 @@
 											
 											<span class="btn btn-icon btn-sm d-scrap" data-action="resume-scrap" data-action-value="{{resumeId}}" {{#if scrappedByCertainHospital}}data-action-checked="true"{{/if}} >스크랩</span>
 											{{#checkActionOffer}}	
-												<span class="btn btn-icon btn-sm d-share" data-action="offer" data-action-value="{{resumeId}}" {{#if offeredByCertainHospital}}data-action-checked="true"{{/if}}  >바로지원</span>
+												<span class="btn btn-icon btn-sm d-share" data-action="offer" data-action-value="{{resumeId}}" {{#if offeredByCertainHospital}}data-action-checked="true"{{/if}}  >면접제안</span>
 											{{/checkActionOffer}}
 											<span class="btn btn-icon btn-sm d-phone" data-action="call" data-action-value="{{user.telNo}}">전화문의</span>
 

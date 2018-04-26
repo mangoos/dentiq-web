@@ -23,13 +23,13 @@
 <body>
     <header class="register-header navbar">
         <section class="navbar-section">
-            <span onclick="if(history.length>2){ history.back(); } else { location.href='start.html'; }">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='liveboard.html'; }">
                 <i class="fal fa-arrow-square-left"></i>
                 이전페이지
             </span>
         </section>
         <section class="navbar-section">
-            <a href="start.html"><i class="fal fa-home"></i></a>
+            <a href="liveboard.html"><i class="fal fa-home"></i></a>
             <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
@@ -57,9 +57,9 @@
                     <div class="dental-card-header-subtitle">구직자들을 위해 돋보이는 제목으로 작성해 주세요.</div>
                 </div>
                 <div class="card-body">
-                    <div class="form-group">
-                        <input class="styled-input" type="text" maxlength="50" name="title" required placeholder="채용공고 제목 입력">
-                        <span class="form-group-desc on"><span class="spellCounting">0/50</span>( 50자 이내 )</span>
+                    <div class="form-group need-validator" id="jobAdTitle">
+                        <input class="styled-input d-reg-title" type="text" maxlength="50" name="title" required placeholder="채용공고 제목 입력">
+                        <span class="form-group-desc on"><span class="spellCounting">0</span>( 50자 이내 )</span>
                         <span class="form-group-underline"></span>
                         <div class="form-group-msg2"></div>
                     </div>
@@ -148,8 +148,8 @@
     
     
     
-                    <fieldset class="form-group">
-                        <input class="styled-input" type="text" name="hiringCnt" class="recruitNum" maxlength="3" max="3" required>
+                    <fieldset class="form-group need-validator">
+                        <input class="styled-input d-reg-onlyNumber" type="text" name="hiringCnt" class="recruitNum" maxlength="3" max="3" required>
                         <span class="form-group-underline"></span>
                         <div class="form-group-msg2"></div>
                         <label class="styled-label">채용인원</label>
@@ -245,20 +245,20 @@
                     <script>
                         setSelectOptions(document.getElementById("expSelect"), CODE_CONTAINER.getExpType());
                     </script>
-                    <fieldset class="form-group">
-                            <input class="styled-input" id="license" name="licenseText" type="text">
+                    <fieldset class="form-group need-validator">
+                            <input class="styled-input d-reg-onlyKor" type="text" name="licenseText">
                             <span class="form-group-desc">필요사항 입력</span>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
-                            <label class="styled-label" for="license">자격/면허사항</label>
+                            <label class="styled-label">자격/면허사항</label>
                     </fieldset>
                 </div>
             </div>
             <div class="dental-card">
                 <div class="dental-card-header"><div class="dental-card-header-title h4">근무환경</div></div>
                 <div class="card-body">
-                    <fieldset class="form-group">
-                        <input class="styled-input" type="text" name="jobWorkingDay" placeholder="구직자들을 위해 정확하게 입력해 주세요." required>
+                    <fieldset class="form-group need-validator">
+                        <input class="styled-input d-reg-onlyKor" type="text" name="jobWorkingDay" placeholder="구직자들을 위해 정확하게 입력해 주세요." required>
                         <span class="form-group-desc">예) 월~금, 월/수/금 등</span>
                         <span class="form-group-underline"></span>
                         <div class="form-group-msg2"></div>
@@ -511,20 +511,20 @@
             <div class="dental-card">
                 <div class="dental-card-header"><div class="dental-card-header-title h4">채용담당자(문의)</div></div>
                 <div class="card-body">
-                    <div class="form-group">
-                            <input class="styled-input" id="hrOfficerName" name="hrOfficerName" type="text" required>
+                    <div class="form-group need-validator">
+                            <input class="styled-input d-reg-name" id="hrOfficerName" name="hrOfficerName" type="text" required>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">담당자</label>
                     </div>
-                    <div class="form-group">
-                            <input class="styled-input" id="hrTelNo" name="hrTelNo" type="text" required>
+                    <div class="form-group need-validator">
+                            <input class="styled-input d-reg-phone" id="hrTelNo" name="hrTelNo" type="tel" required>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">문의전화</label>
                     </div>
-                    <div class="form-group">
-                            <input class="styled-input" id="hrEmail" name="hrEmail" type="text" required>
+                    <div class="form-group need-validator">
+                            <input class="styled-input d-reg-email" id="hrEmail" name="hrEmail" type="email" required>
                             <span class="form-group-underline"></span>
                             <div class="form-group-msg2"></div>
                             <label class="styled-label">문의이메일</label>
@@ -533,16 +533,7 @@
             </div>
         </form>
     </section>
-    <!-- loading spinner, 'active' 클래스로 활성화 -->
-    <div class="dental-loading" id="loadingModal" hidden>
-        <div class="fa-icon"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>
-        <div class="loading-overlay" hidden></div>
-    </div>
 </body>
-<script> 
-    // form 꾸미기 초기화 함수 .styled-label, .styled-input, .styled-select ui 세팅
-    formUIInit();
-</script>
 </html>
 
 
@@ -641,7 +632,7 @@
 
         //     if ( !LOGIN_INFO.isHospitalMember() ) {
         //         alert("병원회원만 이용 가능합니다.");
-        //         location.href = "start.html";
+        //         location.href = "liveboard.html";
         //         return false;
         //     }
 
@@ -665,7 +656,8 @@
                     CURRENT_JOB_AD_ID = resData.jobAdId;
                     //console.log(resData);
                     //console.log(JSON.stringify(resData));
-                    initFormData(jobAdForm, resData);                    
+                    initFormData(jobAdForm, resData);
+                    document.getElementById("jobAdTitle").dispatchEvent(new CustomEvent("keyup"));  // 선정우가 한 땀                    
                     
                 },
                 function(errorCode, errorMsg) {
