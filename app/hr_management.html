@@ -265,7 +265,7 @@
 
 				{{#each .}}
                 <div class="jobpost-list-card">
-                    <a href="javascript:HospitalResumeActionPanel.selectJobAdToOffer({{jobAdId}});">
+                    <a href="javascript:HOSPITAL_RESUME_ACTION_PANNEL.selectJobAdToOffer({{jobAdId}});">
                         <div class="jobpost-list-card-header">
 							<div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
 							<div class="jobpost-list-card-subtitle">{{title}}</div>
@@ -403,7 +403,7 @@ var HospitalResumeActionPanel = function() {
 			return;
 		}
 		if ( !LOGIN_INFO.isHospitalMember(true) ) {
-			alert("개인회원만 이용 가능한 기능입니다.");
+			alert("병원회원만 이용 가능한 기능입니다.");
 			return;
 		}
 
@@ -504,8 +504,8 @@ var HospitalResumeActionPanel = function() {
 		if ( !SELECTED_RESUME_ID_FOR_OFFER ) throw "이력서ID 선택 안됨";
 
 		callApi("POST", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/resumeIdOffered/", "jobAdId="+jobAdId+"&resumeId="+SELECTED_RESUME_ID_FOR_OFFER,
-			function(resumeOfferedIdAndJobAdIdList) {
-				console.log("성공   : ", resumeOfferedIdAndJobAdIdList);
+			function(resData) {
+				console.log("성공   : ", resData);
 
 				if ( resData.resumeId && resData.resumeId==SELECTED_RESUME_ID_FOR_OFFER && resData.jobAdId && resData.jobAdId==jobAdId ) {
 					SELECTED_RESUME_ID_FOR_OFFER = null;
@@ -534,6 +534,7 @@ var HospitalResumeActionPanel = function() {
 
 }
 
+var HOSPITAL_RESUME_ACTION_PANNEL = new HospitalResumeActionPanel();
 
 var HospitaHrManagementApp = (function() {
 
@@ -631,7 +632,7 @@ var HospitaHrManagementApp = (function() {
 		/******************************************************************************/
 		/* 스크랩 / 지원 / 전화 걸기 ACTION PANEL에 대한 Event 부착
 		/******************************************************************************/
-		var HOSPITAL_RESUME_ACTION_PANNEL = new HospitalResumeActionPanel();
+		
 		document.querySelectorAll(".resume-list-body").forEach(function(element) {
 			console.log("이벤트 걸었음 ", element);
 			element.addEventListener("click", HOSPITAL_RESUME_ACTION_PANNEL.onClickActionButton);
