@@ -521,7 +521,7 @@
                         CODE_CONTAINER.getApplyWay().forEach(function(code) {
                             if ( code.default ) {
                                 //htmlApplyWay += '<label class="apply-way-checkbox"><input type="checkbox" name="applyWay[]" data-checkbox-group="APPLICATION_WAY" value="' + code.value + '" hidden checked="true"><span class="chip">' + code.text + '</span></label>';
-							} else if ( code.value=="homepage" || code.value=="oneclick" ) {
+							} else if ( code.value=="tel" || code.value=="oneclick" ) {
 								htmlApplyWay += '<label class="apply-way-checkbox"><input type="checkbox" name="applyWay[]" data-checkbox-group="APPLICATION_WAY" value="' + code.value + '" hidden checked onclick="return false;"><span class="chip">' + code.text + '</span></label>';
 							} else {
                                 htmlApplyWay += '<label class="apply-way-checkbox"><input type="checkbox" name="applyWay[]" data-checkbox-group="APPLICATION_WAY" value="' + code.value + '" hidden><span class="chip">' + code.text + '</span></label>';
