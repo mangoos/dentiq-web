@@ -12,7 +12,8 @@
 
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
-    <script src="js/handlebars.min.js"></script>
+	<script src="js/handlebars.min.js"></script>
+	<script src="js/dental_ui.js"></script>
 </head>
 <body>
     <header class="register-header navbar">
@@ -48,47 +49,144 @@
                         <span class="resume-list-bar-counter" id="countOfResumeSearched">0</span>
                     </div>
 
-                    <div class="resume-list-body" id="divResumeCardSearched"></div>
-                    <!--
-                    <script id="resumeCardSearchedTemplate" type="text/x-handlebars-template">
-                        {{#each .}}
-                        <div class="resume-list-card">
-                            <a href="#">
-                                <div class="resume-list-card-header">
-                                    <div class="resume-list-photo">
-                                        <div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
-                                            <div class="image-frame"><img src="{{profileImageFullUrl}}"></div>
-                                        </div>
-                                    </div>
-                                    <div class="resume-list-card-title">{{title}}</div>
-                                </div>
-                                <div class="resume-list-card-body">
-                                    <div class="resume-info-box">
-                                        <div class="resume-info">
-                                            <span class="applicant-detail"><span class="applicant-name">{{userName}}</span></span>
-                                            <span class="applicant-detail"><span class="applicant-sex">{{gender}}</span></span>
-                                            <span class="applicant-detail"><span class="applicant-age">{{age}}</span></span>
-                                            <span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
-                                        </div>
-                                        <div class="resume-info">
-                                            {{{renderAttrOnResumeCard attr}}}
-                                        </div>
-                                        <div class="resume-info"><span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="resume-list-card-footer">
-                                <span class="footer-item"><label><input type="checkbox" name="resume-scrap" value="{{id}}" {{#if scrappedByHospital}}checked{{/if}} hidden><i class="fas fa-star"></i>스크랩</label></span>
-                                <span class="footer-item" data-action="apply" data-action-value=""><i class="fa fa-share"></i>면접제안</span>
-                                <span class="footer-item" data-action="call" data-action-value=""><i class="fa fa-phone"></i>전화하기</span>
-                            </div>
-                        </div>
-                        {{/each}}
-                    </script>
-                    -->
+					<div class="resume-list-body" id="divResumeCardSearched"></div>
+					
+                    <script id="resumeCardTemplate" type="text/x-handlebars-template">
+						{{#each .}}
+						<div class="resume-list-card">
+							<a href="#">
+								<div class="resume-list-card-header">
+									<div class="resume-list-photo">
+										<div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
+											<div class="image-frame"><!-- <img src="images/user/jungwoo.jpg" alt=""> -->
+												<img src="{{renderResumeProfileImage userId}}" onload="imageFit(this, 60)">
+											</div>
+										</div>
+									</div>
+									<div class="resume-list-card-title">{{title}}</div>
+								</div>
+								<div class="resume-list-card-body">
+									<div class="resume-info-box">
+										<div class="resume-info">
+											<span class="applicant-detail"><span class="applicant-name">{{user.name}}</span></span>
+											<span class="applicant-detail"><span class="applicant-sex">{{user.gender}}</span></span>
+											<span class="applicant-detail"><span class="applicant-age">{{user.age}}</span></span>
+											<span class="applicant-detail"><span class="applicant-total-career">{{renderLengthOfCareer career}}</span></span>
+										</div>
+										<div class="resume-info">
+											{{{renderAttrOnResumeCard attr}}}
+										</div>
+										<div class="resume-info">
+											<span class="last-update">{{renderYYYYMMDDWithDot lastModYYYYMMDD}}</span>
+											<span class="apply-date">{{renderYYYYMMDDWithDot appliedYYYYMMDD}}</span>
+										</div>
+									</div>
+								</div>
+							</a>
+							<div class="resume-list-card-footer">
+								<span class="btn btn-icon btn-sm d-scrap" data-action="resume-scrap" data-action-value="{{resumeId}}" {{#if scrappedByCertainHospital}}data-action-checked="true"{{/if}} >스크랩</span>
+								<span class="btn btn-icon btn-sm d-share" data-action="offer" data-action-value="{{resumeId}}" {{#if offeredByCertainHospital}}data-action-checked="true"{{/if}}  >면접제안</span>
+								<span class="btn btn-icon btn-sm d-phone" data-action="call" data-action-value="{{user.telNo}}">전화문의</span>
+							</div>
+						</div>
+						{{/each}}
+
+					</script>
 
                 </div>
             </div>
         </div>
     </div>
 </body>
+
+</html>
+
+<script>
+
+// 속도 느림. 그러나 ordering 됨
+// <span class="info-detail"><span class="job-attr-chip">계약직</span><span class="job-attr-chip">아르바이트</span><i></i></span>
+function renderAttrOnResumeCard(attrList) {   // 지원 속성은 선택하지 않은 경우(DB에 데이터 없음)인 경우에는 나오지 말아야 한다.
+	if ( attrList==null || attrList.length==0 ) return "";
+
+	var html = "";
+
+	var defAttrGroupList = CODE_CONTAINER.getAttrs();
+	defAttrGroupList.forEach(function(defAttrGroup) {
+		var innerHtml = "";
+		defAttrGroup.element.forEach(function(defAttr) {
+			var defAttrValue = defAttr.value;
+			attrList.forEach(function(attr) {
+				if ( defAttrValue == attr ) {
+					hasValue = true;
+					innerHtml += "<span class='job-attr-chip'>" + defAttr.text + "</span>";
+					//console.log(html);
+				}
+			});
+		});
+		if ( innerHtml.length > 2 ) {
+			html += '<span class="info-detail">';
+			html += innerHtml;
+			html += '<i></i></span>';
+		}
+	});
+
+	return html;
+}
+
+var resumeCardTemplateCompiled = Handlebars.compile( document.getElementById("resumeCardTemplate").innerHTML );
+
+function calLengthOfCareer(careerList) {
+	if ( !careerList || !Array.isArray(careerList) || careerList.length<1 ) return '신입';
+	else return "경력";
+}
+Handlebars.registerHelper("renderLengthOfCareer", function(careerList) {
+	return calLengthOfCareer(careerList);
+});
+Handlebars.registerHelper("renderYYYYMMDDWithDot", function(yyyymmdd) {
+	return renderYYYYMMDDWithDot(yyyymmdd);     // from common.js
+});
+Handlebars.registerHelper("renderAttrOnResumeCard", function(code) {
+	return renderAttrOnResumeCard(code);
+});
+Handlebars.registerHelper("renderResumeProfileImage", function(userId) {
+	//console.log("renderResumeProfileImage ", userId);
+	return CONSTANTS.getProfileImageUrl(userId);
+});
+
+
+
+var HospitaHrManagementApp = (function() {
+	init();
+
+	function init() {
+		if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
+		listResume(1);  // 1번 탭 실행
+	}
+
+
+	function listResume(pageNo) {
+
+		var hospitalId = LOGIN_INFO.getHospitalId();
+		var apiUrl ="/api/resume/";
+
+		callApi("GET", apiUrl, "pageNo=2",
+			function(resData, pageInfo) {
+				console.log(resData, " ==> ", pageInfo);
+				if ( resData && Array.isArray(resData) && resData.length>0 ) {
+
+					document.getElementById("divResumeCardSearched").innerHTML = resumeCardTemplateCompiled(resData);
+					document.getElementById("countOfResumeSearched").innerText = resData.length;
+
+					document.getElementById("btnOpenContents4").checked = true;
+
+				} else {
+					document.getElementById("btnOpenContents4").checked = false;
+				}
+			},
+			function(errorCode, errorMsg) {
+				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+			}
+		);
+	}
+})();
+</script>

@@ -13,6 +13,32 @@
         elm.removeEventListener ( type, fn, false );
         return fn;
     }
+
+    // CustomEvent constructor pollyfill, because of explore.
+
+    if ( typeof window.CustomEvent === "function" ) return false;
+  
+    function CustomEvent ( event, params ) {
+      params = params || { bubbles: false, cancelable: false, detail: undefined };
+      var evt = document.createEvent( 'CustomEvent' );
+      evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+      return evt;
+     }
+  
+    CustomEvent.prototype = window.Event.prototype;
+  
+    window.CustomEvent = CustomEvent;
+
+
+    if (window.NodeList && !NodeList.prototype.forEach) {
+        NodeList.prototype.forEach = function (callback, thisArg) {
+            thisArg = thisArg || window;
+            for (var i = 0; i < this.length; i++) {
+                callback.call(thisArg, this[i], i, this);
+            }
+        };
+    }
+
 })();
 
 var modalHtml =     
@@ -206,14 +232,33 @@ var imageFit = function (arg, size) {
     }
 };
 
+var listZero= function () {
+    var wrapper = document.createElement("div");
+    var listZeroHtml = "<div class='list-zero'></div>";
+
+    if (!document.querySelector(".list-zero")) {
+        wrapper.innerHTML = listZeroHtml;
+        document.body.appendChild(wrapper);
+    } 
+};
+
 var DRexPattern = {
 
     "name" : {
         "match" : /[ㄱ-힣a-zA-Z0-9\s]{2,15}/, 
         "errMsg" : "2~15자 이내로 입력해 주세요. 특수문자 제외.", 
-        "delKey" : /[^ㄱ-힣a-zA-Z0-9\s]+/g,
+        "delKey" : /[^ㄱ-힣a-zA-Z0-9\s\(\)]+/g,
         "delMsg" : "",
         "suffix" : "님"
+    },
+
+    "title" : {
+        "match" : /[ㄱ-힣a-zA-Z0-9\s]{10,50}/, 
+        "errMsg" : "10~50자 이내로 입력해 주세요. 특수문자 제외.", 
+        "delKey" : /[^ㄱ-힣a-zA-Z0-9\s\(\)]+/g,
+        "delMsg" : "",
+        "suffix" : "",
+        "option" : { "optElm" : ".spellCounting", "optionFunc" : inputValueLengthChecker }
     },
 
     "phone" : {
@@ -241,11 +286,19 @@ var DRexPattern = {
     },
 
     "onlyKor" : {
-        "match" : /^[ㄱ-힣,\s]{1,}$/, 
-        "errMsg" : "진료 과목을 정확하게 입력해주세요(한글, ' , ' , 공백 만 허용)",
-        "delKey" : /[^ㄱ-힣,\s]+/g,
+        "match" : /^[ㄱ-힣,\s\(\)\-0-9~]{1,}$/, 
+        "errMsg" : "한글로 정확하게 입력해주세요(한글, 숫자, ' , ' , 괄호)",
+        "delKey" : /[a-zA-Z\@\*\^_?<>\|]+|[^ㄱ-힣,\s()-~0-9]+/g,
         "delMsg" : "",
         "suffix" : null 
+    },
+
+    "onlyText" : {
+        "match" : /[ㄱ-힣a-zA-Z0-9\s,()-]{2,20}/, 
+        "errMsg" : "2~20자 이내로 입력해 주세요. (한글, 영어, 숫자, ' , ', 괄호)", 
+        "delKey" : /[\@\*\^_?<>|]+|[^ㄱ-힣a-zA-Z0-9\s,()-]+/g,
+        "delMsg" : "",
+        "suffix" : ""
     },
 
     "email" : {
@@ -293,6 +346,87 @@ var DRexPattern = {
 
 
 var dFormValidator = dFormValidator || {};
+dFormValidator.validator = function (formGroupElm, pattern) {
+
+    "use strict";
+    var inputElm = formGroupElm.querySelector(".styled-input");
+    var str = inputElm.value.trim();
+    var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
+    var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].match : "";
+
+    if( !regex ) return; 
+
+    var flag = regex.test(str);
+    var msgBox = inputElm.parentElement.querySelector(".form-group-msg2");
+
+    if (!flag) {
+        inputElm.classList.remove("valid");
+        inputElm.classList.add("invalid");
+        msgBox.innerText = DRexPattern[tag].errMsg;
+    } else {
+        inputElm.classList.remove("invalid");
+        msgBox.innerText = "";
+    }
+
+    if( DRexPattern[tag].option ) {
+        var value = DRexPattern[tag].option.optionFunc(inputElm);
+        console.log(value);
+        var optElm = formGroupElm.querySelector(DRexPattern[tag].option.optElm);
+        optElm.innerText = value ;
+    }
+};
+
+dFormValidator.inputValueReplacer = function (formGroupElm, pattern) {
+
+    "use strict";
+    var inputElm = formGroupElm.querySelector(".styled-input");
+    var str = inputElm.value.trim();
+    var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
+    var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].delKey : "";
+
+    if( !regex ) return;
+
+    var str = str.replace(regex,"").replace(/\s+/g," ");
+
+    inputElm.value = str;
+};
+
+dFormValidator.inputValueMatch = function (formGroupElm, pattern) {
+
+    "use strict";
+
+    var inputElm = formGroupElm.querySelector(".styled-input");
+    var str = inputElm.value.trim();
+    var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
+    var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].match : "";
+
+    if ( !regex ) return;
+
+    var flag = regex.test(str);
+    var msgBox = inputElm.parentElement.querySelector(".form-group-msg2");
+    console.log("tag: ", tag, "regex: ",regex, "flag: ", flag, DRexPattern[tag]);
+
+    if (!flag && str.length > 0) {
+        inputElm.classList.remove("valid");
+        inputElm.classList.add("invalid");
+        msgBox.innerText = DRexPattern[tag].errMsg;
+        setTimeout( function() { msgBox.innerText="";}, 1500);
+
+    } else {
+
+        inputElm.classList.remove("invalid");
+        inputElm.classList.add("valid");
+        msgBox.innerText = "";
+        // if( inputElm.value.length && DRexPattern[tag].suffix ) inputElm.value = inputElm.value + " " + DRexPattern[tag].suffix;
+    }
+};
+
+function inputValueLengthChecker(inputElm) {
+    var value = inputElm.value;
+    var length = value.length;
+    return length;
+}
+
 var dModal = dModal || {};
 $(document).ready(function() {
     dModal = dentalModal();  // 모달 세팅
@@ -305,7 +439,6 @@ $(document).ready(function() {
     function is$formCard () {
 
         if( $formCard ) return true;
-    
         return false;
     }
 
@@ -316,96 +449,23 @@ $(document).ready(function() {
 
     }
 
-    dFormValidator.validator = function (inputElm, pattern) {
-
-        "use strict";
-        var str = inputElm.value.trim();
-        var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
-        var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].match : "";
-
-        if( !regex ) return; 
-
-        var flag = regex.test(str);
-        var msgBox = inputElm.parentElement.querySelector(".form-group-msg2");
-
-        if (!flag) {
-            inputElm.classList.remove("valid");
-            inputElm.classList.add("invalid");
-            msgBox.innerText = DRexPattern[tag].errMsg;
-        } else {
-            inputElm.classList.remove("invalid");
-            msgBox.innerText = "";
-        }
-    };
-
-    dFormValidator.stringReplacer = function ( str, pattern) {
-        if( typeof str !== "string") return;
-        var str = str.trim();
-        var pattern = new RegExp(pattern);
-        return str.replace(pattern,"");
-    }
-
-    dFormValidator.inputValueReplacer = function (inputElm, pattern) {
-
-        "use strict";
-        var str = inputElm.value.trim();
-        var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
-        var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].delKey : "";
-
-        if( !regex ) return;
-
-        var str = str.replace(regex,"").replace(/\s+/g," ");
-
-        inputElm.value = str;
-    };
-
-    dFormValidator.inputValueMatch = function (inputElm, pattern) {
-
-        "use strict";
-
-        var str = inputElm.value.trim();
-        var tag = inputElm.className.replace(/(?:^.*d-reg-)(\w+)(?:.*)$/,"$1");
-        var regex =  pattern || DRexPattern[tag] ? DRexPattern[tag].match : "";
-
-        if ( !regex ) return;
-
-        var flag = regex.test(str);
-        var msgBox = inputElm.parentElement.querySelector(".form-group-msg2");
-        console.log("tag: ", tag, "regex: ",regex, "flag: ", flag, DRexPattern[tag]);
-
-        if (!flag && str.length > 0) {
-            inputElm.classList.remove("valid");
-            inputElm.classList.add("invalid");
-            msgBox.innerText = DRexPattern[tag].errMsg;
-            setTimeout( function() { msgBox.innerText="";}, 1500);
-
-        } else {
-
-            inputElm.classList.remove("invalid");
-            inputElm.classList.add("valid");
-            msgBox.innerText = "";
-            // if( inputElm.value.length && DRexPattern[tag].suffix ) inputElm.value = inputElm.value + " " + DRexPattern[tag].suffix;
-        }
-    };
-
-    $needValidator.on("input", ".styled-input", function inputHandle(e) {  // 복붙 등 모든 인풋 발생하면 keyup trigger
-        console.log(e.type, this);
+    $needValidator.on("input", function inputHandle(e) {  // 복붙 등 모든 인풋 발생하면 keyup trigger
+        console.log(e.type);
         this.dispatchEvent(new CustomEvent("keyup"));
     });
 
-    $needValidator.on("keyup", ".styled-input", function keyupHandle(e) {
-        console.log(e.type, this);
+    $needValidator.on("keyup", function keyupHandle(e) {
+        console.log(e.type)
         this.classList.remove("valid");
         dFormValidator.validator(this);
     });
 
-    $needValidator.on("focusout", ".styled-input", function focusoutHandle(e) {
-        console.log(e.type, this);
+    $needValidator.on("focusout", function focusoutHandle(e) {
+        console.log(e.type);
         dFormValidator.inputValueReplacer(this);
         dFormValidator.inputValueMatch(this);
         //this.removeEventListener("focusout", focusoutHandle);
     });
-
 });
 
 

@@ -47,7 +47,8 @@
                         <div class="jobad-detail">
                             <span class="jobad-d-day" id="jobAd-dDay">***D-20</span>
                             <div class="divider-vert"></div>
-                            <label><input type="checkbox" id="chkInterestHospital" hidden><span class="like-icon" title="좋아요"></span></label>
+							<!--<label><input type="checkbox" id="chkInterestHospital" hidden><span class="like-icon" title="좋아요"></span></label>-->
+							<span class="btn btn-icon btn-sm d-scrap" id="actionInterestHospital">좋아요-이미지변경필요!!!</span>
                         </div>
                     </div>
                 </div>
@@ -435,6 +436,7 @@
 
     </section>
     <section class="jobad-btm-layer">
+		<!--
         <div class="jobad-btm-layer-btn">
             <label class="scrap-box">
                 <input type="checkbox" name="scrap" id="checkboxScrap" hidden>
@@ -444,7 +446,7 @@
         </div>
         <div class="jobad-btm-layer-btn">
             <label class="applying-box">
-                <input type="button"  id="btnApply" hidden>
+                <input type="checkbox"  id="checkboxApply" hidden>
                 <i class="far fa-hand-point-up"></i>
                 원클릭지원
             </label>
@@ -461,7 +463,12 @@
                 <input type="button" name="" hidden>
                 <i class="far fa-arrow-circle-up"></i>
             </label>
-        </div>
+		</div>
+		-->
+		
+		<span class="btn btn-icon btn-sm d-scrap" id="actionScrap">스크랩</span>
+		<span class="btn btn-icon btn-sm d-apply" id="actionApply"></span>
+		<span class="btn btn-icon btn-sm d-phone" id="actionCall">전화문의</span>
     </section>
     <footer class="footer">
     footer
@@ -492,13 +499,13 @@ function getText(value) {
 }
 
 function fillData(resData) {
-	if ( resData.hospital.interestedByUserId ) {
-		if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
-			if ( LOGIN_INFO.getId()==resData.hospital.interestedByUserId )	document.getElementById("chkInterestHospital").checked = true;
-		}
-	}
+	// if ( resData.hospital.interestedByUserId ) {
+	// 	if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
+	// 		if ( LOGIN_INFO.getId()==resData.hospital.interestedByUserId )	document.getElementById("chkInterestHospital").checked = true;
+	// 	}
+	// }
 
-	document.getElementById("chkInterestHospital").checked
+	//document.getElementById("chkInterestHospital").checked
 
     document.getElementById("hospital-name-1").innerText            = getText(resData.hospital.hospitalName);
     document.getElementById("hospital-name-2").innerText            = getText(resData.hospital.hospitalName);
@@ -672,6 +679,7 @@ var JobAdDetailApp = (function() {
 
 	var jobAdId;
 	var hospitalId;
+	var hospitalTelNo;
 
     // 병원 기본 정보 수신
     function loadJobAdWithHospital() {
@@ -697,12 +705,16 @@ var JobAdDetailApp = (function() {
 					alert("해당 공고를 찾을 수 없습니다.");
 
 					// BACK을 하여야 하나?
+					window.history.back();
 					return;
 				}
 				
 				hospitalId = jobAdData.hospitalId;
-				checkInterestHospital();
+				hospitalTelNo = jobAdData.hospital.hospitalTelNo;
 
+				//checkInterestHospital();
+
+				initJobAdAction();
                 fillData(jobAdData);
                 
             },
@@ -711,241 +723,139 @@ var JobAdDetailApp = (function() {
             }
 		);
 
-		// 관심병원 check
-		function checkInterestHospital() {
-			if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
-
-			
-			callApi("GET", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/", null,
-				function(interestHospitalIds) {
-					if ( !interestHospitalIds ) return;
-
-					for ( var i=0; i<interestHospitalIds.length; i++ ) {
-						if ( interestHospitalIds[i]==hospitalId) {
-							document.getElementById("chkInterestHospital").checked = true;
-							break;
-						}
-					}
-
-				},
-				function(errorCode, errorMsg) {
-					console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-					alert("관심병원 정보를 가져올 수 없습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
-				}
-			);
-			
-		}
-		
-
     }
 
 
-    loadJobAdWithHospital();
-
-
-
-	// 관심병원 등록/해제		chkInterestHospital
-	function onChangeInterestHospital(event) {
-		if ( !jobAdId || !hospitalId ) return;
-
-        if (!LOGIN_INFO.isLoggedIn()) {
-            event.preventDefault();
-			alert("관심병원 등록을 위해서는 로그인이 필요합니다.");
-			document.getElementById("chkInterestHospital").checked = false;
-            return;
-		}
-		if ( !LOGIN_INFO.isPersonalMember() ) {
-			event.preventDefault();
-			alert("관심병원 등록은 개인 회원만 가능합니다.");
-			document.getElementById("chkInterestHospital").checked = false;
-			return;
-		}
-
-		if ( this.checked ) {
-			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
-				function(interestHospitalIds) {
-					if ( !interestHospitalIds ) return;
-
-					for ( var i=0; i<interestHospitalIds.length; i++ ) {
-						if ( interestHospitalIds[i]==hospitalId) {
-							document.getElementById("chkInterestHospital").checked = true;
-							alert("관심병원으로 등록되었습니다.");
-							break;
-						}
-					}
-
-				},
-				function(errorCode, errorMsg) {
-					document.getElementById("chkInterestHospital").checked = false;
-					console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-					alert("관심병원 등록에 실패했습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
-				}
-			);
-
-        } else {
-			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
-				function(interestHospitalIds) {
-					if ( !interestHospitalIds ) return;
-					
-					document.getElementById("chkInterestHospital").checked = false;
-					for ( var i=0; i<interestHospitalIds.length; i++ ) {
-						if ( interestHospitalIds[i]==hospitalId) {
-							document.getElementById("chkInterestHospital").checked = true;
-							break;
-						}
-					}
-					alert("관심병원이 해제되었습니다.");
-
-				},
-				function(errorCode, errorMsg) {
-					document.getElementById("chkInterestHospital").checked = true;
-					console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-					alert("관심병원 등록에 실패했습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
-				}
-			);
-
-        }
-	}
-	document.getElementById("chkInterestHospital").addEventListener("change", onChangeInterestHospital);
+	loadJobAdWithHospital();
 	
 
-
-
-
-	// 스크랩 
-	
-	document.getElementById("checkboxScrap").checked = false;
-	if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
-		var scrappedJobAdIds = LOGIN_INFO.getScrappedJobAdIds();
-		if ( scrappedJobAdIds ) {			
-			for ( var i=0; i<scrappedJobAdIds.length; i++ ) {
-				if ( scrappedJobAdIds[i]==jobAdId ) {
-					document.getElementById("checkboxScrap").checked = true;
-					break;
-				}
-			}
-		}
-	}
-
-    function onChangeCheckboxScrap(event) {
-		if ( !jobAdId ) return;
-
-        if (!LOGIN_INFO.isLoggedIn()) {
-            event.preventDefault();
-			alert("스크랩을 위해서는 로그인이 필요합니다.");
-			document.getElementById("checkboxScrap").checked = false;
-            return;
-		}
-		if ( !LOGIN_INFO.isPersonalMember() ) {
-			event.preventDefault();
-			alert("스크랩은 개인 회원만 가능합니다.");
-			document.getElementById("checkboxScrap").checked = false;
-			return;
-		}
-
-		console.log("일반 공고 스크랩 ", jobAdId );
-		//console.log("현재 상태 : " + this.checked);
-        
-        if ( this.checked ) {
-            LOGIN_INFO.addScrappedJobAdId(jobAdId, function() {
-				document.getElementById("checkboxScrap").checked = true;
-			});
-        } else {
-            LOGIN_INFO.removeScrappedJobAdId(jobAdId, function() {
-				document.getElementById("checkboxScrap").checked = false;
-			});
-        }
-    }
-    document.getElementById("checkboxScrap").addEventListener("change", onChangeCheckboxScrap);
+	/**********************************************************************************/
 	
 
-	// 원클릭 지원
-	function onClickBtnOneClickApply(event) {
-		if ( !jobAdId ) return;
+	function initJobAdAction() {
+		if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
 
-        if (!LOGIN_INFO.isLoggedIn()) {
-            event.preventDefault();
-            alert("원클릭 지원을 위해서는 로그인이 필요합니다.");
-            return;
-		}
-		if ( !LOGIN_INFO.isPersonalMember() ) {
-			event.preventDefault();
-			alert("원클릭 지원은 개인 회원만 가능합니다.");
-			return;
-		}
-
-		console.log("원클릭지원 ", jobAdId );
-		
-
-		// 먼저 기등록 여부 판단하여야 함
-		callApi("GET", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/", null,
-			function(resData) {
-				console.log(resData);
-
-				var alreadyApplied = false;
-				if ( resData && Array.isArray(resData) ) {
-					for ( var i=0; i<resData.length; i++ ) {
-						if ( resData[i] == jobAdId ) {
-							alreadyApplied = true;
-							break;
-						}
-					}
-				}
-
-				if ( alreadyApplied ) {
-					alert("이미 지원한 공고입니다.");
-					return;
+		callApi("GET", "/api/user/"+LOGIN_INFO.getId()+"/statusJobAdAction/", "jobAdId="+jobAdId,
+            function(resData) {
+				console.log("받은 값 : ", resData);
+				// 스크랩 여부
+				if ( resData.scrap && resData.scrap==jobAdId ) {
+					document.getElementById("actionScrap").dataset.actionChecked = "true";
+				} else {
+					document.getElementById("actionScrap").dataset.actionChecked = "false";
 				}
 				
-				var goApply = confirm("해당 공고에 바로 지원하시겠습니까?");
-				if ( goApply ) {
-					callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
-						function(result) {
-							console.log(result);
-							alert("지원하셨습니다.");
-						},
-						function(errorCode, errorMsg) {
-							console.log("에러 2 [" + errorCode + "] ==> [" + errorMsg + "]");
-							alert("에러 2 [" + errorCode + "] ==> [" + errorMsg + "]");
-						}
-					);
-
+				// 지원 여부
+				if ( resData.apply && resData.apply==jobAdId ) {
+					document.getElementById("actionApply").dataset.actionChecked = "true";
 				} else {
-					alert("지원하지 않으셨습니다.");
+					document.getElementById("actionApply").dataset.actionChecked = "false";
 				}
 
+				// 관심병원 여부
+				if ( resData.interestHospital && resData.interestHospital==jobAdId ) {
+					document.getElementById("actionInterestHospital").dataset.actionChecked = "true";
+				} else {
+					document.getElementById("actionInterestHospital").dataset.actionChecked = "false";
+				}
+				//document.getElementById("actionInterestHospital").dataset.actionValue = hospitalId;
+				
+            },
+            function(errorCode, errorMsg) {
+                console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+	}
 
-			},
-			function(errorCode, errorMsg) {
-				console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-				alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-			}
-		);
-        
-        
-    }
-	document.getElementById("btnApply").addEventListener("click", onClickBtnOneClickApply);
-	
 
-	// 전화문의 : 전화문의는 병원회원 자신도 가능 ??? ==> 결정 필요
-	function onClickBtnCall(event) {
-        if (!LOGIN_INFO.isLoggedIn()) {
-            event.preventDefault();
-            alert("원클릭 지원을 위해서는 로그인이 필요합니다.");
-            return;
+	document.getElementById("actionScrap").addEventListener("click", function(event) {
+		var element = this;
+		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 스크랩 O ==> 스크랩 X
+			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
+				function(resData) {		// 여기부터는 스크랩 성공한 상태임
+					if ( resData==jobAdId ) element.dataset.actionChecked = "false";
+					else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		} else {																// 스크랩 X ==> 스크랩 O
+			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
+				function(resData) {		// 여기부터는 스크랩 취소 성공한 상태임
+					if ( resData==jobAdId )  element.dataset.actionChecked = "true";
+					else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
 		}
+	});
 
-		// if ( !LOGIN_INFO.isPersonalMember() ) {
-		// 	event.preventDefault();
-		// 	alert("전화문의는 개인 회원만 가능합니다.");
-		// 	return;
-		// }
 
-        console.log("전화문의 ", jobAdId );
-        document.location.href='tel:010-7209-3356';
-        
-    }
-    document.getElementById("btnCall").addEventListener("click", onClickBtnCall);
+	document.getElementById("actionApply").addEventListener("click", function() {
+		var element = this;
+		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 지원 O ==> 지원 X
+			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
+				function(resData) {		// 여기부터는 지원 성공한 상태임
+					if ( resData==jobAdId ) {
+						element.dataset.actionChecked = "false";
+						alert("공고에 지원 취소되었습니다.");
+					} else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		} else {																// 지원 X ==> 지원 O
+			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
+				function(resData) {		// 여기부터는 지원 취소 성공한 상태임
+					if ( resData==jobAdId ) {
+						element.dataset.actionChecked = "true";
+						alert("공고에 지원되었습니다.");
+					} else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		}
+	});
+
+
+	document.getElementById("actionInterestHospital").addEventListener("click", function() {
+		var element = this;
+		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 관심병원 O ==> 관심병원 X
+			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
+				function(resData) {		// 여기부터는 관심병원 지정 성공한 상태임
+					if ( resData==hospitalId ) element.dataset.actionChecked = "false";
+					else throw "잘못된 병원 ID가 리턴되었음 [" + resData + "] <> [" + hospitalId + "]";
+					
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		} else {																// 관심병원 X ==> 관심병원 O
+			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
+				function(resData) {		// 여기부터는 관심병원 지정 취소 성공한 상태임
+					element.dataset.actionChecked = "true";
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		}
+	});
+
+
+
+	// 전화문의
+	document.getElementById("actionCall").addEventListener("click", function() {
+		document.location.href="tel:" + hospitalTelNo;
+	});
 
 })();
 

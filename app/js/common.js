@@ -353,7 +353,8 @@ function callApi(httpMethodType, apiUrl, reqData,
 		data: reqData,
 		success: function(result, textStatus, jqXHR) {
 
-			if (result._RESPONSE_CODE_ != null && result._RESPONSE_CODE_ == "0000") {
+
+			if (result._RESPONSE_CODE_ && result._RESPONSE_CODE_ == "0000") {
 
 				console.log("CALL API : <RECV:HEADER> : ", jqXHR.getResponseHeader(SESSION_TOKEN_NAME));
 				var sessionToken = jqXHR.getResponseHeader(SESSION_TOKEN_NAME);
@@ -361,8 +362,8 @@ function callApi(httpMethodType, apiUrl, reqData,
 					LOGIN_INFO.setSessionToken(sessionToken);
 				}
 
-				console.log("CALL API : <RECV> 성공 [", result._RESPONSE_, "]");
-				callbackSuccessProcessFunction(result._RESPONSE_);
+				console.log("CALL API : <RECV> 성공 [", result._RESPONSE_, "], [", result._PAGEABLE_RESPONSE_HEADER_, "]");
+				callbackSuccessProcessFunction(result._RESPONSE_, result._PAGEABLE_RESPONSE_HEADER_);
 			} else {
 				console.log("CALL API : <RECV> 논리 오류 [", result._RESPONSE_CODE, "] ==> [", result._RESPONSE_MSG_, "]");
 				callbackErrorProcessFunction(result._RESPONSE_CODE_, result._RESPONSE_MSG_);
@@ -431,7 +432,7 @@ var LOGIN_INFO = (function() {
 		callApi("POST", LOGOUT_API_URL, "userId=" + userInfo.useId,
 			function(resData) { // 로그아웃 성공하면...
 				clear();
-				fireScrapChageEventListeners();
+				//fireScrapChageEventListeners();
 				alert("로그아웃되었습니다.");
 
 			},
@@ -446,91 +447,91 @@ var LOGIN_INFO = (function() {
 	};
 
 
-	// SCRAP이 변경된 경우, 이에 대한 EventListener들
-	var funcScrapChangeEventListeners = [];
+	// // SCRAP이 변경된 경우, 이에 대한 EventListener들
+	// var funcScrapChangeEventListeners = [];
 
-	// SCRAP이 변경된 경우, 이에 대한 EventListener들을 처리한다.
-	function fireScrapChageEventListeners() {
-		if ( funcScrapChangeEventListeners && funcScrapChangeEventListeners.length>0 ) {	// 콜백이 등록되어 있으면, 실행한다.
-			funcScrapChangeEventListeners.forEach(function(scrapChangeEventListener) {
-				scrapChangeEventListener();
-			});
-			//funcScrapChangeEventListeners();
-		}
-	}
+	// // SCRAP이 변경된 경우, 이에 대한 EventListener들을 처리한다.
+	// function fireScrapChageEventListeners() {
+	// 	if ( funcScrapChangeEventListeners && funcScrapChangeEventListeners.length>0 ) {	// 콜백이 등록되어 있으면, 실행한다.
+	// 		funcScrapChangeEventListeners.forEach(function(scrapChangeEventListener) {
+	// 			scrapChangeEventListener();
+	// 		});
+	// 		//funcScrapChangeEventListeners();
+	// 	}
+	// }
 
-	// 서버로부터 스크랩된 공고의 ID들을 가져온다.
-	var _loadScrappedJobAdIds = function() {
-		if ( !userInfo || !userInfo.userId ) {
-			alert("로그인되어 있지 않습니다. - 스크랩 못함");
-			return;
-		}
+	// // 서버로부터 스크랩된 공고의 ID들을 가져온다.
+	// var _loadScrappedJobAdIds = function() {
+	// 	if ( !userInfo || !userInfo.userId ) {
+	// 		alert("로그인되어 있지 않습니다. - 스크랩 못함");
+	// 		return;
+	// 	}
 
-		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/";
-		callApi("GET", SCRAPPED_JOB_AD_ID_URL, null,
-			function(resData) {
-				userInfo.scrappedJobAdIds = resData;
-				save();
+	// 	var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/";
+	// 	callApi("GET", SCRAPPED_JOB_AD_ID_URL, null,
+	// 		function(resData) {
+	// 			userInfo.scrappedJobAdIds = resData;
+	// 			save();
 
-				fireScrapChageEventListeners();
-			},
-			function(resCode, resMsg) {
-				// clear();
-				alert("스크랩 가져오기 ERROR " + resMsg);
-			}
-		);
-	};
+	// 			fireScrapChageEventListeners();
+	// 		},
+	// 		function(resCode, resMsg) {
+	// 			// clear();
+	// 			alert("스크랩 가져오기 ERROR " + resMsg);
+	// 		}
+	// 	);
+	// };
 	
 
 
-	var _addScrappedJobAdId = function(jobAdId) {
-		if ( !jobAdId ) throw "addScrappedJobAdId : jobAdId가 없습니다.";
+	// var _addScrappedJobAdId = function(jobAdId) {
+	// 	if ( !jobAdId ) throw "addScrappedJobAdId : jobAdId가 없습니다.";
 
-		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
+	// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
 
-		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-		callApi("POST", SCRAPPED_JOB_AD_ID_URL, null,
-			function(resData) {
-				userInfo.scrappedJobAdIds = resData;
-				save();
-				fireScrapChageEventListeners();
-			},
-			function(resCode, resMsg) {
-				// clear();
-				fireScrapChageEventListeners();
-				alert("스크랩 가져오기 ERROR " + resMsg);
-			}
-		);
-	};
-	var _removeScrappedJobAdId = function(jobAdId) {
-		if ( !jobAdId ) throw "removeScrappedJobAdId : jobAdId가 없습니다.";
+	// 	var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
+	// 	callApi("POST", SCRAPPED_JOB_AD_ID_URL, null,
+	// 		function(resData) {
+	// 			userInfo.scrappedJobAdIds = resData;
+	// 			save();
+	// 			fireScrapChageEventListeners();
+	// 		},
+	// 		function(resCode, resMsg) {
+	// 			// clear();
+	// 			fireScrapChageEventListeners();
+	// 			alert("스크랩 가져오기 ERROR " + resMsg);
+	// 		}
+	// 	);
+	// };
+	// var _removeScrappedJobAdId = function(jobAdId) {
+	// 	if ( !jobAdId ) throw "removeScrappedJobAdId : jobAdId가 없습니다.";
 
-		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
+	// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
 
-		var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-		callApi("DELETE", SCRAPPED_JOB_AD_ID_URL, null,
-			function(resData) {
-				userInfo.scrappedJobAdIds = resData;
-				save();
-				fireScrapChageEventListeners();
-			},
-			function(resCode, resMsg) {
-				// clear();
-				fireScrapChageEventListeners();
-				alert("스크랩 가져오기 ERROR " + resMsg);
-			}
-		);
-	};
-	var _updateLocalScrappedJobAdId = function(jobAdIdArr) {
-		if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
+	// 	var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
+	// 	callApi("DELETE", SCRAPPED_JOB_AD_ID_URL, null,
+	// 		function(resData) {
+	// 			userInfo.scrappedJobAdIds = resData;
+	// 			save();
+	// 			fireScrapChageEventListeners();
+	// 		},
+	// 		function(resCode, resMsg) {
+	// 			// clear();
+	// 			fireScrapChageEventListeners();
+	// 			alert("스크랩 가져오기 ERROR " + resMsg);
+	// 		}
+	// 	);
+	// };
+	// var _updateLocalScrappedJobAdId = function(jobAdIdArr) {
+	// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
 		
-		userInfo.scrappedJobAdIds = jobAdIdArr;
-		save();
-		fireScrapChageEventListeners();
-		console.log("스크랩 ID가 Local에서 업데이트되었음");
+	// 	userInfo.scrappedJobAdIds = jobAdIdArr;
+	// 	save();
+	// 	fireScrapChageEventListeners();
+	// 	console.log("스크랩 ID가 Local에서 업데이트되었음");
 
 
-	};
+	// };
 	
 	
 
@@ -559,7 +560,7 @@ var LOGIN_INFO = (function() {
 		if ( userInfo.userType && userInfo.userType==1 ) {		// 개인회원인 경우는 다시 SAVE하자. save() 한번만으로 할 수도 있지만, _loadScrappedJobAdIds()가 실패하면 세션정보 자체를 저장못하므로, 그렇게는 안 한다.
 			console.log("===> ", userInfo);
 			
-			_loadScrappedJobAdIds();		// 여기서 세션 세이브될 것임
+			//_loadScrappedJobAdIds();		// 여기서 세션 세이브될 것임
 		}
 		
 	};
@@ -711,29 +712,29 @@ var LOGIN_INFO = (function() {
 
 
 
-		addScrapChangeEventListener: function(callbackFunc) {
-			funcScrapChangeEventListeners.push(callbackFunc);
-		},
-		clearScrapChangeEventListener: function() {
-			funcScrapChangeEventListeners = [];
-		},
+		// addScrapChangeEventListener: function(callbackFunc) {
+		// 	funcScrapChangeEventListeners.push(callbackFunc);
+		// },
+		// clearScrapChangeEventListener: function() {
+		// 	funcScrapChangeEventListeners = [];
+		// },
 		
-		getScrappedJobAdIds: function() {
-			if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
+		// getScrappedJobAdIds: function() {
+		// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
 
-			if ( userInfo.scrappedJobAdIds ) return userInfo.scrappedJobAdIds;
-			return null;
-		},
+		// 	if ( userInfo.scrappedJobAdIds ) return userInfo.scrappedJobAdIds;
+		// 	return null;
+		// },
 		
-		addScrappedJobAdId: function(jobAdId) {
-			_addScrappedJobAdId(jobAdId);
-		},
-		removeScrappedJobAdId: function(jobAdId) {
-			_removeScrappedJobAdId(jobAdId);
-		},
-		updateLocalScrappedJobAdId : function(jobAdIdArr) {
-			_updateLocalScrappedJobAdId(jobAdIdArr);
-		},
+		// addScrappedJobAdId: function(jobAdId) {
+		// 	_addScrappedJobAdId(jobAdId);
+		// },
+		// removeScrappedJobAdId: function(jobAdId) {
+		// 	_removeScrappedJobAdId(jobAdId);
+		// },
+		// updateLocalScrappedJobAdId : function(jobAdIdArr) {
+		// 	_updateLocalScrappedJobAdId(jobAdIdArr);
+		// },
 
 
 		// afterSignup: function(newUserInfo) {
@@ -2011,3 +2012,167 @@ var LoadingModal = function(loadingModalElement) {
 /*************************************************************************************************************** */
 
 
+/******************************************************************************/
+/* 구직자용 action 처리 (공고 스크랩, 원클릭지원, 전화하기)
+/*
+/******************************************************************************/
+var JobSeekerJobAdActionPanel = function() {
+
+	var html = `
+		<style>
+			.user-action-panel,
+			.user-action-panel-input:not(:checked) ~ .user-action-panel { display: none; }
+
+			.user-action-panel.active,
+			.user-action-panel-input:checked ~ .user-action-panel { display: block; }
+
+			.user-action-panel-body { display: flex; flex-direction: column; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+				width: 70%; }
+			.user-action-panel-body .btn { margin-bottom: 0.2rem; }
+
+			.user-action-panel-backdrop { display: block; position: fixed; content: ""; top: 0; left: 0; right: 0; bottom: 0; 
+				background-color: #000; opacity: 0.7; }
+		</style>
+		<input class="user-action-panel-input" id="chkActionPopup" type="checkbox" hidden>
+		<section class="user-action-panel" hidden>
+			<label class="user-action-panel-backdrop" for="chkActionPopup"></label>
+			<div class="user-action-panel-body">
+				<div class="btn btn-block btn-icon d-scrap" id="actionScrap" data-action-checked="false">스크랩</div>
+				<div class="btn btn-block btn-icon d-apply" id="actionApply" data-action-checked="false"></div>
+				<div class="btn btn-block btn-icon d-phone" id="actionCall" >전화문의</div>
+			</div>
+		</section>
+	`;
+
+	var node = document.createElement("div");
+	node.innerHTML = html;
+	document.body.appendChild(node);
+
+
+	var SELECTED_JOB_AD_ID_FOR_ACTION;
+	var SELECTED_JOB_AD_TEL_NO_FOR_ACTION;
+
+	document.getElementById("actionScrap").addEventListener("click", function() {
+		if ( !SELECTED_JOB_AD_ID_FOR_ACTION ) return;
+		
+		var element = this;
+		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 스크랩 O ==> 스크랩 X
+			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+SELECTED_JOB_AD_ID_FOR_ACTION+"/", null,
+				function(resData) {		// 여기부터는 스크랩 성공한 상태임
+					if ( resData==SELECTED_JOB_AD_ID_FOR_ACTION ) element.dataset.actionChecked = "false";
+					else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + SELECTED_JOB_AD_ID_FOR_ACTION + "]";
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		} else {																// 스크랩 X ==> 스크랩 O
+			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+SELECTED_JOB_AD_ID_FOR_ACTION+"/", null,
+				function(resData) {		// 여기부터는 스크랩 취소 성공한 상태임
+					if ( resData==SELECTED_JOB_AD_ID_FOR_ACTION ) element.dataset.actionChecked = "true";
+					else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + SELECTED_JOB_AD_ID_FOR_ACTION + "]";
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		}
+	});		
+	document.getElementById("actionApply").addEventListener("click", function() {
+		if ( !SELECTED_JOB_AD_ID_FOR_ACTION ) return;
+
+		var element = this;
+		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 지원 O ==> 지원 X
+			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+SELECTED_JOB_AD_ID_FOR_ACTION+"/", null,
+				function(resData) {		// 여기부터는 지원 성공한 상태임
+					if ( resData==SELECTED_JOB_AD_ID_FOR_ACTION ) {
+						element.dataset.actionChecked = "false";
+						alert("공고에 지원 취소되었습니다.");
+					} else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + SELECTED_JOB_AD_ID_FOR_ACTION + "]";
+					
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		} else {																// 지원 X ==> 지원 O
+			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+SELECTED_JOB_AD_ID_FOR_ACTION+"/", null,
+				function(resData) {		// 여기부터는 지원 취소 성공한 상태임
+					if ( resData==SELECTED_JOB_AD_ID_FOR_ACTION ) {
+						element.dataset.actionChecked = "true";
+						alert("공고에 지원되었습니다.");
+					} else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + SELECTED_JOB_AD_ID_FOR_ACTION + "]";
+					
+				},
+				function(errorCode, errorMsg) {
+					alert(errorMsg + " [" + errorCode + "]");
+				}
+			);
+		}
+	});
+	document.getElementById("actionCall").addEventListener("click", function() {
+		if ( !SELECTED_JOB_AD_TEL_NO_FOR_ACTION ) return;
+		
+		document.location.href="tel:"+SELECTED_JOB_AD_TEL_NO_FOR_ACTION;
+	});
+
+	
+
+	function onClickActionButton(event) {
+		if ( !event.target.dataset || !event.target.dataset.action || event.target.dataset.action!="popupActionPanel" ) return;
+
+		if ( !event.target.dataset.actionValueJobAdId )	throw "data-action-value-job-ad-id가 지정되어야 합니다.";
+		if ( !event.target.dataset.actionValueTelNo ) 	throw "data-action-value-tel-no가 지정되어야 합니다.";
+
+		if ( !LOGIN_INFO.isLoggedIn() ) {
+			alert("로그인이 필요한 기능입니다.");
+			return;
+		}
+		if ( !LOGIN_INFO.isPersonalMember() ) {
+			alert("개인회원만 이용 가능한 기능입니다.");
+			return;
+		}
+
+		console.log("액션 팝업 띄울 것임 ", event.target.dataset.actionValueJobAdId, "  ", event.target.dataset.actionValueTelNo);
+		SELECTED_JOB_AD_ID_FOR_ACTION     = event.target.dataset.actionValueJobAdId;
+		SELECTED_JOB_AD_TEL_NO_FOR_ACTION = event.target.dataset.actionValueTelNo;
+
+		callApi("GET", "/api/user/"+LOGIN_INFO.getId()+"/statusJobAdAction/", "jobAdId="+SELECTED_JOB_AD_ID_FOR_ACTION,
+            function(resData) {
+				console.log("받은 값 : ", resData);
+				if ( resData.scrap && resData.scrap==SELECTED_JOB_AD_ID_FOR_ACTION ) {
+					document.getElementById("actionScrap").dataset.actionChecked = "true";
+				} else {
+					document.getElementById("actionScrap").dataset.actionChecked = "false";
+				}
+
+				if ( resData.apply && resData.apply==SELECTED_JOB_AD_ID_FOR_ACTION ) {
+					document.getElementById("actionApply").dataset.actionChecked = "true";
+				} else {
+					document.getElementById("actionApply").dataset.actionChecked = "false";
+				}
+
+				document.getElementById("chkActionPopup").checked = true;	// 팝업 띄움
+            },
+            function(errorCode, errorMsg) {
+                console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+	}
+
+	return {
+		onClickActionButton
+	};
+
+
+	// document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
+	// 	console.log("이벤트 걸었음 ", element);
+	// 	element.addEventListener("click", onClickActionButton);
+	// });
+	// document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
+	// 	console.log("이벤트 걸었음 ", element);
+	// 	element.addEventListener("click", onClickActionButton);
+	// });
+
+}

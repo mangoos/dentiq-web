@@ -261,6 +261,7 @@
                 <div class="dental-modal-container columns">
                     <div class="modal-container-header">
                         <div class="modal-container-header-title">LIVE Filter</div>
+                        <div class="modal-container-header-desc">필터를 선택해서 원하는 공고를 찾습니다.</div>
                         <label class="modal-close-label" for="livefilter-modal" rel="dental-modal" title="닫기"><i class="fas fa-window-close"></i></label>
                     </div>
                     <div class="modal-container-body">
@@ -409,7 +410,7 @@
 						<div class="dental-info">{{{renderAttrOnCard attr}}}</div>
 					</div>
 				</a>
-				<span class="btn-icon d-scrap" data-action="scrap" data-action-value="{{jobAdId}}" ></span>
+				<span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
 			</div>
             {{/each}}
         </script>
@@ -454,20 +455,24 @@
                         </div>
                     </div>
                 </a>
+                <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
                 <div class="jobpost-list-card-footer">
-					<span class="footer-item">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
-					<span class="btn btn-icon btn-sm d-scrap" data-action="scrap" data-action-value="{{jobAdId}}" >스크랩</span>
+					<span class="jobpost-list-card-chip jobpost-date">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
+					<!-- <span class="btn btn-icon btn-sm d-scrap" data-action="scrap" data-action-value="{{jobAdId}}" >스크랩</span>
 					<span class="btn btn-icon btn-sm d-apply" data-action="apply" data-action-value="{{jobAdId}}" ></span>
-					<span class="btn btn-icon btn-sm d-phone"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}">전화문의</span>
+					<span class="btn btn-icon btn-sm d-phone"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}">전화문의</span> -->
                 </div>
             </div>
             {{/each}}
         </script>
-    </section>
+	</section>
+	
 </body>
 </html>
 
 <script>
+
+
 
 // 속도가 빠름. 그러나 ordering 안 됨 ==> 입력할 때의 ordering을 의지한다 ㅠㅠ
 function renderAttrOnCard2(attrList) {
@@ -520,137 +525,17 @@ function renderAttrOnCard(attrList) {
 
 var LiveBoardApp = (function() {
 
-
 	/******************************************************************************/
-    /* action 처리 (공고 스크랩, 원클릭지원, 전화하기)
-    /*
+    /* 스크랩 / 지원 / 전화 걸기 ACTION PANEL에 대한 Event 부착
 	/******************************************************************************/
-
-	// 현재 사용자가 개인 회원인 경우, 사용자가 지원한 공고ID들
-	var CURRENT_USER_APPLIED_JOB_AD_ID_LIST;
-
-	// 스크랩 변경되었을 때, 스크랩버튼을 토글해준다.	LOGIN_INFO.addScrapChangeEventListener로 걸려있음
-	function renderScrapCheckbox() {
-		console.log("renderScrapCheckbox 호출됨");
-		var scrappedJobAdIs = LOGIN_INFO.getScrappedJobAdIds();
-		
-		document.querySelectorAll("[data-action='scrap']").forEach(function(el) {
-			el.dataset.actionChecked = "false";
-		});
-
-		if ( !scrappedJobAdIs || scrappedJobAdIs.length<1 ) return;
-
-		scrappedJobAdIs.forEach(function(_jobAdId) {
-			document.querySelectorAll("[data-action='scrap'][data-action-value='" + _jobAdId + "']").forEach(function(el) {
-				el.dataset.actionChecked = "true";
-				console.log("\trenderScrapCheckbox 체크됨 ", _jobAdId, "    ", el);
-			});
-		});
-	}
-	LOGIN_INFO.addScrapChangeEventListener(renderScrapCheckbox);
-
-
-	function renderAppliedCheckbox() {
-		document.querySelectorAll("[data-action='apply']").forEach(function(el) {
-			el.dataset.actionChecked = "false";
-		});
-		if ( !CURRENT_USER_APPLIED_JOB_AD_ID_LIST || CURRENT_USER_APPLIED_JOB_AD_ID_LIST.length<1 ) return;
-
-		CURRENT_USER_APPLIED_JOB_AD_ID_LIST.forEach(function(_jobAdId) {
-			document.querySelectorAll("[data-action='apply'][data-action-value='" + _jobAdId + "']").forEach(function(el) {
-				el.dataset.actionChecked = "true";
-				console.log("\trenderAppliedCheckbox 체크됨 ", _jobAdId, "    ", el);
-			});
-		});
-	}
-	function toggleApply(_httpMethod, _jobAdId) {
-		callApi(_httpMethod, "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+_jobAdId+"/", null,
-			function(resData) {
-				// 여기부터는 지원 성공한 상태임
-				if ( resData ) {
-					CURRENT_USER_APPLIED_JOB_AD_ID_LIST = resData;
-				} else {
-					CURRENT_USER_APPLIED_JOB_AD_ID_LIST = null;
-				}
-				
-				if ( _httpMethod=="POST" ) {
-					alert("공고에 지원되었습니다.");
-				} else {
-					alert("지원이 취소되었습니다.");
-				}
-				renderAppliedCheckbox(resData);
-			},
-			function(errorCode, errorMsg) {
-				//alert("지원 상태 변경에 실패했습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
-				alert(errorMsg + " [" + errorCode + "]");
-			}
-		);
-	}
-
-
-	function onClickAction(event) {
-
-		if ( !LOGIN_INFO.isLoggedIn() ) {
-			alert("로그인이 필요한 기능입니다.");
-			return;
-		}
-
-		if ( !LOGIN_INFO.isPersonalMember() ) {
-			alert("개인회원만 이용 가능한 기능입니다.");
-			return;
-		}
-
-		var target = event.target;
-		console.log("===================>   ", target);
-		if ( !target.dataset || !target.dataset.action || !target.dataset.actionValue ) return;
-		
-		console.log("잡았다   ", target.dataset.action);
-
-		switch(target.dataset.action) {
-			case "scrap":
-				console.log("스크랩 할 것임 : ", target.dataset.actionChecked);
-				if ( target.dataset.actionChecked && target.dataset.actionChecked=="true" ) {	// 스크랩O --> 스크랩X
-					console.log("스크랩O --> 스크랩X")
-					LOGIN_INFO.removeScrappedJobAdId(target.dataset.actionValue);
-				} else {															// 스크랩X --> 스크랩O
-					console.log("스크랩X --> 스크랩O")
-					LOGIN_INFO.addScrappedJobAdId(target.dataset.actionValue);
-				}
-				
-				break;
-
-			case "apply":
-				if ( target.dataset.actionChecked && target.dataset.actionChecked=="true" ) {	// 이미 지원한 것 --> 지원취소
-					var goCancelApply = confirm("해당 공고에 지원을 취소하시겠습니까?");
-					if ( !goCancelApply ) return;
-
-					toggleApply("DELETE", target.dataset.actionValue);
-				} else {															// 지원 안한 것 --> 지원
-					var goApply = confirm("해당 공고에 원클릭 지원하시겠습니까?");
-					if ( !goApply ) return;
-
-					toggleApply("POST", target.dataset.actionValue);
-				}
-				break;
-
-			case "call":
-				console.log("전화걸기");
-				document.location.href="tel:"+target.dataset.actionValue;
-				break;
-
-			default:
-				throw "정의되지 않은 action [" + action + "]";
-		}
-
-
-	}
+	var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
 	document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
 		console.log("이벤트 걸었음 ", element);
-		element.addEventListener("click", onClickAction);
+		element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
 	});
 	document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
 		console.log("이벤트 걸었음 ", element);
-		element.addEventListener("click", onClickAction);
+		element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
 	});
 
 	
@@ -738,8 +623,8 @@ var LiveBoardApp = (function() {
                 var itemList = premierJobAdsTemplateCompiled(jobAdList);
 				$('#premierJobAdsList').html(itemList);
 
-				renderScrapCheckbox();		// 스크랩된 공고에 별표시
-				renderAppliedCheckbox();	// 지원상태를 표시
+				//renderScrapCheckbox();		// 스크랩된 공고에 별표시
+				//renderAppliedCheckbox();	// 지원상태를 표시
             },
             function(errorCode, errorMsg) {
                 console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
@@ -788,8 +673,8 @@ var LiveBoardApp = (function() {
                 else $('#generalJobAdsList').html(itemList);
 
                 
-				renderScrapCheckbox();		// 스크랩된 공고에 별표시
-				renderAppliedCheckbox();	// 지원상태를 표시
+				//renderScrapCheckbox();		// 스크랩된 공고에 별표시
+				//renderAppliedCheckbox();	// 지원상태를 표시
 
                 SCROLL_LOCK = false;
             },
@@ -859,37 +744,18 @@ var LiveBoardApp = (function() {
 			document.getElementById("divLiveBoardSidoLabel").style.display="none";		// 전국/시도 선택 영역 보이지 않게 함.
 
 			if ( ACTION_TYPE=="INTEREST" ) {
-				summaryApiUrl = "/api/user/" + LOGIN_INFO.getId() + "/interestLocationSummary/";
-			
+				summaryApiUrl = "/api/user/" + LOGIN_INFO.getId() + "/interestLocationSummary/";			
 			} else if ( ACTION_TYPE=="HOME" ) {
 				summaryApiUrl = "/api/user/" + LOGIN_INFO.getId() + "/homeLocationSummary/";
 			}
 		
-		} else {		
-			
+		} else {
 			document.getElementById("divLiveBoardSidoLabel").style.display="";			// 전국/시도 선택 영역 보이게 함
-
-			summaryApiUrl = "/api/jobAd/summary/"
-
+			summaryApiUrl = "/api/jobAd/summary/";
 			if ( BASE_SIDO_CODE ) {			// 참고 : 서버의 JobAdSummary 클래스
 				queryParamStringForSummary = "sidoCode="+BASE_SIDO_CODE+"&" + queryParamString;
 			}
 		
-		}
-
-		// 만일 로그인 상태이고 개인회원이라면, 이미 지원한 공고에 대해서 지원여부를 표시하여야 한다.  2018.04.22 추가
-		if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
-			callApi("GET", "/api/user/" + LOGIN_INFO.getId() + "/appliedJobAdId/", null,
-				function(resData) {
-					if ( resData )	CURRENT_USER_APPLIED_JOB_AD_ID_LIST = resData;
-					else			CURRENT_USER_APPLIED_JOB_AD_ID_LIST = null;
-					console.log("개인회원의 지원 정보 수신했음 ", resData);
-				},
-				function(errorCode, errorMsg) {
-					CURRENT_USER_APPLIED_JOB_AD_ID_LIST = null;
-					alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-				}
-			);
 		}
 
 

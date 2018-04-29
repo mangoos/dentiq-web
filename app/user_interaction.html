@@ -103,12 +103,10 @@
                                                     <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
                                                 </div>
                                             </div>
-                                        </a>
-                                        <div class="jobpost-list-card-footer">
-                                            <span class="footer-item">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
-                                            <span class="btn btn-icon btn-sm d-scrap" data-action="scrap" data-action-value="{{jobAdId}}">스크랩</span>
-                                            <span class="btn btn-icon btn-sm d-apply" data-action="apply" data-action-value="{{jobAdId}}"></span>
-                                            <span class="btn btn-icon btn-sm d-phone"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}">전화문의</span>
+										</a>
+										<span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                                        <div class="jobpost-list-card-footer">											
+                                            <span class="jobpost-list-card-chip jobpost-date">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
                                         </div>
                                     </div>
                                     {{/each}}
@@ -233,7 +231,19 @@ var HospitaInteractionApp = (function() {
 	function init() {
 		if ( !LOGIN_INFO.checkAuthPersonal() ) return;
 
-		LOGIN_INFO.addScrapChangeEventListener(renderScrapCheckbox);
+
+		/******************************************************************************/
+		/* 스크랩 / 지원 / 전화 걸기 ACTION PANEL에 대한 Event 부착
+		/******************************************************************************/
+		var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
+		document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
+			console.log("이벤트 걸었음 ", element);
+			element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+		});
+
+
+
+		//LOGIN_INFO.addScrapChangeEventListener(renderScrapCheckbox);
 		listJobAd("1");
 	}
 
@@ -284,97 +294,6 @@ var HospitaInteractionApp = (function() {
 
 
 
-	
-
-	
-	// 스크랩 변경되었을 때, 스크랩버튼을 토글해준다.	LOGIN_INFO.addScrapChangeEventListener로 걸려있음
-	function renderScrapCheckbox() {
-		console.log("renderScrapCheckbox 호출됨");
-		var scrappedJobAdIs = LOGIN_INFO.getScrappedJobAdIds();
-		
-		document.querySelectorAll("[data-action='scrap']").forEach(function(el) {
-			el.dataset.actionChecked = "false";
-		});
-
-		if ( !scrappedJobAdIs || scrappedJobAdIs.length<1 ) return;
-
-		scrappedJobAdIs.forEach(function(_jobAdId) {
-			document.querySelectorAll("[data-action='scrap'][data-action-value='" + _jobAdId + "']").forEach(function(el) {
-				el.dataset.actionChecked = "true";
-				console.log("\trenderScrapCheckbox 체크됨 ", _jobAdId, "    ", el);
-			});
-		});
-	}
-
-	function renderAppliedCheckbox(appliedJobAdList) {
-		document.querySelectorAll("[data-action='apply']").forEach(function(el) {
-			el.dataset.actionChecked = "false";
-		});
-		if ( !appliedJobAdList || appliedJobAdList.length<1 ) return;
-
-		appliedJobAdList.forEach(function(_jobAdId) {
-			document.querySelectorAll("[data-action='apply'][data-action-value='" + _jobAdId + "']").forEach(function(el) {
-				el.dataset.actionChecked = "true";
-				console.log("\trenderAppliedCheckbox 체크됨 ", _jobAdId, "    ", el);
-			});
-		});
-	}
-	function toggleApply(_httpMethod, _jobAdId) {
-		callApi(_httpMethod, "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+_jobAdId+"/", null,
-			function(resData) {
-				// 여기부터는 지원 성공한 상태임
-				renderAppliedCheckbox(resData);
-			},
-			function(errorCode, errorMsg) {
-                alert("지원 상태 변경에 실패했습니다. [" + errorCode + "] ==> [" + errorMsg + "]");
-			}
-		);
-	}
-
-	
-	function onClickAction(event) {	
-		var target = event.target;
-		//console.log("asdfadfasdf   ", target);
-		if ( !target.dataset || !target.dataset.action || !target.dataset.actionValue ) return;
-		
-		console.log("잡았다   ", target.dataset.action);
-
-		switch(target.dataset.action) {
-			case "scrap":
-				console.log("스크랩 할 것임 : ", target.dataset.actionChecked);
-				if ( target.dataset.actionChecked && target.dataset.actionChecked=="true" ) {	// 스크랩O --> 스크랩X
-					console.log("스크랩O --> 스크랩X")
-					LOGIN_INFO.removeScrappedJobAdId(target.dataset.actionValue);
-				} else {															// 스크랩X --> 스크랩O
-					console.log("스크랩X --> 스크랩O")
-					LOGIN_INFO.addScrappedJobAdId(target.dataset.actionValue);
-				}
-				
-				break;
-
-			case "apply":
-				if ( target.dataset.actionChecked && target.dataset.actionChecked=="true" ) {	// 이미 지원한 것 --> 지원취소
-					toggleApply("DELETE", target.dataset.actionValue);
-				} else {															// 지원 안한 것 --> 지원
-					toggleApply("POST", target.dataset.actionValue);
-				}
-				break;
-
-			case "call":
-				console.log("전화걸기");
-				document.location.href="tel:"+target.dataset.actionValue;
-				break;
-
-			default:
-				throw "정의되지 않은 action [" + action + "]";
-		}
-	}
-	document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
-		console.log("이벤트 걸었음 ", element);
-		element.addEventListener("click", onClickAction);
-	});
-
-
 
 
 	var jobAdCardTemplate = document.getElementById("jobAdCardTemplate").innerHTML;
@@ -415,13 +334,6 @@ var HospitaInteractionApp = (function() {
 							document.getElementById("radio-empty-interest-hospital").checked = true;
 							break;
 						case "2":
-							// LOGIN_INFO의 스크랩 공고 내용을 업데이트한다.
-							var jobAdIdArr = [];
-							resData.forEach(function(_jobAd) {
-								jobAdIdArr.push(_jobAd.jobAdId);
-							});
-							LOGIN_INFO.updateLocalScrappedJobAdId(jobAdIdArr);
-
 							document.getElementById("jobAdCardListForScrap").innerHTML = jobAdCardList;
 							document.getElementById("scrap-cnt").innerText = resData.length;
 							document.getElementById("radio-empty-scrap").checked = true;
@@ -444,8 +356,6 @@ var HospitaInteractionApp = (function() {
 					document.getElementById("radio-empty-apply").checked = false;
 					document.getElementById("radio-empty-offer").checked = false;
 				}
-
-				renderScrapCheckbox();
 
 			},
 			function(errorCode, errorMsg) {

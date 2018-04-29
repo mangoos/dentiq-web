@@ -45,8 +45,8 @@
                         <span class="user-photo-box-icon" style=" width: auto; height: auto; font-size: 1.2rem; color: #c4c2c2;"><i class="fal fa-plus-circle"></i></span>
                     </div>
                 </div>
-                <div class="user-photo-title"></div>
-                <div class="user-photo-subtitle"></div>
+                <div class="user-photo-title">치과병원</div>
+                <div class="user-photo-subtitle">dentist@dental.co.kr</div>
             </div>
             <div class="fixed-layer-action">
                 <button class="fixed-layer-action-btn" id="btnSubmit" type="submit" disabled hidden></button>
@@ -150,9 +150,11 @@
     
                     <fieldset class="form-group need-validator">
                         <input class="styled-input d-reg-onlyNumber" type="text" name="hiringCnt" class="recruitNum" maxlength="3" max="3" required>
-                        <span class="form-group-underline"></span>
-                        <div class="form-group-msg2"></div>
                         <label class="styled-label">채용인원</label>
+                        <span class="form-group-desc">숫자로만 입력</span>
+                        <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>  
+                        <span class="form-group-underline"></span> 
+                        <div class="form-group-msg2"></div>
                     </fieldset>
                     <fieldset>
                         <div class="form-group">
@@ -271,7 +273,7 @@
                             <input id="chkWorkingTimeWeekend" type="checkbox" hidden><label for="chkWorkingTimeWeekend"><span class="chip" style="width: 5rem;">주말</span></label>
                             <input id="chkWorkingTimeText"    type="checkbox" hidden><label for="chkWorkingTimeText"><span class="chip" style="width: 5rem;">기타/추가</span></label>
             
-                            <div class="operation-time form-group" id="divWorkingTimeWeekday" hidden>   <!-- 평일 근무시간 -->
+                            <div class="operation-time form-group" id="divWorkingTimeWeekday">   <!-- 평일 근무시간 -->
                                 <select class="select-two styled-select" id="workingTimeWeekdayStart" name="jobWorkingTimeWeekdayStart"></select>
                                 <select class="select-two styled-select" id="workingTimeWeekdayEnd"   name="jobWorkingTimeWeekdayEnd" disabled></select>
                                 <label class="styled-label">평일 근무시간</label>
