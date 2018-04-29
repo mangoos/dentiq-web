@@ -164,29 +164,90 @@ var HospitaHrManagementApp = (function() {
 	}
 
 
+	var SCROLL_LOCK = false;                    // 페이지 스크롤 LOCK
+
+	var totalCountOfGeneralJobAds = 0;          // 전체 일반 공고 개수
+	var totalCountOfPremierJobAds = 0;			// 프리미어 공고 개수
+	var lastPageNo = 1;                         // 최근 조회 페이지
+	//var lastQueryString;                        // 최종 Query String
+
+	// {pageNo: 1, itemCntPerPage: 10, startIndexOnPage: 0, totalItemCnt: 1, totalPageCnt: 1}
+
+	var PAGE_INFO;
+
 	function listResume(pageNo) {
+
+		if (SCROLL_LOCK) {
+            console.log("SCROLL LOCKED - in JS");
+            setTimeout(function() {
+                SCROLL_LOCK = false;
+                console.log("listJobAds:SCROLL_LOCK 풀렸음");
+            }, 500);
+            return;
+        }
+		SCROLL_LOCK = true;
+		
+		
+		if ( !pageNo ) pageNo = 1;
+
 
 		var hospitalId = LOGIN_INFO.getHospitalId();
 		var apiUrl ="/api/resume/";
 
-		callApi("GET", apiUrl, "pageNo=2",
+		callApi("GET", apiUrl, "pageNo="+pageNo,
 			function(resData, pageInfo) {
-				console.log(resData, " ==> ", pageInfo);
+				console.log("페이지정보  ==> ", pageInfo);
+				if ( pageInfo ) PAGE_INFO = pageInfo;
+
 				if ( resData && Array.isArray(resData) && resData.length>0 ) {
 
-					document.getElementById("divResumeCardSearched").innerHTML = resumeCardTemplateCompiled(resData);
-					document.getElementById("countOfResumeSearched").innerText = resData.length;
-
+					if ( pageNo && pageNo > 1)	$('#divResumeCardSearched').append(resumeCardTemplateCompiled(resData));
+					else $('#divResumeCardSearched').html(resumeCardTemplateCompiled(resData));
+					
+					document.getElementById("countOfResumeSearched").innerText = PAGE_INFO.totalItemCnt;
 					document.getElementById("btnOpenContents4").checked = true;
 
+				} else if ( pageNo > 1 ) {
+					document.getElementById("btnOpenContents4").checked = true;
+				
 				} else {
 					document.getElementById("btnOpenContents4").checked = false;
 				}
+				SCROLL_LOCK = false;
 			},
 			function(errorCode, errorMsg) {
+				SCROLL_LOCK = false;
 				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
 			}
 		);
 	}
+
+
+
+
+    /******************************************************************************/
+    /*  스크롤했을 때, 이력서에 대한 append 처리
+    /*  
+    /*******************************************************************************/
+    $(window).scroll(function() {
+
+		if ( !PAGE_INFO || !PAGE_INFO.totalItemCnt || !PAGE_INFO.itemCntPerPage || PAGE_INFO.totalItemCnt<=PAGE_INFO.itemCntPerPage ) return;
+
+		if ( lastPageNo >= PAGE_INFO.totalPageCnt ) return;
+
+        if (SCROLL_LOCK) {
+            console.log("SCROLL : LOCKED");
+            setTimeout(function() {
+                SCROLL_LOCK = false;
+                console.log("SCROLL_LOCK 풀렸음");
+            }, 500);
+            return;
+        }
+
+        if (Math.ceil($(window).scrollTop()) >= ($(document).height() - $(window).height() * 3)) {
+			//listGeneralJobAds(lastPageNo + 1, lastQueryString);
+			listResume(lastPageNo+1);
+        }
+    });
 })();
 </script>
