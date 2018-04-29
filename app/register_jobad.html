@@ -99,8 +99,30 @@
     
                         
     
-                        //TODO 고용형태, 채용부분, 담담업무 각각에 대하여 각 그룹에서 1개라도 선택하였는지를 submit 시에 확인하여야 한다.
-    
+                       
+						// 해당 속성 그룹내에서 최소 1개는 선택되었는지 검증한다.
+                        function validateDivAttrSelected(attrGroupName) {
+                            var checkedMemberCount = document.getElementById("divAttr").querySelectorAll("input[type=checkbox][data-checkbox-group='" + attrGroupName + "']:checked").length;
+                            //console.log("checkedMemberCount : ", checkedMemberCount);
+                            if ( checkedMemberCount === 0 ) {
+                                var groupText = CODE_CONTAINER.getAttrMap()[attrGroupName].text;
+                                alert(groupText + "에서 하나 이상의 조건을 선택하셔야 합니다.");
+                                //document.getElementById("divAttr").focus();
+                                return false;
+                            }
+
+                            return true;
+                        }
+                        function onClickDivAttr(event) {
+                            var target = event.target;
+                            if ( !target.type || target.type!=="checkbox" ) return;
+
+                            var attrGroupName = target.dataset.checkboxGroup;
+                            validateDivAttrSelected(attrGroupName);
+                        }
+                        document.getElementById("divAttr").addEventListener("click", onClickDivAttr);
+
+
                         //var attrCheckboxGroup = new DynamicCheckboxGroup(document.getElementById("jobAdForm"), "attr[]");
                     </script>
     
@@ -702,7 +724,15 @@
 
 
         function onSubmitForModify(e) {
-            e.preventDefault();
+			e.preventDefault();
+			
+			// 지원 속성에서 각 그룹별로 1개는 선택하여야 한다. 이에 대한 검증을 실시한다.
+			var attrGroups = CODE_CONTAINER.getAttrs();
+			for ( var i=0; i<attrGroups.length; i++ ) {
+				if ( !validateDivAttrSelected(attrGroups[i].group) ) {
+					return;
+				}
+			}
 
             console.log("서밋 처리하는 중... ", this);
             //return;
@@ -737,7 +767,15 @@
         
 
         function onSubmitForRegister(e) {
-            e.preventDefault();
+			e.preventDefault();
+			
+			// 지원 속성에서 각 그룹별로 1개는 선택하여야 한다. 이에 대한 검증을 실시한다.
+			var attrGroups = CODE_CONTAINER.getAttrs();
+			for ( var i=0; i<attrGroups.length; i++ ) {
+				if ( !validateDivAttrSelected(attrGroups[i].group) ) {
+					return;
+				}
+			}
 
             
 
