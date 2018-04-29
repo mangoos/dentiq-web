@@ -135,7 +135,7 @@
                                     <script id="jobAdCardForEditTemplate" type="text/x-handlebars-template">
                                         {{#each .}}
                                         <div class="jobpost-list-card">
-                                            <a href="register_jobad.html?jobAdId={{jobAdId}}&reqUpgrade=Y">
+                                            <a href="register_jobad.html?jobAdId={{jobAdId}}">
                                                 <div class="jobpost-list-card-header">
                                                     <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
                                                     <div class="jobpost-list-card-subtitle">{{title}}</div>
@@ -161,7 +161,7 @@
                                                 </div>
                                             </a>
                                             <div class="jobpost-list-card-footer">
-                                                <span class="footer-item">등록일: {{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
+                                                <span class="footer-item">시작일: {{hiringStartDate}} ({{hiringStartDateDay}})</span> <!-- 마감날짜 -->
                                                 <span class="footer-item">마감일: {{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
                                             </div>
                                         </div>
