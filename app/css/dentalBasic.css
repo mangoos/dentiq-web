@@ -435,7 +435,7 @@ h6, .h6 { font-size: .8rem; }
 
 .d-dots-h::before { content: "\f39b"; font-weight: 400; }
 
-.camera-icon { font-family: 'Font Awesome 5 Pro'; font-weight: 600; font-size: 1rem; color: inherit; cursor: pointer; }
+.camera-icon { font-family: 'Font Awesome 5 Pro'; font-weight: 600; font-size: 1rem; color: inherit; }
 .camera-icon::before { content: "\f030"; }
 
 .like-icon { font-family: 'Font Awesome 5 Pro'; font-weight: 400; font-size: 1.3rem; color: inherit; }
@@ -804,9 +804,6 @@ h6, .h6 { font-size: .8rem; }
     text-rendering: auto; -webkit-font-smoothing: antialiased; font-variant: normal; padding: 5rem 0; }
 .list-zero::before { content: "\f119"; color: #5d5d5d; font-weight: 300; font-size: 200%; }
 .list-zero::after { content: "조회결과가 없습니다."; color: #5d5d5d; font-size: 120%; }
-
-.jobpost-list-body:empty::before { content: "\f119"; color: #5d5d5d; font-weight: 300; font-size: 200%; }
-.jobpost-list-body:empty::after { content: "조회결과가 없습니다."; color: #5d5d5d; font-size: 120%; }
 
 .container { display: block; padding: 0; margin: 0 auto; }
 
@@ -2301,7 +2298,7 @@ section.register-dentist { padding-top: 1rem; padding-bottom: 4rem; }
 
 section.register-dentist .dental-card { background-color: #FFF; }
 
-section.register-dentist .step { display: none; }
+/* section.register-dentist .step { display: none; } */
 
 section.register-dentist .step-content-header { padding-bottom: 0.5rem !important; }
 

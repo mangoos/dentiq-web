@@ -457,7 +457,7 @@
                 </a>
                 <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
                 <div class="jobpost-list-card-footer">
-					<span class="jobpost-list-card-chip jobpost-date">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
+					<span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span>
 					<!-- <span class="btn btn-icon btn-sm d-scrap" data-action="scrap" data-action-value="{{jobAdId}}" >스크랩</span>
 					<span class="btn btn-icon btn-sm d-apply" data-action="apply" data-action-value="{{jobAdId}}" ></span>
 					<span class="btn btn-icon btn-sm d-phone"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}">전화문의</span> -->
@@ -560,6 +560,10 @@ var LiveBoardApp = (function() {
 	Handlebars.registerHelper("renderHospitalLogoImage", function(hospitalId, flag) {
 		console.log("renderHospitalLogoImage ", hospitalId, flag);
 		if ( flag ) return CONSTANTS.getHospitalLogoImageUrl(hospitalId);
+    });
+
+    Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
+        return renderMslashD(hiringEndDate);
     });
 
 

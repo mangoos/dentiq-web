@@ -13,6 +13,7 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
     <style>
         /* 문서내 스타일 설정은 미세조정, 미세 오버라이드 내용을 담는다 */
         .dental-tabs { margin-top: 0.3rem; }
@@ -106,7 +107,7 @@
 										</a>
 										<span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
                                         <div class="jobpost-list-card-footer">											
-                                            <span class="jobpost-list-card-chip jobpost-date">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
+                                            <span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span>
                                         </div>
                                     </div>
                                     {{/each}}
@@ -218,11 +219,14 @@
         <div class="dental-tabs-footer"></div>
     </div>
 </body>
-
+<script> 
+    
+</script>
 </html>
 
 
 <script>
+
 
 var HospitaInteractionApp = (function() {
 
@@ -267,7 +271,12 @@ var HospitaInteractionApp = (function() {
 	Handlebars.registerHelper("renderAttrOnCard", function(code) {
         //console.log("renderAttrOnCard ", code);
         return renderAttrOnCard(code);
-	});
+    });
+    // 선정우가 등록, 아래 헬퍼 그대로 liveboard.html 에 있음.
+    Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
+        console.log("renderMslashD ", hiringEndDate);
+        return renderMslashD(hiringEndDate);
+    });
 	// 속도 느림. 그러나 ordering 됨
 	function renderAttrOnCard(attrList) {
 		if ( attrList==null || attrList.length==0 ) return "";

@@ -217,9 +217,7 @@
                         <span class="info-card-item-title">점심시간</span>
                         <p class="info-card-item-desc">
                             <span id="jobAd-lunchTimeStart">***13시</span>
-                            <span>~</span>
                             <span id="jobAd-lunchTimeEnd">***13시</span>
-                            <span>***(1시간)</span>
                         </p>
                         <p class="info-card-item-desc2">* 상황에 따라 협의 하에 변동이 있을 수 있습니다. </p>
                     </li>
@@ -485,23 +483,23 @@ function fillData(resData) {
     document.getElementById("hospital-logoUrl").src                 = getText(resData.hospital.fullLogoUrl);    // {{fullLogoUrl}}
     document.getElementById("jobAd-title-1").innerText              = getText(resData.title);
     document.getElementById("jobAd-title-2").innerText              = getText(resData.title);
-    document.getElementById("hospital-locationText").innerText      = getText(resData.hospital.sidoName) + "> " + getText(resData.hospital.location.siguName) + "> " + getText(resData.hospital.location.emdNm);
-    document.getElementById("jobAd-hiringStartDate").innerText      = getText(resData.hiringStartDate);
-    document.getElementById("jobAd-hiringEndDate").innerText        = getText(resData.hiringEndDate);
+    document.getElementById("hospital-locationText").innerText      = getText(resData.hospital.location.sidoName) + "> " + getText(resData.hospital.location.siguName) + "> " + getText(resData.hospital.location.emdNm);
+    document.getElementById("jobAd-hiringStartDate").innerText      = renderFullDateKR( getText(resData.hiringStartDate) );
+    document.getElementById("jobAd-hiringEndDate").innerText        = renderFullDateKR( getText(resData.hiringEndDate) );
 
     document.getElementById("jobAd-hrOfficerName").innerText        = getText(resData.hrOfficerName);
     document.getElementById("jobAd-hrTelNo").innerText              = getText(resData.hrTelNo);
     document.getElementById("jobAd-hrEmail").innerText              = getText(resData.hrEmail);
 
     document.getElementById("hospital-bizRegName").innerText        = getText(resData.hospital.bizRegName);
-    document.getElementById("hospital-estDate").innerText           = getText(resData.hospital.estDate);
+    document.getElementById("hospital-estDate").innerText           = renderFullDateKR( getText(resData.hospital.estDate) );
     document.getElementById("hospital-ceoName").innerText           = getText(resData.hospital.ceoName);
     document.getElementById("hospital-hospUrl").innerText           = getText(resData.hospital.hospitalUrl);
     document.getElementById("hospital-addrMain").innerText          = getText(resData.hospital.location.addrMain);
     document.getElementById("hospital-addrDetail").innerText        = getText(resData.hospital.location.addrDetail);
 
-    document.getElementById("hospital-lunchTimeStart").innerText    = getText(resData.hospital.lunchTimeStart);
-    document.getElementById("hospital-lunchTimeEnd").innerText      = getText(resData.hospital.lunchTimeEnd);
+    document.getElementById("hospital-lunchTimeStart").innerText    = renderTimeKR( getText(resData.hospital.lunchTimeStart) );
+    document.getElementById("hospital-lunchTimeEnd").innerText      = renderTimeKR( getText(resData.hospital.lunchTimeEnd) );
     document.getElementById("hospital-totalMemberCnt").innerText    = getText(resData.hospital.totalMemberCnt) + " 명";
     document.getElementById("hospital-clinicSubject").innerText     = getText(resData.hospital.clinicSubject);
     //document.getElementById("hospital-email").innerText             = getText(resData.hospital.email;
@@ -514,12 +512,12 @@ function fillData(resData) {
 
     // // 공고 - 평일/휴일/기타 근무시간
     var jobAdWorkingTimeWeekday = "";
-    if ( resData.jobWorkingTimeWeekdayStart ) jobAdWorkingTimeWeekday += getText(resData.jobWorkingTimeWeekdayStart);
-    if ( resData.jobWorkingTimeWeekdayEnd )   jobAdWorkingTimeWeekday += " ~ " + getText(resData.jobWorkingTimeWeekdayStart);
+    if ( resData.jobWorkingTimeWeekdayStart ) jobAdWorkingTimeWeekday += renderTimeKR( getText(resData.jobWorkingTimeWeekdayStart) );
+    if ( resData.jobWorkingTimeWeekdayEnd )   jobAdWorkingTimeWeekday += " ~ " + renderTimeKR( getText(resData.jobWorkingTimeWeekdayStart) );
 
     var jobAdWorkingTimeWeekend = "";
-    if ( resData.jobWorkingTimeWeekendStart ) jobAdWorkingTimeWeekend += getText(resData.jobWorkingTimeWeekendStart);
-    if ( resData.jobWorkingTimeWeekendEnd )   jobAdWorkingTimeWeekend += " ~ " + getText(resData.jobWorkingTimeWeekendEnd);
+    if ( resData.jobWorkingTimeWeekendStart ) jobAdWorkingTimeWeekend += renderTimeKR( getText(resData.jobWorkingTimeWeekendStart) );
+    if ( resData.jobWorkingTimeWeekendEnd )   jobAdWorkingTimeWeekend += " ~ " + renderTimeKR( getText(resData.jobWorkingTimeWeekendEnd) );
 
     var jobAdWorkingTimeText = "";
     if ( resData.jobWorkingTimeText ) jobAdWorkingTimeText += getText(resData.jobWorkingTimeText);
@@ -543,8 +541,8 @@ function fillData(resData) {
     document.getElementById("jobAd-hiringCnt").innerText            = getText(resData.hiringCnt) + " 명";
 
 
-    document.getElementById("jobAd-lunchTimeStart").innerText       = getText(resData.jobLunchTimeStart);
-    document.getElementById("jobAd-lunchTimeEnd").innerText         = getText(resData.jobLunchTimeEnd);
+    document.getElementById("jobAd-lunchTimeStart").innerText       = renderTimeKR( getText(resData.jobLunchTimeStart) );
+    document.getElementById("jobAd-lunchTimeEnd").innerText         = "~" + renderTimeKR( getText(resData.jobLunchTimeEnd) ) || "";
 
     //console.log("attr: ", resData.jobAd.attr);
 
@@ -567,12 +565,12 @@ function fillData(resData) {
 
     // 병원 - 평일/휴일/기타 근무시간
     var hospitalWorkingTimeWeekday = "";
-    if ( resData.hospital.workingTimeWeekdayStart ) hospitalWorkingTimeWeekday += getText(resData.hospital.workingTimeWeekdayStart);
-    if ( resData.hospital.workingTimeWeekdayEnd )   hospitalWorkingTimeWeekday += " ~ " + getText(resData.hospital.workingTimeWeekdayStart);
+    if ( resData.hospital.workingTimeWeekdayStart ) hospitalWorkingTimeWeekday += renderTimeKR( getText(resData.hospital.workingTimeWeekdayStart) );
+    if ( resData.hospital.workingTimeWeekdayEnd )   hospitalWorkingTimeWeekday += " ~ " + renderTimeKR( getText(resData.hospital.workingTimeWeekdayStart) );
 
     var hospitalWorkingTimeWeekend = "";
-    if ( resData.hospital.workingTimeWeekendStart ) hospitalWorkingTimeWeekend += getText(resData.hospital.workingTimeWeekendStart);
-    if ( resData.hospital.workingTimeWeekendEnd )   hospitalWorkingTimeWeekend += " ~ " + getText(resData.hospital.workingTimeWeekendEnd);
+    if ( resData.hospital.workingTimeWeekendStart ) hospitalWorkingTimeWeekend += renderTimeKR( getText(resData.hospital.workingTimeWeekendStart) );
+    if ( resData.hospital.workingTimeWeekendEnd )   hospitalWorkingTimeWeekend += " ~ " + renderTimeKR( getText(resData.hospital.workingTimeWeekendEnd) );
 
     var hospitalWorkingTimeText = "";
     if ( resData.hospital.workingTimeText ) hospitalWorkingTimeText += getText(resData.hospital.workingTimeText);
