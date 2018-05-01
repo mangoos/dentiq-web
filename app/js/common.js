@@ -392,7 +392,7 @@ var LOGIN_INFO = (function() {
 	var userInfo;
 	
 	var STORAGE_TYPE_SESSION = "0";
-	var STORATE_TYPE_LOCAL   = "1";
+	var STORAGE_TYPE_LOCAL   = "1";
 
 	// 서버 로그인 처리
 	var callLogin = function(email, password, successProcFunc, errorProcFunc) {
