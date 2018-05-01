@@ -432,18 +432,18 @@ var LOGIN_INFO = (function() {
 		callApi("POST", LOGOUT_API_URL, "userId=" + userInfo.useId,
 			function(resData) { // 로그아웃 성공하면...
 				clear();
-				//fireScrapChageEventListeners();
+				location.href = "login.html";
 				alert("로그아웃되었습니다.");
+				return;
 
 			},
 			function(resCode, resMsg) { // 로그아웃 실패하면...
+				clear();
+				location.href = "login.html";
 				alert("로그아웃에 실패했습니다.");
-				//return false;
 			}
 		);
 
-		// 로컬 로그아웃
-		clear();
 	};
 
 
