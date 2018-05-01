@@ -259,7 +259,8 @@
                 </div>
                 <div class="modal-container-header-desc">
                     면접 제안할 공고를 선택해주세요
-                </div>
+				</div>
+				<label class="modal-close-label" title="close"><i class="fa fa-window-close"></i></label>
             </div>
             <div class="modal-container-body">
 
@@ -317,20 +318,6 @@
 var HospitalResumeActionPanel = function() {
 
 	var html = `
-		<style>
-			.user-action-panel,
-			.user-action-panel-input:not(:checked) ~ .user-action-panel { display: none; }
-
-			.user-action-panel.active,
-			.user-action-panel-input:checked ~ .user-action-panel { display: block; }
-
-			.user-action-panel-body { display: flex; flex-direction: column; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-				width: 70%; }
-			.user-action-panel-body .btn { margin-bottom: 0.2rem; }
-
-			.user-action-panel-backdrop { display: block; position: fixed; content: ""; top: 0; left: 0; right: 0; bottom: 0; 
-				background-color: #000; opacity: 0.7; }
-		</style>
 		<input class="user-action-panel-input" id="chkActionPopup" type="checkbox" hidden>
 		<section class="user-action-panel" hidden>
 			<label class="user-action-panel-backdrop" for="chkActionPopup"></label>
@@ -485,12 +472,16 @@ var HospitalResumeActionPanel = function() {
 		callApi("GET", "/api/hospital/"+LOGIN_INFO.getHospitalId()+"/jobAd/", null,
 			function(resData) {
 				console.log(resData);
-
+				
 				document.getElementById("divOfferModal").innerHTML = jobAdCardTemplateForOfferCompiled(resData);
 				document.getElementById("divOfferModal").classList.add("active");
 
 				SELECTED_RESUME_ID_FOR_OFFER = _resumeId;
 				console.log("doOffer() : " + SELECTED_RESUME_ID_FOR_OFFER);
+
+				document.getElementById("divOfferModal").querySelector(".modal-close-label").addEventListener("click", function(e) {
+					document.getElementById("divOfferModal").classList.remove("active");
+				});
 			},
 			function(errorCode, errorMsg) {
 				SELECTED_RESUME_ID_FOR_OFFER = null;
