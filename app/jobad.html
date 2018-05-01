@@ -531,11 +531,12 @@ function fillData(resData) {
     renderAttrs(resData.attr);
 
 
-    // D-Day 부분
-    if ( !resData.dday || resData.dday < 0 ) {
+	// D-Day 부분
+	console.log("resData.dday : ", resData.dday);
+    if ( resData.dday===undefined || resData.dday < 0 ) {
         document.getElementById("jobAd-dDay").innerText             = "종료";
     } else {
-        document.getElementById("jobAd-dDay").innerText             = "D-" + getText(resData.dday);
+        document.getElementById("jobAd-dDay").innerText             = "D-" + resData.dday;
     }
 
     document.getElementById("jobAd-hiringCnt").innerText            = getText(resData.hiringCnt) + " 명";
