@@ -159,7 +159,7 @@
                     <!-- 로그인 회원가입 로그아웃 -->
                     <li class="divider"></li>
                     <div id="sidebar-login-logout">
-                        <li class="menu-item" id="sidebar-logout"><a onClick="javascript:LOGIN_INFO.logout()>로그아웃</a></li>
+                        <li class="menu-item" id="sidebar-logout"><a onClick="javascript:LOGIN_INFO.logout()">로그아웃</a></li>
                         <li class="menu-item"><a href="#menus">설정</a></li>
                     </div>
                 `;
@@ -211,8 +211,9 @@
                     </div>
                 `;
             }
-            document.getElementById("sidebarMenu").innerHTML = sidebarMenuHtml;
-            
+			document.getElementById("sidebarMenu").innerHTML = sidebarMenuHtml;
+			
+		            
         }
         document.getElementById("sidebar").addEventListener("change", onChangeSidebar);
         document.getElementById("sidebar").dispatchEvent(new Event("change"));
