@@ -76,7 +76,7 @@
 					<span class="nav-item-icon"><i class="fal fa-address-book"></i></span>
 					<span class="nav-item-title">추천인재</span>
 				</a>
-				<a class="icon-nav-item" href="hr_management.html">
+				<a class="icon-nav-item" href="resume_board.html">
 					<span class="nav-item-icon"><i class="fal fa-users"></i></span>
 					<span class="nav-item-title">인재열람</span>
 				</a>
@@ -223,6 +223,7 @@ var ResumeManagementApp = (function() {
 		console.log("업로드할 파일 ", file);
 		var formData = new FormData();
 		formData.append("file", file);
+		console.log("hihihihihi", formData);
 
 		uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
 			function(resData) {
