@@ -382,7 +382,7 @@ function callApi(httpMethodType, apiUrl, reqData,
 		}
 	});
 }
-
+//
 var LOGIN_INFO = (function() {
 
 	var STORAGE_ITEM_NAME	= "USER_INFO";
