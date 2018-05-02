@@ -2595,6 +2595,11 @@ span.subway-line span.subway401 { background-color: #007448; } /* 대전 1호선
 span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF; padding-right: 0.1rem; }
 
 
+/******* price ********/
+
+.normal-price { text-decoration: line-through; }
+.dental-price { color: red; font-size: 1.05rem; }
+.dental-price::after { content: "(부가세포함)"; font-size: 60%; color: #5d5d5d; }
 
 /* @media screen and (max-width: 980px) {
 
