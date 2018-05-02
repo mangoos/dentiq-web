@@ -1980,7 +1980,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 
 /* 라이브 채용정보(general ad) css */
 .jobpost-list-card { position: relative; border-top: none; background: #fff; border: 1px solid #e7e9ed; border-radius: .1rem;
-    display: flex; display: -ms-flexbox; -ms-flex-direction: column; flex-direction: column; margin-bottom: 0.2rem; }
+    display: flex; display: -ms-flexbox; -ms-flex-direction: column; flex-direction: column; margin-bottom: 0.2rem; padding-bottom: 0.7rem; }
 
 .jobpost-list-card:last-child { margin-bottom: 0; }
 
