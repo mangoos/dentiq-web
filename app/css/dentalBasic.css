@@ -829,7 +829,6 @@ h6, .h6 { font-size: .8rem; }
 .flex-wrap { display: flex; flex-wrap: wrap; justify-content: flex-start; }
 
 
-
 /* modal-component css 최종 버젼 */
 .dental-modal { }
 .dental-modal.active { display: block; }
