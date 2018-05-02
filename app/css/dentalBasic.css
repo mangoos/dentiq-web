@@ -1941,7 +1941,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 .jobpost-list-body { position: relative; }
 
 .jobpost-list-body .btn-icon.d-scrap,
-.jobpost-list-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.4rem; }
+.jobpost-list-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
 
 .jobpost-list-footer { }
 
