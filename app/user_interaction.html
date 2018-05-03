@@ -88,7 +88,8 @@
                                             </div>
                                             <div class="jobpost-list-card-body">
                                                 <div class="dental-info">
-                                                    <span class="info-detail" style="font-weight: bold; color: #212529">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
+                                                    <span class="info-detail hospital-region">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
+                                                    <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span></span>
                                                     <span class="info-detail subway-line"> <!-- 시도, 시구군 정보, 교통정보 -->
                                                         <span class="subway102"></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
                                                         <span class="subway117"></span>
@@ -99,16 +100,10 @@
                                                     <!-- <span class="info-detail">#강남역, #코엑스 외</span>  -->
                                                     <span class="info-detail">{{renderHashTagOfJobAdCard hashTag}}</span> <!-- 주변 핫플레이스 -->
                                                 </div>
-                                                <div class="dental-info">
-													{{{renderAttrOnCard attr}}}
-                                                    <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
-                                                </div>
+                                                <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
                                             </div>
 										</a>
 										<span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                                        <div class="jobpost-list-card-footer">											
-                                            <span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span>
-                                        </div>
                                     </div>
                                     {{/each}}
 								</script>
@@ -274,7 +269,7 @@ var HospitaInteractionApp = (function() {
     });
     // 선정우가 등록, 아래 헬퍼 그대로 liveboard.html 에 있음.
     Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
-        console.log("renderMslashD ", hiringEndDate);
+        // console.log("renderMslashD ", hiringEndDate);
         return renderMslashD(hiringEndDate);
     });
 	// 속도 느림. 그러나 ordering 됨

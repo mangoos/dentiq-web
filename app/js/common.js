@@ -364,6 +364,12 @@ function callApi(httpMethodType, apiUrl, reqData,
 
 				console.log("CALL API : <RECV> 성공 [", result._RESPONSE_, "], [", result._PAGEABLE_RESPONSE_HEADER_, "]");
 				callbackSuccessProcessFunction(result._RESPONSE_, result._PAGEABLE_RESPONSE_HEADER_);
+
+			} else if (result._RESPONSE_CODE_ && result._RESPONSE_CODE_ == "AUTH_902") {
+				LOGIN_INFO.clear();
+				alert("로그아웃되었습니다. (세션만료)");	// 세션 만료로 로그아웃된 경우, 이때 어떻게 하지?
+				location.href = "login.html";
+
 			} else {
 				console.log("CALL API : <RECV> 논리 오류 [", result._RESPONSE_CODE, "] ==> [", result._RESPONSE_MSG_, "]");
 				callbackErrorProcessFunction(result._RESPONSE_CODE_, result._RESPONSE_MSG_);
@@ -376,7 +382,7 @@ function callApi(httpMethodType, apiUrl, reqData,
 		}
 	});
 }
-
+//
 var LOGIN_INFO = (function() {
 
 	var STORAGE_ITEM_NAME	= "USER_INFO";
@@ -384,6 +390,9 @@ var LOGIN_INFO = (function() {
 	var LOGOUT_API_URL		= "/api/logout/";
 
 	var userInfo;
+	
+	var STORAGE_TYPE_SESSION = "0";
+	var STORAGE_TYPE_LOCAL   = "1";
 
 	// 서버 로그인 처리
 	var callLogin = function(email, password, successProcFunc, errorProcFunc) {
@@ -411,7 +420,7 @@ var LOGIN_INFO = (function() {
 			},
 			function(resCode, resMsg) {
 				console.log("LOGIN_INFO 로그인 실패 : ", resCode, resMsg);
-				clear();
+				_clear();
 				if ( errorProcFunc ) errorProcFunc(resCode, resMsg);
 				else alert("로그인 ERROR " + resMsg);
 
@@ -431,108 +440,21 @@ var LOGIN_INFO = (function() {
 		// 서버에 로그아웃 정보를 날려준다 (1. 혹시라도 ServerSession으로 바꿀까봐.    2. Client 세션이라고 해도 DB에 LOGOUT 기록 남기려고).
 		callApi("POST", LOGOUT_API_URL, "userId=" + userInfo.useId,
 			function(resData) { // 로그아웃 성공하면...
-				clear();
-				//fireScrapChageEventListeners();
+				_clear();
+				location.href = "liveboard.html";
 				alert("로그아웃되었습니다.");
+				return;
 
 			},
 			function(resCode, resMsg) { // 로그아웃 실패하면...
+				_clear();
+				location.href = "liveboard.html";
 				alert("로그아웃에 실패했습니다.");
-				//return false;
 			}
 		);
 
-		// 로컬 로그아웃
-		clear();
 	};
 
-
-	// // SCRAP이 변경된 경우, 이에 대한 EventListener들
-	// var funcScrapChangeEventListeners = [];
-
-	// // SCRAP이 변경된 경우, 이에 대한 EventListener들을 처리한다.
-	// function fireScrapChageEventListeners() {
-	// 	if ( funcScrapChangeEventListeners && funcScrapChangeEventListeners.length>0 ) {	// 콜백이 등록되어 있으면, 실행한다.
-	// 		funcScrapChangeEventListeners.forEach(function(scrapChangeEventListener) {
-	// 			scrapChangeEventListener();
-	// 		});
-	// 		//funcScrapChangeEventListeners();
-	// 	}
-	// }
-
-	// // 서버로부터 스크랩된 공고의 ID들을 가져온다.
-	// var _loadScrappedJobAdIds = function() {
-	// 	if ( !userInfo || !userInfo.userId ) {
-	// 		alert("로그인되어 있지 않습니다. - 스크랩 못함");
-	// 		return;
-	// 	}
-
-	// 	var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/";
-	// 	callApi("GET", SCRAPPED_JOB_AD_ID_URL, null,
-	// 		function(resData) {
-	// 			userInfo.scrappedJobAdIds = resData;
-	// 			save();
-
-	// 			fireScrapChageEventListeners();
-	// 		},
-	// 		function(resCode, resMsg) {
-	// 			// clear();
-	// 			alert("스크랩 가져오기 ERROR " + resMsg);
-	// 		}
-	// 	);
-	// };
-	
-
-
-	// var _addScrappedJobAdId = function(jobAdId) {
-	// 	if ( !jobAdId ) throw "addScrappedJobAdId : jobAdId가 없습니다.";
-
-	// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
-
-	// 	var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-	// 	callApi("POST", SCRAPPED_JOB_AD_ID_URL, null,
-	// 		function(resData) {
-	// 			userInfo.scrappedJobAdIds = resData;
-	// 			save();
-	// 			fireScrapChageEventListeners();
-	// 		},
-	// 		function(resCode, resMsg) {
-	// 			// clear();
-	// 			fireScrapChageEventListeners();
-	// 			alert("스크랩 가져오기 ERROR " + resMsg);
-	// 		}
-	// 	);
-	// };
-	// var _removeScrappedJobAdId = function(jobAdId) {
-	// 	if ( !jobAdId ) throw "removeScrappedJobAdId : jobAdId가 없습니다.";
-
-	// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
-
-	// 	var SCRAPPED_JOB_AD_ID_URL = "/api/user/" + userInfo.userId + "/scrappedJobAdId/" + jobAdId + "/";
-	// 	callApi("DELETE", SCRAPPED_JOB_AD_ID_URL, null,
-	// 		function(resData) {
-	// 			userInfo.scrappedJobAdIds = resData;
-	// 			save();
-	// 			fireScrapChageEventListeners();
-	// 		},
-	// 		function(resCode, resMsg) {
-	// 			// clear();
-	// 			fireScrapChageEventListeners();
-	// 			alert("스크랩 가져오기 ERROR " + resMsg);
-	// 		}
-	// 	);
-	// };
-	// var _updateLocalScrappedJobAdId = function(jobAdIdArr) {
-	// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
-		
-	// 	userInfo.scrappedJobAdIds = jobAdIdArr;
-	// 	save();
-	// 	fireScrapChageEventListeners();
-	// 	console.log("스크랩 ID가 Local에서 업데이트되었음");
-
-
-	// };
-	
 	
 
 	var _setSessionToken = function(newSessionToken) {
@@ -568,9 +490,13 @@ var LOGIN_INFO = (function() {
 	// 로컬 스토리지에 저장한다.
 	var save = function() { // return boolean
 		if (userInfo != null) {
-			localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(userInfo));
-
+			if ( userInfo.keepingLoginType==STORAGE_TYPE_LOCAL ) {
+				localStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(userInfo));
+			} else {
+				sessionStorage.setItem(STORAGE_ITEM_NAME, JSON.stringify(userInfo));
+			}
 			return true;
+
 		} else {
 			return false;
 		}
@@ -578,19 +504,31 @@ var LOGIN_INFO = (function() {
 
 	// 로컬 스토리지에서 불러온다.
 	var load = function() { // return boolean
-		var storageItem = localStorage.getItem(STORAGE_ITEM_NAME);
-		if (storageItem != null) {
-			userInfo = JSON.parse(storageItem);
+		var flag = false;
 
-			return true;
+		var storageItem = sessionStorage.getItem(STORAGE_ITEM_NAME);
+		if ( storageItem != null ) {
+			userInfo = JSON.parse(storageItem);
+			flag = true;
+
 		} else {
-			return false;
+			storageItem = localStorage.getItem(STORAGE_ITEM_NAME);
+			if ( storageItem != null ) {
+				userInfo = JSON.parse(storageItem);	
+				flag = true;
+
+			} else {
+				flag = false;
+			}
 		}
+
+		return flag;
 	};
 
 	// 로컬  스토리지와 현재 메로리 상의 사용자 정보를 삭제한다.
-	var clear = function() { // return void
+	var _clear = function() { // return void
 		localStorage.removeItem(STORAGE_ITEM_NAME);
+		sessionStorage.removeItem(STORAGE_ITEM_NAME);
 		userInfo = null;
 	};
 
@@ -708,46 +646,13 @@ var LOGIN_INFO = (function() {
 		},
 
 		
-
-
-
-
-		// addScrapChangeEventListener: function(callbackFunc) {
-		// 	funcScrapChangeEventListeners.push(callbackFunc);
-		// },
-		// clearScrapChangeEventListener: function() {
-		// 	funcScrapChangeEventListeners = [];
-		// },
-		
-		// getScrappedJobAdIds: function() {
-		// 	if ( !userInfo || !userInfo.userType || userInfo.userType!=1 ) return;
-
-		// 	if ( userInfo.scrappedJobAdIds ) return userInfo.scrappedJobAdIds;
-		// 	return null;
-		// },
-		
-		// addScrappedJobAdId: function(jobAdId) {
-		// 	_addScrappedJobAdId(jobAdId);
-		// },
-		// removeScrappedJobAdId: function(jobAdId) {
-		// 	_removeScrappedJobAdId(jobAdId);
-		// },
-		// updateLocalScrappedJobAdId : function(jobAdIdArr) {
-		// 	_updateLocalScrappedJobAdId(jobAdIdArr);
-		// },
-
-
-		// afterSignup: function(newUserInfo) {
-		// 	if ( newUserInfo ) {
-		// 		clear();
-		// 		userInfo = newUserInfo;                
-		// 		save();
-		// 	} else return false;
-		// },
-
 		getToken: function() {
 			if ( userInfo && userInfo.token ) return userInfo.token;
 			else return null;
+		},
+
+		clear: function() {
+			_clear();
 		}
 	};
 })();

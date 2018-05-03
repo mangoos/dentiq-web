@@ -159,7 +159,7 @@
                     <!-- 로그인 회원가입 로그아웃 -->
                     <li class="divider"></li>
                     <div id="sidebar-login-logout">
-                        <li class="menu-item" id="sidebar-logout"><a href="liveboard.html" onClick="javascript:LOGIN_INFO.logout()">로그아웃</a></li>
+                        <li class="menu-item" id="sidebar-logout"><a onClick="javascript:LOGIN_INFO.logout()">로그아웃</a></li>
                         <li class="menu-item"><a href="#menus">설정</a></li>
                     </div>
                 `;
@@ -211,8 +211,9 @@
                     </div>
                 `;
             }
-            document.getElementById("sidebarMenu").innerHTML = sidebarMenuHtml;
-            
+			document.getElementById("sidebarMenu").innerHTML = sidebarMenuHtml;
+			
+		            
         }
         document.getElementById("sidebar").addEventListener("change", onChangeSidebar);
         document.getElementById("sidebar").dispatchEvent(new Event("change"));
@@ -434,6 +435,7 @@
                     <div class="jobpost-list-card-body">
                         <div class="dental-info">
                             <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
+                            <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span></span>
                             <span class="info-detail subway-line">
                                 <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
                                 <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
@@ -448,20 +450,10 @@
                             </span>
                             <!-- 주변 핫플레이스 -->
                         </div>
-                        <div class="dental-info">
-                            {{{renderAttrOnCard attr}}}
-                            <!-- <span class="info-detail">12 / 26 (화)</span> -->
-                            <!-- 마감날짜 -->
-                        </div>
+                        <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
                     </div>
                 </a>
                 <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                <div class="jobpost-list-card-footer">
-					<span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span>
-					<!-- <span class="btn btn-icon btn-sm d-scrap" data-action="scrap" data-action-value="{{jobAdId}}" >스크랩</span>
-					<span class="btn btn-icon btn-sm d-apply" data-action="apply" data-action-value="{{jobAdId}}" ></span>
-					<span class="btn btn-icon btn-sm d-phone"  data-action="call"  data-action-value="{{hospital.hospitalTelNo}}">전화문의</span> -->
-                </div>
             </div>
             {{/each}}
         </script>

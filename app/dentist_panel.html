@@ -11,8 +11,7 @@
 	<link rel="stylesheet" href="css/dentalBasic.css">
 	
 	<script src="js/jquery-1.12.4.min.js"></script>
-    <script src="js/common.js"></script>
-	<script src="js/handlebars.min.js"></script>
+	<script src="js/common.js"></script>
 	<script src="js/dental_ui.js"></script>
 </head>
 <body>
@@ -45,7 +44,7 @@
                     
                 
                 </script>
-				<div class="user-photo-title" id="hospitalEmail">sjw0927@ gmail.com</div>
+				<div class="user-photo-title" id="userEmail">sjw0927@ gmail.com</div>
 				<div class="user-photo-subtitle" id="hospitalName">서울역 앞 치과 병원</div>
 			</div>
 			<div class="dental-panel-opt"><a href="user_setting.html"><i class="fas fa-cog"></i></a></div>
@@ -76,7 +75,7 @@
 					<span class="nav-item-icon"><i class="fal fa-address-book"></i></span>
 					<span class="nav-item-title">추천인재</span>
 				</a>
-				<a class="icon-nav-item" href="hr_management.html">
+				<a class="icon-nav-item" href="resume_board.html">
 					<span class="nav-item-icon"><i class="fal fa-users"></i></span>
 					<span class="nav-item-title">인재열람</span>
 				</a>
@@ -166,7 +165,7 @@ var ResumeManagementApp = (function() {
 				if ( !basicInfo || !basicInfo.hospitalId ) {
 					hospitalId = null;
 
-					document.getElementById("hospitalEmail").innerText = "";
+					document.getElementById("userEmail").innerText = "";
 					document.getElementById("hospitalName").innerText  = "";
 					document.getElementById("hospitalLogo").src = "";
 
@@ -178,7 +177,7 @@ var ResumeManagementApp = (function() {
 
 				hospitalId = basicInfo.hospitalId;
 
-                document.getElementById("hospitalEmail").innerText = basicInfo.hospitalEmail;
+                document.getElementById("userEmail").innerText = basicInfo.userEmail;
 				document.getElementById("hospitalName").innerText  = basicInfo.hospitalName;
 				if ( basicInfo.hasLogoImage ) document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(basicInfo.hospitalId);
 
@@ -223,6 +222,7 @@ var ResumeManagementApp = (function() {
 		console.log("업로드할 파일 ", file);
 		var formData = new FormData();
 		formData.append("file", file);
+		console.log("hihihihihi", formData);
 
 		uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
 			function(resData) {
