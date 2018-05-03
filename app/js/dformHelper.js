@@ -246,3 +246,183 @@ $(document).ready(function() {
         //this.removeEventListener("focusout", focusoutHandle);
     });
 });
+
+
+// 알바몬 패턴 벤치마크해서 우리꺼 개선할 것
+// switch (v_pat) {
+//     case 1 :    //공고제목, 기업명 등
+//         pattern = /^[ㄱ-힣a-zA-Z\d\(\)\-\+\#\[\]\%\&\㈜\㈔\/\,\.\ \t]+$/gi;
+//         message = " 바르게 입력해주세요. \n한글, 영문, 숫자\n일부 특수문자(() - + # [] % & ㈜ ㈔ / , . )만 사용할 수 있습니다.";
+//         break;
+//     case 2:    //이메일 체크
+//         pattern = /^[0-9a-zA-Z-_\.]+@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{1,9}$/i;
+//         message = " 바르게 입력 하세요."
+//         break;
+//     case 3:    //정수 숫자 입력만 허용
+//         pattern = /^[0-9]+$/gi;
+//         message = " 숫자로만 입력 하세요."
+//         break;
+//     case 4:    //정수 한글(초성입력(ㄱㅇㄷㄹ)X) 영어만 허용
+//         pattern = /^[ 0-9가-힣a-zA-Z]+$/gi;
+//         message = "";   // 메세지 공백일 경우 리액션 없이 false 만 리턴
+//         break;
+//     case 5:    //전화번호(숫자+-허용)
+//         pattern = /^[0-9\+\-]+$/gi;
+//         message = " 바르게 입력해주세요.\n숫자 및 + - 만 입력 가능 합니다.";
+//         break;
+//     case 6:    //내선번호
+//         //pattern = /^[0-9]+$|^[0-9]+[\,\-\~]$/gi;
+//         pattern = /^[0-9\,\-\~]+$/gi;
+//         message = " 바르게 입력해주세요.\n숫자만 입력이 가능하며,\n , - ~ 에 한해 특수문자 입력이 가능합니다.";
+//         break;
+//     case 7:    //팩스(숫자 - , ~ 허용)
+//         pattern = /^[0-9\-\,\~]+$/gi;
+//         message = " 바르게 입력해주세요.\n숫자 및 - , ~ 만 입력 가능 합니다.";
+//         break;
+//     case 8:    //근무지상세
+//         pattern = /^[ㄱ-힣a-zA-z\d\-\+\#\(\)\[\]\<\>\%\&\,\.\:\㈜\㈔\/\內\ \t]+$/gi;
+//         message = " 바르게 입력해주세요.\n한글, 영문, 숫자, 일부 특수문자(- + # () [] <> % & , . : ㈜ ㈔ / 內)만 사용할 수 있습니다.";
+//         break;
+//     case 9:    //정수 한글(초성입력(ㄱㅇㄷㄹ)X) 영어만 허용, 메세지 있음
+//         pattern = /^[ 0-9가-힣a-zA-Z]+$/gi;
+//         message = " 바르게 입력해주세요.\n특수문자는 입력하실수 없습니다.";
+//         break;
+//     case 10:    //특수문자 , 사용 금지
+//         pattern = /^[ㄱ-힣a-zA-Z\d\~\!\@\#\$\%\^\&\*\(\)\_\+\.\"\'\;\:\?\/ \t]+$/gi;
+//         message = " 바르게 입력해주세요.\n콤마, 는 입력하실수 없습니다.";
+//         break;
+//     case 11:    //특수문자 , 사용 금지
+//         pattern = /[ㄱ-힣a-zA-Z\d\+\#\-\-\(\)\[\]\. \t]+$/gi;
+//         message = " 바르게 입력해주세요.\n한글, 영문, 숫자\n일부 특수문자( + # - ( ) [ ] .)만 사용할 수 있습니다.";
+//         break;
+//     case 12:	// URL 입력 체크
+//         pattern = /([a-z]+):\/\/((?:[a-z\d\-]{1,}\.)+[a-z]{1,})(:\d{1,5})?(\/[^\?]*)?(\?.+)?$/i;
+//         message = " 바르게 입력해주세요.";
+//         break;
+// }
+
+    // 사업자 등록 번호 유효성 체크
+    // CorporateRegNumChk: function (v_form01_Id, v_form02_Id, v_form03_Id) {
+    //     var biz_value = new Array(10);
+
+    //     if (!this.TextCharacterChk($("#" + v_form01_Id).val(), 12)) {
+    //         $("#" + v_form01_Id).focus();
+    //         return false;
+    //     }
+
+    //     if (!this.TextCharacterChk($("#" + v_form02_Id).val(), 12)) {
+    //         $("#" + v_form02_Id).focus();
+    //         return false;
+    //     }
+
+    //     if (!this.TextCharacterChk($("#" + v_form03_Id).val(), 12)) {
+    //         $("#" + v_form03_Id).focus();
+    //         return false;
+    //     }
+
+    //     if ($.trim($("#" + v_form01_Id).val()) == "000" && $.trim($("#" + v_form02_Id).val()) == "00" && $.trim($("#" + v_form03_Id).val()) == "00000")
+    //     {
+    //         $("#" + v_form01_Id).focus();
+    //         return false;
+    //     }
+
+    //     var objstring = $.trim($("#" + v_form01_Id).val()) + "-" + $.trim($("#" + v_form02_Id).val()) + "-" + $.trim($("#" + v_form03_Id).val());
+    //     //alert(objstring);
+    //     var li_temp, li_lastid;
+
+    //     if ( objstring.length == 12 ) {
+    //         biz_value[0] = ( parseFloat(objstring.substring(0 ,1)) * 1 ) % 10;
+    //         biz_value[1] = ( parseFloat(objstring.substring(1 ,2)) * 3 ) % 10;
+    //         biz_value[2] = ( parseFloat(objstring.substring(2 ,3)) * 7 ) % 10;
+    //         biz_value[3] = ( parseFloat(objstring.substring(4 ,5)) * 1 ) % 10;
+    //         biz_value[4] = ( parseFloat(objstring.substring(5 ,6)) * 3 ) % 10;
+    //         biz_value[5] = ( parseFloat(objstring.substring(7 ,8)) * 7 ) % 10;
+    //         biz_value[6] = ( parseFloat(objstring.substring(8 ,9)) * 1 ) % 10;
+    //         biz_value[7] = ( parseFloat(objstring.substring(9,10)) * 3 ) % 10;
+    //         li_temp = parseFloat(objstring.substring(10,11)) * 5 + "0";
+    //         biz_value[8] = parseFloat(li_temp.substring(0,1)) + parseFloat(li_temp.substring(1,2));
+    //         biz_value[9] = parseFloat(objstring.substring(11,12));
+    //         li_lastid = (10 - ( ( biz_value[0] + biz_value[1] + biz_value[2] + biz_value[3] + biz_value[4] + biz_value[5] + biz_value[6] + biz_value[7] + biz_value[8] ) % 10 ) ) % 10;
+    //         if (biz_value[9] != li_lastid) {
+    //             $("#" + v_form01_Id).focus();
+    //             return false;
+    //         }
+    //         else
+    //             return true;
+    //     }
+    //     else {
+    //         $("#" + v_form01_Id).focus();
+    //         return false;
+    //     }
+    // },
+    // CorporateRegNumChk_New: function (obj1, focusOn) {
+	// 	focusOn = (focusOn == undefined || focusOn == null) ? true : focusOn;
+
+    //     biz_value = new Array(10);
+    //     var str1 = obj1.val().split("-").join("");
+
+    //     if (isBizInteger(str1, 10) == false) {
+	// 		if(focusOn) {
+	// 			obj1.focus();
+	// 			obj1.select();
+	// 		}
+    //         return false;
+    //     }
+
+    //     if (str1 == "0000000000") {
+	// 		if(focusOn) {
+	// 			obj1.focus();
+	// 			obj1.select();
+	// 		}
+    //         return false;
+    //     }
+
+
+    //     var objstring = str1.substring(0, 3) + "-" + str1.substring(3, 5) + "-" + str1.substring(5, 10);
+    //     var li_temp, li_lastid;
+
+    //     if (objstring.length == 12) {
+    //         biz_value[0] = (parseFloat(objstring.substring(0, 1)) * 1) % 10;
+    //         biz_value[1] = (parseFloat(objstring.substring(1, 2)) * 3) % 10;
+    //         biz_value[2] = (parseFloat(objstring.substring(2, 3)) * 7) % 10;
+    //         biz_value[3] = (parseFloat(objstring.substring(4, 5)) * 1) % 10;
+    //         biz_value[4] = (parseFloat(objstring.substring(5, 6)) * 3) % 10;
+    //         biz_value[5] = (parseFloat(objstring.substring(7, 8)) * 7) % 10;
+    //         biz_value[6] = (parseFloat(objstring.substring(8, 9)) * 1) % 10;
+    //         biz_value[7] = (parseFloat(objstring.substring(9, 10)) * 3) % 10;
+    //         li_temp = parseFloat(objstring.substring(10, 11)) * 5 + "0";
+    //         biz_value[8] = parseFloat(li_temp.substring(0, 1)) + parseFloat(li_temp.substring(1, 2));
+    //         biz_value[9] = parseFloat(objstring.substring(11, 12));
+    //         li_lastid = (10 - ((biz_value[0] + biz_value[1] + biz_value[2] + biz_value[3] + biz_value[4] + biz_value[5] + biz_value[6] + biz_value[7] + biz_value[8]) % 10)) % 10;
+    //         if (biz_value[9] != li_lastid) {
+	// 			if(focusOn) {
+	// 				obj1.focus();
+	// 				obj1.select();
+	// 			}
+    //             return false;
+    //         }
+    //         else
+    //             return true;
+    //     }
+    //     else {
+	// 		if(focusOn) {
+	// 			obj1.focus();
+	// 			obj1.select();
+	// 		}
+    //         return false;
+    //     }
+    // },
+    // isBizInteger: function (st, maxLength) {
+
+    //     if (st.length == maxLength) {
+    //         for (j = 0; j > maxLength; j++)
+    //             if (((st.substring(j, j + 1) < "0") || (st.substring(j, j + 1) > "9"))) {
+    //                 return false;
+    //             }
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    //     return true;
+
+    // }
