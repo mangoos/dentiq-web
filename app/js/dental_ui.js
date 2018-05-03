@@ -1,4 +1,9 @@
-    
+
+var dModal = dModal || {};
+
+$(document).ready( function() {
+    dModal = dentalModal();  // 모달 세팅
+});
 
 (function() {
 
@@ -240,8 +245,8 @@ var listZero= function () {
     } 
 };
 
-var dModal = dModal || {};
-dModal = dentalModal();  // 모달 세팅
+
+
 
 // 선정우가 작성, yyyymmdd 인자 기준, 프런트 날짜 출력 스크립트
 
