@@ -30,7 +30,7 @@
         <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
-    <section class="">
+    <section class="payment-section">
         <div class="dental-card">
             <div class="dental-card-header">
                 <div class="dental-card-header-title h4">DENTAL 프리미어</div>
@@ -56,6 +56,7 @@
                     #tempM::after { content: "공고 선택 필요?"; display: none; color: #000; top: 0; left: 50%; transition: all 0.2s ease; }
                     #tempM { position: relative; }
                 </style>
+                <button class="btn-primary">테스트</button>
                 <span class="btn btn-primary" id="tempM">공고 선택</span>
                 <span class="btn btn-primary">광고 상품 구매</span>
             </div>
@@ -101,13 +102,18 @@
         </div>
     </section>
     <script> // 임시 리스너
-        document.body.addEventListener("click", function(e) {
-            var paymentCard = document.querySelector(".dental-payment");
 
-            if(e.target.classList.contains("btn")) paymentCard.classList.add("active");
-            else  paymentCard.classList.remove("active");
+        $(document).ready(function() {
+            document.querySelector(".payment-section").addEventListener("click", function(e) {
 
+                var paymentCard = document.body.querySelector(".dental-payment");
+
+                if (e.target.classList.contains("btn")) paymentCard.classList.add("active");
+                else paymentCard.classList.remove("active");
+
+            });
         });
+
     </script>
 </body>
 </html>
