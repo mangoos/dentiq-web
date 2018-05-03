@@ -235,15 +235,29 @@
                                             {{#if adTypePremiere}}
                                                 <span class="btn btn-icon btn-sm d-bullhorn">광고하기(안됨)</span> <!-- 흐리게 보여주는 등이 필요함 -->
                                             {{else}}
-                                                <a href="register_jobad.html?jobAdId={{jobAdId}}&reqUpgrade=Y"><span class="btn btn-icon btn-sm d-bullhorn">광고하기</span></a>
+                                                <!-- <a href="register_jobad.html?jobAdId={{jobAdId}}&reqUpgrade=Y"><span class="btn btn-icon btn-sm d-bullhorn">광고하기</span></a> -->
+                                                <a href="jobAd.html?jobAdId={{jobAdId}}&premierePayment='Y'"><span class="btn btn-icon btn-sm d-bullhorn">광고하기</span></a>
+                                                <!-- <a href="jobAd.html?jobAdId={{jobAdId}}"><span class="btn btn-icon btn-sm d-bullhorn">광고하기</span></a> -->
                                             {{/if}}
                                             
                                         </div>
                                     </div>
                                     {{/each}}
                                 </script>
-
-
+                                <div class="dental-payment">
+                                    상단에서 버튼 누르면 .active로 호출
+                                    <br>
+                                    헤더 포함 전 영역 fixed 로 커버
+                                    <br>
+                                    프리미어 구매는 hospital_interaction.html>> 공고알리기 탭으로 점프.<br>
+                                    >> 공고 선택 후<br>
+                                    >> 광고 기간은 <br>
+                                     1. 광고 기간 선택 가능: 공고 시작일 || today ~ 공고 마지막날까지 선택 가능// 연장 가능해야함.<br>
+                                     2. 광고 기간 선택 불가: 공고 시작일 || today ~ 공고 마감일<br>
+                                     3. 실제 광고 비용은 tomorrow 00시 부터 마지막 24시까지 로 해서 계상.<br> 
+                        
+                                    연간 회원은 여기서 바로 결제 모듈 호출
+                                </div>
                             </div>	
                         </div>
                     </div>

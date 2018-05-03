@@ -3,6 +3,24 @@ var dModal = dModal || {};
 
 $(document).ready( function() {
     dModal = dentalModal();  // 모달 세팅
+    // setTimeout( function() {
+    //     // dModal.toast(navigator.userAgent);
+    //     var ua = navigator.userAgent;
+    //     if(/iphone/i.test(ua)) {
+
+    //         dModal.alert("iphone/safari 네", function() {
+    //             dModal.instant(window.screen);
+    //         });
+    //     }
+        // if(/android/i.test(ua)) {
+
+        //     dModal.alert("안드로이드 네", function() {
+        //         dModal.instant(window.screen.orientation.type);
+        //     });
+        // }
+        // var sOrientation = window.screen.orientation || window.screen.msOrientation || windown
+
+    // }, 1000);
 });
 
 (function() {
@@ -245,8 +263,12 @@ var listZero= function () {
     } 
 };
 
+//임시로 간략하게 브라우져 스니핑 함수(나중에 개선)
 
-
+// function browserSniff () {
+//     var ua = window.navigator.userAgent;
+//     var iosTag = /iphone|ipod|ipad/.test( userAgent );
+// } 
 
 // 선정우가 작성, yyyymmdd 인자 기준, 프런트 날짜 출력 스크립트
 

@@ -56,18 +56,17 @@
                     #tempM::after { content: "공고 선택 필요?"; display: none; color: #000; top: 0; left: 50%; transition: all 0.2s ease; }
                     #tempM { position: relative; }
                 </style>
-                <button class="btn-primary">테스트</button>
-                <span class="btn btn-primary" id="tempM">공고 선택</span>
-                <span class="btn btn-primary">광고 상품 구매</span>
+                <span class="btn btn-primary" onclick="location.href='hospital_interaction.html'">상품 구매</span>
             </div>
         </div>
         <div class="dental-card">
             <div class="dental-card-header">
-                <div class="dental-card-header-title h4">플러스팩(연간회원)</div>
-                <div class="dental-card-header-desc">합리적인 가격으로 pc 부터 앱까지 단 한번에!</div>
+                <div class="dental-card-header-title h4">플러스팩</div>
+                <div class="dental-card-header-desc">1년간 프리미엄 채용지원 서비스 무료!</div>
+                <div class="dental-card-header-desc">오픈기념 지금 가입하면 1년간 프리미어 광고 50% 할인!</div>
                 <div>
                     <span class="normal-price">118,000</span>
-                    <span class="dental-price">9.9만/1년</span>
+                    <span class="dental-price">99,000원/1년</span>
                 </div>
             </div>
             <div class="dental-card-body">
@@ -85,20 +84,8 @@
                 <div>플러스팩은 구매 후 (부분)취소/환불이 불가능 합니다.(결제 시 안내 메시지 한번 더 출력)</div>
             </div>
             <div class="dental-card-footer">
-                <span class="btn btn-primary">연간회원 등록</span>
+                <span class="btn btn-primary" onclick="document.body.querySelector('.dental-payment').classList.toggle('active');">연간회원 등록</span>
             </div>
-        </div>
-        <style>
-            .dental-payment { display: flex; position: fixed; top: 0; bottom: 0; left: 0; right: 0; transform: translateY(1000%); background-color: #FFF; transition: all 0.5s ease;}
-            .dental-payment.active { transform: translateY(0); transition: all 0.5s ease; }
-        </style>
-        <div class="dental-payment">
-            상단에서 버튼 누르면 .active로 호출
-            헤더 포함 전 영역 fixed 로 커버
-
-            프리미어 채용 정보는 공고 선택 --> 결제 금액 산출 필요
-
-            연간 회원은 바로 결제 모듈 호출?
         </div>
     </section>
     <script> // 임시 리스너
@@ -108,7 +95,7 @@
 
                 var paymentCard = document.body.querySelector(".dental-payment");
 
-                if (e.target.classList.contains("btn")) paymentCard.classList.add("active");
+                if (e.target.classList.contains("btn")) return false;
                 else paymentCard.classList.remove("active");
 
             });
