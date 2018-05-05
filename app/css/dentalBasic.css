@@ -1990,6 +1990,10 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 .jobpost-list-card { position: relative; border-top: none; background: #fff; border: 1px solid #e7e9ed; border-radius: .1rem;
     display: flex; display: -ms-flexbox; -ms-flex-direction: column; flex-direction: column; margin-bottom: 0.2rem; padding-bottom: 0.7rem; }
 
+.jobpost-list-card .jobpost-date { text-align: center; color: #5d5d5d; background-color: #e6e6e6; border-radius: 0.1rem; font-size: 0.6rem; padding: 0rem 0.4rem; }
+
+.jobpost-list-card .jobpost-date::before { content: "~ "; }
+
 .jobpost-list-card:last-child { margin-bottom: 0; }
 
 .jobpost-list-card-header { padding: .8rem; padding-bottom: 0; }

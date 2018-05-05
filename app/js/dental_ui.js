@@ -273,7 +273,8 @@ var listZero= function () {
 // 선정우가 작성, yyyymmdd 인자 기준, 프런트 날짜 출력 스크립트
 
 function returnDateObj(yyyymmdd) {
-	var year = yyyymmdd.substring(0,4);
+    var yyyymmdd = new String(yyyymmdd);
+    var year = yyyymmdd.substring(0,4);
 	var month = yyyymmdd.substring(4,6);
 	var day = yyyymmdd.substring(6,8);
 	return new Date(year, month -1, day);
