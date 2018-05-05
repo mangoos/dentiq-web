@@ -415,6 +415,9 @@ h6, .h6 { font-size: .8rem; }
 
 .d-share[data-action-checked="true"]::before { content: "\f058"; font-weight: 600; font-size: 110%; }
 
+.d-import::before,
+.d-import[data-action-checked="false"]::before { content: "\f14d"; font-weight: 300; }
+
 
 .d-phone::before { content: "\f098"; font-weight: 400; font-size: 110%; }
 
