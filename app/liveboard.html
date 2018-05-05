@@ -555,6 +555,7 @@ var LiveBoardApp = (function() {
     });
 
     Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
+        if (!hiringEndDate) return "";
         return renderMslashD(hiringEndDate);
     });
 

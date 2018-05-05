@@ -1992,7 +1992,8 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 
 .jobpost-list-card .jobpost-date { text-align: center; color: #5d5d5d; background-color: #e6e6e6; border-radius: 0.1rem; font-size: 0.6rem; padding: 0rem 0.4rem; }
 
-.jobpost-list-card .jobpost-date::before { content: "~ "; }
+.jobpost-list-card .jobpost-date:not(:empty)::before { content: "~ "; }
+.jobpost-list-card .jobpost-date:empty::before { content: "상시채용"; }
 
 .jobpost-list-card:last-child { margin-bottom: 0; }
 

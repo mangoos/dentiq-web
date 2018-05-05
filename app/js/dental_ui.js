@@ -273,7 +273,9 @@ var listZero= function () {
 // 선정우가 작성, yyyymmdd 인자 기준, 프런트 날짜 출력 스크립트
 
 function returnDateObj(yyyymmdd) {
-    var yyyymmdd = new String(yyyymmdd);
+
+    if (!yyyymmdd) return false;
+
     var year = yyyymmdd.substring(0,4);
 	var month = yyyymmdd.substring(4,6);
 	var day = yyyymmdd.substring(6,8);
@@ -281,6 +283,9 @@ function returnDateObj(yyyymmdd) {
 }
 
 function renderFullDateKR(yyyymmdd) {
+
+    if (!yyyymmdd) return false;
+
 	var date = returnDateObj(yyyymmdd);
 	var year = date.getFullYear();
 	var month = date.getMonth() + 1;
@@ -291,7 +296,9 @@ function renderFullDateKR(yyyymmdd) {
 }
 
 function renderTimeKR(hhmm) {
-	if( !hhmm ) return "";
+
+    if( !hhmm ) return "";
+    
 	var hour = hhmm.substring(0,2);
 	var min = hhmm.substring(2,4);
 
@@ -299,6 +306,9 @@ function renderTimeKR(hhmm) {
 }
 
 function renderMslashD(yyyymmdd) {
+
+    if (!yyyymmdd) return false;
+
 	var date = returnDateObj(yyyymmdd);
 	var month = date.getMonth() + 1;
 	var day = date.getDate();
@@ -308,6 +318,9 @@ function renderMslashD(yyyymmdd) {
 }
 
 function renderMstrDstr(yyyymmdd) {
+
+    if (!yyyymmdd) return false;
+
 	var date = returnDateObj(yyyymmdd);
 	var month = date.getMonth() + 1;
 	var day = date.getDate();
@@ -317,6 +330,9 @@ function renderMstrDstr(yyyymmdd) {
 }
 
 function returnDayOfWeekFromIndex(index) {
+
+    if (!index) return false;
+    
 	var arr = ["일", "월", "화", "수", "목", "금", "토"];
 	return arr[index];
 }
