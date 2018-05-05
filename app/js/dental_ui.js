@@ -331,8 +331,8 @@ function renderMstrDstr(yyyymmdd) {
 
 function returnDayOfWeekFromIndex(index) {
 
-    if (!index) return false;
-    
+    if (typeof index !== "number" && !index) return false;
+
 	var arr = ["일", "월", "화", "수", "목", "금", "토"];
 	return arr[index];
 }
