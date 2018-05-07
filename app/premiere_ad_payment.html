@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+	  <link rel="stylesheet" href="css/dentalBasic.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.3.5/cropper.css">
+    
+	  <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/common.js"></script>
+	  <script src="js/handlebars.min.js"></script>
+    <script src="js/dental_ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.3.5/cropper.js"></script>
+</head>
+<body>
+    <header class="register-header navbar">
+        <section class="navbar-section">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='liveboard.html'; }">
+            <i class="fal fa-arrow-square-left"></i>
+            이전페이지
+            </span>
+        </section>
+        <section class="navbar-section">
+        <a href="liveboard.html"><i class="fal fa-home"></i></a>
+        <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
+        </section>
+    </header>
+    <section class="">
+        <div class="dental-card dental-payment active">
+            <div class="dental-card-header">
+                <div class="dental-card-header-title h4">프리미어 신청</div>
+                <div class="dental-card-header-subtitle">프리미어 시작, 종료일을 선택해 주세요.</div>
+                <div class="dental-card-header-subtitle">프리미어는 채용공고 시작일과 연동됩니다.</div>
+                <div class="dental-card-header-subtitle">결제완료 이후엔 부분취소/환불이 불가합니다. 신중하게 선택해 주세요.</div>
+            </div>
+            <div class="dental-card-body">
+                <div class="form-group">
+                    <select id="premiereAdStartDate" class="select-two styled-select hasValue">
+                        <option disabled selected>시작일 선택</option>
+                        <option value="20180513">2018년 5월 13일</option>
+                    </select>
+                    <select id="premiereAdEndDate" class="select-two styled-select"></select>
+                    <label class="styled-label">프리미어 기간 선택</label>
+                </div>
+                <div class="final-payment">
+                    <div class="dental-price"></div>
+                    <div class="premiere-time"></div>
+                    <div class="premiere-cost"></div>
+                    <div class="btn btn-primary">결제하기</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+
+    function renderCalendarSelectYYYYMMMM(elementDate, startDate, endDate, defaultOptionText, defaultOptionValue, reverse) {
+        // startDate와 endDate는 모두 Date 타입
+        //console.log("시작 : ", elementDate);
+
+        if ( !startDate ) startDate = new Date();
+        if ( !endDate )   endDate   = (new Date(startDate)).setDate(startDate.getDate() + 30);  // 30일 이후
+
+        console.log("START : ", new Date(startDate), " END : ", new Date(endDate));
+
+        clearSelectOptions(elementDate, defaultOptionText, defaultOptionValue);
+
+        //console.log("limit: ", endDate);
+        while ( startDate < endDate ) {
+            //console.log(startDate);        
+
+            var yyyy = startDate.getFullYear();
+            var mm   = startDate.getMonth() + 1;
+            var dd   = startDate.getDate();
+
+            var option = document.createElement("option");
+            var text = yyyy + "년 ";
+            if ( mm < 10 ) text += " " + mm + "월 "; else text += mm + "월 ";
+            if ( dd < 10 ) text += " " + dd + "일";  else text += dd + "일";
+            
+            var value = "" + yyyy
+            if ( mm < 10 ) value += "0" + mm; else value += mm;
+            if ( dd < 10 ) value += "0" + dd; else value += dd;
+
+            option.text = text;
+            option.value = value;                            
+            elementDate.options.add(option);
+
+            startDate.setDate(startDate.getDate() + 1);
+        }
+    }
+
+    // 프리미어 광고 시작일이 변경되었을 때, 광고 종료일을 새로 렌더링 한다.
+    function onChangepremiereStartDate(event) {
+        if ( this.value && this.value!="" ) {
+            //console.log("시작일 : " + this.value);
+            var yyyy = this.value.substring(0, 4);
+            var mm   = this.value.substring(4, 6);
+            var dd   = this.value.substring(6, 8);
+
+            var endDateBegin = new Date();
+            endDateBegin.setFullYear(Number(yyyy));
+            endDateBegin.setMonth(Number(mm)-1);
+            endDateBegin.setDate(Number(dd)+1);
+
+            renderCalendarSelectYYYYMMMM(document.getElementById("premiereAdEndDate"), endDateBegin, null, "종료일 선택" );
+            document.getElementById("premiereAdEndDate").disabled = false;
+
+        } else {
+            clearSelectOptions(document.getElementById("premiereAdEndDate"));
+            document.getElementById("premiereAdEndDate").disabled = true;
+        }
+    }
+    document.getElementById("premiereAdStartDate").addEventListener("change", onChangepremiereStartDate);
+
+    // 프리미어 광고 종료일이 변경되었을 때, 광고기간 및 광고비 출력.
+    document.getElementById("premiereAdEndDate").addEventListener("change", function(e) {
+
+        var startDate = returnDateObj( document.getElementById("premiereAdStartDate").value );
+        var endDate = returnDateObj( document.getElementById("premiereAdEndDate").value );
+        var adDay = (endDate - startDate) / (60*60*24*1000);
+
+        var premiereFinalPayment = document.querySelector(".final-payment");
+        var premierePriceUnitElm = document.querySelector(".dental-price");
+        var premiereTimeElm = document.querySelector(".premiere-time");
+        var premiereCostElm = document.querySelector(".premiere-cost");
+        var priceUnit = false ? 4900 : 9900 ; // 연간회원이면 단가 4,900원
+
+        premiereFinalPayment.style.display = "flex";
+        premierePriceUnitElm.innerText = priceUnit +"원/일";
+        premiereTimeElm.innerText = adDay;
+        premiereCostElm.innerText = parseInt(adDay) * priceUnit;
+
+        // dModal.toast(adDay + "일 : " + parseInt(adDay) * 9900 + "원" );
+        });
+</script>
+</html>
