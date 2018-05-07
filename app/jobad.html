@@ -15,6 +15,7 @@
     <script src="js/common.js"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=sTJvEhCjdAWmt5nFZblm"></script>
     <script src="js/dental_ui.js"></script>
+    <script src="js/dformHelper.js"></script>
 </head>
 <body>
     <header class="register-header navbar">
@@ -433,7 +434,7 @@
 
 
     </section>
-    <section class="jobad-btm-layer">
+    <section class="jobad-btm-layer" id="jobAdBtmLayer">
         <div class="jobad-btm-float-btn">
             <label class="go-to-top"><input type="button" name="" hidden><i class="far fa-arrow-circle-up"></i></label>
 		</div>		
@@ -441,32 +442,6 @@
 		<span class="btn btn-icon d-apply" id="actionApply"></span>
 		<span class="btn btn-icon d-phone" id="actionCall">전화문의</span>
     </section>
-    <div class="dental-payment">
-        .active로 호출
-        <br>
-        헤더 포함 전 영역 fixed 로 커버
-        <br>
-        프리미어 구매는 hospital_interaction.html>> 공고알리기 탭으로 점프.<br>
-        >> 공고 선택 후<br>
-        >> 광고 기간은 <br>
-         1. 광고 기간 선택 가능: 공고 시작일 || today ~ 공고 마지막날까지 선택 가능// 연장 가능해야함.<br>
-         2. 광고 기간 선택 불가: 공고 시작일 || today ~ 공고 마감일<br>
-         3. 실제 광고 비용은 tomorrow 00시 부터 마지막 24시까지 로 해서 계상.<br> 
-
-        연간 회원은 여기서 바로 결제 모듈 호출
-    </div>
-    <script> // 창닫기 임시 리스너
-
-        document.querySelector(".dental-payment").addEventListener("click", function(e) {
-
-            var paymentCard = this;
-
-            if (e.target.classList.contains("btn")) return false;
-            else paymentCard.classList.remove("active");
-
-        });
-
-    </script>
     <footer class="footer">
     footer
     </footer>
@@ -669,7 +644,7 @@ function fillData(resData) {
     /* ***************************************************************************************************************** */
 }
 
-            
+          
 
 
 
@@ -715,20 +690,14 @@ var JobAdDetailApp = (function() {
 				initJobAdAction();
                 fillData(jobAdData);
                 
-                // 프리미어 광고하기 테스트 2018.05.04 선정우
-                // 'premierePayment=Y' 달고 들어오면 결제창 열어주면서 payment 박스 fixed로 slide-up
-                // 구인 시작일, 종료일 데이터 필요함 
+                // 로그인 아이디하고 공고 병원 아이디(hospitalID)가 같으면 하단 하단 버튼을 프리미어 신청용으로 변경
 
-                if ( params.premierePayment ) {
-
-                    var paymentElm = document.querySelector(".dental-payment");
+                if ( hospitalId === LOGIN_INFO.getHospitalId() ) {  
                     
-                    dModal.alert( "공고 시작일: " + jobAdData.hiringStartDate 
-                        + "\n" 
-                        + "공고 마감일: "
-                        + jobAdData.hiringEndDate, 
-                        function () { paymentElm.classList.add("active"); }
-                    );
+                    var btmLayerElm = document.getElementById("jobAdBtmLayer");
+                    var btnHtml = '<div class="btn btn-primary btn-icon d-bullhorn" id="premiereRequestBtn" style="color: #FFF;">프리미어 신청</div>';
+                    
+                    btmLayerElm.innerHTML = btnHtml;
 
                 }
                 
