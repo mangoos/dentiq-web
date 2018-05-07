@@ -28,31 +28,28 @@
             <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
-    <div class="dental-card card">
-        <div class="dental-card-body">
+    <div class="dental-card">
             <div class="dental-card-header">
-                <div class="dental-title"><i class="fa fa-address-card-o" style="margin-right: 0.5rem"></i>결제 내역</div>
-                <div class="dental-sub-title">최근 결제한 리스트를 조회할 수 있습니다.</div>
+                <div class="dental-card-header-title h4"><i class="fa fa-address-card-o" style="margin-right: 0.5rem"></i>결제 내역</div>
+                <div class="dental-card-header-subtitle">결제한 리스트를 조회할 수 있습니다.</div>
             </div>
-            <input type="checkbox" name="dental-toggle-box" id="recommend-resume-toggle"> <!-- css로 노출 박스 스위치 -->
-            <label for="recommend-resume-toggle"></label><!-- dental-toggle-box 와 세트임 -->
-            <div class="dental-toggle-box">
-                <div class="non-scrap toggle-list">
-                    <p>결제 내역이 없습니다.</p>
+            <div class="dental-card-body dental-radio-box">
+                <input type="checkbox" class="radio-box-input"> <!-- css로 노출 박스 스위치 -->
+                <label for="payment-completion-list-toggle"></label><!-- dental-toggle-box 와 세트임 -->
+                <div class="radio-box-non">
+                    <p class="typo-desc2">결제 내역이 없습니다.</p>
+                    <p class="typo-desc2">합리적인 가격으로 pc, 모바일까지 활용해보세요</p>
                 </div>
-                <div class="resume-list toggle-list" id="recommend-resume-list">
-                    <div class="dental-title">결제 내역</div>
-                    <div class="tile resume-list-tile">
-                        <div class="tile-icon">
-                            <figure class="avatar avatar-lg"><img src="img/avatar-2.png" alt="Avatar"></figure>
-                        </div>
-                        <div class="tile-content">
-                            <p class="tile-title">프리미어 광고</p>
-                            <p class="tile-subtitle text-gray">일은 안하고 노는 걸 정말 좋아하는 멋진 인재입니다. 제발 뽑아주세요.</p>
-                            <p>
-                                <button class="btn btn-primary btn-sm">상세 보기</button>
-                            </p>
-                        </div>
+                <div class="radio-box-checked" id="payment-completion-list">
+                    <div class="" style="display: flex; flex-wrap: wrap;">
+                        <div>2018.03.01</div>
+                        <div>프리미어</div>
+                        <div>34,000원</div>
+                    </div>
+                    <div class="" style="display: flex; flex-wrap: wrap;">
+                        <div>2018.03.01</div>
+                        <div>연간회원</div>
+                        <div>99,000원</div>
                     </div>
                 </div>
             </div>
