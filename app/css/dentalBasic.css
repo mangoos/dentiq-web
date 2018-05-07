@@ -416,7 +416,7 @@ h6, .h6 { font-size: .8rem; }
 .d-share[data-action-checked="true"]::before { content: "\f058"; font-weight: 600; font-size: 110%; }
 
 .d-import::before,
-.d-import[data-action-checked="false"]::before { content: "\f14d"; font-weight: 300; }
+.d-import[data-action-checked="false"]::before { content: "\f0ed"; font-weight: 300; }
 
 
 .d-phone::before { content: "\f098"; font-weight: 400; font-size: 110%; }
@@ -1141,7 +1141,7 @@ input[name=steps]:nth-of-type(4):checked ~.step-body .step-content:nth-of-type(4
 .dental-tabs .tab-body .tab-content { display: none; margin: 0 auto; padding: 0; overflow: hidden; background-color: #f0f1f4; }
 .dental-tabs .tab-body .tab-content:after { content: ""; clear: both; display: block; }
 
-.dental-tabs .tab-body .chip { height: 2rem; border-radius: 0; width: calc(100%/3); line-height: 2rem;
+.dental-tabs .tab-body .chip { justify-content: center; height: 2rem; border-radius: 0; width: calc(100%/3); line-height: 2rem;
     text-align: center; padding: 0; margin: 0; float: left; }
 .dental-tabs .tab-body .tab-sub input:checked + span { background-color: #0083cb; color: #FFF; }
 
@@ -2612,11 +2612,16 @@ span.subway-line span.subway401 { background-color: #007448; } /* 대전 1호선
 span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF; padding-right: 0.1rem; }
 
 
-/******* price ********/
+/******* payment ********/
 
 .normal-price { text-decoration: line-through; }
 .dental-price { color: red; font-size: 1.05rem; }
 .dental-price::after { content: "(부가세포함)"; font-size: 60%; color: #5d5d5d; }
+.final-payment { display: none; flex-wrap: wrap; }
+.premiere-time { }
+.premiere-time::after { content: "일"; }
+.premiere-cost { }
+.premiere-cost::after { content: "원"; }
 
 /* @media screen and (max-width: 980px) {
 
