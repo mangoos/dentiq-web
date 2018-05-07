@@ -1718,7 +1718,7 @@ header .main-header .navbar-brand { display: inline-flex; align-items: center; f
 
 .main-header-icon .fa-user-alt { margin-right: 8px; transform: translateY(-1px); }
 
-.main-header-icon .fa-user-alt:before { font-weight: bolder; font-size: 1.1rem; }
+.main-header-icon .fa-user-alt:before { font-size: 1.1rem; }
 
 .navbar-center .main-search { display: block; position: absolute; transition: all 1s ease; left: 15%; bottom: 100rem; width: 70%; height: 2rem; 
     line-height: 2rem; border: 1px solid #0083cb; border-radius: 2px; background-color: #FFF; will-change: auto; }
@@ -1729,7 +1729,7 @@ header .main-header .navbar-brand { display: inline-flex; align-items: center; f
 .main-search-submit { position: absolute; text-align: center; width: 40px; right: 0; top: 0; height: 1.9rem; background-color: #0083cb; 
     color: #FFF; }
 
-.main-search-submit .far { margin: 0 auto; line-height: 2rem; transform: translateY(-1px); font-size: 1rem; }
+.main-search-submit .fal { margin: 0 auto; line-height: 2rem; transform: translateY(-1px); font-size: 1rem; }
 
 .search-checkbox:checked ~ .navbar-center .main-search { display: block; bottom: 0.4rem; transition: all 0.5s ease; will-change: auto; }
 
