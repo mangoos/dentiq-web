@@ -15,6 +15,7 @@
     <script src="js/common.js"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=sTJvEhCjdAWmt5nFZblm"></script>
     <script src="js/dental_ui.js"></script>
+    <script src="js/dformHelper.js"></script>
 </head>
 <body>
     <header class="register-header navbar">
@@ -433,7 +434,7 @@
 
 
     </section>
-    <section class="jobad-btm-layer">
+    <section class="jobad-btm-layer" id="jobAdBtmLayer">
         <div class="jobad-btm-float-btn">
             <label class="go-to-top"><input type="button" name="" hidden><i class="far fa-arrow-circle-up"></i></label>
 		</div>		
@@ -643,7 +644,7 @@ function fillData(resData) {
     /* ***************************************************************************************************************** */
 }
 
-            
+          
 
 
 
@@ -660,7 +661,7 @@ var JobAdDetailApp = (function() {
         var params = getHtmlCallParams();
         if ( params && params.jobAdId ) {   // 기존 공고 로드 후 수정
             jobAdId = params.jobAdId;
-        } else {
+        } else  {
             alert("잘못된 접근입니다.");
             return;
         }
@@ -688,6 +689,17 @@ var JobAdDetailApp = (function() {
 
 				initJobAdAction();
                 fillData(jobAdData);
+                
+                // 로그인 아이디하고 공고 병원 아이디(hospitalID)가 같으면 하단 하단 버튼을 프리미어 신청용으로 변경
+
+                if ( hospitalId === LOGIN_INFO.getHospitalId() ) {  
+                    
+                    var btmLayerElm = document.getElementById("jobAdBtmLayer");
+                    var btnHtml = '<a href="premiere_ad_payment.html" class="btn btn-primary btn-icon d-bullhorn" id="premiereRequestBtn" style="color: #FFF;">프리미어 신청</a>';
+                    
+                    btmLayerElm.innerHTML = btnHtml;
+
+                }
                 
             },
             function(errorCode, errorMsg) {
