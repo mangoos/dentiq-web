@@ -60,12 +60,14 @@
                 <!-- 사이드바 버튼 -->
 				<label for="main-search-checkbox"><span class="main-header-icon"><i class="fal fa-search"></i></span></label>
 				
-				<a id="aGotoPanel" href="user_panel.html" class="main-header-icon"><i class="fal fa-user-alt"></i></a>
+				<a id="aGotoPanel" href="javaScript:void(0);" class="main-header-icon"><i class="fal fa-user-alt"></i></a>
 
                 <script>
-					if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) {
-						document.getElementById("aGotoPanel").href = "dentist_panel.html";
-					}
+
+                    aGotoPanel.addEventListener("click", function(e) {
+                        if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) location.href = "dentist_panel.html";
+                        else location.href = "user_panel.html";
+                    });
 
                     var labelForSearch = document.querySelector(".search-checkbox");
                     labelForSearch.addEventListener("change", function(e) {
