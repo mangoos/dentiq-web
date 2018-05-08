@@ -31,10 +31,17 @@
         <div>
             <h5>알림 설정</h5>
             <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around;">
-                <label class="" style="display: inline-flex; align-items: center;">공지/뉴스<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-                <label class="" style="display: inline-flex; align-items: center;">채용소식<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-                <label class="" style="display: inline-flex; align-items: center;">이벤트<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-                <label class="" style="display: inline-flex; align-items: center;">광고<input type="checkbox" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <span class="btn btn-icon btn-sm d-scrap" id="agreementNoticeNewsYn" data-action="agreementNoticeNewsYn">공지/뉴스</span>
+                <span class="btn btn-icon btn-sm d-scrap" id="agreementHiringNewsYn" data-action="agreementHiringNewsYn">채용소식</span>
+                <span class="btn btn-icon btn-sm d-scrap" id="agreementEventYn"      data-action="agreementEventYn">이벤트</span>
+                <span class="btn btn-icon btn-sm d-scrap" id="agreementAdYn"         data-action="agreementAdYn">광고</span>
+
+                <!--
+                <label class="" style="display: inline-flex; align-items: center;">공지/뉴스<input type="checkbox" name="agreementNoticeNewsYn" value="Y" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">채용소식<input type="checkbox"  name="agreementHiringNewsYn" value="Y" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">이벤트<input type="checkbox"    name="agreementEventYn" value="Y"      hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                <label class="" style="display: inline-flex; align-items: center;">광고<input type="checkbox"      name="agreementAdYn" value="Y"         hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
+                -->
             </div>
         </div>
         <a class="btn btn-sm" href="modify_password.html">비밀번호 변경</a> <!-- modify_password.html-->
@@ -45,3 +52,86 @@
     </section>
 </body>
 </html>
+
+<script>
+
+var MySettingApp = (function() {
+
+    function onClickAction(event) {       
+
+        var checkedId = this.dataset.action;
+        console.log(checkedId);
+
+        var param = {};
+        document.querySelectorAll("[data-action]").forEach(function(el) {
+            //console.log("현재 : ", el.dataset.action);
+            if ( el.dataset.action==checkedId ) {   // 동일 ID인 경우에는 toggle한다.
+                if ( el.dataset.actionChecked && el.dataset.actionChecked=="true" ) param[el.dataset.action] = "N";
+                else param[el.dataset.action] = "Y";
+            } else if ( el.dataset.actionChecked && el.dataset.actionChecked=="true" ) param[el.dataset.action] = "Y";
+            else param[el.dataset.action] = "N";
+
+        });
+        //console.log("PARAM : ", param);
+
+         callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/setting/", JSON.stringify(param),
+            function(resData) {
+                //console.log("결과 : ", resData);
+                renderActions(resData);
+
+            },
+            function(errorCode, errorMsg) {
+                //console.log(errorCode, errorMsg);
+                alert("서버와의 통신이 원활하지 않습니다. 잠시 후 다시 시도하여 주십시오. [" + errorCode + "]");
+                return;
+            },
+            "application/json"
+
+         );
+
+
+    }
+
+    document.querySelectorAll("[data-action]").forEach(function(el) {
+        el.addEventListener("click", onClickAction);
+    });
+
+    function renderActions(settingDatas) {
+        if ( !settingDatas ) return;
+        Object.keys(settingDatas).forEach(function(key) {
+            //console.log("KEY : ", key, "  값 : ", settingDatas[key]);
+            var element = document.querySelector("[data-action=" + key + "]");
+            // console.log("element 전 : ", element);
+            if ( settingDatas[key] && settingDatas[key]=="Y" ) element.dataset.actionChecked = "true";
+            else element.dataset.actionChecked = "false";
+            //console.log("element 후 : ", element, " ==> ", element.dataset.actionChecked);
+        });
+    }
+
+    function init() {
+        if ( !LOGIN_INFO.isLoggedIn() ) {
+            alert("로그인이 필요합니다.");
+            location.href = "login.html";
+            return;
+        }
+        
+
+        callApi("GET", "/api/user/"+LOGIN_INFO.getId()+"/setting/", null,
+            function(resData) {
+                //console.log(resData);
+                renderActions(resData);
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+
+
+    }
+
+    init();
+
+
+})();
+
+</script>
