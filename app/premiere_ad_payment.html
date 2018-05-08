@@ -122,7 +122,7 @@ var JobAdUpgradeApp = (function() {
     }
 
 
-    var JOB_AD_ID = 1;
+    var JOB_AD_ID;
     var START_DATE;
     var PERIOD = 0;
     var AMOUNT = 0;
@@ -130,6 +130,15 @@ var JobAdUpgradeApp = (function() {
 
     function initPage() {
 		if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
+
+        JOB_AD_ID = sessionStorage.getItem("TEMP_JOB_AD_ID");
+        if ( !JOB_AD_ID ) {
+            alert("공고 ID가 지정되지 않았습니다.");
+            // 바로 historyback을 하자!!!
+            window.history.back();
+            return;
+        }
+        sessionStorage.removeItem("TEMP_JOB_AD_ID");
 
         
 
