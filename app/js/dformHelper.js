@@ -1,26 +1,3 @@
-var formUIInit = function () {
-
-    document.body.addEventListener("change", function(e) {
-        var target = e.target;
-        var hasClass = target.classList.contains("styled-select") || target.classList.contains("styled-input");
-        console.log("hasClass: ", hasClass, target);
-        if(hasClass) {
-            if(!target.classList.contains("hasValue")) { target.classList.add("hasValue"); }
-         }
-    });
-    // 바디에 위임해서 포커스 아웃 처리 애매함. ㅠ 참고용
-    document.body.addEventListener("focusout", function(e) {
-        var target = e.target;
-        var hasClass = target.classList.contains("styled-select") || target.classList.contains("styled-input");
-        if( hasClass ) {
-            if(!target.value || target.value == "") { 
-                target.classList.remove("hasValue");
-                console.log("값 없음, hasValue 클래스 삭제"); 
-            } else { console.log("값 있음, hasValue 유지"); return ; }
-         }
-    });
-    console.log("form 꾸미기 css 완료");
-};
 
 var DRexPattern = {
 
@@ -209,8 +186,6 @@ function inputValueLengthChecker(inputElm) {
 
 $(document).ready(function() {
     
-    formUIInit();
-
     var $card = $(".dental-card");
     var $formCard= $card.find(".form-group");
 

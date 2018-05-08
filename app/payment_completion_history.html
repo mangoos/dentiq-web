@@ -28,37 +28,53 @@
             <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
-    <div class="dental-card card">
-        <div class="dental-card-body">
-            <div class="dental-card-header">
-                <div class="dental-title"><i class="fa fa-address-card-o" style="margin-right: 0.5rem"></i>결제 내역</div>
-                <div class="dental-sub-title">최근 결제한 리스트를 조회할 수 있습니다.</div>
+    <div class="dental-card">
+        <div class="dental-card-header">
+            <div class="dental-card-header-title h4">결제 내역</div>
+            <div class="dental-card-header-subtitle">최근 3개월 카드 결제 및 무통장입금 내역을 확인할 수 있습니다.</div>
+            <div class="dental-card-header-subtitle"></div>
+        </div>
+        <div class="dental-card-body dental-radio-box">
+            <input type="checkbox" class="radio-box-input" checked> <!-- css로 노출 박스 스위치 -->
+            <div class="radio-box-non">
+                <p class="typo-desc2">결제 내역이 없습니다.</p>
+                <p class="typo-desc2">합리적인 가격으로 pc, 모바일까지 활용해보세요</p>
+                <a class="btn btn-sm btn-primary" href="dental_product.html">덴탈플러스 상품 알아보기</a>
             </div>
-            <input type="checkbox" name="dental-toggle-box" id="recommend-resume-toggle"> <!-- css로 노출 박스 스위치 -->
-            <label for="recommend-resume-toggle"></label><!-- dental-toggle-box 와 세트임 -->
-            <div class="dental-toggle-box">
-                <div class="non-scrap toggle-list">
-                    <p>결제 내역이 없습니다.</p>
+            <div class="payment-completion-list radio-box-checked" id="paymentCompletionList">
+                <div class="payment-list-card title">
+                    <div class="payment-list-card-date">결제일자<span class="payment-list-card-num">[ 체결번호 ]</span></div>
+                    <div class="payment-list-card-desc">내역</div>
+                    <div class="payment-list-card-amount">금액</div>
+                </div>                    
+                <div class="payment-list-card">
+                    <div class="payment-list-card-date">2018.03.01<span class="payment-list-card-num">dp180964</span></div>
+                    <div class="payment-list-card-desc">프리미어 30일 결제</div>
+                    <div class="payment-list-card-amount">297,000 원</div>
                 </div>
-                <div class="resume-list toggle-list" id="recommend-resume-list">
-                    <div class="dental-title">결제 내역</div>
-                    <div class="tile resume-list-tile">
-                        <div class="tile-icon">
-                            <figure class="avatar avatar-lg"><img src="img/avatar-2.png" alt="Avatar"></figure>
-                        </div>
-                        <div class="tile-content">
-                            <p class="tile-title">프리미어 광고</p>
-                            <p class="tile-subtitle text-gray">일은 안하고 노는 걸 정말 좋아하는 멋진 인재입니다. 제발 뽑아주세요.</p>
-                            <p>
-                                <button class="btn btn-primary btn-sm">상세 보기</button>
-                            </p>
-                        </div>
-                    </div>
+                <div class="payment-list-card">
+                    <div class="payment-list-card-date">2018.03.02<span class="payment-list-card-num">dm180964</span></div>
+                    <div class="payment-list-card-desc">연간회원 결제</div>
+                    <div class="payment-list-card-amount">99,000 원</div>
+                </div>
+                <div class="payment-list-card">
+                    <div class="payment-list-card-date">2018.05.03<span class="payment-list-card-num">dp180964</span></div>
+                    <div class="payment-list-card-desc">프리미어 10일 결제(연간회원 할인)</div>
+                    <div class="payment-list-card-amount">49,000 원</div>
+                </div>
+                <div class="payment-list-card">
+                    <div class="payment-list-card-date">2018.06.11<span class="payment-list-card-num">dp180964</span></div>
+                    <div class="payment-list-card-desc">프리미어 20일 결제(연간회원 할인)</div>
+                    <div class="payment-list-card-amount">98,000 원</div>
+                </div>
+                <div class="payment-list-card">
+                    <div class="payment-list-card-date">2018.07.28<span class="payment-list-card-num">dp180964</span></div>
+                    <div class="payment-list-card-desc">프리미어 10일 결제(연간회원 할인)</div>
+                    <div class="payment-list-card-amount">49,000 원</div>
                 </div>
             </div>
         </div>
     </div>
-    
 </body>
 
 </html>

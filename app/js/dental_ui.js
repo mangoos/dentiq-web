@@ -3,6 +3,30 @@ var dModal = dModal || {};
 
 $(document).ready( function() {
     dModal = dentalModal();  // 모달 세팅
+
+    var formUIInit = function () {  // 나중에 폼헬퍼로 이동, 폼 없는 페이지는 의미없음.
+
+        document.body.addEventListener("change", function(e) {
+            var target = e.target;
+            var hasClass = target.classList.contains("styled-select") || target.classList.contains("styled-input");
+            console.log("hasClass: ", hasClass, target);
+            if(hasClass) {
+                if(!target.classList.contains("hasValue")) { target.classList.add("hasValue"); }
+             }
+        });
+        // 바디에 위임해서 포커스 아웃 처리 애매함. ㅠ 참고용 나중에 변경
+        document.body.addEventListener("focusout", function(e) {
+            var target = e.target;
+            var hasClass = target.classList.contains("styled-select") || target.classList.contains("styled-input");
+            if( hasClass ) {
+                if(!target.value || target.value == "") { 
+                    target.classList.remove("hasValue");
+                    console.log("값 없음, hasValue 클래스 삭제"); 
+                } else { console.log("값 있음, hasValue 유지"); return ; }
+             }
+        });
+        console.log("form 꾸미기 css 완료");
+    }();
     // setTimeout( function() {
     //     // dModal.toast(navigator.userAgent);
     //     var ua = navigator.userAgent;
