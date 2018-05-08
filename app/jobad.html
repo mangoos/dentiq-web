@@ -761,6 +761,8 @@ var JobAdDetailApp = (function() {
 
 
 	document.getElementById("actionScrap").addEventListener("click", function(event) {
+        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+
 		var element = this;
 		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 스크랩 O ==> 스크랩 X
 			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
@@ -787,6 +789,8 @@ var JobAdDetailApp = (function() {
 
 
 	document.getElementById("actionApply").addEventListener("click", function() {
+        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+
 		var element = this;
 		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 지원 O ==> 지원 X
 			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
@@ -817,6 +821,8 @@ var JobAdDetailApp = (function() {
 
 
 	document.getElementById("actionInterestHospital").addEventListener("click", function() {
+        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+        
 		var element = this;
 		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 관심병원 O ==> 관심병원 X
 			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
