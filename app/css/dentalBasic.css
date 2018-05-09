@@ -492,7 +492,7 @@ h6, .h6 { font-size: .8rem; }
 .col-9 { width: 75%; }
 .col-8 { width: 66.66666667%; }
 .col-7 { width: 58.33333333%; }
-.col-6 { width: 50%; }
+.col-6 { width: 49%; } /* 50% 였으나 임시로 49% 로 일단 수정, 프리미어 영역 flex 때문 */
 .col-5 { width: 41.66666667%; }
 .col-4 { width: 33.33333333%; }
 .col-3 { width: 25%; }
@@ -2056,7 +2056,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 .premiere-ad-box .card-body { position: relative; padding: 0 10px 0 15px; font-size: 12px; color: #888; margin-bottom: 5px; }
 
 .premiere-ad-box .btn-icon.d-scrap,
-.premiere-ad-box .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.4rem; }
+.premiere-ad-box .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
 
 .premiere-ad-box .card-body { position: relative; padding: 0 10px 0 15px; font-size: 12px; color: #888; margin-bottom: 0.4rem; }
 
@@ -2083,7 +2083,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 .user-action-panel-input:checked ~ .user-action-panel { display: block; }
 
 .user-action-panel-body { display: flex; flex-direction: column; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-    width: 70%; }
+    width: 70%; z-index: 2; }
 
 .user-action-panel-body::before { content: "버튼을 선택해 주세요"; display: block; text-align: center; background-color: #0083cb; 
     padding: 1rem 0; color: #FFF; margin-bottom: 0.2rem; border-radius: 0.2rem 0.2rem 0 0; }
@@ -2098,7 +2098,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 .user-action-panel-body .btn.btn-icon::before { font-size: 1rem; display: block; width: 20%; margin-right: 1rem; border-right: 1px solid #0083cb; }
 
 .user-action-panel-backdrop { display: block; position: fixed; content: ""; top: 0; left: 0; right: 0; bottom: 0; 
-    background-color: #000; opacity: 0.7; }
+    background-color: #000; opacity: 0.7; z-index: 2;}
 
 
 

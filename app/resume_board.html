@@ -59,7 +59,7 @@
 									<div class="resume-list-photo">
 										<div class="user-photo-box" style="width: 60px; height: 60px; font-size: 60px;">
 											<div class="image-frame"><!-- <img src="images/user/jungwoo.jpg" alt=""> -->
-												<img src="{{renderResumeProfileImage userId}}" onload="imageFit(this, 60)">
+												<img src="{{user.profileImageUrl}}" onload="imageFit(this, 60)">
 											</div>
 										</div>
 									</div>
@@ -148,10 +148,10 @@ Handlebars.registerHelper("renderYYYYMMDDWithDot", function(yyyymmdd) {
 Handlebars.registerHelper("renderAttrOnResumeCard", function(code) {
 	return renderAttrOnResumeCard(code);
 });
-Handlebars.registerHelper("renderResumeProfileImage", function(userId) {
-	//console.log("renderResumeProfileImage ", userId);
-	return CONSTANTS.getProfileImageUrl(userId);
-});
+// Handlebars.registerHelper("renderResumeProfileImage", function(userId) {
+// 	//console.log("renderResumeProfileImage ", userId);
+// 	return CONSTANTS.getProfileImageUrl(userId);
+// });
 
 
 

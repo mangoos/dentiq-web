@@ -9,10 +9,12 @@
     <meta name="author" content="https://github.com/aaa/">
     <title>덴탈플러스</title>
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/swiper.min.css">   <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="css/dentalBasic.css">
 
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/handlebars.min.js"></script>
+    <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
     <script src="js/dental_ui.js"></script>
     <style>
@@ -27,6 +29,37 @@
         .my-local-item-cnt { color: red; font-size: 0.5rem; margin-left: 0.2rem; }
         .my-local-item-cnt:before { content: "("; display: inline-block; margin-right: 0.1rem; }
         .my-local-item-cnt:after { content: ")"; display: inline-block; margin-left: 0.1rem; }
+
+
+
+        /* .my-swiper-area {
+            position: relative;
+            height: 100%;
+        } */
+        
+        /* .swiper-container {
+            width: 100%;
+            height: 100%;
+        } */
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
     </style>
 </head>
 
@@ -388,36 +421,86 @@
 
     </section>
 
+
+
     <!-- ======================== 프리미어 공고 ======================== -->
     <section id="section-premiereAds" class="premiere-ad">
+
         <div class="jobpost-list-bar">
                 <span class="typo-title2">프리미어 채용정보</span>
                 <span class="jobpost-list-bar-counter" id="countOfPremierAds">0</span>
         </div>
+
+
+
+        <div class="my-swiper-area" id="premierJobAdsSwipeArea"></div>
+        <script id="premierJobAdsSwipeTemplate" type="text/x-handlebars-template">
+
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+
+                    {{#each .}}
+                    <div class="swiper-slide">
+                        <div class="premiere-ad-box columns" id="premierJobAdsList">
+
+                            {{#each .}}			
+                            <div class="column col-6 card">
+                                <a href="jobad.html?jobAdId={{jobAdId}}">
+                                    <div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
+                                    <div class="card-header">
+                                        <div class="card-title">{{hospital.hospitalName}}</div>
+                                        <div class="card-subtitle">{{title}}</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="dental-info">
+                                            <span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
+                                            <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
+                                        </div>
+                                        <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
+                                    </div>
+                                </a>
+                                <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                            </div>
+                            {{/each}}
+
+
+                        </div>
+                    </div>
+                    {{/each}}
+
+                </div>
+            </div>
+        </script>
+
+
+        <!--
         <div class="premiere-ad-box columns" id="premierJobAdsList"></div>
         <script id="premierJobAdsTemplate" type="text/x-handlebars-template">
-			{{#each .}}			
+			{{#eachNested .}}			
 			<div class="column col-6 card">
 				<a href="jobad.html?jobAdId={{jobAdId}}">
-					<div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{renderHospitalLogoImage hospitalId hospital.hasLogoImage}}"></div></div>
-					<!-- <div class="card-image"><img src="{{fullLogoUrl}}" class="img-responsive"></div> -->
+					<div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
 					<div class="card-header">
 						<div class="card-title">{{hospital.hospitalName}}</div>
 						<div class="card-subtitle">{{title}}</div>
 					</div>
 					<div class="card-body">
 						<div class="dental-info">
-							<span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span> <!-- 시도, 시구군 정보 -->
-							<span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span> <!-- 마감날짜 -->
+							<span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
+							<span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
 						</div>
 						<div class="dental-info">{{{renderAttrOnCard attr}}}</div>
 					</div>
 				</a>
 				<span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
 			</div>
-            {{/each}}
+            {{/eachNested}}
         </script>
+        -->
     </section>
+
+
+
 
     <!-- ======================== 일반 공고 ======================== -->
     <section id="section-generalAds" class="jobpost-list">
@@ -465,6 +548,22 @@
 </html>
 
 <script>
+
+Handlebars.registerHelper("eachNested", function(context, options) {
+    console.log("HELPER : eachNested ");
+
+    var ret = "";
+    for(var i=0, j=context.length; i<j; i++) {
+        if ( i%4==0 ) {
+            console.log("잡혔음 : ", i);
+        }
+
+        ret = ret + options.fn(context[i]);
+    }
+
+    return ret;
+
+});
 
 
 
@@ -551,10 +650,10 @@ var LiveBoardApp = (function() {
         //console.log("renderAttrOnCard ", code);
         return renderAttrOnCard(code);
 	});
-	Handlebars.registerHelper("renderHospitalLogoImage", function(hospitalId, flag) {
-		console.log("renderHospitalLogoImage ", hospitalId, flag);
-		if ( flag ) return CONSTANTS.getHospitalLogoImageUrl(hospitalId);
-    });
+	// Handlebars.registerHelper("renderHospitalLogoImage", function(hospitalId, flag) {
+	// 	console.log("renderHospitalLogoImage ", hospitalId, flag);
+	// 	if ( flag ) return CONSTANTS.getHospitalLogoImageUrl(hospitalId);
+    // });
 
     Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
         if (!hiringEndDate) return "";
@@ -610,8 +709,11 @@ var LiveBoardApp = (function() {
     /*  프리미어 공고 로딩 및 출력
     /*  
     /*******************************************************************************/
-    var premierJobAdsTemplate = document.getElementById("premierJobAdsTemplate").innerHTML;
-    var premierJobAdsTemplateCompiled = Handlebars.compile(premierJobAdsTemplate);
+    // var premierJobAdsTemplate = document.getElementById("premierJobAdsTemplate").innerHTML;
+    // var premierJobAdsTemplateCompiled = Handlebars.compile(premierJobAdsTemplate);
+
+    var premierJobAdsSwipeTemplate = document.getElementById("premierJobAdsSwipeTemplate").innerHTML;
+    var premierJobAdsSwipeTemplateCompiled = Handlebars.compile(premierJobAdsSwipeTemplate);
 
     function listPremierJobAds(_queryParamString) {
 
@@ -619,8 +721,34 @@ var LiveBoardApp = (function() {
         console.log("listPremierJobAds : searchParam:", searchParam);
         callApi("GET", "/api/jobAd/", searchParam,
             function(jobAdList) {
-                var itemList = premierJobAdsTemplateCompiled(jobAdList);
-				$('#premierJobAdsList').html(itemList);
+
+                //if ( !jobAdList || jobAdList<1 ) return;
+
+
+                var bunchOfJobAds = [];
+                for ( var i=0; i<jobAdList.length;) {
+                    //console.log("큰 루프 : ", i, "   ===> ", i%4);
+                    var subBunchOfJobAds = [];
+
+                    for ( var j=0; j<4 && i<jobAdList.length; j++ ) {
+                        //console.log("현재 : ", i, " ==> ", i%4);
+                        subBunchOfJobAds.push(jobAdList[i]);
+                        i++;
+                    }
+
+                    //console.log("서브 루프 탈출 : ", i);
+                    bunchOfJobAds.push(subBunchOfJobAds);
+
+                }
+                console.log("결과 : ", bunchOfJobAds);
+
+                var itemList = premierJobAdsSwipeTemplateCompiled(bunchOfJobAds);
+                $('#premierJobAdsSwipeArea').html(itemList);
+
+                var swiper = new Swiper('.swiper-container');
+
+                // var itemList = premierJobAdsTemplateCompiled(jobAdList);
+				// $('#premierJobAdsList').html(itemList);
 
 				//renderScrapCheckbox();		// 스크랩된 공고에 별표시
 				//renderAppliedCheckbox();	// 지원상태를 표시
