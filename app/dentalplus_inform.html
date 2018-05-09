@@ -27,8 +27,9 @@
             <a href="dentist_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
-    <div>알림이 없습니다.</div>
-    <section>
+    <div id="divNoNotice">알림이 없습니다.</div>
+    <section id="sectionNoticeList">
+        
         <div class="main-inform">
             <span class="main-inform-icon" style="font-size: 0.9rem; color: red; margin-right: 0.1rem;"><i class="fas fa-info-circle"></i></span>
             <!-- <span style="font-size: 0.8rem; color: #212529; margin-right: 0.3rem;"></span> -->
@@ -54,6 +55,75 @@
             <span style="font-size: 0.8rem; color: #212529; font-weight: bold; margin-right: 0.3rem;">EVENT!</span>
             <span>베타서비스기간동안 써포터즈를 모집합니다.</span>
         </div>
+        
     </section>
 </body>
 </html>
+
+
+<script>
+
+var NoticeApp = (function() {
+
+    load();
+
+    function load() {
+
+        callApi("GET", "/api/notice/", null,
+            function(resData) {
+                //console.log("결과 : ", resData);
+
+                var htmlStr = "";
+
+                if ( !resData || resData.length<1 ) {
+                    document.getElementById("divNoNotice").innerText = "알림이 없습니다.";
+                    document.getElementById("divNoNotice").style.display = "block";
+                    return;
+                }
+
+                resData.forEach(function(notice) {                    
+
+                    if ( notice.noticeType=="E" ) {   // 이벤트인 경우
+                        htmlStr += '<div class="main-inform" data-action="link" data-action-web-url="' + notice.webUrl + '">';
+                        htmlStr +=      '<span class="main-inform-icon" style="font-size: 0.9rem; color: #FF9C00; margin-right: 0.1rem;"><i class="fal fa-gift"></i></span> <span style="font-size: 0.8rem; color: #212529; font-weight: bold; margin-right: 0.3rem;">EVENT!</span>';
+                        htmlStr +=      '<span>' + notice.title + '</span>';
+
+                    } else {    // 나머지
+                        htmlStr += '<div class="main-inform" data-action="view">';
+                        htmlStr +=      '<span class="main-inform-icon" style="font-size: 0.9rem; color: red; margin-right: 0.1rem;"><i class="fas fa-info-circle"></i></span>';
+                        htmlStr +=      '<span>' + notice.title + '</span>';
+                        htmlStr +=      '<div hidden class="content">' + notice.content + '</div>';
+                    }
+                    htmlStr += '</div>';
+                });
+                
+                document.getElementById("divNoNotice").style.display = "none";
+                document.getElementById("sectionNoticeList").innerHTML = htmlStr;
+
+
+                $("#sectionNoticeList").on("click", "[data-action]", function(e) {
+
+                    if ( !this.dataset || !this.dataset.action ) return;
+
+                    if ( this.dataset.action=="link" ) {
+                        window.open(this.dataset.actionWebUrl,"테스트");
+
+                    } else if ( this.dataset.action=="view" ) {
+                        $(this).children(".content").toggle();
+
+                    }
+				});
+
+
+            },
+            function(errorCode, errorMsg) {
+                //console.log(errorCode, errorMsg);
+                alert("서버와의 통신이 원활하지 않습니다. 잠시 후 다시 시도하여 주십시오. [" + errorCode + "]");
+                return;
+            }
+        );
+    }
+
+
+})();
+</script>

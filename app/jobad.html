@@ -695,9 +695,16 @@ var JobAdDetailApp = (function() {
                 if ( hospitalId === LOGIN_INFO.getHospitalId() ) {  
                     
                     var btmLayerElm = document.getElementById("jobAdBtmLayer");
-                    var btnHtml = '<a href="premiere_ad_payment.html" class="btn btn-primary btn-icon d-bullhorn" id="premiereRequestBtn" style="color: #FFF;">프리미어 신청</a>';
+                    var btnHtml = '<a class="btn btn-primary btn-icon d-bullhorn" id="btnGotoJobAdUpgrade" style="color: #FFF;">프리미어 신청</a>';
                     
                     btmLayerElm.innerHTML = btnHtml;
+
+                    
+                    document.getElementById("btnGotoJobAdUpgrade").addEventListener("click", function(event) {
+                        sessionStorage.setItem("TEMP_JOB_AD_ID", jobAdId);
+                        document.location.href = "premiere_ad_payment.html";
+                    });
+                    
 
                 }
                 
@@ -754,6 +761,8 @@ var JobAdDetailApp = (function() {
 
 
 	document.getElementById("actionScrap").addEventListener("click", function(event) {
+        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+
 		var element = this;
 		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 스크랩 O ==> 스크랩 X
 			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
@@ -780,6 +789,8 @@ var JobAdDetailApp = (function() {
 
 
 	document.getElementById("actionApply").addEventListener("click", function() {
+        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+
 		var element = this;
 		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 지원 O ==> 지원 X
 			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
@@ -810,6 +821,8 @@ var JobAdDetailApp = (function() {
 
 
 	document.getElementById("actionInterestHospital").addEventListener("click", function() {
+        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+        
 		var element = this;
 		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 관심병원 O ==> 관심병원 X
 			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,

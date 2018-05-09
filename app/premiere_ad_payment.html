@@ -13,9 +13,10 @@
     
 	<script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/handlebars.min.js"></script>
+    <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <script src="js/common.js"></script>
-    <script src="js/dental_ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.3.5/cropper.js"></script>
+    <script src="js/dental_ui.js"></script>    
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.3.5/cropper.js"></script>-->
 </head>
 <body>
     <header class="register-header navbar">
@@ -40,18 +41,21 @@
             </div>
             <div class="dental-card-body">
                 <div class="form-group">
+                    <!--
                     <select id="premiereAdStartDate" class="select-two styled-select hasValue">
                         <option disabled selected>시작일 선택</option>
                         <option value="20180513">2018년 5월 13일</option>
                     </select>
-                    <select id="premiereAdEndDate" class="select-two styled-select"></select>
+                    -->
+                    프리미어 광고 시작일<input type="text" id="premiereAdStartDate">
+                    <select id="premiereAdEndDate" ></select>
                     <label class="styled-label">프리미어 기간 선택</label>
                 </div>
                 <div class="final-payment">
                     <div class="dental-price"></div>
                     <div class="premiere-time"></div>
                     <div class="premiere-cost"></div>
-                    <div class="btn btn-primary">결제하기</div>
+                    <div class="btn btn-primary" id="btnPay">결제하기</div>
                 </div>
             </div>
         </div>
@@ -59,20 +63,27 @@
 </body>
 <script>
 
-    function renderCalendarSelectYYYYMMMM(elementDate, startDate, endDate, defaultOptionText, defaultOptionValue, reverse) {
+    function renderCalendarSelectYYYYMMMM(elementDate, _startDate, _endDate, defaultOptionText, defaultOptionValue, reverse) {
         // startDate와 endDate는 모두 Date 타입
         //console.log("시작 : ", elementDate);
 
-        if ( !startDate ) startDate = new Date();
-        if ( !endDate )   endDate   = (new Date(startDate)).setDate(startDate.getDate() + 30);  // 30일 이후
+        var startDate = new Date();
+        if ( _startDate ) startDate.setTime(_startDate.getTime());
+
+
+        //var endDate = (new Date(startDate)).setDate(startDate.getDate() + 30);  // 30일 이후
+        var endDate = new Date(startDate);
+        if ( _endDate ) endDate.setTime(_endDate.getTime());
+        else endDate.setDate(startDate.getDate() + 30);  // 30일 이후
+
 
         console.log("START : ", new Date(startDate), " END : ", new Date(endDate));
 
         clearSelectOptions(elementDate, defaultOptionText, defaultOptionValue);
 
         //console.log("limit: ", endDate);
-        while ( startDate < endDate ) {
-            //console.log(startDate);        
+        while ( startDate <= endDate ) {
+            console.log(startDate);        
 
             var yyyy = startDate.getFullYear();
             var mm   = startDate.getMonth() + 1;
@@ -95,48 +106,162 @@
         }
     }
 
-    // 프리미어 광고 시작일이 변경되었을 때, 광고 종료일을 새로 렌더링 한다.
-    function onChangepremiereStartDate(event) {
-        if ( this.value && this.value!="" ) {
-            //console.log("시작일 : " + this.value);
-            var yyyy = this.value.substring(0, 4);
-            var mm   = this.value.substring(4, 6);
-            var dd   = this.value.substring(6, 8);
 
-            var endDateBegin = new Date();
-            endDateBegin.setFullYear(Number(yyyy));
-            endDateBegin.setMonth(Number(mm)-1);
-            endDateBegin.setDate(Number(dd)+1);
+    
 
-            renderCalendarSelectYYYYMMMM(document.getElementById("premiereAdEndDate"), endDateBegin, null, "종료일 선택" );
-            document.getElementById("premiereAdEndDate").disabled = false;
+var JobAdUpgradeApp = (function() {
 
-        } else {
-            clearSelectOptions(document.getElementById("premiereAdEndDate"));
-            document.getElementById("premiereAdEndDate").disabled = true;
-        }
+    function parseDateFromYYYYMMDD(yyyymmdd) {
+        var yyyy = yyyymmdd.substring(0, 4);
+        var mm   = yyyymmdd.substring(4, 6);
+        var dd   = yyyymmdd.substring(6, 8);
+
+        var date = new Date(Number(yyyy), Number(mm)-1, Number(dd));
+
+        return date;
     }
-    document.getElementById("premiereAdStartDate").addEventListener("change", onChangepremiereStartDate);
 
-    // 프리미어 광고 종료일이 변경되었을 때, 광고기간 및 광고비 출력.
-    document.getElementById("premiereAdEndDate").addEventListener("change", function(e) {
 
-        var startDate = returnDateObj( document.getElementById("premiereAdStartDate").value );
-        var endDate = returnDateObj( document.getElementById("premiereAdEndDate").value );
-        var adDay = (endDate - startDate) / (60*60*24*1000);
+    var JOB_AD_ID;
+    var START_DATE;
+    var PERIOD = 0;
+    var AMOUNT = 0;
+    var MERCHANT_UID;
 
-        var premiereFinalPayment = document.querySelector(".final-payment");
-        var premierePriceUnitElm = document.querySelector(".dental-price");
-        var premiereTimeElm = document.querySelector(".premiere-time");
-        var premiereCostElm = document.querySelector(".premiere-cost");
-        var priceUnit = false ? 4900 : 9900 ; // 연간회원이면 단가 4,900원
+    function initPage() {
+		if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
 
-        premiereFinalPayment.style.display = "flex";
-        premierePriceUnitElm.innerText = priceUnit +"원/일";
-        premiereTimeElm.innerText = adDay;
-        premiereCostElm.innerText = parseInt(adDay) * priceUnit;
+        JOB_AD_ID = sessionStorage.getItem("TEMP_JOB_AD_ID");
+        if ( !JOB_AD_ID ) {
+            alert("공고 ID가 지정되지 않았습니다.");
+            // 바로 historyback을 하자!!!
+            window.history.back();
+            return;
+        }
+        sessionStorage.removeItem("TEMP_JOB_AD_ID");
 
-        // dModal.toast(adDay + "일 : " + parseInt(adDay) * 9900 + "원" );
-    });
+        
+
+        callApi("GET", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/checkJobAdUpgradable/" + JOB_AD_ID + "/", null,
+            function(resData) {
+                console.log(resData);
+                document.getElementById("premiereAdStartDate").value = resData.startDate;
+
+                START_DATE = resData.startDate;
+                var priceUnit = resData.upgradeFee;
+                var startDate = parseDateFromYYYYMMDD(resData.startDate);
+                var endDate   = parseDateFromYYYYMMDD(resData.endDate);
+
+                console.log("startDate ", startDate);
+                console.log("endDate   ", endDate);
+
+                var _startDate = parseDateFromYYYYMMDD(resData.startDate);
+                _startDate.setDate(startDate.getDate() + 1);
+                renderCalendarSelectYYYYMMMM(document.getElementById("premiereAdEndDate"), _startDate, endDate, "종료일선택", "");
+
+                // 프리미어 광고 종료일이 변경되었을 때, 광고기간 및 광고비 출력.
+                document.getElementById("premiereAdEndDate").addEventListener("change", function(e) {
+
+                    //var startDate =  parseDateFromYYYYMMDD(resData.startDate);
+                    if ( !document.getElementById("premiereAdEndDate").value || document.getElementById("premiereAdEndDate").value.trim()=="" ) {                        
+                        PERIOD = 0;
+                        AMOUNT = 0;
+                    } else {
+                        var selectedEndDate = parseDateFromYYYYMMDD(document.getElementById("premiereAdEndDate").value);
+                        PERIOD = Math.round( (selectedEndDate.getTime() - startDate.getTime()) / (60*60*24*1000) );
+                        AMOUNT = parseInt(PERIOD) * priceUnit;
+                    }
+                                        
+                    var premiereFinalPayment = document.querySelector(".final-payment");
+                    premiereFinalPayment.style.display = "flex";
+
+                    var premierePriceUnitElm = document.querySelector(".dental-price");
+                    premierePriceUnitElm.innerText = priceUnit +"원/일";
+
+                    var premiereTimeElm = document.querySelector(".premiere-time");
+                    premiereTimeElm.innerText = PERIOD;
+                    
+                    var premiereCostElm = document.querySelector(".premiere-cost");
+                    premiereCostElm.innerText = AMOUNT;
+                    
+                });
+
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+    }
+
+    initPage();
+
+    var IMP = window.IMP;
+	IMP.init("imp98975804");
+
+    function onClickBtnPay(event) {
+        console.log("START_DATE : ", START_DATE);
+        console.log("PERIOD : ", PERIOD);
+        console.log("AMOUNT : ", AMOUNT);
+
+        if ( PERIOD == 0 || AMOUNT == 0 ) return;
+
+        if ( MERCHANT_UID ) {   // 존재한다면... 이미 결제했던 것
+            alert("이미 결제된 건입니다.");
+            return;
+        }
+
+
+        var param = "startDate="+START_DATE+"&period="+PERIOD+"&amount="+AMOUNT;
+        callApi("POST", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/upgradeJobAd/" + JOB_AD_ID + "/paymentStart/", param,
+            function(paymentData) {
+                console.log(paymentData);
+
+                MERCHANT_UID = paymentData.merchant_uid;
+
+                // 버튼 disable해야 한다.
+                //document.querySelector(".final-payment").style.display = "none";
+
+                paymentData.m_redirect_url = "https://dentalplus.enqual.co.kr/app/upgradeJobAdResult.html?merchant_uid="+MERCHANT_UID;
+                IMP.request_pay(
+					paymentData,
+					
+					function(rsp) {			// PC 전용
+
+						console.log("결제 완료 데이터", rsp);
+                        if ( !rsp.success ) {
+                            alert(error_msg);
+                            return; 
+                        }
+
+                        if ( rsp.merchant_uid != MERCHANT_UID ) {
+                            alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오. (결제KEY 불일치)");
+                            return;
+                        }
+
+						callApi("POST", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/upgradeJobAd/" + JOB_AD_ID + "/paymentEnd/", "merchant_uid="+MERCHANT_UID,
+							function (res1) {
+								console.log("결제 후 처리 데이터 수신 res1 : ", res1);
+								if ( res1.status && res1.status=="paid" ) {
+									alert("결제가 완료되었습니다. \n결제금액: " + res1.amount + "\n카드승인번호: " + res1.applyNum + "  (" + res1.cardName + ")");
+								} else {
+									alert("결제에 실패했습니다. \n에러 내용 : " + res1.failReason);
+								}
+							},
+							function(errorCode1, errorMsg1) {
+								alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오.");
+							}
+						);
+					}
+				);
+
+            },
+            function(errorCode, errorMsg) {
+                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+            }
+        );
+    }
+    document.getElementById("btnPay").addEventListener("click", onClickBtnPay);
+
+})();
 </script>
 </html>
