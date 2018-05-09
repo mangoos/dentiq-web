@@ -74,7 +74,7 @@ var MySettingApp = (function() {
         });
         //console.log("PARAM : ", param);
 
-         callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/setting/", JSON.stringify(param),
+        callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/setting/", JSON.stringify(param),
             function(resData) {
                 //console.log("결과 : ", resData);
                 renderActions(resData);
@@ -87,7 +87,7 @@ var MySettingApp = (function() {
             },
             "application/json"
 
-         );
+        );
 
 
     }
