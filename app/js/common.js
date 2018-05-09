@@ -23,36 +23,36 @@ var API_SERVER_URL = "https://localhost:9090";
 
 
 
-var CONSTANTS = (function() {
+// var CONSTANTS = (function() {
 
-	// LOCAL STORAGE에 있는지 본다. 없다면 받아 온 후, LOCAL STORAGE에 넣는다.
+// 	// LOCAL STORAGE에 있는지 본다. 없다면 받아 온 후, LOCAL STORAGE에 넣는다.
 
-	//var HOSPITAL_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/hospital";
-	var HOSPITAL_RESOURCE_URL	= "http://localhost:8887/resources/hospital";
-	var HOSPITAL_REROURCE_LOGO_SMALL_FILE_NAME = "logo_small.jpg";
+// 	//var HOSPITAL_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/hospital";
+// 	var HOSPITAL_RESOURCE_URL	= "http://localhost:8887/resources/hospital";
+// 	var HOSPITAL_REROURCE_LOGO_SMALL_FILE_NAME = "logo_small.jpg";
 
-	//var JOB_SEEKER_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/jobSeeker";
-	var JOB_SEEKER_RESOURCE_URL	= "http://localhost:8887/resources/jobSeeker";
-	var JOB_SEEKER_REROURCE_PROFILE_SMALL_FILE_NAME = "profile_small.jpg";
+// 	//var JOB_SEEKER_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/jobSeeker";
+// 	var JOB_SEEKER_RESOURCE_URL	= "http://localhost:8887/resources/jobSeeker";
+// 	var JOB_SEEKER_REROURCE_PROFILE_SMALL_FILE_NAME = "profile_small.jpg";
 
-	return {
-		refresh: function() {
-			alert("TBD : 로드될 것임");
-		},
+// 	return {
+// 		refresh: function() {
+// 			alert("TBD : 로드될 것임");
+// 		},
 
-		// 구직자 프로필 이미지 URL을 리턴한다.
-		getProfileImageUrl: function(jobSeekerUserId) {
-			return JOB_SEEKER_RESOURCE_URL + "/" + jobSeekerUserId + "/" + JOB_SEEKER_REROURCE_PROFILE_SMALL_FILE_NAME;
-		},
+// 		// 구직자 프로필 이미지 URL을 리턴한다.
+// 		getProfileImageUrl: function(jobSeekerUserId) {
+// 			return JOB_SEEKER_RESOURCE_URL + "/" + jobSeekerUserId + "/" + JOB_SEEKER_REROURCE_PROFILE_SMALL_FILE_NAME;
+// 		},
 
-		// 병원 로고 이미지의 URL을 리턴한다.
-		getHospitalLogoImageUrl: function(hospitalId) {
-			return HOSPITAL_RESOURCE_URL + "/" + hospitalId + "/" + HOSPITAL_REROURCE_LOGO_SMALL_FILE_NAME;
-		}
+// 		// 병원 로고 이미지의 URL을 리턴한다.
+// 		getHospitalLogoImageUrl: function(hospitalId) {
+// 			return HOSPITAL_RESOURCE_URL + "/" + hospitalId + "/" + HOSPITAL_REROURCE_LOGO_SMALL_FILE_NAME;
+// 		}
 
 
-	};
-})();
+// 	};
+// })();
 
 var SESSION_TOKEN_NAME = "X-ENQUAL-DENTALPLUST-TOKEN";
 
