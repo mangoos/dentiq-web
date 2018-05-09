@@ -195,7 +195,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                         uploadFile("/api/user/"+userId+"/pic/", formData,
                             function(resData) {
 								console.log("파일 업로드 성공 : ", resData);
-								document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(LOGIN_INFO.getId()) + "?" + (Math.random()*1000);
+                                document.getElementById("userPic").src = resData + "?" + (Math.random()*1000); 
                             },
                             function(errorCode, errorMsg) {
                                 alert("사용자 프로필 이미지 등록에 실패했습니다. [" + errorCode + "]");
@@ -1080,7 +1080,7 @@ var ResumeManagementApp = (function() {
                     document.getElementById("userEmail").innerText = resData.user.email;
 					document.getElementById("userName").innerText  = resData.user.name;
 					
-					if ( resData.user.hasProfileImage ) document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
+                    if ( resData.user.profileImageUrl ) document.getElementById("userPic").src = resData.user.profileImageUrl;
 
                     initFormCardData("career",  resData.career,     addCareerCard);
                     initFormCardData("license", resData.license,    addLicenseCard);
@@ -1111,7 +1111,7 @@ var ResumeManagementApp = (function() {
                             }
                             document.getElementById("userEmail").innerText = resData.email;
 							document.getElementById("userName").innerText  = resData.name;
-							if ( resData.hasProfileImage ) document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
+							if ( resData.profileImageUrl ) document.getElementById("userPic").src = resData.profileImageUrl;
                             //document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
                         },
                         function(errorCode, errorMsg) {
@@ -1174,7 +1174,8 @@ var ResumeManagementApp = (function() {
 
                 document.getElementById("userEmail").innerText = resData.user.email;
 				document.getElementById("userName").innerText  = resData.user.name;
-				document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId)  + "?" + (Math.random()*1000); 
+                //document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId)  + "?" + (Math.random()*1000);
+                if ( resData.user.profileImageUrl ) document.getElementById("userPic").src = resData.user.profileImageUrl  + "?" + (Math.random()*1000); 
 
                 deleteAllFormCards(document.getElementById("divCareer"));   // 기존 카드 삭제
                 initFormCardData("career",  resData.career,     addCareerCard);

@@ -119,7 +119,8 @@ var UserPanelApp = (function() {
 		function(resData) {			
 			document.getElementById("userEmail").innerText = resData.email;
 			document.getElementById("userName").innerText  = resData.name;
-			if ( resData.hasProfileImage ) document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
+			//if ( resData.hasProfileImage ) document.getElementById("userPic").src = CONSTANTS.getProfileImageUrl(resData.userId);
+			if ( resData.profileImageUrl ) document.getElementById("userPic").src = resData.profileImageUrl;
 		},
 		function(errorCode, errorMsg) {
 			alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
