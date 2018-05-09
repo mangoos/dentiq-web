@@ -39,7 +39,7 @@
                 <div class="hospital-info">
                     <div class="hospital-info-box">
                         <div class="hospital-log-box">
-                            <div class="logo-frame-hospital"><img id="hospital-logoUrl" src="{{fullLogoUrl}}" onload="imageFit(this, 100);"></div>
+                            <div class="logo-frame-hospital"><img id="hospital-logoUrl" onload="imageFit(this, 100);"></div>
                         </div>
                     </div>
                     <div class="hospital-info-box">
@@ -481,7 +481,7 @@ function fillData(resData) {
 
     document.getElementById("hospital-name-1").innerText            = getText(resData.hospital.hospitalName);
     document.getElementById("hospital-name-2").innerText            = getText(resData.hospital.hospitalName);
-    document.getElementById("hospital-logoUrl").src                 = getText(resData.hospital.fullLogoUrl);    // {{fullLogoUrl}}
+    if ( resData.hospital.logoImageUrl )        document.getElementById("hospital-logoUrl").src = getText(resData.hospital.logoImageUrl);
     document.getElementById("jobAd-title-1").innerText              = getText(resData.title);
     document.getElementById("jobAd-title-2").innerText              = getText(resData.title);
     document.getElementById("hospital-locationText").innerText      = getText(resData.hospital.location.sidoName) + "> " + getText(resData.hospital.location.siguName) + "> " + getText(resData.hospital.location.emdNm);
