@@ -399,7 +399,7 @@
 			{{#each .}}			
 			<div class="column col-6 card">
 				<a href="jobad.html?jobAdId={{jobAdId}}">
-					<div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{renderHospitalLogoImage hospitalId hospital.hasLogoImage}}"></div></div>
+					<div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
 					<!-- <div class="card-image"><img src="{{fullLogoUrl}}" class="img-responsive"></div> -->
 					<div class="card-header">
 						<div class="card-title">{{hospital.hospitalName}}</div>
@@ -551,10 +551,10 @@ var LiveBoardApp = (function() {
         //console.log("renderAttrOnCard ", code);
         return renderAttrOnCard(code);
 	});
-	Handlebars.registerHelper("renderHospitalLogoImage", function(hospitalId, flag) {
-		console.log("renderHospitalLogoImage ", hospitalId, flag);
-		if ( flag ) return CONSTANTS.getHospitalLogoImageUrl(hospitalId);
-    });
+	// Handlebars.registerHelper("renderHospitalLogoImage", function(hospitalId, flag) {
+	// 	console.log("renderHospitalLogoImage ", hospitalId, flag);
+	// 	if ( flag ) return CONSTANTS.getHospitalLogoImageUrl(hospitalId);
+    // });
 
     Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
         if (!hiringEndDate) return "";
