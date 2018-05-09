@@ -492,7 +492,7 @@ h6, .h6 { font-size: .8rem; }
 .col-9 { width: 75%; }
 .col-8 { width: 66.66666667%; }
 .col-7 { width: 58.33333333%; }
-.col-6 { width: 50%; }
+.col-6 { width: 49%; } /* 50% 였으나 임시로 49% 로 일단 수정, 프리미어 영역 flex 때문 */
 .col-5 { width: 41.66666667%; }
 .col-4 { width: 33.33333333%; }
 .col-3 { width: 25%; }
