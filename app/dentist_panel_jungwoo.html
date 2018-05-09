@@ -52,7 +52,7 @@
           .dental-cropper-btn-group { display: flex; flex-wrap: wrap; justify-content: space-between; }
           .dental-cropper-btn-group button { min-width: 5rem; margin-right: 0.2rem; }
         </style>
-        <div style="width: 90%; margin: 0 auto; height: auto; background-color: #FAFAFA;">
+        <div style="width: 90%; margin: 0 auto; height: auto; max-height: 400px; background-color: #FAFAFA;">
             <img src="" class="target_img" id="cropTarget" style="max-width: 100%;">
         </div>
         <div class="dental-cropper-btn-group">
@@ -66,7 +66,9 @@
   </section>
 </body>
 <script>
-
+  $(document).ready(function () {
+    if ( LOGIN_INFO.checkAuthHospital(false) ) return dModal.toast(LOGIN_INFO.getEmail() + " 님 로그인 되었어요");
+  });
   var CROPPER;
 
 	document.getElementById("hospitalLogoArea").addEventListener("click", function(e) {
