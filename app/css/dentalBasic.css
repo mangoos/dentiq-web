@@ -2056,7 +2056,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 .premiere-ad-box .card-body { position: relative; padding: 0 10px 0 15px; font-size: 12px; color: #888; margin-bottom: 5px; }
 
 .premiere-ad-box .btn-icon.d-scrap,
-.premiere-ad-box .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.4rem; }
+.premiere-ad-box .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
 
 .premiere-ad-box .card-body { position: relative; padding: 0 10px 0 15px; font-size: 12px; color: #888; margin-bottom: 0.4rem; }
 
