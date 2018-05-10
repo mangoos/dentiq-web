@@ -9,11 +9,24 @@
     <title>덴탈플러스</title>
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
 	<link rel="stylesheet" href="css/dentalBasic.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.3.5/cropper.css">
 
 	<script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
 	<script src="js/handlebars.min.js"></script>
 	<script src="js/dental_ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.3.5/cropper.js"></script>
+	<style>
+		.cropper-view-box { border-radius: 50%; }
+		.dental-cropper-preview { border-radius: 50%; }
+		/* .cropper-dashed { border: 0 dashed #FFF; } */
+		.cropper-dashed.dashed-v { border-left-width: 2px; border-right-width: 2px; }
+		.cropper-dashed.dashed-h { border-top-width: 2px; border-bottom-width: 2px; }
+		/* .cropper-center:before,
+		.cropper-center:after  { background-color: #FFF; } */
+		.dental-cropper-preview-container { min-height: 100px; }
+		.dental-cropper-preview { width: 100px; height: 100px; }
+	</style>
 </head>
 <body>
     <header class="register-header navbar">
@@ -30,18 +43,12 @@
     </header>
     <section class="user-panel-section dental-panel">
 		<div class="dental-panel-header">
-			<div class="user-photo">
+			<div class="user-photo" id="userProfile">
 				<div class="user-photo-box">
-					<div class="image-frame">
-						<!-- 아래 처럼 이미지 넣어주면 됨 -->
-						<!-- 이미지는 자동으로 150px, 150px 사이즈로 재단됨 -->
-						<!-- 재단 기준은 최상단임, 가운데 정렬 -->
-						<!-- 이미지 없으면 사람 아이콘 그냥 나옴, 가상 클래스 사용 // 지금은 좀 우스꽝 스럽게 되어 있음 빅헤드 ㅋㅋ -->
-						<!-- <img src="images/user/jungwoo.jpg" id=""> -->
-						<img id="userPic" onload="imageFit(this, 150);">
-					</div>
-					<span class="user-photo-box-icon"><i class="camera-icon"></i></span>
+					<div class="image-frame"><img id="userPic" onload="imageFit(this, 120);"></div>
+					<span class="user-photo-box-icon" id="userProfileArea"><i class="camera-icon"></i></span>
 				</div>
+				<input type="file" id="uploadUserProfile" accept="image/*" hidden>
 				<div class="user-photo-title" id="userEmail"></div>
 				<div class="user-photo-subtitle" id="userName"></div>
 			</div>
@@ -104,14 +111,32 @@
 		<div class="panel-footer">
 			<a class="btn btn-sm" href="javaScript:void(0);" onclick="LOGIN_INFO.logout();"> <span>로그 아웃</span> </a>
 		</div>
-    </section>
+	</section>
+	<section class="dental-cropper" id="dentalCropper">
+		<div class="dental-cropper-header">
+			<div class="typo-title">영역 선택해서 등록하기</div>
+			<button class="d-icon d-close" id="clearBtn"></button>
+		</div>
+		<div class="dental-cropper-body">
+			<div style="margin-left: 5%;">미리보기</div>
+			<div style="margin-left: 5%; font-size: 0.5rem; color: #5d5d5d;">원하는 영역을 적절하게 선택해 주세요</div>
+			<div class="dental-cropper-preview-container">
+				<div class="dental-cropper-preview" id="cropImagePreview"></div>
+				<button id="cropBtn" class="btn d-icon d-upload"></button>
+				<button id="resetBtn" class="btn d-icon d-refresh"></button>
+				<button id="getBtn" class="btn btn-action">GET!</button>
+			</div>
+			<div class="dental-cropper-img"><img src="" class="target_img" id="cropTarget"></div>
+		</div>
+	</section>
 </body>
 <script>
-	var dModal = dentalModal();
+
 
 
 var UserPanelApp = (function() {
 
+	var CROPPER;
 	if ( !LOGIN_INFO.checkAuthPersonal() ) return;
 
 
@@ -126,6 +151,105 @@ var UserPanelApp = (function() {
 			alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
 		}
 	);
+
+	document.getElementById("uploadUserProfile").addEventListener("change", function(e) {
+
+		console.log(e.target.files[0]);
+		var cropTarget = document.getElementById("cropTarget");
+		cropTarget.src = window.URL.createObjectURL(this.files[0]);
+
+		if ( CROPPER ) {
+			console.log( cropTarget.src);
+			console.log("replace");
+			CROPPER.replace(cropTarget.src);
+			dentalCropper.classList.toggle("active");
+		} else {
+			console.log("new CROPPER");
+			CROPPER = new Cropper ( cropTarget, {
+				aspectRatio : 1 / 1,
+				movable : false,
+				preview : document.getElementById("cropImagePreview"),
+				minCropBoxWidth : 20
+			});
+
+			dentalCropper.classList.toggle("active");
+
+		}
+		console.log(CROPPER);
+	});
+
+	$("#cropBtn").on("click", function(e) {
+
+		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+
+		var cropElm = CROPPER.getCroppedCanvas();
+		// var cropped = cropElm.toDataURL("image/jpeg", 1.0);
+
+		cropElm.toBlob(function (blob) {
+			console.log(blob);
+			var url = window.URL.createObjectURL(blob);
+			// blob.lastModifiedDate = new Date();
+			// blob.name = "profile";
+
+			var formData = new FormData();
+			formData.append("file", blob);
+
+			userId= LOGIN_INFO.isPersonalMember() ? LOGIN_INFO.getId() : "";
+
+			uploadFile("/api/user/"+userId+"/pic/", formData,
+				function(resData) {
+					dModal.instant("프로필이 등록되었습니다.");
+					console.log("파일 업로드 성공 : ", resData);
+					dentalCropper.classList.toggle("active");
+					// document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
+					if ( resData ) document.getElementById("userPic").src = resData + "?" + (Math.random()*1000);
+				},
+				function(errorCode, errorMsg) {
+					alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
+					dentalCropper.classList.toggle("active");
+				}
+			);
+
+			userPic.onload = function(event) {
+				URL.revokeObjectURL(url);
+			};
+
+			userPic.src = url;
+		}, 'image/jpeg');
+
+	});
+
+	$("#resetBtn").on("click", function(e) {
+		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+		CROPPER.reset();
+	});
+
+	$("#clearBtn").on("click", function(e) {
+		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+		CROPPER.destroy();
+		cropTarget.src = "";
+		CROPPER = "";
+		dentalCropper.classList.remove("active");
+		// uploadHospitalLogo.value= "";
+	});
+
+	$("#getBtn").on("click", function(e) {
+		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+		var d = CROPPER.getImageData();
+		console.log(d);
+		dModal.alert(
+		"naturalHeight: " + d.naturalHeight 
+		+ "\nnaturalWidth: " + d.naturalWidth
+		+ "\nheight: " + d.height
+		+ "\naspectRatio: " + d.aspectRatio
+		+ "\nrotate: " + d.rotate
+		);
+	});
+
+	document.getElementById("userProfileArea").addEventListener("click", function(e) {
+		uploadUserProfile.value= "";
+		document.getElementById("uploadUserProfile").click();
+	});
 
 
 })();
