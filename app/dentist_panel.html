@@ -303,7 +303,7 @@ var ResumeManagementApp = (function() {
 					dModal.instant("병원 로고가 등록되었습니다.");
 					console.log("파일 업로드 성공 : ", resData);
 					dentalCropper.classList.toggle("active");
-					//document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
+					// document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
 					if ( resData ) document.getElementById("hospitalLogo").src = resData + "?" + (Math.random()*1000);
 				},
 				function(errorCode, errorMsg) {
