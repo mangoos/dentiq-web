@@ -47,3 +47,51 @@
     <div class="btn btn-primary btn-block" style="width: 90%; margin: 0 auto;">확인</div>
 </body>
 </html>
+
+<script>
+
+
+var JobAdUpgradeResultApp = (function() {
+
+    init();
+
+    function init() {
+
+       if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
+
+
+        // MERCHANT_UID를 받아온다.
+
+        var htmlCallParams = getHtmlCallParams();
+        console.log("==> ", htmlCallParams);
+
+        if ( !htmlCallParams || !htmlCallParams.merchantUid ||  !htmlCallParams.jobAdId ) {
+            alert("잘못된 접근입니다.");
+            return;
+        } 
+        
+
+        callApi("POST", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/upgradeJobAd/" + htmlCallParams.jobAdId + "/paymentEnd/", "merchantUid="+htmlCallParams.merchantUid,
+            function (result) {
+                console.log("결제 후 처리 데이터 수신 res1 : ", result);
+                if ( result.status && result.status=="paid" ) {
+                    
+                    // 여기서 값을 넣으면 된다.
+
+
+                    alert("결제가 완료되었습니다. \n결제금액: " + result.amount + "\n카드승인번호: " + result.applyNum + "  (" + result.cardName + ")");
+                } else {
+                    alert("결제에 실패했습니다. \n에러 내용 : " + result.failReason);
+                }
+            },
+            function(errorCode1, errorMsg1) {
+                alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오.");
+            }
+        );
+
+    }
+
+
+})();
+
+</script>

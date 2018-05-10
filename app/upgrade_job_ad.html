@@ -221,36 +221,38 @@ var JobAdUpgradeApp = (function() {
                 // 버튼 disable해야 한다.
                 //document.querySelector(".final-payment").style.display = "none";
 
-                paymentData.m_redirect_url = "https://dentalplus.enqual.co.kr/app/upgradeJobAdResult.html?merchant_uid="+MERCHANT_UID;
+                paymentData.m_redirect_url = "https://dentalplus.enqual.co.kr/app/upgrade_job_ad_result.html?jobAdId="+JOB_AD_ID+"&merchantUid="+MERCHANT_UID;
                 IMP.request_pay(
 					paymentData,
 					
 					function(rsp) {			// PC 전용
 
-						console.log("결제 완료 데이터", rsp);
-                        if ( !rsp.success ) {
-                            alert(error_msg);
-                            return; 
-                        }
+                        location.href = "https://dentalplus.enqual.co.kr/app/upgrade_job_ad_result.html?jobAdId="+JOB_AD_ID+"&merchantUid="+MERCHANT_UID;
 
-                        if ( rsp.merchant_uid != MERCHANT_UID ) {
-                            alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오. (결제KEY 불일치)");
-                            return;
-                        }
+						// console.log("결제 완료 데이터", rsp);
+                        // if ( !rsp.success ) {
+                        //     alert(error_msg);
+                        //     return; 
+                        // }
 
-						callApi("POST", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/upgradeJobAd/" + JOB_AD_ID + "/paymentEnd/", "merchant_uid="+MERCHANT_UID,
-							function (res1) {
-								console.log("결제 후 처리 데이터 수신 res1 : ", res1);
-								if ( res1.status && res1.status=="paid" ) {
-									alert("결제가 완료되었습니다. \n결제금액: " + res1.amount + "\n카드승인번호: " + res1.applyNum + "  (" + res1.cardName + ")");
-								} else {
-									alert("결제에 실패했습니다. \n에러 내용 : " + res1.failReason);
-								}
-							},
-							function(errorCode1, errorMsg1) {
-								alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오.");
-							}
-						);
+                        // if ( rsp.merchant_uid != MERCHANT_UID ) {
+                        //     alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오. (결제KEY 불일치)");
+                        //     return;
+                        // }
+
+						// callApi("POST", "/api/hospital/" + LOGIN_INFO.getHospitalId() + "/upgradeJobAd/" + JOB_AD_ID + "/paymentEnd/", "merchant_uid="+MERCHANT_UID,
+						// 	function (res1) {
+						// 		console.log("결제 후 처리 데이터 수신 res1 : ", res1);
+						// 		if ( res1.status && res1.status=="paid" ) {
+						// 			alert("결제가 완료되었습니다. \n결제금액: " + res1.amount + "\n카드승인번호: " + res1.applyNum + "  (" + res1.cardName + ")");
+						// 		} else {
+						// 			alert("결제에 실패했습니다. \n에러 내용 : " + res1.failReason);
+						// 		}
+						// 	},
+						// 	function(errorCode1, errorMsg1) {
+						// 		alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오.");
+						// 	}
+						// );
 					}
 				);
 
