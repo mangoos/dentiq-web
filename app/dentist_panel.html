@@ -198,7 +198,7 @@ var ResumeManagementApp = (function() {
 
                 document.getElementById("userEmail").innerText = basicInfo.userEmail;
 				document.getElementById("hospitalName").innerText  = basicInfo.hospitalName;
-				// if ( basicInfo.hasLogoImage ) document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(basicInfo.hospitalId);
+				if ( basicInfo.hasLogoImage ) document.getElementById("hospitalLogo").src = basicInfo.logoImageUrl;
 
 
             },
