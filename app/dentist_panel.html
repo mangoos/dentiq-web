@@ -213,47 +213,47 @@ var ResumeManagementApp = (function() {
 
 
 
-	function onChangeHospitalLogo(event) {
-		event.preventDefault();
+	// function onChangeHospitalLogo(event) {
+	// 	event.preventDefault();
 
-		console.log("병원 ID : ", hospitalId);
+	// 	console.log("병원 ID : ", hospitalId);
 
-		if ( !hospitalId ) {
-			alert("로그인되어 있지 않습니다.");
-			return;
-		}
+	// 	if ( !hospitalId ) {
+	// 		alert("로그인되어 있지 않습니다.");
+	// 		return;
+	// 	}
 
-		console.log("업로드 대상 : ", this.value);
-		var files = event.target.files;
-		var filesArr = Array.prototype.slice.call(files);
+	// 	console.log("업로드 대상 : ", this.value);
+	// 	var files = event.target.files;
+	// 	var filesArr = Array.prototype.slice.call(files);
 
-		filesArr.forEach(function(file) {
-			if ( !file.type.match("image.*") ) {
-				alert("이미지 파일만 업로드 가능합니다.");
-				return;
-			}
-			console.log("업로드 대상 파일 확인 완료 : ", file);
-			console.log("AAA : ", file.name, "   ", file.type);
-		});
+	// 	filesArr.forEach(function(file) {
+	// 		if ( !file.type.match("image.*") ) {
+	// 			alert("이미지 파일만 업로드 가능합니다.");
+	// 			return;
+	// 		}
+	// 		console.log("업로드 대상 파일 확인 완료 : ", file);
+	// 		console.log("AAA : ", file.name, "   ", file.type);
+	// 	});
 
 
-		var file = files[0];    // 첫번째 파일만 처리
-		console.log("업로드할 파일 ", file);
-		var formData = new FormData();
-		formData.append("file", file);
-		console.log("hihihihihi", formData);
+	// 	var file = files[0];    // 첫번째 파일만 처리
+	// 	console.log("업로드할 파일 ", file);
+	// 	var formData = new FormData();
+	// 	formData.append("file", file);
+	// 	console.log("hihihihihi", formData);
 
-		uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
-			function(resData) {
-				console.log("파일 업로드 성공 : ", resData);
-				document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
-			},
-			function(errorCode, errorMsg) {
-				alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
-			}
-		);
+	// 	uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
+	// 		function(resData) {
+	// 			console.log("파일 업로드 성공 : ", resData);
+	// 			document.getElementById("hospitalLogo").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
+	// 		},
+	// 		function(errorCode, errorMsg) {
+	// 			alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
+	// 		}
+	// 	);
 
-	}
+	// }
 
 	document.getElementById("uploadHospitalLogo").addEventListener("change", function(e) {
 
