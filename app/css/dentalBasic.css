@@ -1358,8 +1358,7 @@ input[name=steps]:nth-of-type(4):checked ~.step-body .step-content:nth-of-type(4
     background: url(../images/bg/profile_frame.png) 50% 50% no-repeat; background-size: 100%; }
 
 /* .user-photo-box img { height: auto; width: 100%; position: absolute; left: 50%; transform: translateX(-50%); top: 0; } */
-.user-photo-box img { position: absolute; top: 50%; left: 50%; height: auto; width: auto; max-width: none;
-    transform: translate(-50%,-50%); }
+.user-photo-box img { position: absolute; top: 50%; left: 50%; height: 120px; width: 120px; max-width: none; transform: translate(-50%,-50%); }
 
 .badge.user-photo-box::after { position: absolute; right: 14.64%; top: 14.64%; transform: translate(50%, -50%); z-index: 100; }
 
