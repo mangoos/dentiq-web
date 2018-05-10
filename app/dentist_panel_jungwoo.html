@@ -47,19 +47,34 @@
     </div>
     <div class="dental-cropper" id="dentalCropper">
         <style>
-          .dental-cropper { display: none; position: fixed; transform: translateY( 500% ); transition: all 0.5s ease; background-color: #FFF; }
-          .dental-cropper.active { display: block;  transform: translateY(0); top: 10%; bottom: 0; right: 0; left: 0; transition: all 0.5s ease; }
-          .dental-cropper-btn-group { display: flex; flex-wrap: wrap; justify-content: space-between; }
-          .dental-cropper-btn-group button { min-width: 5rem; margin-right: 0.2rem; }
+          .dental-cropper { display: block; position: fixed; top: 0; bottom: -20%; left: 0; right: 0; transform: translateY(1000%); 
+            background-color: #FFF; transition: all 0.5s ease; font-size: 1rem; }
+          .dental-cropper.active { transform: translateY(0); transition: all 0.5s ease; }
+          .dental-cropper-header { display: flex; align-items: center; justify-content: space-between; padding: 0 1rem; color: #FFF;
+            background-color: #0083cb; height: 2.5rem; }
+          .dental-cropper-body { max-height: 100%; width: 100%; overflow-y: scroll; }
+          .dental-cropper-preview-container { display: flex; position: relative; align-items: center; justify-content: flex-end; width: 90%; 
+            margin: 0 auto; min-height: 50px; margin-top: 0.5rem; }
+          .dental-cropper-preview { position: absolute; left: 0; width: 150px; height: 52px; box-sizing: content-box; overflow: hidden;
+            border: 1px solid #0083cb; }
+          .dental-cropper-img { width: 90%; margin: 0 auto; margin-top: 1rem; max-height: 100%; background-color: #FAFAFA; }
+          .target_img { max-width: 100%; }
+          .dental-cropper-body button { margin-right: 0.2rem; color: inherit; }
         </style>
-        <div style="width: 90%; margin: 0 auto; height: auto; max-height: 400px; background-color: #FAFAFA;">
-            <img src="" class="target_img" id="cropTarget" style="max-width: 100%;">
+        <div class="dental-cropper-header">
+          <div class="typo-title">영역 선택해서 등록하기</div>
+          <button class="d-icon d-close" id="clearBtn"></button>
         </div>
-        <div class="dental-cropper-btn-group">
-            <button id="cropBtn" class="btn btn-primary">Register!</button>
-            <button id="resetBtn" class="btn btn-action">Reset!</button>
-            <button id="clearBtn" class="btn btn-action">Clear!</button>
-            <button id="getBtn" class="btn btn-action">GET!</button>
+        <div class="dental-cropper-body">
+            <div style="margin-left: 5%;">미리보기</div>
+            <div style="margin-left: 5%; font-size: 0.5rem; color: #5d5d5d;">원하는 영역을 적절하게 선택해 주세요</div>
+            <div class="dental-cropper-preview-container">
+              <div class="dental-cropper-preview" id="cropImagePreview"></div>
+              <button id="cropBtn" class="btn d-icon d-upload"></button>
+              <button id="resetBtn" class="btn d-icon d-refresh"></button>
+              <button id="getBtn" class="btn btn-action">GET!</button>
+            </div>
+            <div class="dental-cropper-img"><img src="" class="target_img" id="cropTarget"></div>
         </div>
     </div>
 
@@ -69,13 +84,14 @@
   $(document).ready(function () {
     if ( LOGIN_INFO.checkAuthHospital(false) ) return dModal.toast(LOGIN_INFO.getEmail() + " 님 로그인 되었어요");
   });
+
   var CROPPER;
 
 	document.getElementById("hospitalLogoArea").addEventListener("click", function(e) {
-		document.getElementById("uploadHospitalLogo").click();
+    uploadHospitalLogo.value= "";
+    document.getElementById("uploadHospitalLogo").click();
+		// document.getElementById("uploadHospitalLogo").click();
   });
-
-  
 
   $("#uploadHospitalLogo").on("change", function(e) {
     console.log(e.target.files[0]);
@@ -87,9 +103,11 @@
       CROPPER.replace(cropTarget.src);
       dentalCropper.classList.toggle("active");
     } else {
-      console.log("newCROPPER");
+      console.log("new CROPPER");
       CROPPER = new Cropper ( cropTarget, {
-        aspectRatio : 150 / 50
+        aspectRatio : 150 / 50,
+        movable : false,
+        preview : document.getElementById("cropImagePreview")
       });
       dentalCropper.classList.toggle("active");
     }
@@ -147,6 +165,8 @@
     CROPPER.destroy();
     cropTarget.src = "";
     CROPPER = "";
+    dentalCropper.classList.remove("active");
+    // uploadHospitalLogo.value= "";
   });
 
   $("#getBtn").on("click", function(e) {
