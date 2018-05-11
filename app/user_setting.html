@@ -28,28 +28,58 @@
         </section>
     </header>
     <section class="user-setting">
-        <div>
-            <h5>알림 설정</h5>
-            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around;">
-                <span class="btn btn-icon btn-sm d-scrap" id="agreementNoticeNewsYn" data-action="agreementNoticeNewsYn">공지/뉴스</span>
-                <span class="btn btn-icon btn-sm d-scrap" id="agreementHiringNewsYn" data-action="agreementHiringNewsYn">채용소식</span>
-                <span class="btn btn-icon btn-sm d-scrap" id="agreementEventYn"      data-action="agreementEventYn">이벤트</span>
-                <span class="btn btn-icon btn-sm d-scrap" id="agreementAdYn"         data-action="agreementAdYn">광고</span>
-
-                <!--
-                <label class="" style="display: inline-flex; align-items: center;">공지/뉴스<input type="checkbox" name="agreementNoticeNewsYn" value="Y" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-                <label class="" style="display: inline-flex; align-items: center;">채용소식<input type="checkbox"  name="agreementHiringNewsYn" value="Y" hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-                <label class="" style="display: inline-flex; align-items: center;">이벤트<input type="checkbox"    name="agreementEventYn" value="Y"      hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-                <label class="" style="display: inline-flex; align-items: center;">광고<input type="checkbox"      name="agreementAdYn" value="Y"         hidden><i class="fal fa-toggle-on"></i><i class="fal fa-toggle-off"></i></label>
-                -->
-            </div>
+        <style>
+            .user-setting { position: relative; padding-top: 1rem; padding-left: 0.5rem;  margin-bottom: 2rem; overflow: hidden; }
+            .user-setting h5 { color: #0083cb; padding-top: 0.5rem; }
+            .user-setting-card { display: flex; align-items: center; border-bottom: 1px solid #e6e6e6; width: 95%; margin: 0 auto; 
+                margin-bottom: 0.5rem; padding-left: 0.5rem;  min-height: 61px; }
+            .setting-title { flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: 70%; }
+            .setting-desc { font-size: 0.55rem; color: #5d5d5d; }
+            .setting-btn { flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: 30%; text-align: center; }
+            .user-setting-card .btn.btn-primary { min-width: 3rem; }
+            .btn.logout-btn { position: relative; float: right; margin-right: 1rem; color: #5d5d5d; border: 1px solid #c4c2c2; }
+        </style>
+        <h5><b>내 정보 변경</b></h5>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>기본정보 변경</h6><div class="setting-desc">주소 등 구인/구직을 위한 기본 정보를 변경합니다.</div></div>
+            <div class="setting-btn"><a class="btn btn-primary btn-sm" href="register_user.html">변경</a></div>
         </div>
-        <a class="btn btn-sm" href="modify_password.html">비밀번호 변경</a> <!-- modify_password.html-->
-        <a class="btn btn-sm" href="register_user.html">내 기본정보 변경</a> <!-- 개인: register_user.html 링크, 사업자: register_dentist.html-->
-        <div class="btn btn-sm" >회원탈퇴</div>
-        <a class="btn btn-sm" href="javascript:void(0)" onclick="LOGIN_INFO.logout();">로그아웃</a>
-        <div>앱버젼: v 1.00<span>최종버젼입니다.<i class="fal fa-user-alt"></i></span></div>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>비밀번호 변경</h6><div class="setting-desc">비밀번호는 최소 3달에 한 번은 변경해 주세요.</div></div>
+            <div class="setting-btn"><a class="btn btn-primary btn-sm" href="modify_password.html">변경</a></div>
+        </div>
+        <h5><b>알림 설정</b></h5>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>공지/뉴스</h6><div class="setting-desc">덴탈플러스 공지사항 및 뉴스를 확인할 수 있습니다.</div></div>
+            <div class="setting-btn"><span class="d-icon d-toggle" id="agreementNoticeNewsYn" data-action="agreementNoticeNewsYn"></span></div>
+        </div>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>채용/인재소식</h6><div class="setting-desc">내 설정에 따른 맞춤 채용 소식을 안내 받을 수 있습니다.</div></div>
+            <div class="setting-btn"><span class="d-icon d-toggle" id="agreementHiringNewsYn" data-action="agreementHiringNewsYn"></span></div>    
+        </div>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>이벤트</h6><div class="setting-desc">덴탈플러스 최신 이벤트를 안내 받을 수 있습니다.</div></div>
+            <div class="setting-btn"><span class="d-icon d-toggle" id="agreementEventYn"      data-action="agreementEventYn"></span></div>    
+        </div>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>광고</h6><div class="setting-desc">제휴 광고 등 선택적 광고를 수신받습니다.</div></div>
+            <div class="setting-btn"><span class="d-icon d-toggle" id="agreementAdYn"         data-action="agreementAdYn"></span></div>    
+        </div>
+        <h5><b>기타 메뉴</b></h5>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>회원탈퇴</h6><div class="setting-desc">회원 탈퇴 후, 이전 정보를 복원할 수 없습니다.</div></div>
+            <div class="setting-btn"><span class="btn btn-primary btn-sm">탈퇴</span></div>
+        </div>
+        <div class="user-setting-card">
+            <div class="setting-title"><h6>앱 버젼<span class="setting-desc"> ( 최신 Version 1.0.0 )</span></h6><div class="setting-desc">항상 최신 버젼을 유지해 주세요.</div></div>
+            <!-- <div class="setting-btn"><span class="btn btn-primary btn-sm">update</span></div> -->
+            <div class="setting-btn"><span style="font-weight: bold; font-size: 0.8rem; color: #5d5d5d;">최신</span></div>
+        </div>
+        <a class="btn btn-sm logout-btn" href="javascript:void(0)" onclick="LOGIN_INFO.logout();">로그아웃</a>
     </section>
+    <footer style="height: 3rem">
+        <div class="typo-title2">푸터 영역</div>
+    </footer>
 </body>
 </html>
 
