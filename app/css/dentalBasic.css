@@ -425,6 +425,25 @@ h6, .h6 { font-size: .8rem; }
 .d-import::before,
 .d-import[data-action-checked="false"]::before { content: "\f0ed"; font-weight: 300; }
 
+.d-toggle { position: relative; cursor: pointer; }
+.d-toggle::before { content: "\f204"; font-weight: 300; font-size: 2rem; color: #c4c2c2; }
+.d-toggle::after { content: "off"; font-size: 0.6rem; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c4c2c2; }
+.d-toggle[data-action-checked="true"]::before { content: "\f205"; font-weight: 300; color: #0083cb;}
+.d-toggle[data-action-checked="true"]::after { content: "on"; font-size: 0.6rem; position: absolute; left: -15px; top: 50%; color: #0083cb; 
+    font-weight: bold; transform: translateY(-50%); }
+
+
+/*********** user_setting.html **************/
+
+/* .user-setting input ~ .fa-toggle-off, input ~ .fa-toggle-on { position: relative; font-size: 2rem; color: #0083cb; }
+.user-setting input:checked ~ .fa-toggle-on { display: inline-block; }
+.user-setting input:checked ~ .fa-toggle-on:after { content: "on"; font-size: 0.6rem; position: absolute; left: 5px; top: 50%; transform: translateY(-50%); }
+.user-setting input ~ .fa-toggle-on { display: none; }
+.user-setting input ~ .fa-toggle-off { display: inline-block; }
+.user-setting input ~ .fa-toggle-off:after { content: "off"; font-size: 0.6rem; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); }
+.user-setting input:checked ~ .fa-toggle-off { display: none; } */
+
+
 .d-refresh::before { content: "\f021"; font-weight: 300; }
 
 .d-upload::before { content: "\f093"; font-weight: 300; }
@@ -2530,15 +2549,7 @@ section.register-dentist ::-moz-input-placeholder { font-size: 0.7rem; font-styl
 /******** dentist_panel.html css ********/
 
 
-/*********** user_setting.html **************/
 
-.user-setting input ~ .fa-toggle-off, input ~ .fa-toggle-on { position: relative; font-size: 2rem; color: #0083cb; }
-.user-setting input:checked ~ .fa-toggle-on { display: inline-block; }
-.user-setting input:checked ~ .fa-toggle-on:after { content: "on"; font-size: 0.6rem; position: absolute; left: 5px; top: 50%; transform: translateY(-50%); }
-.user-setting input ~ .fa-toggle-on { display: none; }
-.user-setting input ~ .fa-toggle-off { display: inline-block; }
-.user-setting input ~ .fa-toggle-off:after { content: "off"; font-size: 0.6rem; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); }
-.user-setting input:checked ~ .fa-toggle-off { display: none; }
 
 
 /*********** payment_completion_inform.html css ***************/
