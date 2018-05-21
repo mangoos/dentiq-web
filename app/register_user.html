@@ -200,7 +200,7 @@
                         if ( errorCode!="0" && errorCode!="00" ) {
 							// 에러 팝업 띄울 것
 							if ( resData.common.errorMessage ) {
-								dModal.alert(resData.common.errorMessage + "  [" + errorCode + "]");
+								alert(resData.common.errorMessage + "  [" + errorCode + "]");
 							} else {
 								dModal.alert("주소 검색에 실패했습니다. [" + errorCode + "]");
 							}
@@ -595,7 +595,7 @@
 
                         var userId = LOGIN_INFO.getId();
                         if ( userId == null ) {
-                            dModal.alert("로그인되어 있지 않음");
+                            alert("로그인 되어 있지 않습니다. ");
                             return;
                         }
 
@@ -626,7 +626,7 @@
                         callApi("PUT", "/api/user/"+userId+"/interestLocationCode/", apiParam,
                             function(resData) {
                                 console.log(resData);
-                                dModal.alert("등록되었습니다.");
+                                dModal.alert("내 관심 지역을 등록했습니다.");
 
                                 // 등록 완료 후 이동.
                                 if ( SPECIFIC_TAB_MODE ) {
@@ -710,7 +710,7 @@
                     function loadMyHome() {
                         var userId = LOGIN_INFO.getId();
                         if ( userId == null ) {
-                            dModal.alert("로그인되어 있지 않음");
+                            alert("로그인되어 있지 않음");
                             return;
                         }
                 
@@ -741,13 +741,13 @@
                         var addrDetail = $("#addrDetail").val().trim();
                 
                         if ( addrDetail==null || addrDetail=="" ) {
-                            dModal.alert("상세주소를 입력하세요.");
+                            dModal.alert("우리집 상세주소를 입력해주세요.");
                             $("#addrDetail").focus();
                             return;
                         }
                 
                         if ( selectedJuso==null ) {
-                            dModal.alert("주소를 선택해주세요");
+                            dModal.alert("우리집 주소를 선택해주세요");
                             return;
                         } 
                 
@@ -768,7 +768,7 @@
                         callApi("PUT", "/api/user/"+userId+"/addr/", apiParam,
                             function(resData) {
                                 console.log(resData);
-                                dModal.alert("등록되었습니다.");
+                                dModal.alert("우리집 주소를 등록했습니다.");
 
                                 // 등록 완료 후 이동.
                                 if ( SPECIFIC_TAB_MODE ) {
@@ -925,7 +925,7 @@
                     function loadMyInfo() {                        
                         var userId = LOGIN_INFO.getId();
                         if ( userId == null ) {
-                            dModal.alert("로그인되어 있지 않음");
+                            alert("로그인되어 있지 않음");
                             return;
 						}
 						
@@ -968,7 +968,7 @@
 
                         var userId = LOGIN_INFO.getId();
                         if ( userId == null ) {
-                            dModal.alert("로그인되어 있지 않음");
+                            alert("로그인되어 있지 않음");
                             return;
                         }
 
@@ -979,7 +979,7 @@
 
                         var addrDetail = $("#myInfoAddrDetail").val().trim();                
                         if ( addrDetail==null || addrDetail=="" ) {
-                            dModal.alert("상세주소를 입력하세요.");
+                            dModal.alert("'상세주소를 입력해주세요.");
                             $("#myInfoAddrDetail").focus();
                             return;
                         }
@@ -1000,7 +1000,7 @@
                             function(resData) {
                                 console.log(resData);
                                 // dModal.confirm("기본 정보가 등록되었습니다. \n 이제 이력서를 등록할 수 있습니다. \n 등록하시겠습니까?");
-                                dModal.alert("기본 정보가 등록되었습니다.");
+                                dModal.alert("기본 정보를 등록했습니다.");
 								// 등록 완료 후 이동.
 								if ( SPECIFIC_TAB_MODE ) {
 									window.history.back();
