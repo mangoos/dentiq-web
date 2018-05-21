@@ -186,7 +186,7 @@
                 bizRegNoDivElement.hidden = true;  // 사업자 번호 입력 영역 보이지 않게 한다.
 
                 if ( !signupForm.personEula.checked ) {
-                    alert("본 서비스를 이용하시려면 이용약관 동의가 필요합니다.");
+                    dModal.alert("본 서비스를 이용하시려면 이용약관 동의가 필요합니다.");
 
                     document.getElementById("member-register-1").checked = true;
                     document.getElementById("dental-tabs1").checked = true;
@@ -194,7 +194,7 @@
                     return false;
                 }
                 if ( !signupForm.personCupi.checked ) {
-                    alert("본 서비스를 이용하시려면 개인정보 수집 및 이용에 동의가 필요합니다.");
+                    dModal.alert("본 서비스를 이용하시려면 개인정보 수집 및 이용에 동의가 필요합니다.");
 
                     document.getElementById("member-register-1").checked = true;
                     document.getElementById("dental-tabs1").checked = true;
@@ -211,7 +211,7 @@
                 bizRegNoDivElement.hidden = false;  // 사업자 번호 입력 영역 보이게 한다.
 
                 if ( !signupForm.bizEula.checked ) {
-                    alert("본 서비스를 이용하시려면 이용약관 동의가 필요합니다.");
+                    dModal.alert("본 서비스를 이용하시려면 이용약관 동의가 필요합니다.");
 
                     document.getElementById("member-register-1").checked = true;
                     document.getElementById("dental-tabs2").checked = true;
@@ -219,7 +219,7 @@
                     return false;
                 }
                 if ( !signupForm.bizCupi.checked ) {
-                    alert("본 서비스를 이용하시려면 개인정보 수집 및 이용에 동의가 필요합니다.");
+                    dModal.alert("본 서비스를 이용하시려면 개인정보 수집 및 이용에 동의가 필요합니다.");
 
                     document.getElementById("member-register-1").checked = true;
                     document.getElementById("dental-tabs2").checked = true;
@@ -290,7 +290,7 @@
             passwordConfirm.value = passwordConfirm.value.trim();
             if ( password.value !== passwordConfirm.value ) {
                 document.getElementById("member-register-2").disabled = false;  // 정보입력 단계로 이동
-                alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                dModal.alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
 				password.focus();
 				return false;
             }
@@ -320,7 +320,7 @@
             callApi("POST", "/api/user/", JSON.stringify(apiParam),
                 function(resData) {
                     console.log(resData);
-                    alert("등록되었습니다.");
+                    dModal.alert("등록되었습니다.");
 
                     // 로그인 정보로 수신된 내용으로 로그인 처리한다.
                     //LOGIN_INFO.afterSignup(resData);
@@ -347,7 +347,7 @@
                             location.href = "register_dentist.html";
                         });
                     } else {
-                        alert("회원 유형을 확인할 수 없습니다.");
+                        dModal.alert("회원 유형을 확인할 수 없습니다.");
                     }
                 },
                 function(errorCode, errorMsg) {

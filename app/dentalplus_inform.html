@@ -118,7 +118,7 @@ var NoticeApp = (function() {
             },
             function(errorCode, errorMsg) {
                 //console.log(errorCode, errorMsg);
-                alert("서버와의 통신이 원활하지 않습니다. 잠시 후 다시 시도하여 주십시오. [" + errorCode + "]");
+                dModal.alert("서버와의 통신이 원활하지 않습니다. 잠시 후 다시 시도하여 주십시오. [" + errorCode + "]");
                 return;
             }
         );

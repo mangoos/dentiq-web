@@ -190,7 +190,7 @@ var ResumeManagementApp = (function() {
 					document.getElementById("hospitalLogoPic").src = "";
 
 
-					alert("병원정보가 등록되어 있지 않습니다. 먼저 병원 정보를 등록하여 주십시오.");
+					dModal.alert("병원정보가 등록되어 있지 않습니다. 먼저 병원 정보를 등록하여 주십시오.");
 					return;
 				}
 				
@@ -308,7 +308,7 @@ var ResumeManagementApp = (function() {
 					if ( resData ) document.getElementById("hospitalLogoPic").src = resData + "?" + (Math.random()*1000);
 				},
 				function(errorCode, errorMsg) {
-					alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
+					dModal.alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
 					dentalCropper.classList.toggle("active");
 				}
 			);

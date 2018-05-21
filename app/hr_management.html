@@ -386,11 +386,11 @@ var HospitalResumeActionPanel = function() {
 		if ( !event.target.dataset.actionValueTelNo ) 		throw "data-action-value-tel-no가 지정되어야 합니다.";
 
 		if ( !LOGIN_INFO.isLoggedIn() ) {
-			alert("로그인이 필요한 기능입니다.");
+			dModal.alert("로그인이 필요한 기능입니다.");
 			return;
 		}
 		if ( !LOGIN_INFO.isHospitalMember(true) ) {
-			alert("병원회원만 이용 가능한 기능입니다.");
+			dModal.alert("병원회원만 이용 가능한 기능입니다.");
 			return;
 		}
 
@@ -500,7 +500,7 @@ var HospitalResumeActionPanel = function() {
 
 				if ( resData.resumeId && resData.resumeId==SELECTED_RESUME_ID_FOR_OFFER && resData.jobAdId && resData.jobAdId==jobAdId ) {
 					SELECTED_RESUME_ID_FOR_OFFER = null;
-					alert("면접제안 되었습니다.");
+					dModal.alert("면접 제안을 완료했습니다.");
 					document.getElementById("divOfferModal").classList.remove("active");
 				
 				} else {

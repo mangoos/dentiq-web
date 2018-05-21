@@ -438,7 +438,7 @@ var ViewResumeApp = (function() {
         if ( params && params.resumeId ) {   // 기존 공고 로드 후 수정
             resumeId = params.resumeId;
         } else {
-            alert("잘못된 접근입니다.");
+            dModal.alert("잘못된 접근입니다.");
             return;
         }
 
@@ -449,7 +449,7 @@ var ViewResumeApp = (function() {
             function(resData) {
                 console.log(resData);
                 if ( !resData ) {
-                    alert("해당 이력서를 찾을 수 없습니다.");
+                    dModal.alert("해당 이력서를 찾을 수 없습니다.");
                 }
 
                 fillData(resData);

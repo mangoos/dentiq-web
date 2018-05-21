@@ -133,7 +133,7 @@ var JobAdUpgradeApp = (function() {
 
         JOB_AD_ID = sessionStorage.getItem("TEMP_JOB_AD_ID");
         if ( !JOB_AD_ID ) {
-            alert("공고 ID가 지정되지 않았습니다.");
+            dModal.alert("공고 ID가 지정되지 않았습니다.");
             // 바로 historyback을 하자!!!
             window.history.back();
             return;
@@ -206,7 +206,7 @@ var JobAdUpgradeApp = (function() {
         if ( PERIOD == 0 || AMOUNT == 0 ) return;
 
         if ( MERCHANT_UID ) {   // 존재한다면... 이미 결제했던 것
-            alert("이미 결제된 건입니다.");
+            dModal.alert("이미 결제된 건입니다.");
             return;
         }
 

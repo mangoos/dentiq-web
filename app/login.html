@@ -84,7 +84,7 @@
      */
 
     function onSuccess() {
-        alert("로그인되었습니다.");
+        dModal.alert("로그인되었습니다.");
         window.history.back();
     }
 
@@ -100,13 +100,13 @@
         var password = document.getElementById("password");
 
         if ( !email.value || email.value.trim()=='' ) {
-            alert("이메일을 입력해주세요");
+            dModal.alert("이메일을 입력해주세요");
             email.focus();
             return;
         }
 
         if ( !password.value || password.value.trim()=='' ) {
-            alert("비밀번호를 입력해주세요");
+            dModal.alert("비밀번호를 입력해주세요");
             password.focus();
             return;
         }

@@ -106,7 +106,7 @@
                             //console.log("checkedMemberCount : ", checkedMemberCount);
                             if ( checkedMemberCount === 0 ) {
                                 var groupText = CODE_CONTAINER.getAttrMap()[attrGroupName].text;
-                                alert(groupText + "에서 하나 이상의 조건을 선택하셔야 합니다.");
+                                dModal.alert(groupText + "에서 하나 이상의 조건을 선택하셔야 합니다.");
                                 //document.getElementById("divAttr").focus();
                                 return false;
                             }
@@ -604,7 +604,7 @@
 
                 if ( params.reqUpgrade && params.reqUpgrade=='Y' ) {            // 광고 업그레이드
                     // 사실 광고 업그레이드는 수정과 동일한 듯 한데...
-                    alert("광고 업그레이드는 수정과 대동소이함. 업그레이드할 때에는 기존 내용을 수정못하게 하나?");
+                    dModal.alert("광고 업그레이드는 수정과 대동소이함. 업그레이드할 때에는 기존 내용을 수정못하게 하나?");
 
                     //return;
                 }
@@ -755,7 +755,7 @@
                     console.log(resData);
                     initFormData(document.getElementById("jobAdForm"), resData);   // 수신된 값으로 다시 변경한다.
                     CURRENT_JOB_AD_ID = resData.id;
-                    alert("수정되었습니다..");
+                    dModal.alert("수정되었습니다.");
 
                 },
                 function(errorCode, errorMsg) {
@@ -798,7 +798,7 @@
                 function(resData) {
                     console.log(resData);
                     CURRENT_JOB_AD_ID = resData.id;
-                    alert("등록되었습니다.");
+                    dModal.alert("등록되었습니다.");
 
                     initFormData(document.getElementById("jobAdForm"), resData);
 

@@ -175,7 +175,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
 
                         filesArr.forEach(function(file) {
                             if ( !file.type.match("image.*") ) {
-                                alert("이미지 파일만 업로드 가능합니다.");
+                                dModal.alert("이미지 파일만 업로드 가능합니다.");
                                 return;
                             }
                             //console.log("업로드 대상 파일 확인 완료 : ", file);
@@ -195,7 +195,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                                 document.getElementById("userPic").src = resData + "?" + (Math.random()*1000); 
                             },
                             function(errorCode, errorMsg) {
-                                alert("사용자 프로필 이미지 등록에 실패했습니다. [" + errorCode + "]");
+                                dModal.alert("사용자 프로필 이미지 등록에 실패했습니다. [" + errorCode + "]");
                             }
                         );
                     }
@@ -270,7 +270,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                             //console.log("checkedMemberCount : ", checkedMemberCount);
                             if ( checkedMemberCount === 0 ) {
                                 var groupText = CODE_CONTAINER.getAttrMap()[attrGroupName].text;
-                                alert(groupText + "에서 하나 이상의 조건을 선택하셔야 합니다.");
+                                dModal.alert(groupText + "에서 하나 이상의 조건을 선택하셔야 합니다.");
                                 //document.getElementById("divAttr").focus();
                                 return false;
                             }
@@ -380,7 +380,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                                         //var temp = LOCATION_CODE.getByName(homeLocatinCode);
 										//var msg = "이미 선택한 지역(" + temp.sidoName + "/" + temp.siguName + ")입니다.";
 										var msg = "이미 선택한 지역(" + homeLocation.sidoName + "/" + homeLocation.siguName + ")입니다.";
-                                        alert(msg);
+                                        dModal.alert(msg);
                                         this.checked = false;
                                         return;
                                     }
@@ -442,7 +442,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                     function addApplyLocationCard(evt) {
                         var applyLocationCardCount = document.getElementById("divApplyLocation").querySelectorAll("#applyLocation").length - 1; // 템플릿용으로 hidden 설정된 것의 개수(1개)는 제외
                         if ( applyLocationCardCount >= 3 ) {
-                            alert("희망근무지역은 최대 3개까지 설정할 수 있습니다.");
+                            dModal.alert("희망근무지역은 최대 3개까지 설정할 수 있습니다.");
                             return;
                         }
 
@@ -496,7 +496,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                             var elementsApplyLocationCode = document.querySelectorAll("#applyLocationCode");
                             for ( var i=0; elementsApplyLocationCode && i<elementsApplyLocationCode.length; i++ ) {
                                 if ( elementsApplyLocationCode[i].value && elementsApplyLocationCode[i].value==this.value ) {
-                                    alert("이미 동일한 지역을 선택하였습니다.");
+                                    dModal.alert("이미 동일한 지역을 선택하였습니다.");
                                     this.value = "";
                                     return;
                                 }
@@ -831,7 +831,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                     function addCareerCard(event) {
                         var careerCardCount = document.getElementById("divCareer").querySelectorAll("#career").length - 1; // 템플릿용으로 hidden 설정된 것의 개수(1개)는 제외
                         if ( careerCardCount >= 10 ) {
-                            alert("경력사항은 최대 10개까지 설정할 수 있습니다.");
+                            dModal.alert("경력사항은 최대 10개까지 설정할 수 있습니다.");
                             return;
                         }
 
@@ -922,7 +922,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                     function addLicenseCard(event) {
                         var licenseCardCount = document.getElementById("divLicense").querySelectorAll("#license").length - 1; // 템플릿용으로 hidden 설정된 것의 개수(1개)는 제외
                         if ( licenseCardCount >= 10 ) {
-                            alert("자격/면허 사항은 최대 10개까지 설정할 수 있습니다.");
+                            dModal.alert("자격/면허 사항은 최대 10개까지 설정할 수 있습니다.");
                             return;
                         }
 
@@ -981,7 +981,7 @@ function renderCalendarSelectYYYYMM(elementYYYYMM, startYYYYMM, endYYYYMM, defau
                 <div class="card-body">
                     <div class="form-group">
                         <select class="styled-select" name="openYn" required>
-                            <option disabled selected>선택</option>
+                            <option value disabled selected>선택</option>
                             <option value="Y">네(이력서 공개)</option>
                             <option value="N">아니요</option>
                         </select>
@@ -1102,7 +1102,7 @@ var ResumeManagementApp = (function() {
                             
                             // 회원 기본 정보가 미입력 상태(또는 부족)인 경우에는 회원 기본 정보를 입력하도록 한다.
                             if ( !resData.name || !resData.telNo || !resData.birthday || !resData.gender || !resData.location ) {
-								alert("회원님의 기본 정보를 입력해 주세요.");
+								dModal.alert("회원님의 기본 정보를 입력해 주세요.");
 								location.href='register_user.html?BASIC';
                                 return;
                             }
@@ -1161,7 +1161,7 @@ var ResumeManagementApp = (function() {
         callApi("PUT", "/api/user/"+userId+"/resume/", JSON.stringify(data),
             function(resData) {
                 console.log(resData);
-                alert("등록되었습니다.");
+                dModal.alert("등록되었습니다.");
 
 				homeLocation = resData.user.location;
 				resumeId = resData.resumeId;

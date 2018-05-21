@@ -205,7 +205,7 @@ var UserPanelApp = (function() {
 					if ( resData ) document.getElementById("userPic").src = resData + "?" + (Math.random()*1000);
 				},
 				function(errorCode, errorMsg) {
-					alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
+					dModal.alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
 					dentalCropper.classList.toggle("active");
 				}
 			);

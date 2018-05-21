@@ -106,13 +106,13 @@ var PaymentApp = (function() {
 							function (res1) {
 								console.log("결제 후 처리 데이터 수신 res1 : ", res1);
 								if ( rsp.success ) {
-									alert("결제가 완료되었습니다. \n결제금액: " + rsp.paid_amount + "\n카드승인번호: " + rsp.apply_num);
+									dModal.alert("결제가 완료되었습니다. \n결제금액: " + rsp.paid_amount + "\n카드승인번호: " + rsp.apply_num);
 								} else {
-									alert("결제에 실패했습니다. \n에러 내용 : " + rsp.error_msg);
+									dModal.alert("결제에 실패했습니다. \n에러 내용 : " + rsp.error_msg);
 								}
 							},
 							function(errorCode1, errorMsg1) {
-								alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오.");
+								dModal.alert("카드 결제에 장애가 발생하였습니다. 콜센터로 문의해주십시오.");
 							},
 							"application/json"
 						);

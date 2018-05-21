@@ -183,7 +183,7 @@
                         var errorCode = resData.common.errorCode;
                         if ( errorCode!="0" && errorCode!="00" ) {
                             // 에러 팝업 띄울 것
-                            alert("juso.go.kr 에러 ", errorCode);
+                            dModal.alert("juso.go.kr 에러 ", errorCode);
                             loadingModal.close(); // LOADING 표시 - 끝
                             return;
                         }
@@ -686,7 +686,7 @@ var HospitaInfoApp = (function() {
 		callApi("GET", "/api/user/" + userId + "/hospital/", null,
             function(resData) {
                 if ( resData ) {    // 기존 병원 정보 수정
-                    alert("기존 정보 있음 : 수정 모드");
+                    dModal.alert("기존에 등록된 정보가 있습니다. 수정 사항을 입력해 주세요.");
 
                     initFormData(document.getElementById("hospitalInfoForm"), resData);
 
@@ -702,7 +702,7 @@ var HospitaInfoApp = (function() {
                     document.body.classList.add("view-type");
 
                 } else {        // 기존 병원 정보 없으므로 새로 등록
-                    alert("기존 정보 없음 : 등록 모드");
+                    dModal.alert("기존 정보가 없습니다. 우리병원 기본 정보를 등록해 주세요.");
 
                     var btnAction = document.getElementById("btnAction");
                     btnAction.innerText = "등록";
@@ -756,7 +756,7 @@ var HospitaInfoApp = (function() {
         callApi("PUT", "/api/hospital/" + data.hospitalId + "/", JSON.stringify(data),
             function(resData) {
                 console.log(resData);
-                alert("수정되었습니다.");
+                dModal.alert("수정되었습니다.");
 
                 initFormData(document.getElementById("hospitalInfoForm"), resData);
 
@@ -786,7 +786,7 @@ var HospitaInfoApp = (function() {
 		data.userId = LOGIN_INFO.getId();;	// 현재 세션 사용자로 변경한다. ==> 서버에서 권한 확인 함.
 
 		if ( !selectedJusoResult ) {
-			alert("병원 주소를 등록해 주세요.");
+			dModal.alert("병원 주소를 등록해 주세요.");
 			return;
 		}
 
@@ -801,7 +801,7 @@ var HospitaInfoApp = (function() {
         callApi("POST", "/api/hospital/", JSON.stringify(data),
             function(resData) {
                 console.log(resData);
-                alert("등록되었습니다.");
+                dModal.alert("등록되었습니다.");
 
                 initFormData(document.getElementById("hospitalInfoForm"), resData);
 
