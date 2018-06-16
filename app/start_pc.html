@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="https://github.com/aaa/">
+    <title>덴탈플러스</title>
+
+    <script type="text/javascript" src="js/express-useragent.js"></script>
+    <script>
+        var userAgent = new UserAgent().parse(navigator.userAgent);
+        // if( userAgent.isDesktop ) location = "start_pc.html";
+        if ( userAgent.browser === "IE" && parseInt(userAgent.version) <= 10 ) { 
+            alert("웹 보안 및 표준 준수를 위해 익스플로어 하위 버젼은 지원하지 못합니다. 확인 버튼을 누르고 브라우져 최신 버젼 업데이트 후 이용해주세요.");
+            location = "ie_should_update.html";
+        }
+        console.log("접속 브라우져: %s, 브라우져 버젼: %s",userAgent.browser, userAgent.version);
+
+    </script>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <!-- <script src="js/handlebars.min.js"></script> -->
+    <script src="js/handlebars-v4.0.11.js"></script>
+    <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
+    <script src="js/common.js"></script>
+
+    <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
+    <link rel="stylesheet" href="css/swiper.min.css">   <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="css/dentalBasic.css">
+    <style>
+        /* .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff; */
+
+            /* Center slide text vertically */
+            /* display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        } */
+        .col-4 { width: 33%; }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <section class="header-gnb navbar">
+            <div class="navbar-section">
+            </div>
+            <div class="navbar-section">
+                <a href="#" class="gnb-login">My메뉴</a>
+                <a href="#" class="gnb-download">앱다운로드</a>
+                <a href="#" class="gnb-alert-setting">알림설정</a>
+                <a href="#" class="gnb-cs-center">고객센터</a>
+            </div>
+        </section>
+        <section class="header-main navbar">
+            <div class="navbar-section">
+                <!-- 브랜드 로고 -->
+                <a href="liveboard.html" class="navbar-brand">Dental+</a>
+            </div>
+            <div class="navbar-center">
+                <input type="search" name="main-search">
+            </div>
+            <div class="navbar-section">
+                <!-- 사이드바 버튼 -->
+                <a href="#" class="btn btn-link btn-action"><i class="icon icon-location"></i></a>
+                <a href="#" class="btn btn-link btn-action"><i class="icon icon-people"></i></a>
+            </div>
+        </section>
+        <section class="header-sub">
+            <div class="navbar">
+                <div class="navbar-section">
+                    <a href="#" class="">채용정보</a>
+                    <a href="#" class="">관심지역</a>
+                    <a href="#" class="">우리동네</a>
+                    <a href="#" class="">마감임박</a>
+                </div>
+                <div class="navbar-section">
+                        <a href="#" class="">이력서 등록</a>
+                        <a href="#" class="">채용공고 등록</a>
+                    </div>
+            </div>
+        </section>
+    </header>
+    <div class="dental-pc-wrapper">
+        <section class="main-top">
+            <div class="main-lbox">
+                <div class="lbox-banner">
+                    메인배너
+                </div>
+                <div class="lbox-btm">
+                    <div class="main-nav">
+                        <div class="main-nav-header h5">지역별 채용정보</div>
+                        <a href="#"><span class="nav-sido">서울</span></a>
+                        <a href="#"><span class="nav-sido">부산</span></a>
+                        <a href="#"><span class="nav-sido">인천</span></a>
+                        <a href="#"><span class="nav-sido">대구</span></a>
+                        <a href="#"><span class="nav-sido">광주</span></a>
+                        <a href="#"><span class="nav-sido">대전</span></a>
+                        <a href="#"><span class="nav-sido">울산</span></a>
+                        <a href="#"><span class="nav-sido">경기</span></a>
+                        <a href="#"><span class="nav-sido">강원</span></a>
+                        <a href="#"><span class="nav-sido">충북</span></a>
+                        <a href="#"><span class="nav-sido">충남</span></a>
+                        <a href="#"><span class="nav-sido">전북</span></a>
+                        <a href="#"><span class="nav-sido">전남</span></a>
+                        <a href="#"><span class="nav-sido">경북</span></a>
+                        <a href="#"><span class="nav-sido">경남</span></a>
+                        <a href="#"><span class="nav-sido">제주</span></a>
+                        <a href="#"><span class="nav-sido">세종</span></a>
+                        <a href="#"><span class="nav-sido">전국</span></a>
+                    </div>
+                    <div class="main-nav">
+                        <div class="main-nav-header h5">업무별 채용정보</div>
+                        <a href="#"><span class="nav-task">진료실</span></a>
+                        <a href="#"><span class="nav-task">데스크</span></a>
+                        <a href="#"><span class="nav-task">상담</span></a>
+                        <a href="#"><span class="nav-task">보험청구</span></a>
+                        <a href="#"><span class="nav-task">치과내 기공실</span></a>
+                        <a href="#"><span class="nav-task">치과기공소</span></a>
+                        <a href="#"><span class="nav-task">관리/경영</span></a>
+                        <a href="#"><span class="nav-task">치과 의사</span></a>
+                        <a href="#"><span class="nav-task">기타</span></a>
+                    </div>
+                    <div class="main-nav col-4">
+                        <div class="main-nav-header h5">채용부문별 채용정보</div>
+                        <a href="#"><span class="nav-area">치위생사</span></a>
+                        <a href="#"><span class="nav-area">간호조무사</span></a>
+                        <a href="#"><span class="nav-area">치기공사</span></a>
+                        <a href="#"><span class="nav-area">보험청구사</span></a>
+                        <a href="#"><span class="nav-area">코디네이터</span></a>
+                        <a href="#"><span class="nav-area">상담실장</span></a>
+                        <a href="#"><span class="nav-area">치과의사</span></a>
+                        <a href="#"><span class="nav-area">기타</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="main-rbox">
+                <div class="login-box">
+                    <label class="form-switch"><input type="checkbox" hidden><i class="form-icon"></i></label>
+                    <div class="login-input col-8">
+                        <input type="text" name="" class="" placeholder="아이디">
+                        <input type="text" name="" class="" placeholder="비밀번호">
+                        <div class="login-btn">
+                            로그인
+                        </div>  
+                    </div>
+                    <div>
+                        <span>회원가입</span>
+                        <span>아이디/비밀번호 찾기</span>
+                        <span>My메뉴</span>
+                    </div>
+                </div>
+                <div class="rbox-banner">
+                    프라임 배너
+                </div>
+            </div>
+        </section>
+        <!-- 사이드바 -->
+        <!-- <div id="sidebar" class="aside-menu-box">  
+            <ul class="menu">
+                <li class="menu-item">
+                    <div class="tile tile-centered">
+                      <div class="tile-icon"><img src="img/avatar-4.png" class="avatar" alt="Avatar"></div>
+                      <div class="tile-content">Lee, Juhyun@gmail.com</div>
+                    </div>
+                </li>
+                <li class="divider" data-content="개인회원"></li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">설정하러가기</label></div>
+                    <a href="a.html#installation">관심 지역</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><span>(채용중/병원수)</span><label class="label label-primary">2/30</label></div>
+                    <a href="a.html#installation">우리 동네</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">설정하러가기</label></div>
+                    <a href="a.html#installation">관심 병원</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">스크랩없음</label></div>
+                    <a href="a.html#installation">내 스크랩</a>
+                </li>
+                <li class="menu-item"><a href="a.html">이력서 관리</a></li>
+                <li class="divider" data-content="병원회원"></li>
+                <li class="menu-item"><a href="b.html">우리병원 기본 정보</a></li>
+                <li class="menu-item"><a href="b.html#carousels">채용공고 등록</a></li>
+                <li class="menu-item"><a href="b.html#carousels">채용공고 관리</a></li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">2</label></div>
+                    <a href="b.html#carousels">면접 제안</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge"><label class="label label-primary">2</label></div>
+                    <a href="b.html#carousels">지원자 관리</a>
+                </li>
+                <li class="divider"></li>
+                <li class="menu-item"><a href="#menus">로그인</a></li>
+                <li class="menu-item"><a href="#menus">회원가입</a></li>
+                <li class="menu-item"><a href="#menus">로그아웃</a></li>
+                <li class="menu-item"><a href="#menus">설정</a></li>
+            </ul>
+        </div> -->
+        <!-- ======================== 프리미어 공고 ======================== -->
+        <section id="section-premiereAds" class="premiere-ad">
+            <div class="jobpost-list-bar">
+                    <span class="typo-title2">프리미어 채용정보</span>
+                    <span class="jobpost-list-bar-counter" id="countOfPremierAds">0</span>
+            </div>
+            <div class="my-swiper-area" id="premierJobAdsSwipeArea"></div>
+            <script id="premierJobAdsSwipeTemplate" type="text/x-handlebars-template">
+    
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+    
+                        {{#each .}}
+                        <div class="swiper-slide">
+                            <div class="premiere-ad-box columns" id="premierJobAdsList">
+    
+                                {{#each .}}			
+                                <div class="column col-4 card">
+                                    <a href="jobad.html?jobAdId={{jobAdId}}">
+                                        <div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
+                                        <div class="card-header">
+                                            <div class="card-title">{{hospital.hospitalName}}</div>
+                                            <div class="card-subtitle">{{title}}</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="dental-info">
+                                                <span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
+                                                <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
+                                            </div>
+                                            <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
+                                        </div>
+                                    </a>
+                                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                                </div>
+                                {{/each}}
+    
+    
+                            </div>
+                        </div>
+                        {{/each}}
+    
+                    </div>
+                </div>
+            </script>
+        </section>
+
+    <!-- ======================== 일반 공고 ======================== -->
+    <section id="section-generalAds" class="jobpost-list">
+            <div class="jobpost-list-bar">
+                <span class="typo-title2">라이브 채용정보</span>
+                <span class="jobpost-list-bar-counter" id="countOfGeneralAds">0</span>
+            </div>
+            <div class="jobpost-list-body" id="generalJobAdsList"></div>
+            <script id="generalJobAdsTemplate" type="text/x-handlebars-template">
+                {{#each .}}
+                <div class="jobpost-list-card">
+                    <a href="jobad.html?jobAdId={{jobAdId}}">
+                        <div class="jobpost-list-card-header">
+                            <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
+                            <div class="jobpost-list-card-subtitle">{{title}}</div>
+                        </div>
+                        <div class="jobpost-list-card-body">
+                            <div class="dental-info">
+                                <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
+                                <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span></span>
+                                <span class="info-detail subway-line">
+                                    <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
+                                    <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
+                                    <span>서울 3호선<i></i></span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
+                                    <span class="subway120"><i></i></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
+                                </span>
+                                <!-- 시도, 시구군 정보, 교통정보 -->
+                                <span class="info-detail">
+                                    {{#each hashTag}}
+                                        <span>#{{.}}<i></i></span>
+                                    {{/each}}
+                                </span>
+                                <!-- 주변 핫플레이스 -->
+                            </div>
+                            <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
+                        </div>
+                    </a>
+                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                </div>
+                {{/each}}
+            </script>
+        </section>
+    </div>
+    <footer class="container">
+        FOOTER
+    </footer>
+    <script src="js/dental_ui.js"></script>
+    <script>
+        Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
+            //console.log("LOCATION_HELPER ", code);
+            var location = LOCATION_CODE.getByName(code);
+            if ( location ) return location.sidoName + " > " + location.siguName ;
+            else return "입력안됨";
+        });
+        Handlebars.registerHelper("renderAttrOnCard", function(code) {
+            //console.log("renderAttrOnCard ", code);
+            return renderAttrOnCard(code);
+        });
+        // Handlebars.registerHelper("renderHospitalLogoImage", function(hospitalId, flag) {
+        // 	console.log("renderHospitalLogoImage ", hospitalId, flag);
+        // 	if ( flag ) return CONSTANTS.getHospitalLogoImageUrl(hospitalId);
+        // });
+    
+        Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
+            if (!hiringEndDate) return "";
+            return renderMslashD(hiringEndDate);
+        });
+    </script>
+    <script>
+    
+    
+        // 속도 느림. 그러나 ordering 됨
+        function renderAttrOnCard(attrList) {
+            if ( attrList==null || attrList.length==0 ) return "";
+    
+            var html = "";
+    
+            var defAttrGroupList = CODE_CONTAINER.getAttrs();
+            defAttrGroupList.forEach(function(defAttrGroup) {
+                html += '<span class="info-detail">';
+                defAttrGroup.element.forEach(function(defAttr) {
+                    var defAttrValue = defAttr.value;
+    
+                    attrList.forEach(function(attr) {
+                        if ( defAttrValue == attr ) {
+                            html += "<span>" + defAttr.text + "<i></i></span>";
+                        }
+                    });
+                });
+                html += '</span>';
+            });
+    
+            return html;
+        }
+    
+        var GENERAL_JOB_ADS_PER_PAGE = 10;			// 스크롤 사이즈 (한 페이지에서 보여질 아이템 개수)
+        var SCROLL_LOCK = false;                    // 페이지 스크롤 LOCK
+    
+        var totalCountOfGeneralJobAds = 0;          // 전체 일반 공고 개수
+        var totalCountOfPremierJobAds = 0;			// 프리미어 공고 개수
+        var lastPageNo = 1;                         // 최근 조회 페이지
+        var lastQueryString;                        // 최종 Query String
+    
+        var BASE_SIDO_CODE = null;				// 현재 선택된 시도 코드
+    
+        /******************************************************************************/
+        /*  프리미어 공고 로딩 및 출력
+        /*  
+        /*******************************************************************************/
+        // var premierJobAdsTemplate = document.getElementById("premierJobAdsTemplate").innerHTML;
+        // var premierJobAdsTemplateCompiled = Handlebars.compile(premierJobAdsTemplate);
+    
+        var premierJobAdsSwipeTemplate = document.getElementById("premierJobAdsSwipeTemplate").innerHTML;
+        var premierJobAdsSwipeTemplateCompiled = Handlebars.compile(premierJobAdsSwipeTemplate);
+    
+        function listPremierJobAds(_queryParamString) {
+            console.log("listPremierJobAds 호출됨");
+            var searchParam = "adType=2&pageSize=5&" + _queryParamString; // 프리미어 광고 유형 추가      // adType=2 프리미어 공고
+            console.log("listPremierJobAds : searchParam:", searchParam);
+            callApi("GET", "/api/jobAd/", searchParam,
+                function(jobAdList) {
+                    console.log("api 호출 성공");
+                    //if ( !jobAdList || jobAdList<1 ) return;
+    
+    
+                    var bunchOfJobAds = [];
+                    for ( var i=0; i<jobAdList.length;) {
+                        //console.log("큰 루프 : ", i, "   ===> ", i%4);
+                        var subBunchOfJobAds = [];
+    
+                        for ( var j=0; j<6 && i<jobAdList.length; j++ ) {
+                            //console.log("현재 : ", i, " ==> ", i%4);
+                            subBunchOfJobAds.push(jobAdList[i]);
+                            i++;
+                        }
+    
+                        //console.log("서브 루프 탈출 : ", i);
+                        bunchOfJobAds.push(subBunchOfJobAds);
+    
+                    }
+                    console.log("결과 : ", bunchOfJobAds);
+    
+                    var itemList = premierJobAdsSwipeTemplateCompiled(bunchOfJobAds);
+                    $('#premierJobAdsSwipeArea').html(itemList);
+    
+                    var swiper = new Swiper('.swiper-container');
+    
+                    // var itemList = premierJobAdsTemplateCompiled(jobAdList);
+                    // $('#premierJobAdsList').html(itemList);
+    
+                    //renderScrapCheckbox();		// 스크랩된 공고에 별표시
+                    //renderAppliedCheckbox();	// 지원상태를 표시
+                },
+                function(errorCode, errorMsg) {
+                    console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                    alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+        }
+    
+        /******************************************************************************/
+        /*  일반 공고 로딩 및 출력
+        /*  
+        /*******************************************************************************/
+        var generalJobAdsTemplate = document.getElementById("generalJobAdsTemplate").innerHTML;
+        var generalJobAdsTemplateCompiled = Handlebars.compile(generalJobAdsTemplate);
+    
+        function listGeneralJobAds(_pageNo, _queryParamString) {
+    
+            if (SCROLL_LOCK) {
+                console.log("SCROLL LOCKED - in JS");
+                setTimeout(function() {
+                    SCROLL_LOCK = false;
+                    console.log("listJobAds:SCROLL_LOCK 풀렸음");
+                }, 500);
+                return;
+            }
+            SCROLL_LOCK = true;
+    
+    
+            console.log('listGeneralJobAds CALLED. _pageNo:', _pageNo);
+            if (_pageNo == null) pageNo = 1;
+            else pageNo = _pageNo;
+    
+            //var searchParam = searchCondition.toQueryString(pageNo);
+            var searchParam = "adType=1&pageNo=" + pageNo + "&" + _queryParamString;    // adType=1 일반 공고
+            console.log("searchParam:", searchParam);
+            callApi("GET", "/api/jobAd/", searchParam,
+                function(jobAdList) {
+                    lastPageNo = pageNo; // 최근 페이지 번호를 변경한다.
+    
+                    //console.log(generalJobAdsTemplate);
+                    var itemList = generalJobAdsTemplateCompiled(jobAdList);
+    
+                    if (pageNo != null && pageNo > 1) $('#generalJobAdsList').append(itemList);
+                    else $('#generalJobAdsList').html(itemList);
+    
+                    
+                    //renderScrapCheckbox();		// 스크랩된 공고에 별표시
+                    //renderAppliedCheckbox();	// 지원상태를 표시
+    
+                    SCROLL_LOCK = false;
+                },
+                function(errorCode, errorMsg) {
+                    console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                    alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                    SCROLL_LOCK = false;
+                }
+            );
+    
+        }
+    
+    
+    </script>
+    <script>
+        window.onload = function() {
+            listPremierJobAds();
+            listGeneralJobAds();
+            console.log("client Width Check: ", returnClientWidth () );
+    
+            /******************************************************************************/
+            /* 스크랩 / 지원 / 전화 걸기 ACTION PANEL에 대한 Event 부착
+            /******************************************************************************/
+            var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
+            
+            document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
+                console.log("이벤트 걸었음 ", element);
+                element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+            });
+            
+            document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
+                console.log("이벤트 걸었음 ", element);
+                element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+            });
+        }
+    </script>    
+</body>
+</html>

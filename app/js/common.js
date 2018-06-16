@@ -16,8 +16,8 @@
 
 /* API 서버 URL */
 // var API_SERVER_URL = "http://dentalplus.enqual.co.kr:8080";
-//var API_SERVER_URL = "https://api.enqual.co.kr:9090";
-var API_SERVER_URL = "https://localhost:9090";
+var API_SERVER_URL = "https://api.enqual.co.kr:9090";
+// var API_SERVER_URL = "https://localhost:9090";
 
 
 
@@ -1923,31 +1923,15 @@ var LoadingModal = function(loadingModalElement) {
 /******************************************************************************/
 var JobSeekerJobAdActionPanel = function() {
 
-	var html = `
-		<style>
-			.user-action-panel,
-			.user-action-panel-input:not(:checked) ~ .user-action-panel { display: none; }
-
-			.user-action-panel.active,
-			.user-action-panel-input:checked ~ .user-action-panel { display: block; }
-
-			.user-action-panel-body { display: flex; flex-direction: column; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-				width: 70%; }
-			.user-action-panel-body .btn { margin-bottom: 0.2rem; }
-
-			.user-action-panel-backdrop { display: block; position: fixed; content: ""; top: 0; left: 0; right: 0; bottom: 0; 
-				background-color: #000; opacity: 0.7; }
-		</style>
-		<input class="user-action-panel-input" id="chkActionPopup" type="checkbox" hidden>
-		<section class="user-action-panel" hidden>
-			<label class="user-action-panel-backdrop" for="chkActionPopup"></label>
-			<div class="user-action-panel-body">
-				<div class="btn btn-block btn-icon d-scrap" id="actionScrap" data-action-checked="false">스크랩</div>
-				<div class="btn btn-block btn-icon d-apply" id="actionApply" data-action-checked="false"></div>
-				<div class="btn btn-block btn-icon d-phone" id="actionCall" >전화문의</div>
-			</div>
-		</section>
-	`;
+	var html = '<input class="user-action-panel-input" id="chkActionPopup" type="checkbox" hidden>' 
+		+ '<section class="user-action-panel" hidden>'
+		+	'<label class="user-action-panel-backdrop" for="chkActionPopup"></label>'
+		+	'<div class="user-action-panel-body">'
+		+		'<div class="btn btn-block btn-icon d-scrap" id="actionScrap" data-action-checked="false">스크랩</div>'
+		+		'<div class="btn btn-block btn-icon d-apply" id="actionApply" data-action-checked="false"></div>'
+		+		'<div class="btn btn-block btn-icon d-phone" id="actionCall" >전화문의</div>'
+		+	'</div>'
+		+ '</section>';
 
 	var node = document.createElement("div");
 	node.innerHTML = html;
@@ -2066,9 +2050,7 @@ var JobSeekerJobAdActionPanel = function() {
         );
 	}
 
-	return {
-		onClickActionButton
-	};
+	return onClickActionButton;
 
 
 	// document.querySelectorAll(".jobpost-list-body").forEach(function(element) {

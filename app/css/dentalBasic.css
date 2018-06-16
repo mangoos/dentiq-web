@@ -2659,12 +2659,6 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
 
 .premiere-cost::after { content: "원"; }
 
-/* @media screen and (max-width: 980px) {
-
-
-
-
-  }
 
 @media screen and (min-width: 980px) {
 
@@ -2686,24 +2680,24 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     header section.header-sub .navbar .navbar-section { margin-left: 10px; }
     header section.header-sub .navbar .navbar-section a:after { content: "|"; margin: 0 20px; color: #FFF; }
     header section.header-sub .navbar .navbar-section a:last-child:after { content: ""; margin-right: 0; }
-*/
+
 
     /* main-top */
-    /* .main-top { background-color: #FAFAFA; margin: 7px auto; overflow: hidden; }
+    .main-top { background-color: #FAFAFA; margin: 7px auto; overflow: hidden; }
     .main-top:after { content:""; clear: both;  }
     .main-top .main-lbox { background-color: #FAFAFA; padding-right: 5px; float: left; overflow: hidden; width: 70%; }
     .main-top .main-lbox .lbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; width: 100%; height: 200px; }
     .main-top .main-lbox .lbox-btm { background-color: #FFF; width: 100%; height: 100px; margin-top: 5px; border: 1px solid #c4c2c2; }
     .main-top .main-lbox .lbox-btm .main-nav { border-right: 1px solid #c4c2c2; height: 100%; float: left; overflow: hidden; padding-left: 5px; }
-    .main-top .main-lbox .lbox-btm .main-nav .main-nav-header { margin-bottom: 7px; margin-top: 4px; font-weight: bold; }
+    .main-top .main-lbox .lbox-btm .main-nav .main-nav-header { margin-bottom: 7px; margin-top: 4px; font-weight: bold; font-size: 0.6rem; }
     .main-top .main-lbox .lbox-btm .main-nav:first-child { width:32%; }
     .main-top .main-lbox .lbox-btm .main-nav:nth-child(2) { width:30%; }
     .main-top .main-lbox .lbox-btm .main-nav:nth-child(3) { width:38%; border-right: none; }
-    .main-top .main-lbox .lbox-btm .main-nav a span.nav-sido { position: relative; font-size: 0.8rem; color: #494949; }
+    .main-top .main-lbox .lbox-btm .main-nav a span.nav-sido { position: relative; font-size: 0.6rem; color: #494949; }
     .main-top .main-lbox .lbox-btm .main-nav span.nav-sido:hover { color: #FFD100; text-decoration: underline; }
-    .main-top .main-lbox .lbox-btm .main-nav a span.nav-task { position: relative; font-size: 0.8rem; color: #494949; }
+    .main-top .main-lbox .lbox-btm .main-nav a span.nav-task { position: relative; font-size: 0.6rem; color: #494949; }
     .main-top .main-lbox .lbox-btm .main-nav span.nav-task:hover { color: #FFD100; text-decoration: underline; }
-    .main-top .main-lbox .lbox-btm .main-nav a span.nav-area { position: relative; font-size: 0.8rem; color: #494949; }
+    .main-top .main-lbox .lbox-btm .main-nav a span.nav-area { position: relative; font-size: 0.6rem; color: #494949; }
     .main-top .main-lbox .lbox-btm .main-nav span.nav-area:hover { color: #FFD100; text-decoration: underline; }
     .main-top .main-lbox .lbox-btm .main-nav a:not(:nth-of-type(6n+6)) span.nav-sido:after { background: #000; border-radius: 50%; 
         content: ""; height: 1px; width: 1px; display: inline-block; margin: 0 2px 0 6px; margin-bottom: 0.3rem; }
@@ -2715,34 +2709,57 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     .main-top .main-rbox { float: right; overflow: hidden; width: 30%; }
     .main-top .main-rbox .login-box { position: relative; background-color: #FAFAFA; border: 1px solid #c4c2c2; height: 150px; 
         overflow: hidden;}
-    .main-top .main-rbox .login-box label { position: relative; left: 55%; margin-left: 10px; margin-bottom: 0; }    
+    .main-top .main-rbox .login-box label { position: relative; margin-left: 10px; margin-bottom: 0; }    
     .main-top .main-rbox .login-box label.form-switch:after { content: "로그인 상태 유지"; font-size: 0.7rem; display: inline-block; }
     .form-checkbox input:checked+.form-icon, .form-radio input:checked+.form-icon, .form-switch input:checked+.form-icon {
         background: #0083cb; border-color: #0083cb; }
     .form-switch .form-icon::before { border: .05rem solid #caced7; }
     .main-top .main-rbox .login-box .login-input { position: relative; border: 1px solid #c4c2c2; margin: 0 5px 5px 5px; }
-    .main-top .main-rbox .login-box input[type=text] { border: none; width: 100%; text-overflow: ellipsis; white-space: nowrap; height: 2.5rem; 
+    .main-top .main-rbox .login-box input[type=text] { border: none; width: 100%; text-overflow: ellipsis; white-space: nowrap; height: 2rem; 
         padding: 7px 5px; font-size: 0.9rem; }
     .main-top .main-rbox .login-box input[type=text]:focus { border-bottom: 2px solid #FFD100; color: #212529; }
     .main-top .main-rbox .login-box input[type=text]:first-child:not(:focus) { border-bottom: 1px solid #e6e6e6; }
     .main-top .main-rbox .login-box .login-btn { position: absolute; width: 45%; height: 82px; top: -1px; right: -46%; color: #FFF; font-size: 1rem;
         border: 1px solid #0083cb; margin: 0; line-height: 82px; text-align: center; font-weight: bold;  background-color: #0083cb; }
-    .main-top .main-rbox .login-box .login-input + div span { font-size: 0.7rem; display: inline-block; margin-left: 15px; }
+    .main-top .main-rbox .login-box .login-input + div span { font-size: 0.6rem; display: inline-block; margin-left: 15px; }
     .main-top .main-rbox .login-box .login-input + div>span:not(:last-child):after { content: "|"; margin-left: 15px; }
 
-    .main-top .main-rbox .rbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; height: 150px; margin-top: 5px; } */
+    .main-top .main-rbox .rbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; height: 150px; margin-top: 5px; }
 
     /* header.main-header { height: 4rem; } */
-    /* .dental-pc-wrapper { max-width: 980px; margin: 0 auto; }
+    .dental-pc-wrapper { max-width: 980px; margin: 0 auto; }
     .top-banner { max-width: 980px; max-height: 400px; }
     .img-responsive { margin: 0 auto; transform: scale(2);}
     .pc-login-box { float:left; width: 260px; height: 152px; background-color: blue; }
     .liveboard { float: left; }
     section#section-topAd img{ max-width: 360px; }
 
-    .aside-menu-box { width: 260px; float: left; }
-    .premiere-ad { display: inline-block; float: right; }
-    .general-ad { display: inline-block; float: right; }
+    .aside-menu-box { width: 260px; }
+    .general-ad { display: inline-block; }
     .card-image { width: 100px; }
     .card-image img { width: 100%; }
-}  */
+
+
+    .form-switch .form-icon::before { background: #fff; border-radius: 50%; content: ""; display: block; height: .8rem;
+        left: 0; position: absolute; top: 0; transition: all .2s ease; width: .8rem; }
+    .form-switch .form-icon { background: #e7e9ed; background-clip: padding-box; border-radius: .45rem; height: .9rem;
+        left: 0; top: .25rem; width: 1.6rem; }
+    .form-checkbox .form-icon, .form-radio .form-icon, .form-switch .form-icon {
+        border: .05rem solid #caced7; cursor: pointer; display: inline-block; position: absolute; transition: all .2s ease; }
+    .form-switch input:checked + .form-icon::before { left: 14px; }
+    .form-switch { padding-left: 2rem; }
+    .form-checkbox, .form-radio, .form-switch { display: inline-block; line-height: 1rem; margin: .2rem 0; min-height: 1.2rem;
+        padding: .2rem .4rem .2rem 1.7rem; position: relative; }
+
+    /* pc premiere ad css */
+
+    /*****************************************************/
+    /********* 프리미어 채용정보(premiere-ad) css *********/
+    /*****************************************************/
+    .premiere-ad-box { margin: 0 0 10px; border: .05rem solid #e7e9ed; border-top: none; }
+
+    .premiere-ad-box .card { position: relative; border: none; border-right: .05rem solid #e7e9ed; border-top: .05rem solid #e7e9ed; 
+        background-color: #FFF; }
+
+
+} 
