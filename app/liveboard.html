@@ -16,7 +16,6 @@
     <script src="js/handlebars.min.js"></script>
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
-    <script src="js/dental_ui.js"></script>
     <style>
         .local-item { position: relative; display: block; }
         .local-item-name { display: inline-block; transform: translateY(-0.2rem); }
@@ -431,8 +430,6 @@
                 <span class="jobpost-list-bar-counter" id="countOfPremierAds">0</span>
         </div>
 
-
-
         <div class="my-swiper-area" id="premierJobAdsSwipeArea"></div>
         <script id="premierJobAdsSwipeTemplate" type="text/x-handlebars-template">
 
@@ -545,6 +542,7 @@
 	</section>
 	
 </body>
+<script src="js/dental_ui.js"></script>
 </html>
 
 <script>
@@ -621,11 +619,13 @@ var LiveBoardApp = (function() {
 	/******************************************************************************/
     /* 스크랩 / 지원 / 전화 걸기 ACTION PANEL에 대한 Event 부착
 	/******************************************************************************/
-	var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
+    var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
+    
 	document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
 		console.log("이벤트 걸었음 ", element);
 		element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
-	});
+    });
+    
 	document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
 		console.log("이벤트 걸었음 ", element);
 		element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);

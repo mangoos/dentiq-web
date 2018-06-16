@@ -14,7 +14,6 @@
     <script src="js/handlebars.min.js"></script>
     <script src="js/common.js"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=sTJvEhCjdAWmt5nFZblm"></script>
-    <script src="js/dental_ui.js"></script>
     <script src="js/dformHelper.js"></script>
 </head>
 <body>
@@ -445,415 +444,415 @@
     <footer class="footer">
     footer
     </footer>
-    <script>
-        $(window).on('scroll', function() {
-            if($(window).scrollTop()>200) {
-                $('.jobad-fixed-layer, .jobad-btm-layer').css({
-                    position: "fixed",
-                    "z-index": "3"
-                }).fadeIn(400);
-            }
-            else if ($(window).scrollTop()<=200){
-                $('.jobad-fixed-layer, .jobad-btm-layer').fadeOut(100);
-            }
-        });
-    </script>
-</body>
-</html>
-
+<script src="js/dental_ui.js"></script>
+<script>
+    $(window).on('scroll', function() {
+        if($(window).scrollTop()>200) {
+            $('.jobad-fixed-layer, .jobad-btm-layer').css({
+                position: "fixed",
+                "z-index": "3"
+            }).fadeIn(400);
+        }
+        else if ($(window).scrollTop()<=200){
+            $('.jobad-fixed-layer, .jobad-btm-layer').fadeOut(100);
+        }
+    });
+</script>
 <script>
 
-function getText(value) {
-    if ( value ) {
-        if ( typeof value === "string" ) return value.trim();
-        else return value;
-    } else return "";
-}
-
-function fillData(resData) {
-	// if ( resData.hospital.interestedByUserId ) {
-	// 	if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
-	// 		if ( LOGIN_INFO.getId()==resData.hospital.interestedByUserId )	document.getElementById("chkInterestHospital").checked = true;
-	// 	}
-	// }
-
-	//document.getElementById("chkInterestHospital").checked
-
-    document.getElementById("hospital-name-1").innerText            = getText(resData.hospital.hospitalName);
-    document.getElementById("hospital-name-2").innerText            = getText(resData.hospital.hospitalName);
-    if ( resData.hospital.logoImageUrl )        document.getElementById("hospital-logoUrl").src = getText(resData.hospital.logoImageUrl);
-    document.getElementById("jobAd-title-1").innerText              = getText(resData.title);
-    document.getElementById("jobAd-title-2").innerText              = getText(resData.title);
-    document.getElementById("hospital-locationText").innerText      = getText(resData.hospital.location.sidoName) + "> " + getText(resData.hospital.location.siguName) + "> " + getText(resData.hospital.location.emdNm);
-    document.getElementById("jobAd-hiringStartDate").innerText      = renderFullDateKR( getText(resData.hiringStartDate) );
-    document.getElementById("jobAd-hiringEndDate").innerText        = renderFullDateKR( getText(resData.hiringEndDate) );
-
-    document.getElementById("jobAd-hrOfficerName").innerText        = getText(resData.hrOfficerName);
-    document.getElementById("jobAd-hrTelNo").innerText              = getText(resData.hrTelNo);
-    document.getElementById("jobAd-hrEmail").innerText              = getText(resData.hrEmail);
-
-    document.getElementById("hospital-bizRegName").innerText        = getText(resData.hospital.bizRegName);
-    document.getElementById("hospital-estDate").innerText           = renderFullDateKR( getText(resData.hospital.estDate) );
-    document.getElementById("hospital-ceoName").innerText           = getText(resData.hospital.ceoName);
-    document.getElementById("hospital-hospUrl").innerText           = getText(resData.hospital.hospitalUrl);
-    document.getElementById("hospital-addrMain").innerText          = getText(resData.hospital.location.addrMain);
-    document.getElementById("hospital-addrDetail").innerText        = getText(resData.hospital.location.addrDetail);
-
-    document.getElementById("hospital-lunchTimeStart").innerText    = renderTimeKR( getText(resData.hospital.lunchTimeStart) );
-    document.getElementById("hospital-lunchTimeEnd").innerText      = renderTimeKR( getText(resData.hospital.lunchTimeEnd) );
-    document.getElementById("hospital-totalMemberCnt").innerText    = getText(resData.hospital.totalMemberCnt) + " 명";
-    document.getElementById("hospital-clinicSubject").innerText     = getText(resData.hospital.clinicSubject);
-    //document.getElementById("hospital-email").innerText             = getText(resData.hospital.email;
-    //document.getElementById("hospital-telNo").innerText             = getText(resData.hospital.telNo;
-
-    document.getElementById("jobAd-licenseText").innerText          = getText(resData.licenseText);
-    console.log("==> ", resData.expType, " ==> ",  CODE_CONTAINER.getCode(resData.expType, CODE_CONTAINER.getExpType) );
-    document.getElementById("jobAd-expType").innerText              = CODE_CONTAINER.getCode(resData.expType, CODE_CONTAINER.getExpType).text;
-    document.getElementById("jobAd-eduLevel").innerText             = CODE_CONTAINER.getCode(resData.eduLevel, CODE_CONTAINER.getEduLevel).text;
-
-    // // 공고 - 평일/휴일/기타 근무시간
-    var jobAdWorkingTimeWeekday = "";
-    if ( resData.jobWorkingTimeWeekdayStart ) jobAdWorkingTimeWeekday += renderTimeKR( getText(resData.jobWorkingTimeWeekdayStart) );
-    if ( resData.jobWorkingTimeWeekdayEnd )   jobAdWorkingTimeWeekday += " ~ " + renderTimeKR( getText(resData.jobWorkingTimeWeekdayStart) );
-
-    var jobAdWorkingTimeWeekend = "";
-    if ( resData.jobWorkingTimeWeekendStart ) jobAdWorkingTimeWeekend += renderTimeKR( getText(resData.jobWorkingTimeWeekendStart) );
-    if ( resData.jobWorkingTimeWeekendEnd )   jobAdWorkingTimeWeekend += " ~ " + renderTimeKR( getText(resData.jobWorkingTimeWeekendEnd) );
-
-    var jobAdWorkingTimeText = "";
-    if ( resData.jobWorkingTimeText ) jobAdWorkingTimeText += getText(resData.jobWorkingTimeText);
-
-    document.getElementById("jobAd-workingTimeWeekday").innerText   = getText(jobAdWorkingTimeWeekday);
-    document.getElementById("jobAd-workingTimeWeekend").innerText   = getText(jobAdWorkingTimeWeekend);
-    document.getElementById("jobAd-workingTimeText").innerText      = getText(jobAdWorkingTimeText);
-    document.getElementById("jobAd-workingDay").innerText           = getText(resData.jobWorkingDay);
-
-
-    renderAttrs(resData.attr);
-
-
-	// D-Day 부분
-	console.log("resData.dday : ", resData.dday);
-    if ( resData.dday===undefined || resData.dday < 0 ) {
-        document.getElementById("jobAd-dDay").innerText             = "종료";
-    } else {
-        document.getElementById("jobAd-dDay").innerText             = "D-" + resData.dday;
+    function getText(value) {
+        if ( value ) {
+            if ( typeof value === "string" ) return value.trim();
+            else return value;
+        } else return "";
     }
-
-    document.getElementById("jobAd-hiringCnt").innerText            = getText(resData.hiringCnt) + " 명";
-
-
-    document.getElementById("jobAd-lunchTimeStart").innerText       = renderTimeKR( getText(resData.jobLunchTimeStart) );
-    document.getElementById("jobAd-lunchTimeEnd").innerText         = "~" + renderTimeKR( getText(resData.jobLunchTimeEnd) ) || "";
-
-    //console.log("attr: ", resData.jobAd.attr);
-
-    // 급여 부분
-    var salary = "";
-    if ( !resData.salaryType || resData.salaryType=="0" ) {
-        if ( resData.salaryText ) salary = getText(resData.salaryText);
-        else salary = "*** 오류";
-    } else {
-        var salaryCode = CODE_CONTAINER.getCode(resData.salaryType, CODE_CONTAINER.getSalaryType);
-        if ( salaryCode ) salary = getText(salaryCode.text);
-        else salaryCode = "***코드 오류";
-    }
-    console.log("SALARY : ", salary);
-    document.getElementById("jobAd-salary").innerText               = salary;
-    //jobAd-salary
-
-    // 지원방법
-    setupApplyWay(resData.applyWay);
-
-    // 병원 - 평일/휴일/기타 근무시간
-    var hospitalWorkingTimeWeekday = "";
-    if ( resData.hospital.workingTimeWeekdayStart ) hospitalWorkingTimeWeekday += renderTimeKR( getText(resData.hospital.workingTimeWeekdayStart) );
-    if ( resData.hospital.workingTimeWeekdayEnd )   hospitalWorkingTimeWeekday += " ~ " + renderTimeKR( getText(resData.hospital.workingTimeWeekdayStart) );
-
-    var hospitalWorkingTimeWeekend = "";
-    if ( resData.hospital.workingTimeWeekendStart ) hospitalWorkingTimeWeekend += renderTimeKR( getText(resData.hospital.workingTimeWeekendStart) );
-    if ( resData.hospital.workingTimeWeekendEnd )   hospitalWorkingTimeWeekend += " ~ " + renderTimeKR( getText(resData.hospital.workingTimeWeekendEnd) );
-
-    var hospitalWorkingTimeText = "";
-    if ( resData.hospital.workingTimeText ) hospitalWorkingTimeText += getText(resData.hospital.workingTimeText);
-
-    document.getElementById("hospital-workingTimeWeekday").innerText    = getText(hospitalWorkingTimeWeekday);
-    document.getElementById("hospital-workingTimeWeekend").innerText    = getText(hospitalWorkingTimeWeekend);
-    document.getElementById("hospital-workingTimeText").innerText       = getText(hospitalWorkingTimeText);
-
-
-
-
-
-    // 휴일 휴진        hospital-holyday  holiday
-    var holidayStr = "";
-    var holidayVal = resData.hospital.holiday;
-    if ( holidayVal && Array.isArray(holidayVal) && holidayVal.length>0 ) {
-        var holidayLen = holidayVal.length;
-        CODE_CONTAINER.getHolyday().forEach(function(holiday) {
-            for ( var i=0; i<holidayLen; i++ ) {
-                if ( holidayVal[i] == holiday.value ) {                    
-                    if ( holidayVal[i] == "0" ) {
-                        holidayStr += holiday.text + "(" + resData.hospital.holidayText + ")";
-                    } else {
-                        holidayStr += holiday.text + ", ";
+    
+    function fillData(resData) {
+        // if ( resData.hospital.interestedByUserId ) {
+        // 	if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
+        // 		if ( LOGIN_INFO.getId()==resData.hospital.interestedByUserId )	document.getElementById("chkInterestHospital").checked = true;
+        // 	}
+        // }
+    
+        //document.getElementById("chkInterestHospital").checked
+    
+        document.getElementById("hospital-name-1").innerText            = getText(resData.hospital.hospitalName);
+        document.getElementById("hospital-name-2").innerText            = getText(resData.hospital.hospitalName);
+        if ( resData.hospital.logoImageUrl )        document.getElementById("hospital-logoUrl").src = getText(resData.hospital.logoImageUrl);
+        document.getElementById("jobAd-title-1").innerText              = getText(resData.title);
+        document.getElementById("jobAd-title-2").innerText              = getText(resData.title);
+        document.getElementById("hospital-locationText").innerText      = getText(resData.hospital.location.sidoName) + "> " + getText(resData.hospital.location.siguName) + "> " + getText(resData.hospital.location.emdNm);
+        document.getElementById("jobAd-hiringStartDate").innerText      = renderFullDateKR( getText(resData.hiringStartDate) );
+        document.getElementById("jobAd-hiringEndDate").innerText        = renderFullDateKR( getText(resData.hiringEndDate) );
+    
+        document.getElementById("jobAd-hrOfficerName").innerText        = getText(resData.hrOfficerName);
+        document.getElementById("jobAd-hrTelNo").innerText              = getText(resData.hrTelNo);
+        document.getElementById("jobAd-hrEmail").innerText              = getText(resData.hrEmail);
+    
+        document.getElementById("hospital-bizRegName").innerText        = getText(resData.hospital.bizRegName);
+        document.getElementById("hospital-estDate").innerText           = renderFullDateKR( getText(resData.hospital.estDate) );
+        document.getElementById("hospital-ceoName").innerText           = getText(resData.hospital.ceoName);
+        document.getElementById("hospital-hospUrl").innerText           = getText(resData.hospital.hospitalUrl);
+        document.getElementById("hospital-addrMain").innerText          = getText(resData.hospital.location.addrMain);
+        document.getElementById("hospital-addrDetail").innerText        = getText(resData.hospital.location.addrDetail);
+    
+        document.getElementById("hospital-lunchTimeStart").innerText    = renderTimeKR( getText(resData.hospital.lunchTimeStart) );
+        document.getElementById("hospital-lunchTimeEnd").innerText      = renderTimeKR( getText(resData.hospital.lunchTimeEnd) );
+        document.getElementById("hospital-totalMemberCnt").innerText    = getText(resData.hospital.totalMemberCnt) + " 명";
+        document.getElementById("hospital-clinicSubject").innerText     = getText(resData.hospital.clinicSubject);
+        //document.getElementById("hospital-email").innerText             = getText(resData.hospital.email;
+        //document.getElementById("hospital-telNo").innerText             = getText(resData.hospital.telNo;
+    
+        document.getElementById("jobAd-licenseText").innerText          = getText(resData.licenseText);
+        console.log("==> ", resData.expType, " ==> ",  CODE_CONTAINER.getCode(resData.expType, CODE_CONTAINER.getExpType) );
+        document.getElementById("jobAd-expType").innerText              = CODE_CONTAINER.getCode(resData.expType, CODE_CONTAINER.getExpType).text;
+        document.getElementById("jobAd-eduLevel").innerText             = CODE_CONTAINER.getCode(resData.eduLevel, CODE_CONTAINER.getEduLevel).text;
+    
+        // // 공고 - 평일/휴일/기타 근무시간
+        var jobAdWorkingTimeWeekday = "";
+        if ( resData.jobWorkingTimeWeekdayStart ) jobAdWorkingTimeWeekday += renderTimeKR( getText(resData.jobWorkingTimeWeekdayStart) );
+        if ( resData.jobWorkingTimeWeekdayEnd )   jobAdWorkingTimeWeekday += " ~ " + renderTimeKR( getText(resData.jobWorkingTimeWeekdayStart) );
+    
+        var jobAdWorkingTimeWeekend = "";
+        if ( resData.jobWorkingTimeWeekendStart ) jobAdWorkingTimeWeekend += renderTimeKR( getText(resData.jobWorkingTimeWeekendStart) );
+        if ( resData.jobWorkingTimeWeekendEnd )   jobAdWorkingTimeWeekend += " ~ " + renderTimeKR( getText(resData.jobWorkingTimeWeekendEnd) );
+    
+        var jobAdWorkingTimeText = "";
+        if ( resData.jobWorkingTimeText ) jobAdWorkingTimeText += getText(resData.jobWorkingTimeText);
+    
+        document.getElementById("jobAd-workingTimeWeekday").innerText   = getText(jobAdWorkingTimeWeekday);
+        document.getElementById("jobAd-workingTimeWeekend").innerText   = getText(jobAdWorkingTimeWeekend);
+        document.getElementById("jobAd-workingTimeText").innerText      = getText(jobAdWorkingTimeText);
+        document.getElementById("jobAd-workingDay").innerText           = getText(resData.jobWorkingDay);
+    
+    
+        renderAttrs(resData.attr);
+    
+    
+        // D-Day 부분
+        console.log("resData.dday : ", resData.dday);
+        if ( resData.dday===undefined || resData.dday < 0 ) {
+            document.getElementById("jobAd-dDay").innerText             = "종료";
+        } else {
+            document.getElementById("jobAd-dDay").innerText             = "D-" + resData.dday;
+        }
+    
+        document.getElementById("jobAd-hiringCnt").innerText            = getText(resData.hiringCnt) + " 명";
+    
+    
+        document.getElementById("jobAd-lunchTimeStart").innerText       = renderTimeKR( getText(resData.jobLunchTimeStart) );
+        document.getElementById("jobAd-lunchTimeEnd").innerText         = "~" + renderTimeKR( getText(resData.jobLunchTimeEnd) ) || "";
+    
+        //console.log("attr: ", resData.jobAd.attr);
+    
+        // 급여 부분
+        var salary = "";
+        if ( !resData.salaryType || resData.salaryType=="0" ) {
+            if ( resData.salaryText ) salary = getText(resData.salaryText);
+            else salary = "*** 오류";
+        } else {
+            var salaryCode = CODE_CONTAINER.getCode(resData.salaryType, CODE_CONTAINER.getSalaryType);
+            if ( salaryCode ) salary = getText(salaryCode.text);
+            else salaryCode = "***코드 오류";
+        }
+        console.log("SALARY : ", salary);
+        document.getElementById("jobAd-salary").innerText               = salary;
+        //jobAd-salary
+    
+        // 지원방법
+        setupApplyWay(resData.applyWay);
+    
+        // 병원 - 평일/휴일/기타 근무시간
+        var hospitalWorkingTimeWeekday = "";
+        if ( resData.hospital.workingTimeWeekdayStart ) hospitalWorkingTimeWeekday += renderTimeKR( getText(resData.hospital.workingTimeWeekdayStart) );
+        if ( resData.hospital.workingTimeWeekdayEnd )   hospitalWorkingTimeWeekday += " ~ " + renderTimeKR( getText(resData.hospital.workingTimeWeekdayStart) );
+    
+        var hospitalWorkingTimeWeekend = "";
+        if ( resData.hospital.workingTimeWeekendStart ) hospitalWorkingTimeWeekend += renderTimeKR( getText(resData.hospital.workingTimeWeekendStart) );
+        if ( resData.hospital.workingTimeWeekendEnd )   hospitalWorkingTimeWeekend += " ~ " + renderTimeKR( getText(resData.hospital.workingTimeWeekendEnd) );
+    
+        var hospitalWorkingTimeText = "";
+        if ( resData.hospital.workingTimeText ) hospitalWorkingTimeText += getText(resData.hospital.workingTimeText);
+    
+        document.getElementById("hospital-workingTimeWeekday").innerText    = getText(hospitalWorkingTimeWeekday);
+        document.getElementById("hospital-workingTimeWeekend").innerText    = getText(hospitalWorkingTimeWeekend);
+        document.getElementById("hospital-workingTimeText").innerText       = getText(hospitalWorkingTimeText);
+    
+    
+    
+    
+    
+        // 휴일 휴진        hospital-holyday  holiday
+        var holidayStr = "";
+        var holidayVal = resData.hospital.holiday;
+        if ( holidayVal && Array.isArray(holidayVal) && holidayVal.length>0 ) {
+            var holidayLen = holidayVal.length;
+            CODE_CONTAINER.getHolyday().forEach(function(holiday) {
+                for ( var i=0; i<holidayLen; i++ ) {
+                    if ( holidayVal[i] == holiday.value ) {                    
+                        if ( holidayVal[i] == "0" ) {
+                            holidayStr += holiday.text + "(" + resData.hospital.holidayText + ")";
+                        } else {
+                            holidayStr += holiday.text + ", ";
+                        }
                     }
                 }
-            }
-        });
-        document.getElementById("hospital-holyday").innerText       = holidayStr;
-        //console.log(holidayStr);
-    }
-
-
-    // hospital-hospitalType : 단일행
-    var hospitalTypeStr = "";
-    if ( !resData.hospital.hospitalTypeCode )               hospitalTypeStr = "***에러";
-    else if ( resData.hospital.hospitalTypeCode=="0" )      hospitalTypeStr = getText(resData.hospital.hospitalTypeText);
-    else                                                    hospitalTypeStr = CODE_CONTAINER.getCode(resData.hospital.hospitalTypeCode, CODE_CONTAINER.getHospitalTypeCode).text;
-    //console.log("===> ", hospitalTypeStr);
-    document.getElementById("hospital-hospitalType").innerText = hospitalTypeStr;
-
-    
-
-
-
-    /* ***************************************************************************************************************** */
-    // NAVER 지도 API 호출
-    if ( resData.hospital.location.latLonY && resData.hospital.location.latLonX ) {
-
-        //var myLatLng = naver.maps.UTMK.fromUTMKToLatLng({x:950983.9495052507, y:1942264.442479183});  // 서울대 아이원
-        //var myLatLng = naver.maps.UTMK.fromUTMKToLatLng({x:959392.6806814834, y:1944538.8317065234});   // 역삼동 해오름
-        //var myLatLng = naver.maps.UTMK.fromUTMKToLatLng({x:resData.hospital.addrJuso.entX, y:resData.hospital.addrJuso.entY});
-
-        var myLatLng = new naver.maps.LatLng(resData.hospital.location.latLonY, resData.hospital.location.latLonX);
-        console.log(myLatLng);
-        var map = new naver.maps.Map('hospital-map', {
-            //center: new naver.maps.LatLng(35.1737670166000,129.1811629440000),
-            center: new naver.maps.LatLng(myLatLng),
-            zoom: 10
-        });
-        var marker = new naver.maps.Marker({
-            //position: new naver.maps.LatLng(35.1737670166000,129.1811629440000),
-            position: new naver.maps.LatLng(myLatLng),
-            map: map
-        });
-    } else {
-        console.log("좌표 데이터 없음");
-    }
-    /* ***************************************************************************************************************** */
-}
-
-          
-
-
-
-var JobAdDetailApp = (function() {
-
-	var jobAdId;
-	var hospitalId;
-	var hospitalTelNo;
-
-    // 병원 기본 정보 수신
-    function loadJobAdWithHospital() {
-
-
-        var params = getHtmlCallParams();
-        if ( params && params.jobAdId ) {   // 기존 공고 로드 후 수정
-            jobAdId = params.jobAdId;
-        } else  {
-            alert("잘못된 접근입니다.");
-            return;
+            });
+            document.getElementById("hospital-holyday").innerText       = holidayStr;
+            //console.log(holidayStr);
         }
-
-		var apiParam = null;
-		if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
-			apiParam = "userId=" + LOGIN_INFO.getId();
-		}
+    
+    
+        // hospital-hospitalType : 단일행
+        var hospitalTypeStr = "";
+        if ( !resData.hospital.hospitalTypeCode )               hospitalTypeStr = "***에러";
+        else if ( resData.hospital.hospitalTypeCode=="0" )      hospitalTypeStr = getText(resData.hospital.hospitalTypeText);
+        else                                                    hospitalTypeStr = CODE_CONTAINER.getCode(resData.hospital.hospitalTypeCode, CODE_CONTAINER.getHospitalTypeCode).text;
+        //console.log("===> ", hospitalTypeStr);
+        document.getElementById("hospital-hospitalType").innerText = hospitalTypeStr;
+    
         
-        callApi("GET", "/api/jobAd/" + jobAdId + "/detail/", apiParam,
-            function(jobAdData) {
-                console.log(jobAdData);
-                if ( !jobAdData ) {
-					alert("해당 공고를 찾을 수 없습니다.");
-
-					// BACK을 하여야 하나?
-					window.history.back();
-					return;
-				}
-				
-				hospitalId = jobAdData.hospitalId;
-				hospitalTelNo = jobAdData.hospital.hospitalTelNo;
-
-				//checkInterestHospital();
-
-				initJobAdAction();
-                fillData(jobAdData);
-                
-                // 로그인 아이디하고 공고 병원 아이디(hospitalID)가 같으면 하단 하단 버튼을 프리미어 신청용으로 변경
-
-                if ( hospitalId === LOGIN_INFO.getHospitalId() ) {  
-                    
-                    var btmLayerElm = document.getElementById("jobAdBtmLayer");
-                    var btnHtml = '<a class="btn btn-primary btn-icon d-bullhorn" id="btnGotoJobAdUpgrade" style="color: #FFF;">프리미어 신청</a>';
-                    
-                    btmLayerElm.innerHTML = btnHtml;
-
-                    
-                    document.getElementById("btnGotoJobAdUpgrade").addEventListener("click", function(event) {
-                        sessionStorage.setItem("TEMP_JOB_AD_ID", jobAdId);
-                        document.location.href = "upgrade_job_ad.html";
-                    });
-                    
-
-                }
-                
-            },
-            function(errorCode, errorMsg) {
-                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-            }
-		);
-
+    
+    
+    
+        /* ***************************************************************************************************************** */
+        // NAVER 지도 API 호출
+        if ( resData.hospital.location.latLonY && resData.hospital.location.latLonX ) {
+    
+            //var myLatLng = naver.maps.UTMK.fromUTMKToLatLng({x:950983.9495052507, y:1942264.442479183});  // 서울대 아이원
+            //var myLatLng = naver.maps.UTMK.fromUTMKToLatLng({x:959392.6806814834, y:1944538.8317065234});   // 역삼동 해오름
+            //var myLatLng = naver.maps.UTMK.fromUTMKToLatLng({x:resData.hospital.addrJuso.entX, y:resData.hospital.addrJuso.entY});
+    
+            var myLatLng = new naver.maps.LatLng(resData.hospital.location.latLonY, resData.hospital.location.latLonX);
+            console.log(myLatLng);
+            var map = new naver.maps.Map('hospital-map', {
+                //center: new naver.maps.LatLng(35.1737670166000,129.1811629440000),
+                center: new naver.maps.LatLng(myLatLng),
+                zoom: 10
+            });
+            var marker = new naver.maps.Marker({
+                //position: new naver.maps.LatLng(35.1737670166000,129.1811629440000),
+                position: new naver.maps.LatLng(myLatLng),
+                map: map
+            });
+        } else {
+            console.log("좌표 데이터 없음");
+        }
+        /* ***************************************************************************************************************** */
     }
-
-
-	loadJobAdWithHospital();
-	
-
-	/**********************************************************************************/
-	
-
-	function initJobAdAction() {
-		if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
-
-		callApi("GET", "/api/user/"+LOGIN_INFO.getId()+"/statusJobAdAction/", "jobAdId="+jobAdId,
-            function(resData) {
-				console.log("받은 값 : ", resData);
-				// 스크랩 여부
-				if ( resData.scrap && resData.scrap==jobAdId ) {
-					document.getElementById("actionScrap").dataset.actionChecked = "true";
-				} else {
-					document.getElementById("actionScrap").dataset.actionChecked = "false";
-				}
-				
-				// 지원 여부
-				if ( resData.apply && resData.apply==jobAdId ) {
-					document.getElementById("actionApply").dataset.actionChecked = "true";
-				} else {
-					document.getElementById("actionApply").dataset.actionChecked = "false";
-				}
-
-				// 관심병원 여부
-				if ( resData.interestHospital && resData.interestHospital==jobAdId ) {
-					document.getElementById("actionInterestHospital").dataset.actionChecked = "true";
-				} else {
-					document.getElementById("actionInterestHospital").dataset.actionChecked = "false";
-				}
-				//document.getElementById("actionInterestHospital").dataset.actionValue = hospitalId;
-				
-            },
-            function(errorCode, errorMsg) {
-                console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
-                alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+    
+                
+    
+    
+    
+    var JobAdDetailApp = (function() {
+    
+        var jobAdId;
+        var hospitalId;
+        var hospitalTelNo;
+    
+        // 병원 기본 정보 수신
+        function loadJobAdWithHospital() {
+    
+    
+            var params = getHtmlCallParams();
+            if ( params && params.jobAdId ) {   // 기존 공고 로드 후 수정
+                jobAdId = params.jobAdId;
+            } else  {
+                alert("잘못된 접근입니다.");
+                return;
             }
-        );
-	}
-
-
-	document.getElementById("actionScrap").addEventListener("click", function(event) {
-        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
-
-		var element = this;
-		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 스크랩 O ==> 스크랩 X
-			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
-				function(resData) {		// 여기부터는 스크랩 성공한 상태임
-					if ( resData==jobAdId ) element.dataset.actionChecked = "false";
-					else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
-				},
-				function(errorCode, errorMsg) {
-					alert(errorMsg + " [" + errorCode + "]");
-				}
-			);
-		} else {																// 스크랩 X ==> 스크랩 O
-			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
-				function(resData) {		// 여기부터는 스크랩 취소 성공한 상태임
-					if ( resData==jobAdId )  element.dataset.actionChecked = "true";
-					else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
-				},
-				function(errorCode, errorMsg) {
-					alert(errorMsg + " [" + errorCode + "]");
-				}
-			);
-		}
-	});
-
-
-	document.getElementById("actionApply").addEventListener("click", function() {
-        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
-
-		var element = this;
-		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 지원 O ==> 지원 X
-			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
-				function(resData) {		// 여기부터는 지원 성공한 상태임
-					if ( resData==jobAdId ) {
-						element.dataset.actionChecked = "false";
-						dModal.alert("선택한 공고에 대한 지원을 취소했습니다.");
-					} else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
-				},
-				function(errorCode, errorMsg) {
-					alert(errorMsg + " [" + errorCode + "]");
-				}
-			);
-		} else {																// 지원 X ==> 지원 O
-			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
-				function(resData) {		// 여기부터는 지원 취소 성공한 상태임
-					if ( resData==jobAdId ) {
-						element.dataset.actionChecked = "true";
-						dModal.alert("선택한 공고에 지원을 완료했습니다.");
-					} else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
-				},
-				function(errorCode, errorMsg) {
-					alert(errorMsg + " [" + errorCode + "]");
-				}
-			);
-		}
-	});
-
-
-	document.getElementById("actionInterestHospital").addEventListener("click", function() {
-        if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+    
+            var apiParam = null;
+            if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {
+                apiParam = "userId=" + LOGIN_INFO.getId();
+            }
+            
+            callApi("GET", "/api/jobAd/" + jobAdId + "/detail/", apiParam,
+                function(jobAdData) {
+                    console.log(jobAdData);
+                    if ( !jobAdData ) {
+                        alert("해당 공고를 찾을 수 없습니다.");
+    
+                        // BACK을 하여야 하나?
+                        window.history.back();
+                        return;
+                    }
+                    
+                    hospitalId = jobAdData.hospitalId;
+                    hospitalTelNo = jobAdData.hospital.hospitalTelNo;
+    
+                    //checkInterestHospital();
+    
+                    initJobAdAction();
+                    fillData(jobAdData);
+                    
+                    // 로그인 아이디하고 공고 병원 아이디(hospitalID)가 같으면 하단 하단 버튼을 프리미어 신청용으로 변경
+    
+                    if ( hospitalId === LOGIN_INFO.getHospitalId() ) {  
+                        
+                        var btmLayerElm = document.getElementById("jobAdBtmLayer");
+                        var btnHtml = '<a class="btn btn-primary btn-icon d-bullhorn" id="btnGotoJobAdUpgrade" style="color: #FFF;">프리미어 신청</a>';
+                        
+                        btmLayerElm.innerHTML = btnHtml;
+    
+                        
+                        document.getElementById("btnGotoJobAdUpgrade").addEventListener("click", function(event) {
+                            sessionStorage.setItem("TEMP_JOB_AD_ID", jobAdId);
+                            document.location.href = "upgrade_job_ad.html";
+                        });
+                        
+    
+                    }
+                    
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+    
+        }
+    
+    
+        loadJobAdWithHospital();
         
-		var element = this;
-		if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 관심병원 O ==> 관심병원 X
-			callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
-				function(resData) {		// 여기부터는 관심병원 지정 성공한 상태임
-					if ( resData==hospitalId ) element.dataset.actionChecked = "false";
-					else throw "잘못된 병원 ID가 리턴되었음 [" + resData + "] <> [" + hospitalId + "]";
-					
-				},
-				function(errorCode, errorMsg) {
-					alert(errorMsg + " [" + errorCode + "]");
-				}
-			);
-		} else {																// 관심병원 X ==> 관심병원 O
-			callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
-				function(resData) {		// 여기부터는 관심병원 지정 취소 성공한 상태임
-					element.dataset.actionChecked = "true";
-				},
-				function(errorCode, errorMsg) {
-					alert(errorMsg + " [" + errorCode + "]");
-				}
-			);
-		}
-	});
-
-
-
-	// 전화문의
-	document.getElementById("actionCall").addEventListener("click", function() {
-		document.location.href="tel:" + hospitalTelNo;
-	});
-
-})();
-
+    
+        /**********************************************************************************/
+        
+    
+        function initJobAdAction() {
+            if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+    
+            callApi("GET", "/api/user/"+LOGIN_INFO.getId()+"/statusJobAdAction/", "jobAdId="+jobAdId,
+                function(resData) {
+                    console.log("받은 값 : ", resData);
+                    // 스크랩 여부
+                    if ( resData.scrap && resData.scrap==jobAdId ) {
+                        document.getElementById("actionScrap").dataset.actionChecked = "true";
+                    } else {
+                        document.getElementById("actionScrap").dataset.actionChecked = "false";
+                    }
+                    
+                    // 지원 여부
+                    if ( resData.apply && resData.apply==jobAdId ) {
+                        document.getElementById("actionApply").dataset.actionChecked = "true";
+                    } else {
+                        document.getElementById("actionApply").dataset.actionChecked = "false";
+                    }
+    
+                    // 관심병원 여부
+                    if ( resData.interestHospital && resData.interestHospital==jobAdId ) {
+                        document.getElementById("actionInterestHospital").dataset.actionChecked = "true";
+                    } else {
+                        document.getElementById("actionInterestHospital").dataset.actionChecked = "false";
+                    }
+                    //document.getElementById("actionInterestHospital").dataset.actionValue = hospitalId;
+                    
+                },
+                function(errorCode, errorMsg) {
+                    console.log("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                    alert("에러 1 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+        }
+    
+    
+        document.getElementById("actionScrap").addEventListener("click", function(event) {
+            if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+    
+            var element = this;
+            if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 스크랩 O ==> 스크랩 X
+                callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
+                    function(resData) {		// 여기부터는 스크랩 성공한 상태임
+                        if ( resData==jobAdId ) element.dataset.actionChecked = "false";
+                        else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+                    },
+                    function(errorCode, errorMsg) {
+                        alert(errorMsg + " [" + errorCode + "]");
+                    }
+                );
+            } else {																// 스크랩 X ==> 스크랩 O
+                callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/scrappedJobAdId/"+jobAdId+"/", null,
+                    function(resData) {		// 여기부터는 스크랩 취소 성공한 상태임
+                        if ( resData==jobAdId )  element.dataset.actionChecked = "true";
+                        else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+                    },
+                    function(errorCode, errorMsg) {
+                        alert(errorMsg + " [" + errorCode + "]");
+                    }
+                );
+            }
+        });
+    
+    
+        document.getElementById("actionApply").addEventListener("click", function() {
+            if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+    
+            var element = this;
+            if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 지원 O ==> 지원 X
+                callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
+                    function(resData) {		// 여기부터는 지원 성공한 상태임
+                        if ( resData==jobAdId ) {
+                            element.dataset.actionChecked = "false";
+                            dModal.alert("선택한 공고에 대한 지원을 취소했습니다.");
+                        } else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+                    },
+                    function(errorCode, errorMsg) {
+                        alert(errorMsg + " [" + errorCode + "]");
+                    }
+                );
+            } else {																// 지원 X ==> 지원 O
+                callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/appliedJobAdId/"+jobAdId+"/", null,
+                    function(resData) {		// 여기부터는 지원 취소 성공한 상태임
+                        if ( resData==jobAdId ) {
+                            element.dataset.actionChecked = "true";
+                            dModal.alert("선택한 공고에 지원을 완료했습니다.");
+                        } else throw "잘못된 공고 ID가 리턴됨 [" + resData + "] <> [" + jobAdId + "]";
+                    },
+                    function(errorCode, errorMsg) {
+                        alert(errorMsg + " [" + errorCode + "]");
+                    }
+                );
+            }
+        });
+    
+    
+        document.getElementById("actionInterestHospital").addEventListener("click", function() {
+            if ( !LOGIN_INFO.isLoggedIn() || !LOGIN_INFO.isPersonalMember() ) return;
+            
+            var element = this;
+            if ( element.dataset && element.dataset.actionChecked=="true" ) {		// 관심병원 O ==> 관심병원 X
+                callApi("DELETE", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
+                    function(resData) {		// 여기부터는 관심병원 지정 성공한 상태임
+                        if ( resData==hospitalId ) element.dataset.actionChecked = "false";
+                        else throw "잘못된 병원 ID가 리턴되었음 [" + resData + "] <> [" + hospitalId + "]";
+                        
+                    },
+                    function(errorCode, errorMsg) {
+                        alert(errorMsg + " [" + errorCode + "]");
+                    }
+                );
+            } else {																// 관심병원 X ==> 관심병원 O
+                callApi("POST", "/api/user/"+LOGIN_INFO.getId()+"/interestHospitalId/"+hospitalId+"/", null,
+                    function(resData) {		// 여기부터는 관심병원 지정 취소 성공한 상태임
+                        element.dataset.actionChecked = "true";
+                    },
+                    function(errorCode, errorMsg) {
+                        alert(errorMsg + " [" + errorCode + "]");
+                    }
+                );
+            }
+        });
+    
+    
+    
+        // 전화문의
+        document.getElementById("actionCall").addEventListener("click", function() {
+            document.location.href="tel:" + hospitalTelNo;
+        });
+    
+    })();
+    
 </script>
+</body>
+</html>

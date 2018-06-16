@@ -1,8 +1,17 @@
+/**
+ *  dental_ui import 마크업은 문서 하단 에 위치
+ *  DOM content 로딩 후, 다른 js 보다 우선순위로 로딩되어야 함.
+ * 
+ */
 
-var dModal = dModal || {};
+var dModal = dentalModal(); // 모달 세팅
+
+
+/**
+ * 문서 로딩 이후 로딩
+ */
 
 $(document).ready( function() {
-    dModal = dentalModal();  // 모달 세팅
 
     var formUIInit = function () {  // 나중에 폼헬퍼로 이동, 폼 없는 페이지는 의미없음.
 
@@ -110,30 +119,34 @@ $(document).ready( function() {
 
 })();
 
-var modalHtml =     
- '<div class="dental-modal dental-alert" id="alertModal" hidden>'
-+   '<div class="dental-modal-container">'
-+       '<div class="modal-container-body"></div>'
-+       '<div class="modal-container-footer" id="btnBox">'
-+          '<button class="btn btn-action" title="confirm">확인</button>'
-+          '<button class="btn btn-action" title="cancel">취소</button>'
-+       '</div>'
-+   '</div>'
-+   '<div class="dental-modal-overlay" hidden></div>'
-+'</div>'
-+'<div class="dental-toast" id="dentalToast">'
-+    '<div class="toast-alert" id="toastAlert"></div>'
-+    '<div class="toast-alert-overlay"></div>'
-+    '<div class="toast-inform" id="toastInform"></div>'
-+'</div>';
 
-var dentalModal = function () {
+
+function dentalModal() {
+
+    var modalHtml =     
+            '<div class="dental-modal dental-alert" id="alertModal" hidden>'
+        +   '<div class="dental-modal-container">'
+        +       '<div class="modal-container-body"></div>'
+        +       '<div class="modal-container-footer" id="btnBox">'
+        +          '<button class="btn btn-action" title="confirm">확인</button>'
+        +          '<button class="btn btn-action" title="cancel">취소</button>'
+        +       '</div>'
+        +   '</div>'
+        +   '<div class="dental-modal-overlay" hidden></div>'
+        +'</div>'
+        +'<div class="dental-toast" id="dentalToast">'
+        +    '<div class="toast-alert" id="toastAlert"></div>'
+        +    '<div class="toast-alert-overlay"></div>'
+        +    '<div class="toast-inform" id="toastInform"></div>'
+        +'</div>';
 
     var template = document.createElement('div');
     template.innerHTML = modalHtml;
+
     document.body.appendChild(template);
 
     var modal = document.getElementById("alertModal");
+
     var modalBody = modal.querySelector(".modal-container-body");
     var modalBtnBox = modal.querySelector(".modal-container-footer");
     var modalConfirmBtn = modal.querySelector("[title='confirm']");
@@ -363,5 +376,13 @@ function returnDayOfWeekFromIndex(index) {
 
 
 // 요기까지 선정우가 작성
+
+// viewport checker
+
+function returnClientWidth () {
+    var monitor = window.document.documentElement.getBoundingClientRect();
+    console.log(monitor);
+    return monitor.width;
+}
 
 

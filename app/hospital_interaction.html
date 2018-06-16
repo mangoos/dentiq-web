@@ -266,130 +266,125 @@
         </div>
         <div class="dental-tabs-footer"></div>
     </div>
-</body>
-
-</html>
-
+<script src="js/dental_ui.js"></script>
 <script>
 
-var HospitaInteractionApp = (function() {
-
-
-	// 속도 느림. 그러나 ordering 됨
-	function renderAttrOnCard(attrList) {
-		if ( attrList==null || attrList.length==0 ) return "";
-
-		var html = "";
-
-		var defAttrGroupList = CODE_CONTAINER.getAttrs();
-		defAttrGroupList.forEach(function(defAttrGroup) {
-			html += '<span class="info-detail">';
-			defAttrGroup.element.forEach(function(defAttr) {
-				var defAttrValue = defAttr.value;
-
-				attrList.forEach(function(attr) {
-					if ( defAttrValue == attr ) {
-						html += "<span>" + defAttr.text + "<i></i></span>";
-					}
-				});
-			});
-			html += '</span>';
-		});
-
-		return html;
-	}
-
-
-	Handlebars.registerHelper("renderAttrOnCard", function(code) {
-		//console.log("renderAttrOnCard ", code);
-		return renderAttrOnCard(code);
-	});
-	Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
-		console.log("LOCATION_HELPER ", code);
-		var location = LOCATION_CODE.getByName(code);
-		if ( location ) return location.sidoName + " > " + location.siguName;
-		else return "입력안됨";
-	});
-
-	Handlebars.registerHelper("renderAdTypeOnCard", function(code) {
-		if ( code == '1' ) return "일반";
-		else if ( code == '2' ) return "프리미어";
-		else return "에러";
-	});
-
-
-
-
-
-	init();		// 페이지 로드시 호출
-
-	function init() {
-
-		if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
-
-		listJobAdCards();
-	}
-
-
-
-
-
-	/*******************************************************************************************/
-	/*      화면 렌더링
-	/*******************************************************************************************/
-
-
-	var jobAdCardForRegisterTemplateCompiled    = Handlebars.compile( document.getElementById("jobAdCardForRegisterTemplate").innerHTML );
-	var jobAdCardForEditTemplateCompiled        = Handlebars.compile( document.getElementById("jobAdCardForEditTemplate").innerHTML );
-	var jobAdCardForUpgradeTemplateCompiled     = Handlebars.compile( document.getElementById("jobAdCardForUpgradeTemplate").innerHTML );
-
-
-	function listJobAdCards() {
-
-		//TODO 권한 확인 할 것
-
-		var hospitalId = LOGIN_INFO.getHospitalId();
-		
-		
-		callApi("GET", "/api/hospital/" + hospitalId + "/jobAd/", null,
-			function(resData) {
-				console.log(resData);
-				if ( resData && Array.isArray(resData) && resData.length>0 ) {
-					
-					document.getElementById("divJobAdCardListForRegister").innerHTML	= jobAdCardForRegisterTemplateCompiled(resData);
-					document.getElementById("divJobAdCardListForEdit").innerHTML		= jobAdCardForEditTemplateCompiled(resData);
-					document.getElementById("divJobAdCardListForUpgrade").innerHTML		= jobAdCardForUpgradeTemplateCompiled(resData);
-
-					// 공고 개수 삽입
-					document.querySelectorAll(".jobpost-list-bar-counter").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
-						el.innerText = resData.length;
-					});
-					
-					// 공고 리스트 영역 토글 ==> 보여주기
-					document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
-						el.checked = true;
-					});
-
-
-				} else {
-					// 공고 리스트 영역 토글 ==> 감추기
-					document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
-						el.checked = false;
-					});
-				}
-			},
-			function(errorCode, errorMsg) {
-				alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-			}
-		);
-
-	}
-
-
-})();
-
-
-
-
+    var HospitaInteractionApp = (function() {
+    
+    
+        // 속도 느림. 그러나 ordering 됨
+        function renderAttrOnCard(attrList) {
+            if ( attrList==null || attrList.length==0 ) return "";
+    
+            var html = "";
+    
+            var defAttrGroupList = CODE_CONTAINER.getAttrs();
+            defAttrGroupList.forEach(function(defAttrGroup) {
+                html += '<span class="info-detail">';
+                defAttrGroup.element.forEach(function(defAttr) {
+                    var defAttrValue = defAttr.value;
+    
+                    attrList.forEach(function(attr) {
+                        if ( defAttrValue == attr ) {
+                            html += "<span>" + defAttr.text + "<i></i></span>";
+                        }
+                    });
+                });
+                html += '</span>';
+            });
+    
+            return html;
+        }
+    
+    
+        Handlebars.registerHelper("renderAttrOnCard", function(code) {
+            //console.log("renderAttrOnCard ", code);
+            return renderAttrOnCard(code);
+        });
+        Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
+            console.log("LOCATION_HELPER ", code);
+            var location = LOCATION_CODE.getByName(code);
+            if ( location ) return location.sidoName + " > " + location.siguName;
+            else return "입력안됨";
+        });
+    
+        Handlebars.registerHelper("renderAdTypeOnCard", function(code) {
+            if ( code == '1' ) return "일반";
+            else if ( code == '2' ) return "프리미어";
+            else return "에러";
+        });
+    
+    
+    
+    
+    
+        init();		// 페이지 로드시 호출
+    
+        function init() {
+    
+            if ( !LOGIN_INFO.checkAuthHospital(true) ) return;
+    
+            listJobAdCards();
+        }
+    
+    
+    
+    
+    
+        /*******************************************************************************************/
+        /*      화면 렌더링
+        /*******************************************************************************************/
+    
+    
+        var jobAdCardForRegisterTemplateCompiled    = Handlebars.compile( document.getElementById("jobAdCardForRegisterTemplate").innerHTML );
+        var jobAdCardForEditTemplateCompiled        = Handlebars.compile( document.getElementById("jobAdCardForEditTemplate").innerHTML );
+        var jobAdCardForUpgradeTemplateCompiled     = Handlebars.compile( document.getElementById("jobAdCardForUpgradeTemplate").innerHTML );
+    
+    
+        function listJobAdCards() {
+    
+            //TODO 권한 확인 할 것
+    
+            var hospitalId = LOGIN_INFO.getHospitalId();
+            
+            
+            callApi("GET", "/api/hospital/" + hospitalId + "/jobAd/", null,
+                function(resData) {
+                    console.log(resData);
+                    if ( resData && Array.isArray(resData) && resData.length>0 ) {
+                        
+                        document.getElementById("divJobAdCardListForRegister").innerHTML	= jobAdCardForRegisterTemplateCompiled(resData);
+                        document.getElementById("divJobAdCardListForEdit").innerHTML		= jobAdCardForEditTemplateCompiled(resData);
+                        document.getElementById("divJobAdCardListForUpgrade").innerHTML		= jobAdCardForUpgradeTemplateCompiled(resData);
+    
+                        // 공고 개수 삽입
+                        document.querySelectorAll(".jobpost-list-bar-counter").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+                            el.innerText = resData.length;
+                        });
+                        
+                        // 공고 리스트 영역 토글 ==> 보여주기
+                        document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+                            el.checked = true;
+                        });
+    
+    
+                    } else {
+                        // 공고 리스트 영역 토글 ==> 감추기
+                        document.querySelectorAll(".action-toggle").forEach(function(el) {   // 주의!!! CSS 셀렉터 사용
+                            el.checked = false;
+                        });
+                    }
+                },
+                function(errorCode, errorMsg) {
+                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                }
+            );
+    
+        }
+    
+    
+    })();
 
 </script>
+</body>
+</html>

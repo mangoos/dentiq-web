@@ -13,7 +13,6 @@
 	
 	<script src="js/jquery-1.12.4.min.js"></script>
 	<script src="js/common.js"></script>
-	<script src="js/dental_ui.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.3.5/cropper.js"></script>
 </head>
 <body>
@@ -161,198 +160,198 @@
 			<div class="modal-footer"></div>
 		</div>
 	</div>
-</body>
-</html>
-
+<script src="js/dental_ui.js"></script>
 <script>
 
+
+	var ResumeManagementApp = (function() {
 	
-var ResumeManagementApp = (function() {
-
-	var hospitalId;
-	var CROPPER;
-
-	function init() {
-
-		if ( !LOGIN_INFO.checkAuthHospital(false) ) return;
-		
-
-		var userId = LOGIN_INFO.getId();
-        callApi("GET", "/api/user/"+userId+"/hospital/basicInfo/", null,
-            function(basicInfo) {
-				console.log(basicInfo);
-
-				if ( !basicInfo || !basicInfo.hospitalId ) {
-					hospitalId = null;
-
-					document.getElementById("userEmail").innerText = "";
-					document.getElementById("hospitalName").innerText  = "";
-					document.getElementById("hospitalLogoPic").src = "";
-
-
-					dModal.alert("병원정보가 등록되어 있지 않습니다. 먼저 병원 정보를 등록하여 주십시오.");
-					return;
-				}
-				
-
-				hospitalId = basicInfo.hospitalId;
-
-                document.getElementById("userEmail").innerText = basicInfo.userEmail;
-				document.getElementById("hospitalName").innerText  = basicInfo.hospitalName;
-				if ( basicInfo.hasLogoImage ) document.getElementById("hospitalLogoPic").src = basicInfo.logoImageUrl;
-
-
-            },
-            function(errorCode, errorMsg) {
-                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-            }
-        );
-
-	}
-
-	init();
-
-
-
-	// function onChangeHospitalLogo(event) {
-	// 	event.preventDefault();
-
-	// 	console.log("병원 ID : ", hospitalId);
-
-	// 	if ( !hospitalId ) {
-	// 		alert("로그인되어 있지 않습니다.");
-	// 		return;
-	// 	}
-
-	// 	console.log("업로드 대상 : ", this.value);
-	// 	var files = event.target.files;
-	// 	var filesArr = Array.prototype.slice.call(files);
-
-	// 	filesArr.forEach(function(file) {
-	// 		if ( !file.type.match("image.*") ) {
-	// 			alert("이미지 파일만 업로드 가능합니다.");
-	// 			return;
-	// 		}
-	// 		console.log("업로드 대상 파일 확인 완료 : ", file);
-	// 		console.log("AAA : ", file.name, "   ", file.type);
-	// 	});
-
-
-	// 	var file = files[0];    // 첫번째 파일만 처리
-	// 	console.log("업로드할 파일 ", file);
-	// 	var formData = new FormData();
-	// 	formData.append("file", file);
-	// 	console.log("hihihihihi", formData);
-
-	// 	uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
-	// 		function(resData) {
-	// 			console.log("파일 업로드 성공 : ", resData);
-	// 			document.getElementById("hospitalLogoPic").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
-	// 		},
-	// 		function(errorCode, errorMsg) {
-	// 			alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
-	// 		}
-	// 	);
-
-	// }
-
-	document.getElementById("uploadHospitalLogo").addEventListener("change", function(e) {
-
-		console.log(e.target.files[0]);
-		var cropTarget = document.getElementById("cropTarget");
-		cropTarget.src = window.URL.createObjectURL(this.files[0]);
-
-		if ( CROPPER ) {
-			console.log( cropTarget.src);
-			console.log("replace");
-			CROPPER.replace(cropTarget.src);
-			dentalCropper.classList.toggle("active");
-		} else {
-			console.log("new CROPPER");
-			CROPPER = new Cropper ( cropTarget, {
-				aspectRatio : 150 / 50,
-				movable : false,
-				preview : document.getElementById("cropImagePreview")
-			});
-
-			dentalCropper.classList.toggle("active");
-
-		}
-		console.log(CROPPER);
-	});
-
-	$("#cropBtn").on("click", function(e) {
-
-		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
-
-		var cropElm = CROPPER.getCroppedCanvas();
-		// var cropped = cropElm.toDataURL("image/jpeg", 1.0);
-
-		cropElm.toBlob(function (blob) {
-			console.log(blob);
-			var url = window.URL.createObjectURL(blob);
-			// blob.lastModifiedDate = new Date();
-			// blob.name = "profile";
-
-			var formData = new FormData();
-			formData.append("file", blob);
-
-			hospitalId= LOGIN_INFO.isHospitalMember() ? LOGIN_INFO.getHospitalId() : "";
-
-			uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
-				function(resData) {
-					dModal.instant("병원 로고가 등록되었습니다.");
-					console.log("파일 업로드 성공 : ", resData);
-					dentalCropper.classList.toggle("active");
-					// document.getElementById("hospitalLogoPic").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
-					if ( resData ) document.getElementById("hospitalLogoPic").src = resData + "?" + (Math.random()*1000);
+		var hospitalId;
+		var CROPPER;
+	
+		function init() {
+	
+			if ( !LOGIN_INFO.checkAuthHospital(false) ) return;
+			
+	
+			var userId = LOGIN_INFO.getId();
+			callApi("GET", "/api/user/"+userId+"/hospital/basicInfo/", null,
+				function(basicInfo) {
+					console.log(basicInfo);
+	
+					if ( !basicInfo || !basicInfo.hospitalId ) {
+						hospitalId = null;
+	
+						document.getElementById("userEmail").innerText = "";
+						document.getElementById("hospitalName").innerText  = "";
+						document.getElementById("hospitalLogoPic").src = "";
+	
+	
+						dModal.alert("병원정보가 등록되어 있지 않습니다. 먼저 병원 정보를 등록하여 주십시오.");
+						return;
+					}
+					
+	
+					hospitalId = basicInfo.hospitalId;
+	
+					document.getElementById("userEmail").innerText = basicInfo.userEmail;
+					document.getElementById("hospitalName").innerText  = basicInfo.hospitalName;
+					if ( basicInfo.hasLogoImage ) document.getElementById("hospitalLogoPic").src = basicInfo.logoImageUrl;
+	
+	
 				},
 				function(errorCode, errorMsg) {
-					dModal.alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
-					dentalCropper.classList.toggle("active");
+					alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
 				}
 			);
-
-			hospitalLogoPic.onload = function(event) {
-				URL.revokeObjectURL(url);
-			};
-
-			hospitalLogoPic.src = url;
-		}, 'image/jpeg');
-
-	});
-
-	$("#resetBtn").on("click", function(e) {
-		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
-		CROPPER.reset();
-	});
-
-	$("#clearBtn").on("click", function(e) {
-		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
-		CROPPER.destroy();
-		cropTarget.src = "";
-		CROPPER = "";
-		dentalCropper.classList.remove("active");
-		// uploadHospitalLogo.value= "";
-	});
-
-	$("#getBtn").on("click", function(e) {
-		if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
-		var d = CROPPER.getImageData();
-		console.log(d);
-		dModal.alert(
-		"naturalHeight: " + d.naturalHeight 
-		+ "\nnaturalWidth: " + d.naturalWidth
-		+ "\nheight: " + d.height
-		+ "\naspectRatio: " + d.aspectRatio
-		+ "\nrotate: " + d.rotate
-		);
-	});
-
-	document.getElementById("hospitalLogoArea").addEventListener("click", function(e) {
-		uploadHospitalLogo.value= "";
-		document.getElementById("uploadHospitalLogo").click();
-	});
-
-})();
+	
+		}
+	
+		init();
+	
+	
+	
+		// function onChangeHospitalLogo(event) {
+		// 	event.preventDefault();
+	
+		// 	console.log("병원 ID : ", hospitalId);
+	
+		// 	if ( !hospitalId ) {
+		// 		alert("로그인되어 있지 않습니다.");
+		// 		return;
+		// 	}
+	
+		// 	console.log("업로드 대상 : ", this.value);
+		// 	var files = event.target.files;
+		// 	var filesArr = Array.prototype.slice.call(files);
+	
+		// 	filesArr.forEach(function(file) {
+		// 		if ( !file.type.match("image.*") ) {
+		// 			alert("이미지 파일만 업로드 가능합니다.");
+		// 			return;
+		// 		}
+		// 		console.log("업로드 대상 파일 확인 완료 : ", file);
+		// 		console.log("AAA : ", file.name, "   ", file.type);
+		// 	});
+	
+	
+		// 	var file = files[0];    // 첫번째 파일만 처리
+		// 	console.log("업로드할 파일 ", file);
+		// 	var formData = new FormData();
+		// 	formData.append("file", file);
+		// 	console.log("hihihihihi", formData);
+	
+		// 	uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
+		// 		function(resData) {
+		// 			console.log("파일 업로드 성공 : ", resData);
+		// 			document.getElementById("hospitalLogoPic").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
+		// 		},
+		// 		function(errorCode, errorMsg) {
+		// 			alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
+		// 		}
+		// 	);
+	
+		// }
+	
+		document.getElementById("uploadHospitalLogo").addEventListener("change", function(e) {
+	
+			console.log(e.target.files[0]);
+			var cropTarget = document.getElementById("cropTarget");
+			cropTarget.src = window.URL.createObjectURL(this.files[0]);
+	
+			if ( CROPPER ) {
+				console.log( cropTarget.src);
+				console.log("replace");
+				CROPPER.replace(cropTarget.src);
+				dentalCropper.classList.toggle("active");
+			} else {
+				console.log("new CROPPER");
+				CROPPER = new Cropper ( cropTarget, {
+					aspectRatio : 150 / 50,
+					movable : false,
+					preview : document.getElementById("cropImagePreview")
+				});
+	
+				dentalCropper.classList.toggle("active");
+	
+			}
+			console.log(CROPPER);
+		});
+	
+		$("#cropBtn").on("click", function(e) {
+	
+			if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+	
+			var cropElm = CROPPER.getCroppedCanvas();
+			// var cropped = cropElm.toDataURL("image/jpeg", 1.0);
+	
+			cropElm.toBlob(function (blob) {
+				console.log(blob);
+				var url = window.URL.createObjectURL(blob);
+				// blob.lastModifiedDate = new Date();
+				// blob.name = "profile";
+	
+				var formData = new FormData();
+				formData.append("file", blob);
+	
+				hospitalId= LOGIN_INFO.isHospitalMember() ? LOGIN_INFO.getHospitalId() : "";
+	
+				uploadFile("/api/hospital/"+hospitalId+"/logo/", formData,
+					function(resData) {
+						dModal.instant("병원 로고가 등록되었습니다.");
+						console.log("파일 업로드 성공 : ", resData);
+						dentalCropper.classList.toggle("active");
+						// document.getElementById("hospitalLogoPic").src = CONSTANTS.getHospitalLogoImageUrl(LOGIN_INFO.getHospitalId()) + "?" + (Math.random()*1000);
+						if ( resData ) document.getElementById("hospitalLogoPic").src = resData + "?" + (Math.random()*1000);
+					},
+					function(errorCode, errorMsg) {
+						dModal.alert("병원 로고 이미지 등록에 실패했습니다. [" + errorCode + "]");
+						dentalCropper.classList.toggle("active");
+					}
+				);
+	
+				hospitalLogoPic.onload = function(event) {
+					URL.revokeObjectURL(url);
+				};
+	
+				hospitalLogoPic.src = url;
+			}, 'image/jpeg');
+	
+		});
+	
+		$("#resetBtn").on("click", function(e) {
+			if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+			CROPPER.reset();
+		});
+	
+		$("#clearBtn").on("click", function(e) {
+			if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+			CROPPER.destroy();
+			cropTarget.src = "";
+			CROPPER = "";
+			dentalCropper.classList.remove("active");
+			// uploadHospitalLogo.value= "";
+		});
+	
+		$("#getBtn").on("click", function(e) {
+			if( !CROPPER ) return dModal.instant("카메라 아이콘을 먼저 선택해주세요.");
+			var d = CROPPER.getImageData();
+			console.log(d);
+			dModal.alert(
+			"naturalHeight: " + d.naturalHeight 
+			+ "\nnaturalWidth: " + d.naturalWidth
+			+ "\nheight: " + d.height
+			+ "\naspectRatio: " + d.aspectRatio
+			+ "\nrotate: " + d.rotate
+			);
+		});
+	
+		document.getElementById("hospitalLogoArea").addEventListener("click", function(e) {
+			uploadHospitalLogo.value= "";
+			document.getElementById("uploadHospitalLogo").click();
+		});
+	
+	})();
 </script>
+</body>
+</html>
