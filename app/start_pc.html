@@ -29,25 +29,6 @@
     <link rel="stylesheet" href="css/swiper.min.css">   <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="css/dentalBasic.css">
     <style>
-        /* .swiper-slide {
-            text-align: center;
-            font-size: 18px;
-            background: #fff; */
-
-            /* Center slide text vertically */
-            /* display: -webkit-box;
-            display: -ms-flexbox;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            -webkit-align-items: center;
-            align-items: center;
-        } */
         .col-4 { width: 33%; }
     </style>
 </head>
@@ -153,7 +134,7 @@
                         <input type="text" name="" class="" placeholder="아이디">
                         <input type="text" name="" class="" placeholder="비밀번호">
                         <div class="login-btn">
-                            로그인
+                            <a href="login.html?returnUrl=` + currentHref + `">로그인</a>
                         </div>  
                     </div>
                     <div>
@@ -230,7 +211,7 @@
                             <div class="premiere-ad-box columns" id="premierJobAdsList">
     
                                 {{#each .}}			
-                                <div class="column col-4 card">
+                                <div class="column col-4 card" style="width: 33.2%;">
                                     <a href="jobad.html?jobAdId={{jobAdId}}">
                                         <div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
                                         <div class="card-header">
@@ -356,7 +337,7 @@
         var GENERAL_JOB_ADS_PER_PAGE = 10;			// 스크롤 사이즈 (한 페이지에서 보여질 아이템 개수)
         var SCROLL_LOCK = false;                    // 페이지 스크롤 LOCK
     
-        var totalCountOfGeneralJobAds = 0;          // 전체 일반 공고 개수
+        var totalCountOfGeneralJobAds = 1;          // 전체 일반 공고 개수
         var totalCountOfPremierJobAds = 0;			// 프리미어 공고 개수
         var lastPageNo = 1;                         // 최근 조회 페이지
         var lastQueryString;                        // 최종 Query String
@@ -403,7 +384,20 @@
                     var itemList = premierJobAdsSwipeTemplateCompiled(bunchOfJobAds);
                     $('#premierJobAdsSwipeArea').html(itemList);
     
-                    var swiper = new Swiper('.swiper-container');
+                    // var swiper = new Swiper('.swiper-container');
+
+                    var swiper = new Swiper('.swiper-container', {
+                        autoHeight: true, //enable auto height
+                        spaceBetween: 20,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                        },
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                    });
     
                     // var itemList = premierJobAdsTemplateCompiled(jobAdList);
                     // $('#premierJobAdsList').html(itemList);
@@ -469,8 +463,33 @@
             );
     
         }
-    
-    
+
+    /******************************************************************************/
+    /*  스크롤했을 때, 일반 공고에 대한 append 처리
+    /*  
+    /*******************************************************************************/
+    $(window).scroll(function() {
+
+        if (totalCountOfGeneralJobAds == 0) return;
+
+        var maxPageNo = totalCountOfGeneralJobAds / GENERAL_JOB_ADS_PER_PAGE + 1; // 한 페이지에 10개의 목록 지정 (개수 조정 시 변경 필요)
+        if ((lastPageNo + 1) >= maxPageNo) return;
+
+        if (SCROLL_LOCK) {
+            console.log("SCROLL : LOCKED");
+            setTimeout(function() {
+                SCROLL_LOCK = false;
+                console.log("SCROLL_LOCK 풀렸음");
+            }, 500);
+            return;
+        }
+
+        if (Math.ceil($(window).scrollTop()) >= ($(document).height() - $(window).height() * 3)) {
+            console.log("스크롤 했음?")
+            listGeneralJobAds(lastPageNo + 1, lastQueryString);
+        }
+    });
+
     </script>
     <script>
         window.onload = function() {
