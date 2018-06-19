@@ -870,7 +870,7 @@ h6, .h6 { font-size: .8rem; }
     cursor: default; }
 
 .active .dental-modal-overlay,
-input[name=modal-toggle]:checked ~ label .dental-modal-overlay { display: block; background-attachment: fixed; }
+input[name=modal-toggle]:checked ~ label .dental-modal-overlay { display: block; /* background-attachment: fixed; */ }
 
 .dental-modal-container { display: none; position: fixed; width: 98%; max-width: 360px; top: 50%; left: 50%; transform: translate( -50%, -50%); z-index: 400; padding: 0; 
     border-radius: 10px; background-color: #FFF; box-shadow: 0 0.2rem 0.5rem rgba(69,77,93,.3); overflow-y: auto;  }
@@ -1794,7 +1794,7 @@ header.register-header .navbar-section:last-child i.fal.fa-user-alt { font-size:
 /******************************************/
 /*********** liveboard 영역 css ***********/
 /******************************************/
-.liveplus { position: relative; padding: 0.3rem; margin: 0 auto 10px; background-color: #ebedee; border-radius: 0.2rem; }
+.liveplus { position: relative; padding: 0.3rem; margin: 0 auto 10px; width: 100%; background-color: #ebedee; border-radius: 0.2rem; }
 
 .liveplus-bar { display: flex; justify-content: space-between; color: #444; border-radius: 0.2rem; margin-bottom: 0.3rem; 
     /* display: -ms-flexbox; -ms-flex-align: stretch; -ms-flex-pack: justify; -ms-flex-wrap: wrap; */}
@@ -1887,7 +1887,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 
 .liveplus-footer .livefilter-chip label.chip span.btn { background-color: #000; color: #FFF; font-weight: bold; } 
 
-.liveplus .local-box { margin: 0 auto; /* max-height: 126px; */overflow: hidden;  transition: all 0.2s linear; border: 1px solid #e1e1e1;
+.liveplus .local-box { display: flex; flex-wrap: wrap; margin: 0 auto; overflow: hidden;  transition: all 0.2s linear; border: 1px solid #e1e1e1;
     background-color: #FFF; padding: 0.3rem 0.2rem; border-radius: 0.2rem; }
 
 .liveplus .local-box label div.local-item { text-align: center; font-size: 0.8rem; height: 2rem; line-height: 2rem; white-space: nowrap; 
@@ -1904,7 +1904,7 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 
 .liveplus input[name=attr]:checked + span.chip { background-color: #0083cb; color: #FFF; }
 
-.liveplus .local-box label.local-label { border-bottom: 1px dotted #e1e1e1; border-right: 1px dotted #e1e1e1; }
+.liveplus .local-box label.local-label { width: 33.3%; border-bottom: 1px dotted #e1e1e1; border-right: 1px dotted #e1e1e1; }
 
 .liveplus .local-box label.local-label:nth-child(1),
 .liveplus .local-box label.local-label:nth-child(2),
@@ -1930,37 +1930,18 @@ input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transit
 
 .liveplus input[name=attr]:checked ~ .livefilter-chip label.chip { display: block; }
 
-/* .liveplus-nav { position: relative; z-index: 20; background-color: #FFF; }
-.liveplus-nav label { height: 2rem; }
-.liveplus-nav label span:after { content:""; margin-right: 5px; }
-.liveplus-body label { display: inline-block; height: auto; width: 100%; }
-.liveplus-body span { display: inline-block; font-size: .8rem; width: 100%; height: 2rem; } */
 
-/* .liveplus input[type=radio] ~ form .liveplus-body { position: absolute; width: 100%; top: 56px; left: 0; background-color: #FFF; z-index: 0;
-    display: none; transition: all 0.2s linear; }
-.liveplus input[type=radio]:checked ~ form .liveplus-body { z-index: 100; display: block; transition: all 0.2s linear; }
-.liveplus-body div[data-tag] { display: none; }
-.liveplus input[type=radio]#tag-0:checked ~ form .liveplus-body div[data-tag],
-.liveplus input[type=radio]#tag-1:checked ~ form .liveplus-body div[data-tag=tag-1],
-.liveplus input[type=radio]#tag-2:checked ~ form .liveplus-body div[data-tag=tag-2],
-.liveplus input[type=radio]#tag-3:checked ~ form .liveplus-body div[data-tag=tag-3] { width: 100%; background-color: #FFF;
-    height: auto; z-index: 100; display: block; transition: all 0.2s linear; } */
+.local-item { position: relative; display: block; }
+.local-item-name { display: inline-block; transform: translateY(-0.2rem); }
+.local-item-cnt { position: absolute; bottom: -0.5rem ; left: 50%; transform: translateX(-50%); font-size: 0.5rem; color: #0083cb; }
+.local-item-cnt:before { content: "("; display: inline-block; margin-right: 0.1rem; }
+.local-item-cnt:after { content: ")"; display: inline-block; margin-left: 0.1rem; }
 
-
-/* .liveplus input[type=radio]#tag-0:checked ~ .liveplus-nav .chip[for=tag-0] .icon:after { transform: translate(-50%,40%) rotate(45deg);
-    transition: all 0.2s linear; }
-.liveplus input[type=radio]#tag-0:checked ~ .liveplus-nav .chip[for=tag-0] .icon:before { transform: translate(-50%,-140%) rotate(225deg);
-    transition: all 0.2s linear; }
-.liveplus input[type=radio]#tag-1:checked ~ .liveplus-nav .chip[for=tag-1] .icon,
-.liveplus input[type=radio]#tag-2:checked ~ .liveplus-nav .chip[for=tag-2] .icon,
-.liveplus input[type=radio]#tag-3:checked ~ .liveplus-nav .chip[for=tag-3] .icon { transform: rotate(180deg); transition: all 0.5s linear; }
-.liveplus input[type=radio]#tag-1 ~ .liveplus-nav .chip[for=tag-1] .icon,
-.liveplus input[type=radio]#tag-2 ~ .liveplus-nav .chip[for=tag-2] .icon,
-.liveplus input[type=radio]#tag-3 ~ .liveplus-nav .chip[for=tag-3] .icon { transition: all 0.5s linear; }
-.liveplus input[type=radio]#tag-0 ~ .liveplus-nav .chip[for=tag-0] .icon:after { transition: all 0.5s linear; }
-.liveplus input[type=radio]#tag-0 ~ .liveplus-nav .chip[for=tag-0] .icon:before { transition: all 0.5s linear; } */
-
-
+.my-local-item { position: relative; display: block; height: 2.3rem; line-height: 2.3rem; padding-left: 0.15rem; padding-top: 0.3rem; }
+.my-local-item-sido { position: absolute; color: #777; top: -0.6rem; left: 0.2rem; font-size: 0.5rem; font-weight: bold; }
+.my-local-item-cnt { color: red; font-size: 0.5rem; margin-left: 0.2rem; }
+.my-local-item-cnt:before { content: "("; display: inline-block; margin-right: 0.1rem; }
+.my-local-item-cnt:after { content: ")"; display: inline-block; margin-left: 0.1rem; }
 
 /***********************************/
 /*********jobpost-list css*********/
@@ -2682,14 +2663,30 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
 
 .premiere-cost::after { content: "원"; }
 
+.jobpost-wrapper { display: flex; flex-direction: column; }
 
 @media screen and (min-width: 780px) {
 
-    
+    .jobpost-wrapper { display: flex; flex-direction: row; max-width: 980px; margin: 0 auto; }
+    .liveplus { width: 25%; }
+    .ad-wrapper { width: 75%; }
+    .liveplus-bar { flex-direction: column; }
+    .liveplus-bar .navbar-section { width: 100%; }
+    .liveplus .local-box label.local-label { width: 50%; }
+    .local-item {}
+
+    .dental-modal.liveplus-modal { display: block; width: 100%; }
+    .dental-modal-container { display: block; position: relative; width: 100%; top: unset; left: unset; transform: none; box-shadow: none; z-index: initial; }
+    .modal-container-header { display: none; }
+    .modal-container-body { width: 100%; }
+    .liveplus .dental-modal-container fieldset { display: flex; flex-direction: column; padding: 0 5px; margin-bottom: 0.5rem; }
+    .liveplus .dental-modal-container fieldset label { width: 95%; margin: 0 auto; }
+
+
     header section.header-gnb { width: 100%; height: 1.5rem; line-height: 1.5rem; border-bottom: 1px solid #c4c2c2; background-color: #FAFAFA; }
     header section.header-gnb .navbar-section:first-child { margin-left: 20px; }
     header section.header-gnb .navbar-section:last-child { margin-right: 20px; }
-    header section.header-gnb a { color: #222222; font-size: 0.7rem; }
+    header section.header-gnb a { font-size: 0.7rem; }
     header section.header-gnb a:not(:last-child):after { content: "|"; color: #e6e6e6; margin: 0 10px; }
 
     header section.header-main { height: 6rem; max-width: 980px; margin: 0 auto; }
@@ -2708,9 +2705,9 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     /* main-top */
     .main-top { background-color: #FAFAFA; margin: 7px auto; overflow: hidden; }
     .main-top:after { content:""; clear: both;  }
-    .main-top .main-lbox { background-color: #FAFAFA; padding-right: 5px; float: left; overflow: hidden; width: 70%; }
+    .main-top .main-lbox { background-color: #FAFAFA; padding-right: 5px; float: left; overflow: hidden; width: 100%; }
     .main-top .main-lbox .lbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; width: 100%; height: 200px; }
-    .main-top .main-lbox .lbox-btm { background-color: #FFF; width: 100%; height: 100px; margin-top: 5px; border: 1px solid #c4c2c2; }
+    .main-top .main-lbox .lbox-btm { display: flex; background-color: #FFF; width: 100%; height: 100px; margin-top: 5px; border: 1px solid #c4c2c2; }
     .main-top .main-lbox .lbox-btm .main-nav { border-right: 1px solid #c4c2c2; height: 100%; float: left; overflow: hidden; padding-left: 5px; }
     .main-top .main-lbox .lbox-btm .main-nav .main-nav-header { margin-bottom: 7px; margin-top: 4px; font-weight: bold; font-size: 0.6rem; }
     .main-top .main-lbox .lbox-btm .main-nav:first-child { width:32%; }

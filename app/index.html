@@ -11,7 +11,7 @@
     <script type="text/javascript" src="js/express-useragent.js"></script>
     <script>
         var userAgent = new UserAgent().parse(navigator.userAgent);
-        // if( userAgent.isDesktop ) location = "start_pc.html";
+        if( userAgent.isMobile ) location = "liveboard.html";
         if ( userAgent.browser === "IE" && parseInt(userAgent.version) <= 10 ) { 
             alert("웹 보안 및 표준 준수를 위해 익스플로어 하위 버젼은 지원하지 못합니다. 확인 버튼을 누르고 브라우져 최신 버젼 업데이트 후 이용해주세요.");
             location = "ie_should_update.html";
@@ -48,17 +48,17 @@
         <section class="header-gnb navbar">
             <div class="navbar-section">
             </div>
-            <div class="navbar-section">
-                <a href="#" class="gnb-login">My메뉴</a>
-                <a href="#" class="gnb-download">앱다운로드</a>
-                <a href="#" class="gnb-alert-setting">알림설정</a>
+            <div class="navbar-section" style="color: #0083cb;">
+                <a href="login.html" class="gnb-login">로그인</a>
+                <a href="signup.html" class="gnb-download">회원가입</a>
+                <a href="#" class="gnb-alert-setting">앱다운로드</a>
                 <a href="#" class="gnb-cs-center">고객센터</a>
             </div>
         </section>
         <section class="header-main navbar">
             <div class="navbar-section">
                 <!-- 브랜드 로고 -->
-                <a href="liveboard.html" class="navbar-brand">Dental+</a>
+                <a href="/dentiq-web/app/" class="navbar-brand" style="color: #0083cb">Dental+</a>
             </div>
             <div class="navbar-center">
                 <input type="search" name="main-search">
@@ -72,9 +72,9 @@
         <section class="header-sub">
             <div class="navbar">
                 <div class="navbar-section">
-                    <a href="#" class="">채용정보</a>
-                    <a href="#" class="">관심지역</a>
-                    <a href="#" class="">우리동네</a>
+                    <a href="liveboard.html" class="">라이브보드</a>
+                    <a href="liveboard.html?INTEREST" class="">관심지역</a>
+                    <a href="liveboard.html?HOME" class="">우리동네</a>
                     <a href="#" class="">마감임박</a>
                 </div>
                 <div class="navbar-section">
@@ -85,7 +85,7 @@
         </section>
     </header>
     <div class="dental-pc-wrapper">
-        <section class="main-top">
+        <!-- <section class="main-top">
             <div class="main-lbox">
                 <div class="lbox-banner">
                     메인배너
@@ -157,6 +157,82 @@
                     프라임 배너
                 </div>
             </div>
+        </section> -->
+        <section>
+                <section class="main-top">
+                    <div class="main-lbox">
+                        <div class="lbox-banner">
+                            메인 Top 영역
+                        </div>
+                        <h3>LIVE Filter</h3>
+                        <div class="lbox-btm">
+                            <div class="main-nav">
+                                <div class="main-nav-header h5">지역</div>
+                                <form id="searchForm">
+                                    <label><input type="checkbox" name="sidoCode" value="11">서울</label>
+                                    <label><input type="checkbox" name="sidoCode" value="26">부산</label>
+                                    <label><input type="checkbox" name="sidoCode" value="41">경기</label>
+                                </form>
+                                
+                                <a href="#"><span class="nav-sido">서울</span></a>
+                                <a href="#"><span class="nav-sido">부산</span></a>
+                                <a href="#"><span class="nav-sido">인천</span></a>
+                                <a href="#"><span class="nav-sido">대구</span></a>
+                                <a href="#"><span class="nav-sido">광주</span></a>
+                                <a href="#"><span class="nav-sido">대전</span></a>
+                                <a href="#"><span class="nav-sido">울산</span></a>
+                                <a href="#"><span class="nav-sido">경기</span></a>
+                                <a href="#"><span class="nav-sido">강원</span></a>
+                                <a href="#"><span class="nav-sido">충북</span></a>
+                                <a href="#"><span class="nav-sido">충남</span></a>
+                                <a href="#"><span class="nav-sido">전북</span></a>
+                                <a href="#"><span class="nav-sido">전남</span></a>
+                                <a href="#"><span class="nav-sido">경북</span></a>
+                                <a href="#"><span class="nav-sido">경남</span></a>
+                                <a href="#"><span class="nav-sido">제주</span></a>
+                                <a href="#"><span class="nav-sido">세종</span></a>
+                                <a href="#"><span class="nav-sido">전국</span></a>
+                            </div>
+                            <div class="main-nav">
+                                <div class="main-nav-header h5">업무</div>
+                                <a href="#"><span class="nav-task">진료실</span></a>
+                                <a href="#"><span class="nav-task">데스크</span></a>
+                                <a href="#"><span class="nav-task">상담</span></a>
+                                <a href="#"><span class="nav-task">보험청구</span></a>
+                                <a href="#"><span class="nav-task">치과내 기공실</span></a>
+                                <a href="#"><span class="nav-task">치과기공소</span></a>
+                                <a href="#"><span class="nav-task">관리/경영</span></a>
+                                <a href="#"><span class="nav-task">치과 의사</span></a>
+                                <a href="#"><span class="nav-task">기타</span></a>
+                            </div>
+                            <div class="main-nav">
+                                <div class="main-nav-header h5">채용부문</div>
+                                <a href="#"><span class="nav-area">치위생사</span></a>
+                                <a href="#"><span class="nav-area">간호조무사</span></a>
+                                <a href="#"><span class="nav-area">치기공사</span></a>
+                                <a href="#"><span class="nav-area">보험청구사</span></a>
+                                <a href="#"><span class="nav-area">코디네이터</span></a>
+                                <a href="#"><span class="nav-area">상담실장</span></a>
+                                <a href="#"><span class="nav-area">치과의사</span></a>
+                                <a href="#"><span class="nav-area">기타</span></a>
+                            </div>
+                            <div class="main-nav">
+                                <div class="main-nav-header h5">고용형태</div>
+                                <a href="#"><span class="nav-area">정규직</span></a>
+                                <a href="#"><span class="nav-area">계약직</span></a>
+                                <a href="#"><span class="nav-area">아르바이트</span></a>
+                                <a href="#"><span class="nav-area">파트타임</span></a>
+                                <a href="#"><span class="nav-area">치과 실습</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                    // 지역 변경 시 SUBMIT
+                    $(".main-top").on("click", "input[name=sidoCode], input[name=siguCode]", function(e) {
+                        $("#searchForm").submit();
+                    });
+                    </script>
+
         </section>
         <!-- 사이드바 -->
         <!-- <div id="sidebar" class="aside-menu-box">  
@@ -204,13 +280,12 @@
                 <li class="menu-item"><a href="#menus">설정</a></li>
             </ul>
         </div> -->
-
-        <!-- ======================== 공고 속성 선택 BOX ======================== -->
-        <!-- 공고 속성 선택 BOX는 다른 것으로 변경될 수 있음 -->
-        <section class="liveplus container">
+    <!-- ======================== 공고 속성 선택 BOX ======================== -->
+    <!-- 공고 속성 선택 BOX는 다른 것으로 변경될 수 있음 -->
+    <section class="liveplus container" style="display: none;">
             <input class="local-box-check" type="checkbox" id="liveplus-local-box-check" hidden>
             <div class="liveplus-bar navbar">
-
+    
                 <!-- 전국/특정시도 선택 영역 -->
                 <div class="navbar-section" id="divLiveBoardSidoLabel">
                     <label class="liveplus-bar-icon"><i class="fas fa-map-marker-alt"></i></label>
@@ -221,7 +296,7 @@
                     </ul>
                     <div class="liveplus-bar-rbox"><label class="liveplus-bar-icon" for="liveplus-local-box-check"><i class="fas fa-chevron-up"></i></label></div>
                 </div>
-
+    
                 <!-- LIVE FILTER 선택 영역-->
                 <div class="navbar-section">
                     <label class="liveplus-bar-icon" for="livefilter-modal">
@@ -233,8 +308,9 @@
                     </div>
                 </div>
             </div>
-
-            <form id="searchForm">
+    
+    
+            <form id="searchForm1">
                 <div class="dental-modal liveplus-modal" id="jobAdAttrSelector">
                     <input type="checkbox" id="livefilter-modal" name="modal-toggle" hidden> <!-- 모달 체크박스, 위치 이동하면 안됨 -->
                     <input id="livefilter-reset" type="checkbox" hidden>
@@ -247,18 +323,103 @@
                         </div>
                         <div class="modal-container-body">
                             
-
-
+                            <div id="divJobAdAttrSelector"></div>   <!-- 라이브필터(공고 속성) -->
+                            
+                            <script id="jobAdAttrSelectorTemplate" type="text/x-handlebars-template">
+                                {{#each .}}
+                                    <fieldset class="livefilter">
+                                        <div class="filter-title"><i class="fas fa-hospital"style="margin-right: 10px;"></i>{{text}}</div>
+                                            <label class="filter-{{group}}"><input id="attr-{{group}}" type="checkbox" name="attr" value="" data-checkbox-group="{{group}}"  hidden><span class="chip">전체</span></label>
+                                            {{#each element}}
+                                                <label class="filter-{{group}}"><input id="attr-{{value}}" type="checkbox" name="attr" value="{{value}}"  data-checkbox-group="{{group}}"  hidden><span class="chip">{{text}}</span></label>
+                                            {{/each}}
+                                    </fieldset>
+                                {{/each}}
+                            </script>
+    
+                            <script>
+                                document.getElementById("divJobAdAttrSelector").innerHTML = 
+                                    Handlebars.compile(document.getElementById("jobAdAttrSelectorTemplate").innerHTML)(CODE_CONTAINER.getAttrs());
+                            </script>
+    
                         </div>
                         <div class="modal-container-footer"></div>
                     </div>
                 </div>
-
-
+                <script>
+    
+                    function renderAttrChips() {
+                        var allAttrs = document.querySelectorAll("input[type=checkbox][name='attr']:not([value=''])"); // parent 를 캐쉬해놓고 하면 더 나을 듯
+                        var allAttrsChecked = document.querySelectorAll("input[type=checkbox][name='attr']:checked:not([value=''])"); // 선정우,
+                        var livepusFooter = document.getElementById("liveplusFooter"); // 선정우, 할 필요 없지만 안해놓으면 아래 헷갈릴까봐 변수 선언.
+                        var filterChipLengthElm = document.getElementById("filterChipLength"); // 선정우
+                        //allAttrs.forEach(showAttrChip(element, index));
+                        allAttrs.forEach(function(element) {
+                            if ( element.checked ) {
+                                $(".livefilter-chip .chip[for='" + element.id + "']").show(); 
+                                liveplusFooter.style.display = "block"; // 선정우 한땀 땄음
+                            } else {
+                                $(".livefilter-chip .chip[for='" + element.id + "']").hide();
+                                if ( !allAttrsChecked.length ) { 
+                                    livepusFooter.removeAttribute("style"); // 선정우, 체크된 개별-전체 제외-칩이 0이면 푸터 박스 안보이게 합니다.
+                                    filterChipLengthElm.dataset.chipLength = "( 전체"; // 선정우가 한땀 땄음
+                                } else {
+                                    filterChipLengthElm.dataset.chipLength = "( " + allAttrsChecked.length + " 개"; // 선정우 한땀 땄음
+                                }
+                            }
+                        });
+                    }
+                    
+                    // 공고 속성 변경시, 칩을 표시하고, submit
+                    function afterChangedAttrCheckboxes() {
+                        renderAttrChips();
+                        $("#searchForm").submit();
+                    }
+                    // 공고 속성들을 그룹별로 '전체'와 묶어 준다.
+                    var checkboxGroup = new DynamicCheckboxGroup(document.getElementById("searchForm"), "attr", afterChangedAttrCheckboxes);
+                    checkboxGroup.check();  // 초기값 세팅 (지금은 모두 '전체'로)
                 
+                    
+                    // 지역 변경 시 SUBMIT
+                    $(".liveplus").on("click", "input[name=sidoCode]", function(e) {
+                        $("#searchForm").submit();
+                    });
+                    // 지역 변경 시 SUBMIT
+                    $(".liveplus").on("click", "input[name=siguCode]", function(e) {
+                        $("#searchForm").submit();
+                    });
+                    
+    
+                    // 리프레쉬 아이콘 클릭했을 때, 회전 효과 및 칩 숨기기(초기화), submit
+                    // 임시 핸들러 임, 초기화 제대로 안되고 있음
+                    $(".liveplus").on("click", ".fa-refresh", function(e) {
+                        var livepusFooter = document.getElementById("liveplusFooter"); 
+                        // A. 아이콘 회전
+                        $(this).css({
+                            "transform": "rotate(360deg)",
+                            "transition": "all 0.5s ease"
+                        });
+                        console.log("리프레쉬 아이콘 클릭 fa-refresh :   .liveplus --> click --> .fa-refresh ", this);
+    
+                        // B. 칩 전체 숨기기 (초기화)
+                        $(".livefilter-chip .chip").hide();
+                        
+                        checkboxGroup.check();  // 초기값 세팅 (지금은 모두 '전체'로)
+                        
+                        // C. submit 처리
+                        $("#searchForm").submit();
+    
+                        // 선정우, Footer 필터 칩 박스 숨기기
+                        livepusFooter.removeAttribute("style");
+                        filterChipLength.dataset.chipLength = "( 전체"; // 선정우가 한땀 땄음, 위에 renderAttr~~ 함수랑 통합해야할 듯 ㅠ
+                    });
+                </script>
+    
+                <!-- ======================== 지역 선택 BOX ======================== -->
+                <div class="local-box columns" id="locationSelector"></div>
             </form>
             
-
+    
             <!-- 체크박스로 푸터 박스 on/off 할 수 있음, 지금은 그냥 스크립트로 되어 있음 -->
             <input class="liveplus-footer-check" type="checkbox" id="" hidden>
             <div class="liveplus-footer" id="liveplusFooter" hidden>
@@ -270,109 +431,17 @@
                         {{/each}}
                     {{/each}}
                 </script>
-
+    
                 <script>
                     document.getElementById("divJobAdAttrChip").innerHTML = 
                         Handlebars.compile(document.getElementById("jobAdAttrChipTemplate").innerHTML)(CODE_CONTAINER.getAttrs());
                 </script>
-
+    
                 <div class="livefilter-box"><label for="livefilter-reset" title="라이브필터 초기화"><i class="fal fa-sync-alt fa-refresh"></i></label></div>
             </div>
-
+    
         </section>
-        <div style="display: flex;" >
-        <aside style="width: 25%;">
-            pc 라이브플러스
-            <!-- ======================== 지역 선택 BOX ======================== -->
-            <div class="local-box columns" id="locationSelector"></div>
-            <div id="divJobAdAttrSelector"></div>   <!-- 라이브필터(공고 속성) -->
-                            
-            <script id="jobAdAttrSelectorTemplate" type="text/x-handlebars-template">
-                {{#each .}}
-                    <fieldset class="livefilter">
-                        <div class="filter-title"><i class="fas fa-hospital"style="margin-right: 10px;"></i>{{text}}</div>
-                            <label class="filter-{{group}}"><input id="attr-{{group}}" type="checkbox" name="attr" value="" data-checkbox-group="{{group}}"  hidden><span class="chip">전체</span></label>
-                            {{#each element}}
-                                <label class="filter-{{group}}"><input id="attr-{{value}}" type="checkbox" name="attr" value="{{value}}"  data-checkbox-group="{{group}}"  hidden><span class="chip">{{text}}</span></label>
-                            {{/each}}
-                    </fieldset>
-                {{/each}}
-            </script>
 
-            <script>
-                document.getElementById("divJobAdAttrSelector").innerHTML = 
-                    Handlebars.compile(document.getElementById("jobAdAttrSelectorTemplate").innerHTML)(CODE_CONTAINER.getAttrs());
-            </script>
-                            <script>
-
-                                    function renderAttrChips() {
-                                        var allAttrs = document.querySelectorAll("input[type=checkbox][name='attr']:not([value=''])"); // parent 를 캐쉬해놓고 하면 더 나을 듯
-                                        var allAttrsChecked = document.querySelectorAll("input[type=checkbox][name='attr']:checked:not([value=''])"); // 선정우,
-                                        var livepusFooter = document.getElementById("liveplusFooter"); // 선정우, 할 필요 없지만 안해놓으면 아래 헷갈릴까봐 변수 선언.
-                                        var filterChipLengthElm = document.getElementById("filterChipLength"); // 선정우
-                                        //allAttrs.forEach(showAttrChip(element, index));
-                                        allAttrs.forEach(function(element) {
-                                            if ( element.checked ) {
-                                                $(".livefilter-chip .chip[for='" + element.id + "']").show(); 
-                                                liveplusFooter.style.display = "block"; // 선정우 한땀 땄음
-                                            } else {
-                                                $(".livefilter-chip .chip[for='" + element.id + "']").hide();
-                                                if ( !allAttrsChecked.length ) { 
-                                                    livepusFooter.removeAttribute("style"); // 선정우, 체크된 개별-전체 제외-칩이 0이면 푸터 박스 안보이게 합니다.
-                                                    filterChipLengthElm.dataset.chipLength = "( 전체"; // 선정우가 한땀 땄음
-                                                } else {
-                                                    filterChipLengthElm.dataset.chipLength = "( " + allAttrsChecked.length + " 개"; // 선정우 한땀 땄음
-                                                }
-                                            }
-                                        });
-                                    }
-                                    
-                                    // 공고 속성 변경시, 칩을 표시하고, submit
-                                    function afterChangedAttrCheckboxes() {
-                                        renderAttrChips();
-                                        $("#searchForm").submit();
-                                    }
-                                    // 공고 속성들을 그룹별로 '전체'와 묶어 준다.
-                                    var checkboxGroup = new DynamicCheckboxGroup(document.getElementById("searchForm"), "attr", afterChangedAttrCheckboxes);
-                                    checkboxGroup.check();  // 초기값 세팅 (지금은 모두 '전체'로)
-                                
-                                    
-                                    // 지역 변경 시 SUBMIT
-                                    $(".liveplus").on("click", "input[name=sidoCode]", function(e) {
-                                        $("#searchForm").submit();
-                                    });
-                                    // 지역 변경 시 SUBMIT
-                                    $(".liveplus").on("click", "input[name=siguCode]", function(e) {
-                                        $("#searchForm").submit();
-                                    });
-                                    
-                
-                                    // 리프레쉬 아이콘 클릭했을 때, 회전 효과 및 칩 숨기기(초기화), submit
-                                    // 임시 핸들러 임, 초기화 제대로 안되고 있음
-                                    $(".liveplus").on("click", ".fa-refresh", function(e) {
-                                        var livepusFooter = document.getElementById("liveplusFooter"); 
-                                        // A. 아이콘 회전
-                                        $(this).css({
-                                            "transform": "rotate(360deg)",
-                                            "transition": "all 0.5s ease"
-                                        });
-                                        console.log("리프레쉬 아이콘 클릭 fa-refresh :   .liveplus --> click --> .fa-refresh ", this);
-                
-                                        // B. 칩 전체 숨기기 (초기화)
-                                        $(".livefilter-chip .chip").hide();
-                                        
-                                        checkboxGroup.check();  // 초기값 세팅 (지금은 모두 '전체'로)
-                                        
-                                        // C. submit 처리
-                                        $("#searchForm").submit();
-                
-                                        // 선정우, Footer 필터 칩 박스 숨기기
-                                        livepusFooter.removeAttribute("style");
-                                        filterChipLength.dataset.chipLength = "( 전체"; // 선정우가 한땀 땄음, 위에 renderAttr~~ 함수랑 통합해야할 듯 ㅠ
-                                    });
-                                </script>            
-        </aside>
-        <div style="width: 75%;">
         <!-- ======================== 프리미어 공고 ======================== -->
         <section id="section-premiereAds" class="premiere-ad">
             <div class="jobpost-list-bar">
@@ -460,8 +529,6 @@
                 {{/each}}
             </script>
         </section>
-        </div>
-        </div>
     </div>
     <footer class="container">
         FOOTER
@@ -607,12 +674,14 @@
             document.getElementById("locationReset").addEventListener("click", function(event) {
                 BASE_SIDO_CODE = null;
                 resetClickDivLiveBoardSidoLabel();
+                console.log("로컬 리셋 써밋");
                 $("#searchForm").submit();
             });
             
             //'전국' 다음의 특정 시도를 클릭한 경우, 해당 시도의 대쉬보드 그려준다.
             document.getElementById("currentLocationSidoLabel").addEventListener("click", function(event) {
                 resetClickDivLiveBoardSidoLabel();
+                console.log("해당 시도의 대쉬보드 써밋");
                 $("#searchForm").submit();
             });
         
@@ -831,46 +900,46 @@
                         listGeneralJobAds(1, lastQueryString);									// 일반 공고 리스트 업데이트
         
         
-                        if ( ACTION_TYPE != "HOME" ) {	// LIVEBOARD와 INTEREST는 지역별 요약을 보여주어야 하고, HOME은 지역별 요약이 없음
+                        // if ( ACTION_TYPE != "HOME" ) {	// LIVEBOARD와 INTEREST는 지역별 요약을 보여주어야 하고, HOME은 지역별 요약이 없음
         
-                            var htmlStr = "";					
-                            resData.locationList.forEach(function(item) {
+                        //     var htmlStr = "";					
+                        //     resData.locationList.forEach(function(item) {
         
-                                var requestedChecker = "";
-                                if ( item.requested ) requestedChecker = " checked ";
+                        //         var requestedChecker = "";
+                        //         if ( item.requested ) requestedChecker = " checked ";
         
-                                if ( item.locationType=='1' ) {			// 전체(대한민국 시도들)인 경우
-                                    htmlStr += `<label class="local-label col-3"><input type="checkbox" name="sidoCode" value="${item.sidoCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.locationName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
+                        //         if ( item.locationType=='1' ) {			// 전체(대한민국 시도들)인 경우
+                        //             htmlStr += `<label class="local-label col-3"><input type="checkbox" name="sidoCode" value="${item.sidoCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.locationName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
                                                     
-                                } else if ( item.locationType=='2' ) {	// 특정 시도를 선택해서, 해당 시도의 시구들인 경우
-                                    if ( ACTION_TYPE=="INTEREST" )
-                                        htmlStr += `<label class="my-local-label col-4"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='my-local-item'><span class='my-local-item-sido'>${item.sidoName}<span class='my-local-item-cnt'>${item.cnt}</span></span><span class='my-local-item-sigu'>${item.siguName}</span></div></label>`;
-                                    else
-                                        htmlStr += `<label class="local-label col-3"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.siguName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
-                                }
-                            });
-                            document.getElementById("locationSelector").innerHTML = htmlStr;
+                        //         } else if ( item.locationType=='2' ) {	// 특정 시도를 선택해서, 해당 시도의 시구들인 경우
+                        //             if ( ACTION_TYPE=="INTEREST" )
+                        //                 htmlStr += `<label class="my-local-label col-4"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='my-local-item'><span class='my-local-item-sido'>${item.sidoName}<span class='my-local-item-cnt'>${item.cnt}</span></span><span class='my-local-item-sigu'>${item.siguName}</span></div></label>`;
+                        //             else
+                        //                 htmlStr += `<label class="local-label col-3"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.siguName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
+                        //         }
+                        //     });
+                        //     document.getElementById("locationSelector").innerHTML = htmlStr;
                             
-                            // 만일 siguCode checkbox가 모두 check되어 있는 경우에는, 모두 false로 표시해 준다.
-                            var siguCodeCnt = document.querySelectorAll("input[name='siguCode']").length;
-                            var checkedSiguCodeCnt =  document.querySelectorAll("input[name='siguCode']:checked").length;
-                            if ( siguCodeCnt == checkedSiguCodeCnt ) {
-                                document.querySelectorAll("input[name='siguCode']").forEach(function(siguCheckbox) {
-                                    siguCheckbox.checked = false;
-                                });
-                            }
+                        //     // 만일 siguCode checkbox가 모두 check되어 있는 경우에는, 모두 false로 표시해 준다.
+                        //     var siguCodeCnt = document.querySelectorAll("input[name='siguCode']").length;
+                        //     var checkedSiguCodeCnt =  document.querySelectorAll("input[name='siguCode']:checked").length;
+                        //     if ( siguCodeCnt == checkedSiguCodeCnt ) {
+                        //         document.querySelectorAll("input[name='siguCode']").forEach(function(siguCheckbox) {
+                        //             siguCheckbox.checked = false;
+                        //         });
+                        //     }
                         
-                            if ( resData.condition && resData.condition.baseSidoCode ) {
-                                document.getElementById("currentLocationSidoLabel").innerText = LOCATION_CODE.getByName(resData.condition.baseSidoCode).sidoName;									
-                                BASE_SIDO_CODE = resData.condition.baseSidoCode;
-                            } else if ( resData.condition && resData.condition.sidoCode ) {
-                                document.getElementById("currentLocationSidoLabel").innerText = LOCATION_CODE.getByName(resData.condition.sidoCode).sidoName;									
-                                BASE_SIDO_CODE = resData.condition.sidoCode;
-                            } else {
-                                document.getElementById("currentLocationSidoLabel").innerText = "";
-                                BASE_SIDO_CODE = null;
-                            }
-                        }
+                        //     if ( resData.condition && resData.condition.baseSidoCode ) {
+                        //         document.getElementById("currentLocationSidoLabel").innerText = LOCATION_CODE.getByName(resData.condition.baseSidoCode).sidoName;									
+                        //         BASE_SIDO_CODE = resData.condition.baseSidoCode;
+                        //     } else if ( resData.condition && resData.condition.sidoCode ) {
+                        //         document.getElementById("currentLocationSidoLabel").innerText = LOCATION_CODE.getByName(resData.condition.sidoCode).sidoName;									
+                        //         BASE_SIDO_CODE = resData.condition.sidoCode;
+                        //     } else {
+                        //         document.getElementById("currentLocationSidoLabel").innerText = "";
+                        //         BASE_SIDO_CODE = null;
+                        //     }
+                        // }
         
                         // 일반/프리미어/전체 공고 건수 세팅 및 화면 표시
                         if ( resData.adTypeList["1"] )	totalCountOfGeneralJobAds = resData.adTypeList["1"];		// 1: 일반 공고

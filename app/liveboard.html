@@ -11,55 +11,13 @@
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
     <link rel="stylesheet" href="css/swiper.min.css">   <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="css/dentalBasic.css">
-
+    <!-- <link rel="stylesheet" href="css/test.css"> -->
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/handlebars.min.js"></script>
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
-    <style>
-        .local-item { position: relative; display: block; }
-        .local-item-name { display: inline-block; transform: translateY(-0.2rem); }
-        .local-item-cnt { position: absolute; bottom: -0.5rem ; left: 50%; transform: translateX(-50%); font-size: 0.5rem; color: #0083cb; }
-        .local-item-cnt:before { content: "("; display: inline-block; margin-right: 0.1rem; }
-        .local-item-cnt:after { content: ")"; display: inline-block; margin-left: 0.1rem; }
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-        .my-local-item { position: relative; display: block; height: 2.3rem; line-height: 2.3rem; padding-left: 0.15rem; padding-top: 0.3rem; }
-        .my-local-item-sido { position: absolute; color: #777; top: -0.6rem; left: 0.2rem; font-size: 0.5rem; font-weight: bold; }
-        .my-local-item-cnt { color: red; font-size: 0.5rem; margin-left: 0.2rem; }
-        .my-local-item-cnt:before { content: "("; display: inline-block; margin-right: 0.1rem; }
-        .my-local-item-cnt:after { content: ")"; display: inline-block; margin-left: 0.1rem; }
-
-
-
-        /* .my-swiper-area {
-            position: relative;
-            height: 100%;
-        } */
-        
-        /* .swiper-container {
-            width: 100%;
-            height: 100%;
-        } */
-        .swiper-slide {
-            text-align: center;
-            font-size: 18px;
-            background: #fff;
-
-            /* Center slide text vertically */
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            -webkit-align-items: center;
-            align-items: center;
-        }
-    </style>
 </head>
 
 <body>
@@ -73,7 +31,7 @@
             <input class="search-checkbox" type="checkbox" id="main-search-checkbox" hidden>
             <section class="navbar-center">
                 <!-- 브랜드 로고 -->
-                <a class="navbar-brand main-header-brand" href="liveboard.html">Dental+</a>
+                <a class="navbar-brand main-header-brand" href="/dentiq-web/app/">Dental+</a>
                 <div class="main-search">
                     <input class="main-search-input" type="search" name="main-search" placeholder="키워드 입력">
                     <label class="main-search-submit"><input type=submit hidden><i class="fal fa-search"></i></label> <!-- 버튼 방식으로 변경 해야하남? -->
@@ -255,8 +213,8 @@
 
     
 
-
-
+    
+    <div class="jobpost-wrapper">
 
     <!-- ======================== 공고 속성 선택 BOX ======================== -->
     <!-- 공고 속성 선택 BOX는 다른 것으로 변경될 수 있음 -->
@@ -289,6 +247,8 @@
 
 
         <form id="searchForm">
+            <!-- ======================== 지역 선택 BOX ======================== -->
+            <div class="local-box" id="locationSelector"></div>
             <div class="dental-modal liveplus-modal" id="jobAdAttrSelector">
                 <input type="checkbox" id="livefilter-modal" name="modal-toggle" hidden> <!-- 모달 체크박스, 위치 이동하면 안됨 -->
                 <input id="livefilter-reset" type="checkbox" hidden>
@@ -392,9 +352,6 @@
                     filterChipLength.dataset.chipLength = "( 전체"; // 선정우가 한땀 땄음, 위에 renderAttr~~ 함수랑 통합해야할 듯 ㅠ
                 });
             </script>
-
-            <!-- ======================== 지역 선택 BOX ======================== -->
-            <div class="local-box columns" id="locationSelector"></div>
 		</form>
 		
 
@@ -421,7 +378,10 @@
     </section>
 
 
-
+    <div class="ad-wrapper">
+    <div class="ad-summary" style="height: 5.4rem; padding: 0.3rem; background-color: #ebedee;">
+        AD SUMMARY
+    </div>
     <!-- ======================== 프리미어 공고 ======================== -->
     <section id="section-premiereAds" class="premiere-ad">
 
@@ -539,12 +499,10 @@
             </div>
             {{/each}}
         </script>
-	</section>
-	
-</body>
+    </section>
+</div>
+</div>
 <script src="js/dental_ui.js"></script>
-</html>
-
 <script>
 
 Handlebars.registerHelper("eachNested", function(context, options) {
@@ -904,13 +862,13 @@ var LiveBoardApp = (function() {
 						if ( item.requested ) requestedChecker = " checked ";
 
 						if ( item.locationType=='1' ) {			// 전체(대한민국 시도들)인 경우
-							htmlStr += `<label class="local-label col-3"><input type="checkbox" name="sidoCode" value="${item.sidoCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.locationName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
+							htmlStr += `<label class="local-label"><input type="checkbox" name="sidoCode" value="${item.sidoCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.locationName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
 											
 						} else if ( item.locationType=='2' ) {	// 특정 시도를 선택해서, 해당 시도의 시구들인 경우
 							if ( ACTION_TYPE=="INTEREST" )
 								htmlStr += `<label class="my-local-label col-4"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='my-local-item'><span class='my-local-item-sido'>${item.sidoName}<span class='my-local-item-cnt'>${item.cnt}</span></span><span class='my-local-item-sigu'>${item.siguName}</span></div></label>`;
 							else
-								htmlStr += `<label class="local-label col-3"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.siguName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
+								htmlStr += `<label class="local-label"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.siguName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
 						}
 					});
 					document.getElementById("locationSelector").innerHTML = htmlStr;
@@ -1071,3 +1029,5 @@ var LiveBoardApp = (function() {
 })();
 
 </script>
+</body>
+</html>

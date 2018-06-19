@@ -13,6 +13,7 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/handlebars.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 </head>
@@ -82,8 +83,9 @@
      */
 
     function onSuccess() {
-        dModal.alert("로그인되었습니다.");
-        window.history.back();
+        swal("로그인되었습니다.");
+        // alert("헐");
+        // window.history.back();
     }
 
     function onFail(errCode, errMsg) {
