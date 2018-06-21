@@ -2703,12 +2703,11 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
 
 
     /* main-top */
-    .main-top { background-color: #FAFAFA; margin: 7px auto; overflow: hidden; }
-    .main-top:after { content:""; clear: both;  }
-    .main-top .main-lbox { background-color: #FAFAFA; padding-right: 5px; float: left; overflow: hidden; width: 100%; }
+    .main-top { background-color: #FAFAFA; margin: 7px auto; }
+    .main-top .main-lbox { background-color: #FAFAFA; padding-right: 5px; width: 100%; }
     .main-top .main-lbox .lbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; width: 100%; height: 200px; }
-    .main-top .main-lbox .lbox-btm { display: flex; background-color: #FFF; width: 100%; height: 100px; margin-top: 5px; border: 1px solid #c4c2c2; }
-    .main-top .main-lbox .lbox-btm .main-nav { border-right: 1px solid #c4c2c2; height: 100%; float: left; overflow: hidden; padding-left: 5px; }
+    .main-top .main-lbox .lbox-btm { display: flex; background-color: #FFF; width: 100%; margin-top: 5px; border: 1px solid #c4c2c2; }
+    .main-top .main-lbox .lbox-btm .main-nav { border-right: 1px solid #c4c2c2; height: 100%; padding-left: 5px; }
     .main-top .main-lbox .lbox-btm .main-nav .main-nav-header { margin-bottom: 7px; margin-top: 4px; font-weight: bold; font-size: 0.6rem; }
     .main-top .main-lbox .lbox-btm .main-nav:first-child { width:32%; }
     .main-top .main-lbox .lbox-btm .main-nav:nth-child(2) { width:30%; }
@@ -2726,7 +2725,7 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     .main-top .main-lbox .lbox-btm .main-nav a span.nav-area:after { background: #000; border-radius: 50%; 
         content: ""; height: 1px; width: 1px; display: inline-block; margin: 0 2px 0 6px; margin-bottom: 0.3rem; }
 
-    .main-top .main-rbox { float: right; overflow: hidden; width: 30%; }
+    /* .main-top .main-rbox { float: right; overflow: hidden; width: 30%; }
     .main-top .main-rbox .login-box { position: relative; background-color: #FAFAFA; border: 1px solid #c4c2c2; height: 150px; 
         overflow: hidden;}
     .main-top .main-rbox .login-box label { position: relative; margin-left: 10px; margin-bottom: 0; }    
@@ -2744,7 +2743,7 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     .main-top .main-rbox .login-box .login-input + div span { font-size: 0.6rem; display: inline-block; margin-left: 15px; }
     .main-top .main-rbox .login-box .login-input + div>span:not(:last-child):after { content: "|"; margin-left: 15px; }
 
-    .main-top .main-rbox .rbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; height: 150px; margin-top: 5px; }
+    .main-top .main-rbox .rbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; height: 150px; margin-top: 5px; } */
 
     /* header.main-header { height: 4rem; } */
     .dental-pc-wrapper { width: 980px; margin: 0 auto; }
