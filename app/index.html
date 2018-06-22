@@ -12,6 +12,7 @@
     <script>
         var userAgent = new UserAgent().parse(navigator.userAgent);
         if( userAgent.isMobile ) location = "liveboard.html";
+
         if ( userAgent.browser === "IE" && parseInt(userAgent.version) <= 10 ) { 
             alert("웹 보안 및 표준 준수를 위해 익스플로어 하위 버젼은 지원하지 못합니다. 확인 버튼을 누르고 브라우져 최신 버젼 업데이트 후 이용해주세요.");
             location = "ie_should_update.html";
@@ -19,8 +20,9 @@
         console.log("접속 브라우져: %s, 브라우져 버젼: %s",userAgent.browser, userAgent.version);
 
     </script>
-    <script src="js/jquery-1.12.4.min.js"></script>
+
     <!-- <script src="js/handlebars.min.js"></script> -->
+    <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/handlebars-v4.0.11.js"></script>
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
@@ -30,7 +32,7 @@
     <link rel="stylesheet" href="css/dentalBasic.css">
 </head>
 <body>
-    
+    <input id="sidebar" type="checkbox" name="sidebar" hidden>
     <header>
         <section class="header-gnb navbar">
             <div class="navbar-section">
@@ -40,23 +42,55 @@
                 <a href="signup.html" class="gnb-download">회원가입</a>
                 <a href="#" class="gnb-alert-setting">앱다운로드</a>
                 <a href="#" class="gnb-cs-center">고객센터</a>
+                <a href="#" class="gnb-cs-center">전체 메뉴</a>
             </div>
         </section>
         <section class="header-main navbar">
-            <div class="navbar-section">
+            <div class="navbar-section-first">
+                <!-- 모바일 사이드바 버튼 -->
+                <label for="sidebar" class="header-main-icon"><i class="fal fa-bars"></i></label>
+            </div>
+            <input class="search-checkbox" type="checkbox" id="main-search-checkbox" hidden>
+            <div class="navbar-section-logo">
                 <!-- 브랜드 로고 -->
-                <a href="/dentiq-web/app/" class="navbar-brand" style="color: #0083cb">Dental+</a>
+                <a class="dental-logo" href="/dentiq-web/app/" >Dental+</a>
             </div>
-            <div class="navbar-center">
-                <input type="search" name="main-search">
+            <div class="navbar-section-search">
+                <div class="main-search-box">
+                    <input class="main-search-input" type="search" name="main-search" placeholder="키워드 입력">
+                    <label class="main-search-submit"><input type=submit hidden><i class="fal fa-search"></i></label> <!-- 버튼 방식으로 변경 해야하남? -->
+                </div>
+                <script>
+                    var searchWindow = document.querySelector(".main-search-input");
+                    var checkboxForSearch = document.querySelector(".search-checkbox");
+                    // 선정우 - 검색창에서 포커스 아웃할 때, 값 없으면 검색창 안보이게 처리, 체크박스로 on/off 하고 있음
+                    searchWindow.addEventListener("focusout", function(e) {
+                        if (!searchWindow.value) { checkboxForSearch.checked = false; }
+                        else { console.log("search keyword: ", searchWindow.value); }
+                    });
+                </script>
             </div>
-            <div class="navbar-section">
-                <!-- 사이드바 버튼 -->
-                <a href="#" class="btn btn-link btn-action"><i class="icon icon-location"></i></a>
-                <a href="#" class="btn btn-link btn-action"><i class="icon icon-people"></i></a>
+            <div class="navbar-section-last">
+                <div class="header-main-icon-box">
+                    <label for="main-search-checkbox"><span class="header-main-icon"><i class="fal fa-search"></i></span></label>
+                    <a id="aGotoPanel" href="javaScript:void(0);" class="header-main-icon"><i class="fal fa-user-alt"></i></a>
+                </div>
+                <script>
+
+                    aGotoPanel.addEventListener("click", function(e) {
+                        if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) location.href = "dentist_panel.html";
+                        else location.href = "user_panel.html";
+                    });
+
+                    var labelForSearch = document.querySelector(".search-checkbox");
+                    labelForSearch.addEventListener("change", function(e) {
+                        console.log(searchWindow, this);
+                        searchWindow.focus();
+                    });
+                </script>
             </div>
         </section>
-        <section class="header-sub">
+        <section class="header-nav">
             <div class="navbar">
                 <div class="navbar-section">
                     <a href="liveboard.html" class="">라이브보드</a>
@@ -352,6 +386,10 @@
         FOOTER
     </footer>
     <script src="js/dental_ui.js"></script>
+    <script>
+        // ui 관련 초기화 관련 내용 쭉 적어본다
+        // $("body").css({ "min-width" : "980px" });
+    </script>
     <script>
 
         Handlebars.registerHelper("eachNested", function(context, options) {

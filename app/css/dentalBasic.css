@@ -197,7 +197,7 @@ input[type="reset"],
 input[type="file"]::-webkit-file-upload-button, 
 button { padding: 0; }
 
-/** Restore the focus styles unset by the previous rule (removed). */
+/** Restore the focus styles auto by the previous rule (removed). */
 /** Change the border, margin, and padding in all browsers (opinionated) (changed). */
 fieldset { border: 0; margin: 0; padding: 0; }
 
@@ -554,10 +554,17 @@ h6, .h6 { font-size: .8rem; }
 .navbar { align-items: stretch; display: flex; display: -ms-flexbox; -ms-flex-align: stretch; -ms-flex-pack: justify; -ms-flex-wrap: wrap;
     flex-wrap: wrap; justify-content: space-between; }
 
-.navbar .navbar-section { align-items: center; display: flex; display: -ms-flexbox; -ms-flex: 1 0 0; flex: 1 0 0; -ms-flex-align: center; }
+.navbar .navbar-section, 
+.navbar .navbar-section-search,
+.navbar .navbar-section-brand,
+.navbar .navbar-section-logo,
+.navbar .navbar-section-first,
+.navbar .navbar-section-last { align-items: center; display: flex; display: -ms-flexbox; -ms-flex: 1 0 0; flex: 1 0 0; -ms-flex-align: center; }
 
 .navbar .navbar-center { align-items: center; display: flex; display: -ms-flexbox; -ms-flex: 0 0 auto; flex: 0 0 auto; -ms-flex-align: center; }
 
+.navbar .navbar-section-first { -ms-flex-pack: start; justify-content: flex-start; }
+.navbar .navbar-section-last { -ms-flex-pack: end; justify-content: flex-end; }
 .navbar .navbar-section:not(:first-child):last-child { -ms-flex-pack: end; justify-content: flex-end; }
 
 /* nav */
@@ -1718,51 +1725,53 @@ select.select-two:nth-child(2) { width: 50%; float: right; }
     }
   }
 
-/* header css */
+
+/******************************************************************/
+/************************* header css *****************************/
+/******************************************************************/
+
 header { position: relative; background-color: #FFF;  }
 
-/* main-header */
-header .main-header { height: 2.5rem; position: relative; }
+/* header-gnb */
+header section.header-gnb { display: none; }
 
-header .main-header { background-color: #FFF; color: #0083cb; }
+/* header-main */
+.header-main { height: 2.5rem; position: relative; background-color: #FFF; color: #0083cb; }
+.navbar-section-logo { justify-content: center; }
+.navbar-section-logo .dental-logo { font-weight: 600; font-size: 1.4rem; }
 
-header .main-header .navbar-brand { display: inline-flex; align-items: center; font-weight: 600; font-size: 1.4rem; color: #0083CB; }
+.header-main .navbar-section-search { position: absolute; transition: all 1s ease; left: 15%; bottom: 100rem; width: 70%; height: 2rem; 
+    line-height: 2rem; background-color: #FFF; will-change: auto; }
+.navbar-section-search .main-search-box { position: relative; height: 2rem; width: 100%; border: 1px solid #0083cb; }
+.navbar-section-search .main-search-input { position: absolute; bottom: 0.4rem; border: none;  font-size: 0.8rem; width: calc(100% - 40px); 
+    height: 1rem; line-height: 1rem; -webkit-appearance: none; -moz-appearance: none;  padding-left: 0.5rem; font-weight: lighter; }
 
-.main-header-icon { color: inherit; /* -webkit-appearance: none; -moz-appearance: none; appearance: none; */ cursor: pointer; display: inline-block;
+.main-search-submit { display: flex; position: absolute; justify-content: center; align-items: center; width: 41px; right: 0; top: 0; 
+    height: 1.95rem; background-color: #0083cb; color: #FFF; }
+.main-search-submit .fal { margin: 0 auto; line-height: 2rem; transform: translateY(-1px); font-size: 1rem; }
+
+.search-checkbox:checked ~ .navbar-section-search { display: flex; bottom: 0.4rem; transition: all 0.5s ease; will-change: auto; }
+.search-checkbox:checked ~ .navbar-section label[for=main-search-checkbox] { display: none; }
+
+
+.header-main-icon { color: inherit; /* -webkit-appearance: none; -moz-appearance: none; appearance: none; */ cursor: pointer; display: inline-block;
     height: 1.8rem; line-height: 1rem; outline: 0; padding: .35rem .4rem; text-align: center; text-decoration: none; -webkit-user-select: none;
     -moz-user-select: none; -ms-user-select: none; user-select: none; vertical-align: middle; white-space: nowrap; }
 
-.main-header-icon .fa.fa-user-o { margin-right: 8px; transform: translateY(-1px); }
+.header-main-icon .fa.fa-user-o { margin-right: 8px; transform: translateY(-1px); }
 
-.main-header-icon .fa-bars { transform: translate(5px, -2px); }
+.header-main-icon .fa-bars { transform: translate(5px, -2px); }
 
-.main-header-icon .fa-bars:before { font-size: 1.2rem; }
+.header-main-icon .fa-bars:before { font-size: 1.2rem; }
 
-.main-header-icon .fa-user-o:before { font-weight: bolder; font-size: 1.1rem; }
+.header-main-icon .fa-user-o:before { font-weight: bolder; font-size: 1.1rem; }
 
-/* .main-header-icon .fa-search { transform: scaleY(1.1) translateY(-2px); }   */
-.main-header-icon .fa-search:before { font-size: 1.05rem; }
 
-.main-header-icon .fa-user-alt { margin-right: 8px; transform: translateY(-1px); }
+.header-main-icon .fa-search:before { font-size: 1.05rem; }
 
-.main-header-icon .fa-user-alt:before { font-size: 1.1rem; }
+.header-main-icon .fa-user-alt { margin-right: 8px; transform: translateY(-1px); }
 
-.navbar-center .main-search { display: block; position: absolute; transition: all 1s ease; left: 15%; bottom: 100rem; width: 70%; height: 2rem; 
-    line-height: 2rem; border: 1px solid #0083cb; border-radius: 2px; background-color: #FFF; will-change: auto; }
-
-.main-search-input { border: none;  font-size: 0.8rem; width: calc(100% - 40px); height: 1rem; line-height: 1rem; -webkit-appearance: none; 
-    -moz-appearance: none; position: absolute; bottom: 0.4rem; padding-left: 0.5rem; font-weight: lighter; }
-
-.main-search-submit { position: absolute; text-align: center; width: 40px; right: 0; top: 0; height: 1.9rem; background-color: #0083cb; 
-    color: #FFF; }
-
-.main-search-submit .fal { margin: 0 auto; line-height: 2rem; transform: translateY(-1px); font-size: 1rem; }
-
-.search-checkbox:checked ~ .navbar-center .main-search { display: block; bottom: 0.4rem; transition: all 0.5s ease; will-change: auto; }
-
-/* .search-checkbox:checked ~ .navbar-center .main-header-brand { display: none; } */
-
-.search-checkbox:checked ~ .navbar-section label[for=main-search-checkbox] { display: none; }
+.header-main-icon .fa-user-alt:before { font-size: 1.1rem; }
 
 
 /* register-header */
@@ -2665,7 +2674,7 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
 
 .jobpost-wrapper { display: flex; flex-direction: column; }
 
-@media screen and (min-width: 780px) {
+@media screen and (min-width: 980px) {
 
     .jobpost-wrapper { display: flex; flex-direction: row; max-width: 980px; margin: 0 auto; }
     .liveplus { width: 25%; }
@@ -2676,30 +2685,43 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     .local-item {}
 
     .dental-modal.liveplus-modal { display: block; width: 100%; }
-    .dental-modal-container { display: block; position: relative; width: 100%; top: unset; left: unset; transform: none; box-shadow: none; z-index: initial; }
+    .dental-modal-container { display: block; position: relative; width: 100%; top: auto; left: auto; transform: none; box-shadow: none; z-index: initial; }
     .modal-container-header { display: none; }
     .modal-container-body { width: 100%; }
     .liveplus .dental-modal-container fieldset { display: flex; flex-direction: column; padding: 0 5px; margin-bottom: 0.5rem; }
     .liveplus .dental-modal-container fieldset label { width: 95%; margin: 0 auto; }
 
 
-    header section.header-gnb { width: 100%; height: 1.5rem; line-height: 1.5rem; border-bottom: 1px solid #c4c2c2; background-color: #FAFAFA; }
-    header section.header-gnb .navbar-section:first-child { margin-left: 20px; }
-    header section.header-gnb .navbar-section:last-child { margin-right: 20px; }
-    header section.header-gnb a { font-size: 0.7rem; }
-    header section.header-gnb a:not(:last-child):after { content: "|"; color: #e6e6e6; margin: 0 10px; }
+/******************************************************************/
+/************************* header css *****************************/
+/******************************************************************/
 
-    header section.header-main { height: 6rem; max-width: 980px; margin: 0 auto; }
-    header section.header-main .navbar-brand { margin-top: 0; margin-left: 20px; font-size: 2.3rem; }
-    header section.header-main .navbar-center input[type=search] { border: 2px solid #0083cb; height: 2.5rem; line-height: 2.5rem; 
-        width: 400px; }
-    header section.header-main a { font-size: 1.5rem; font-weight: bold; margin-left: 10px; margin-right: 10px; }
 
-    header section.header-sub { background-color: #0083cb; color: #FFF; }
-    header section.header-sub .navbar { max-width: 980px; margin: 0 auto; height: 2.5rem; }
-    header section.header-sub .navbar .navbar-section { margin-left: 10px; }
-    header section.header-sub .navbar .navbar-section a:after { content: "|"; margin: 0 20px; color: #FFF; }
-    header section.header-sub .navbar .navbar-section a:last-child:after { content: ""; margin-right: 0; }
+/* header-gnb */
+header section.header-gnb { display: block; width: 100%; height: 1.5rem; line-height: 1.5rem; border-bottom: 1px solid #c4c2c2; background-color: #FAFAFA; }
+header section.header-gnb .navbar-section:first-child { margin-left: 20px; }
+header section.header-gnb .navbar-section:last-child { margin-right: 20px; }
+header section.header-gnb a { font-size: 0.7rem; }
+header section.header-gnb a:not(:last-child):after { content: "|"; color: #e6e6e6; margin: 0 10px; }
+
+/* header-main */
+header section.header-main { height: 6rem; }
+.navbar-section-logo { justify-content: left; }
+.navbar-section-logo .dental-logo { margin-left: 20px; font-size: 2.3rem; }
+
+.header-main.navbar .navbar-section-first { display: none; }
+
+header section.header-main .navbar-section-search { position: relative; height: auto;  left: auto; bottom: auto; width: auto; transition: auto; }
+
+.navbar-section-search .main-search-box { height: 2.5rem; width: 100%; border: none; }
+.navbar-section-search .main-search-input { position: relative; left: auto; bottom: auto; width: 100%; height: 2.5rem; line-height: 2.5rem; 
+    border: 2px solid #0083cb; transition: auto; }
+
+.navbar-section-search .main-search-submit { height: 2.5rem; width: 2.5rem;}
+    
+.navbar-section-last .header-main-icon-box { display: none; }   
+    
+
 
 
     /* main-top */
@@ -2745,7 +2767,7 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
 
     .main-top .main-rbox .rbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; height: 150px; margin-top: 5px; } */
 
-    /* header.main-header { height: 4rem; } */
+    /* header.header-main { height: 4rem; } */
     .dental-pc-wrapper { width: 980px; margin: 0 auto; }
     .top-banner { max-width: 980px; max-height: 400px; }
     .img-responsive { margin: 0 auto; transform: scale(2);}

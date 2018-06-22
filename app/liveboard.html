@@ -17,22 +17,33 @@
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
 </head>
-
 <body>
     <input id="sidebar" type="checkbox" name="sidebar" hidden>
     <header>
-        <div class="main-header navbar">
-            <section class="navbar-section">
-                <!-- 사이드바 버튼 -->
-                <label for="sidebar" class="main-header-icon"><i class="fal fa-bars"></i></label>
-            </section>
+        <section class="header-gnb navbar">
+            <div class="navbar-section">
+            </div>
+            <div class="navbar-section" style="color: #0083cb;">
+                <a href="login.html" class="gnb-login">로그인</a>
+                <a href="signup.html" class="gnb-download">회원가입</a>
+                <a href="#" class="gnb-alert-setting">앱다운로드</a>
+                <a href="#" class="gnb-cs-center">고객센터</a>
+                <a href="#" class="gnb-cs-center">전체 메뉴</a>
+            </div>
+        </section>
+        <section class="header-main navbar">
+            <div class="navbar-section-first">
+                <!-- 모바일 사이드바 버튼 -->
+                <label for="sidebar" class="header-main-icon"><i class="fal fa-bars"></i></label>
+            </div>
             <input class="search-checkbox" type="checkbox" id="main-search-checkbox" hidden>
-            <section class="navbar-center">
+            <div class="navbar-section-logo">
                 <!-- 브랜드 로고 -->
-                <a class="navbar-brand main-header-brand" href="/dentiq-web/app/">Dental+</a>
-                <div class="main-search">
+                <a class="dental-logo" href="/dentiq-web/app/">Dental+</a>
+            </div>
+            <div class="navbar-section-search">
+                <div class="main-search-box">
                     <input class="main-search-input" type="search" name="main-search" placeholder="키워드 입력">
                     <label class="main-search-submit"><input type=submit hidden><i class="fal fa-search"></i></label> <!-- 버튼 방식으로 변경 해야하남? -->
                 </div>
@@ -45,13 +56,12 @@
                         else { console.log("search keyword: ", searchWindow.value); }
                     });
                 </script>
-            </section>
-            <section class="navbar-section">
-                <!-- 사이드바 버튼 -->
-				<label for="main-search-checkbox"><span class="main-header-icon"><i class="fal fa-search"></i></span></label>
-				
-				<a id="aGotoPanel" href="javaScript:void(0);" class="main-header-icon"><i class="fal fa-user-alt"></i></a>
-
+            </div>
+            <div class="navbar-section-last">
+                <div class="header-main-icon-box">
+                    <label for="main-search-checkbox"><span class="header-main-icon"><i class="fal fa-search"></i></span></label>
+                    <a id="aGotoPanel" href="javaScript:void(0);" class="header-main-icon"><i class="fal fa-user-alt"></i></a>
+                </div>
                 <script>
 
                     aGotoPanel.addEventListener("click", function(e) {
@@ -65,9 +75,9 @@
                         searchWindow.focus();
 					});
                 </script>
-            </section>
-        </div>
-        <div class="header-nav">
+            </div>
+        </section>
+        <section class="header-nav">
             <ul class="header-nav-list" id="header-nav-list"></ul>
             <script>
                 var headerNavListHtml = "";
@@ -89,9 +99,8 @@
                 }
                 document.getElementById("header-nav-list").innerHTML = headerNavListHtml;
             </script>
-        </div>
+        </section>
     </header>
-
     <div class="off-canvas">
         <div id="sidebar1" class="off-canvas-sidebar">  <!-- 사이드바 -->
             <ul class="menu" id="sidebarMenu">
@@ -218,7 +227,7 @@
 
     <!-- ======================== 공고 속성 선택 BOX ======================== -->
     <!-- 공고 속성 선택 BOX는 다른 것으로 변경될 수 있음 -->
-    <section class="liveplus container">
+    <section class="liveplus">
         <input class="local-box-check" type="checkbox" id="liveplus-local-box-check" hidden>
         <div class="liveplus-bar navbar">
 
