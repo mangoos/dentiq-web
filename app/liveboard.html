@@ -77,29 +77,35 @@
                 </script>
             </div>
         </section>
-        <section class="header-nav">
-            <ul class="header-nav-list" id="header-nav-list"></ul>
-            <script>
-                var headerNavListHtml = "";
-                if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) {           // 로그인 && 병원회원
-                    headerNavListHtml =
-                        '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>';
-                } else if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {    // 로그인 && 개인회원
-                    headerNavListHtml = 
-                        '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
-                        '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>' +
-                        '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>' +
-                        '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
-                } else {                                                                    // 로그인 안함
-                    headerNavListHtml = 
-                        '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>'
-                        '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>'
-                        '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>'
-                        '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
-                }
-                document.getElementById("header-nav-list").innerHTML = headerNavListHtml;
-            </script>
+        <section class="header-nav" >
+            <ul class="header-nav-list" id="headerList"></ul>
+            <ul class="header-nav-list">
+                <li class="header-nav-item"><a href="register_resume.html">이력서 등록</a></li>
+                <li class="header-nav-item"><a href="register_jobad.html">채용공고 등록</a></li>
+            </ul>
         </section>
+        <script>
+            var headerNavListHtml = "";
+            if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) {           // 로그인 && 병원회원
+                headerNavListHtml =
+                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>'   +
+                    '<li class="header-nav-item"><a href="hr_management.html">추천 인재</a></li>'    +
+                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>';
+            } else if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {    // 로그인 && 개인회원
+                headerNavListHtml = 
+                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
+                    '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>' +
+                    '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>' +
+                    '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
+            } else {                                                                    // 로그인 안함
+                headerNavListHtml = 
+                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
+                    '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>'  +
+                    '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>'  +
+                    '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
+            }
+            document.getElementById("headerList").innerHTML = headerNavListHtml;
+        </script>
     </header>
     <div class="off-canvas">
         <div id="sidebar1" class="off-canvas-sidebar">  <!-- 사이드바 -->

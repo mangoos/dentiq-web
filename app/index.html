@@ -28,7 +28,7 @@
     <script src="js/common.js"></script>
 
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
-    <link rel="stylesheet" href="css/swiper.min.css">   <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="css/swiper.min.css"> 
     <link rel="stylesheet" href="css/dentalBasic.css">
 </head>
 <body>
@@ -53,7 +53,7 @@
             <input class="search-checkbox" type="checkbox" id="main-search-checkbox" hidden>
             <div class="navbar-section-logo">
                 <!-- 브랜드 로고 -->
-                <a class="dental-logo" href="/dentiq-web/app/" >Dental+</a>
+                <a class="dental-logo" href="/dentiq-web/app/">Dental+</a>
             </div>
             <div class="navbar-section-search">
                 <div class="main-search-box">
@@ -90,20 +90,35 @@
                 </script>
             </div>
         </section>
-        <section class="header-nav">
-            <div class="navbar">
-                <div class="navbar-section">
-                    <a href="liveboard.html" class="">라이브보드</a>
-                    <a href="liveboard.html?INTEREST" class="">관심지역</a>
-                    <a href="liveboard.html?HOME" class="">우리동네</a>
-                    <a href="#" class="">마감임박</a>
-                </div>
-                <div class="navbar-section">
-                        <a href="register_resume.html" class="">이력서 등록</a>
-                        <a href="register_jobad.html" class="">채용공고 등록</a>
-                    </div>
-            </div>
+        <section class="header-nav" >
+            <ul class="header-nav-list" id="headerList"></ul>
+            <ul class="header-nav-list">
+                <li class="header-nav-item"><a href="register_resume.html">이력서 등록</a></li>
+                <li class="header-nav-item"><a href="register_jobad.html">채용공고 등록</a></li>
+            </ul>
         </section>
+        <script>
+            var headerNavListHtml = "";
+            if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) {           // 로그인 && 병원회원
+                headerNavListHtml =
+                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>'   +
+                    '<li class="header-nav-item"><a href="hr_management.html">추천 인재</a></li>'    +
+                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>';
+            } else if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {    // 로그인 && 개인회원
+                headerNavListHtml = 
+                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
+                    '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>' +
+                    '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>' +
+                    '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
+            } else {                                                                    // 로그인 안함
+                headerNavListHtml = 
+                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
+                    '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>'  +
+                    '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>'  +
+                    '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
+            }
+            document.getElementById("headerList").innerHTML = headerNavListHtml;
+        </script>
     </header>
     <div class="dental-pc-wrapper">
         <!-- <section class="main-top">
