@@ -61,11 +61,11 @@ $(document).ready( function() {
     window.addEvent = function ( elm, type, fn ) {
         elm.addEventListener ( type, fn, false );
         return fn;
-    }
+    };
     window.removeEvent = function ( elm, type, fn ) {
         elm.removeEventListener ( type, fn, false );
         return fn;
-    }
+    };
 
     // forEach pollyfill
 
@@ -250,8 +250,8 @@ function dentalModal() {
                 setTimeout( function() { instantMsgElm.innerText="";}, 1500);
             } else { console.log("이미 메시지가 있습니다."); }
         }
-    }
-};    
+    };
+}    
 
 var toggleSpinner = function () {
     var wrapper = document.createElement("div");
@@ -262,7 +262,7 @@ var toggleSpinner = function () {
         '<div class="dental-loading" id="dentalSpinner" hidden>'   
     +       '<div class="fa-icon"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>'
     +       '<div class="loading-overlay" hidden=""></div>'
-    +   '</div>'
+    +   '</div>';
 
     if (!document.querySelector(".dental-loading")) {
         wrapper.innerHTML = spinnerHtml;
