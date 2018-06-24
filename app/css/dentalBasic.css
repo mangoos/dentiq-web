@@ -2683,8 +2683,10 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     .modal-container-body { width: 100%; }
     .liveplus .dental-modal-container fieldset { display: flex; flex-direction: column; padding: 0 5px; margin-bottom: 0.5rem; }
     .liveplus .dental-modal-container fieldset label { width: 95%; margin: 0 auto; }
+    .liveplus .dental-modal-overlay { display: none !important; }
+    input[name=modal-toggle]:checked ~ .dental-modal-container, .active .dental-modal-container { animation: none; }
 
-
+    
 /******************************************************************/
 /************************* header css *****************************/
 /******************************************************************/
@@ -2699,7 +2701,7 @@ header section.header-gnb a:not(:last-child):after { content: "|"; color: #e6e6e
 
 /* header-main */
 header section.header-main { height: 6rem; }
-.navbar-section-logo { justify-content: left; }
+.navbar-section-logo { justify-content: flex-start; }
 .navbar-section-logo .dental-logo { margin-left: 20px; font-size: 2.3rem; }
 
 .header-main.navbar .navbar-section-first { display: none; }
@@ -2720,6 +2722,7 @@ header section.header-main .navbar-section-search,
 .header-nav-list { width: 40%; justify-content: space-between;} 
 .header-nav-list:last-child { display: flex; justify-content: flex-end; }
 .header-nav-list:last-child .header-nav-item { margin-right: 20px; }
+
     /* main-top */
     .main-top { background-color: #FAFAFA; margin: 7px auto; }
     .main-top .main-lbox { background-color: #FAFAFA; padding-right: 5px; width: 100%; }
