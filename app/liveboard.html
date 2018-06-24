@@ -90,13 +90,14 @@
                 headerNavListHtml =
                     '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>'   +
                     '<li class="header-nav-item"><a href="hr_management.html">추천 인재</a></li>'    +
-                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>';
+                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>'    +
+                    '<li class="header-nav-item"><a href="dental_panel.html">My 메뉴</a></li>';
             } else if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {    // 로그인 && 개인회원
                 headerNavListHtml = 
                     '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
                     '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>' +
                     '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>' +
-                    '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
+                    '<li class="header-nav-item"><a href="user_panel.html">My 메뉴</a></li>';
             } else {                                                                    // 로그인 안함
                 headerNavListHtml = 
                     '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
@@ -394,9 +395,9 @@
 
 
     <div class="ad-wrapper">
-    <div class="ad-summary" style="height: 5.4rem; padding: 0.3rem; background-color: #ebedee;">
+    <!-- <div class="ad-summary" style="height: 5.4rem; padding: 0.3rem; background-color: #ebedee;">
         AD SUMMARY
-    </div>
+    </div> -->
     <!-- ======================== 프리미어 공고 ======================== -->
     <section id="section-premiereAds" class="premiere-ad">
 
