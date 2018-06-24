@@ -26,29 +26,35 @@
     <script src="js/handlebars-v4.0.11.js"></script>
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
+    <script src="js/header.js"></script>
 
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
     <link rel="stylesheet" href="css/swiper.min.css"> 
     <link rel="stylesheet" href="css/dentalBasic.css">
 </head>
 <body>
-    <input id="sidebar" type="checkbox" name="sidebar" hidden>
+    <input id="sidebarInput" type="checkbox" name="sidebar-input" hidden>
     <header>
         <section class="header-gnb navbar">
-            <div class="navbar-section">
-            </div>
-            <div class="navbar-section" style="color: #0083cb;">
-                <a href="login.html" class="gnb-login">로그인</a>
-                <a href="signup.html" class="gnb-download">회원가입</a>
-                <a href="#" class="gnb-alert-setting">앱다운로드</a>
-                <a href="#" class="gnb-cs-center">고객센터</a>
-                <a href="#" class="gnb-cs-center">전체 메뉴</a>
-            </div>
+            <div class="navbar-section"></div>
+            <div id="headerGNB" class="navbar-section" style="color: #0083cb;"></div>
         </section>
+        <script id="headerGNBTemplate" type="text/x-handlebars-template">
+            {{#each .}}<a href="{{href}}">{{text}}</a>{{/each}}
+            <a href="#">앱다운로드</a>
+            <a href="#">고객센터</a>
+            <a href="#">전체 메뉴</a>                
+        </script>
+        <script>
+
+            document.getElementById("headerGNB").innerHTML = 
+            Handlebars.compile( document.getElementById("headerGNBTemplate").innerHTML )( HEADER.returnAuth("GNB") );
+
+        </script>
         <section class="header-main navbar">
             <div class="navbar-section-first">
                 <!-- 모바일 사이드바 버튼 -->
-                <label for="sidebar" class="header-main-icon"><i class="fal fa-bars"></i></label>
+                <label for="sidebarInput" class="header-main-icon"><i class="fal fa-bars"></i></label>
             </div>
             <input class="search-checkbox" type="checkbox" id="main-search-checkbox" hidden>
             <div class="navbar-section-logo">
@@ -90,36 +96,101 @@
                 </script>
             </div>
         </section>
-        <section class="header-nav" >
+        <section class="header-nav">
             <ul class="header-nav-list" id="headerList"></ul>
             <ul class="header-nav-list">
                 <li class="header-nav-item"><a href="register_resume.html">이력서 등록</a></li>
                 <li class="header-nav-item"><a href="register_jobad.html">채용공고 등록</a></li>
             </ul>
         </section>
-        <script>
-            var headerNavListHtml = "";
+        <!-- <script>
+
             if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) {           // 로그인 && 병원회원
-                headerNavListHtml =
+                var headerNavListHtml = 
                     '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>'   +
                     '<li class="header-nav-item"><a href="hr_management.html">추천 인재</a></li>'    +
-                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>';
-            } else if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isPersonalMember() ) {    // 로그인 && 개인회원
-                headerNavListHtml = 
-                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
-                    '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>' +
-                    '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>' +
-                    '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
-            } else {                                                                    // 로그인 안함
-                headerNavListHtml = 
-                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>' +
-                    '<li class="header-nav-item"><a href="liveboard.html?INTEREST">관심 지역</a></li>'  +
-                    '<li class="header-nav-item"><a href="liveboard.html?HOME">우리 동네</a></li>'  +
-                    '<li class="header-nav-item"><a href="register_resume.html">내 이력서</a></li>';
+                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>'    +
+                    '<li class="header-nav-item"><a href="dental_panel.html">My 메뉴</a></li>';
+
+                document.getElementById("headerList").innerHTML = headerNavListHtml;
             }
-            document.getElementById("headerList").innerHTML = headerNavListHtml;
+
+        </script> -->
+        <script id="headerNavTemplate" type="text/x-handlebars-template">
+            {{#each .}}<li class="header-nav-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
+        </script>
+        <script>
+            document.getElementById("headerList").innerHTML = 
+                Handlebars.compile( document.getElementById("headerNavTemplate").innerHTML )( HEADER.returnAuth("HEADER_NAV") );
         </script>
     </header>
+    <!-- 사이드바 -->
+    <div class="off-canvas">
+        <div id="sidebar" class="off-canvas-sidebar">
+            <ul class="menu" id="sidebarMenu">
+                    <!-- 이메일 및 사진 -->
+                    <li class="menu-item">
+                    <div class="tile tile-centered">
+                        <!-- <div class="tile-icon"><img src="img/avatar-4.png" class="avatar" alt="Avatar"></div> -->
+                        <div id="sidebarEmail" class="tile-content"></div>
+                    </div>
+                </li>
+
+                <!-- 개인회원 -->
+                <li class="divider" data-content="개인회원"></li>
+                <li class="menu-item"><a href="liveboard.html">라이브보드</a></li>
+                <li class="menu-item">
+                    <div class="menu-badge">
+                        <a href="register_user.html?LOCAL"><label class="label label-primary">설정하러가기</label></a>
+                    </div>
+                    <a href="liveboard.html?LOCAL">관심 지역</a>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-badge">
+                        <a href="register_user.html?HOME"><label class="label label-primary">설정하러가기</label></a>
+                    </div>
+                    <a href="liveboard.html?HOME">우리 동네</a>
+                </li>
+                <li class="menu-item"><a href="user_interaction.html">관심 병원</a></li>
+                <li class="menu-item"><a href="user_interaction.html?SCARP">내 스크랩</a></li>
+                <li class="menu-item"><a href="register_resume.html">이력서 관리</a></li>
+
+                <!-- 병원회원 -->
+                <li class="divider" data-content="병원회원"></li>
+                <li class="menu-item"><a href="liveboard.html">라이브보드</a></li>
+                <li class="menu-item"><a href="register_dentist.html">우리병원 기본 정보</a></li>
+                <li class="menu-item"><a href="register_jobad.html">채용공고 등록</a></li>
+                <li class="menu-item"><a href="jobAd_interaction.html">채용공고 관리</a></li>
+                <li class="menu-item"><a href="dentist_panel.html">면접 제안</a></li>
+                <li class="menu-item"><a href="dentist_panel.html">지원자 관리</a></li>
+
+                <!-- 로그인 회원가입 로그아웃 -->
+                <li class="divider"></li>
+                <div id="sidebarLogInMenu"></div>
+            </ul>
+            <script id="sidebarLogInMenuTemplate" type="text/x-handlebars-template">
+                {{#each .}}<li class="menu-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
+            </script>
+            <script>
+                document.getElementById("sidebarLogInMenu").innerHTML = 
+                Handlebars.compile( document.getElementById("sidebarLogInMenuTemplate").innerHTML )( HEADER.returnAuth("SIDEBAR") );
+            </script>
+            <script>
+                // login.html?returnUrl=` + location.href + `
+                document.getElementById("sidebarEmail").innerHTML = (function() {
+                    var userEmail = LOGIN_INFO.getEmail();
+                    if( userEmail ) return userEmail;
+                    else return "";
+                })();
+            </script>
+        </div>
+        <label for="sidebarInput"><div class="off-canvas-overlay"></div></label>   <!-- 메뉴 close -->
+    </div>
+    <script>
+        function onChangeSidebar() {}
+        document.getElementById("sidebar").addEventListener("change", onChangeSidebar);
+        document.getElementById("sidebar").dispatchEvent(new Event("change"));
+    </script>
     <div class="dental-pc-wrapper">
         <!-- <section class="main-top">
             <div class="main-lbox">
