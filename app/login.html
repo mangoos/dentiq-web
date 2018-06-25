@@ -83,9 +83,9 @@
      */
 
     function onSuccess() {
-        swal("로그인되었습니다.");
-        // alert("헐");
-        // window.history.back();
+        dModal.confirm("로그인 되었습니다.", function() {
+            window.history.back();
+        });
     }
 
     function onFail(errCode, errMsg) {

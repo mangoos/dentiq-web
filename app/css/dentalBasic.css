@@ -2677,10 +2677,10 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     .liveplus .local-box label.local-label { width: 50%; }
     .local-item {}
 
-    .dental-modal.liveplus-modal { display: block; width: 100%; }
-    .dental-modal-container { display: block; position: relative; width: 100%; top: auto; left: auto; transform: none; box-shadow: none; z-index: initial; }
-    .modal-container-header { display: none; }
-    .modal-container-body { width: 100%; }
+    .liveplus .dental-modal.liveplus-modal { display: block; width: 100%; }
+    .liveplus .dental-modal-container { display: block; position: relative; width: 100%; top: auto; left: auto; transform: none; box-shadow: none; z-index: initial; }
+    .liveplus .modal-container-header { display: none; }
+    .liveplus .modal-container-body { width: 100%; }
     .liveplus .dental-modal-container fieldset { display: flex; flex-direction: column; padding: 0 5px; margin-bottom: 0.5rem; }
     .liveplus .dental-modal-container fieldset label { width: 95%; margin: 0 auto; }
     .liveplus .dental-modal-overlay { display: none !important; }
