@@ -994,7 +994,7 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 
 
 /* steps customizing css */
-/* .dental-steps { } */
+.dental-steps { margin: 0 auto; max-width: 580px; min-width: 360px;  }
 
 .dental-steps .step { margin: 1.5rem auto; }
 
@@ -1028,8 +1028,7 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 .dental-steps .step .step-item span::before { background: #0083cb; border: .1rem solid #fff; border-radius: 50%; content: ""; display: block;
     height: .6rem; left: 50%; position: absolute; top: .2rem; transform: translateX(-50%); width: .6rem; z-index: 1; }
 
-.dental-steps .step .step-item:not(:first-child)::before { background: #0083cb; /*content: ""; height: 2px; left: -50%; position: absolute; top: 9px;
-width: 100%; */ }
+.dental-steps .step .step-item:not(:first-child)::before { background: #0083cb; }
 
 input[name=steps]:nth-of-type(1):checked ~.step .step-item:nth-of-type(1) span,
 input[name=steps]:nth-of-type(2):checked ~.step .step-item:not(:nth-of-type(n+3)) span,
@@ -1049,7 +1048,7 @@ input[name=steps]:nth-of-type(2):checked ~.step .step-item:nth-child(n+3) span:b
 input[name=steps]:nth-of-type(3):checked ~.step .step-item:nth-child(n+4):before,
 input[name=steps]:nth-of-type(3):checked ~.step .step-item:nth-child(n+4) span:before { background: #e7e9ed; }
 
-.step-body .step-content { display: none; overflow: visible; }
+.step-body .step-content { display: none; overflow: visible; width: 100%; margin: 0 auto; }
 
 input[name=steps]:nth-of-type(1):checked ~.step-body .step-content:nth-of-type(1),
 input[name=steps]:nth-of-type(2):checked ~.step-body .step-content:nth-of-type(2),
@@ -1788,7 +1787,19 @@ header.register-header .navbar-section:last-child i.fal { margin-right: 0.8rem; 
 
 header.register-header .navbar-section:last-child i.fal.fa-user-alt { font-size: 1.1rem; }
 
+/* header-sub */
+header.header-sub { height: 3rem; font-size: 1rem; font-weight: bold; background-color: #0083cb; border-bottom: 2px solid #FFF; 
+    color: #FFF;  }
 
+header.header-sub .navbar-section:first-child span { display: inline-flex; align-items: center; margin-left: 1rem; }
+
+header.header-sub .navbar-section:first-child span .fa,
+header.header-sub .navbar-section:first-child span .fal { margin-right: 0.3rem; font-size: 1.3rem; }
+
+header.header-sub .navbar-section:last-child i.fa,
+header.header-sub .navbar-section:last-child i.fal { margin-right: 0.8rem; font-size: 1.2rem; }
+
+header.header-sub .navbar-section:last-child i.fal.fa-user-alt { font-size: 1.1rem; }
 
 
 
@@ -2398,28 +2409,20 @@ section.register-dentist ::-moz-input-placeholder { font-size: 0.7rem; font-styl
 /**********************************/
 /********* login.html css *********/
 /**********************************/
-.login-section { background-color: #eceff5; margin: 0 auto; margin-top: 1rem; border-radius: 0.5rem;}
+.dental-steps .login-section { width: 100%; max-width: none; min-width: none; } /* .dental-steps 에 정의*/
+.login-section { width: 95%; max-width: 580px; min-width: 360px; background-color: #eceff5; margin: 0 auto; margin-top: calc( 2% + 1rem );
+    border-radius: 1rem; padding: 0.5rem; }
 
 .login-section .facebook-login { background-color: #2a5082; line-height: 3rem; font-size: 0.9rem; color: #FFF; }
-
 .login-section .divider { text-align: center; }
-
 .login-section  div.divider[data-content]:after { background-color: #eceff5; }
-
 .login-section-footer { position: relative; width: 90%; margin: 0 auto 20px; text-align: center; }
-
 .login-section-body { position: relative; margin-bottom: 10px; padding: 0; }
-
 .login-section div.basic { height: 3rem; margin: 0 auto; margin-bottom: 0.5rem; position: relative; width: 95%; }
-
 .login-section .checkRegister { margin-bottom: 10px; text-align: center; }
-
 .login-section .checkRegister span:nth-child(2) { color: #0083cb; text-decoration: underline; }
-
 .login-section .findPassword { text-align: center; }
-
 .login-section .findPassword span { color: #666; font-size: 90%; text-decoration: underline; }
-
 .login-section .form-group .styled-input { height: 3rem; }
 
 
@@ -2427,17 +2430,11 @@ section.register-dentist ::-moz-input-placeholder { font-size: 0.7rem; font-styl
 /********* signup.html css *********/
 /**********************************/
 .confirmMore { position: relative; margin: 20px 0; }
-
 .confirmMore .confirmMoreBox div{ padding-bottom: 10px; }
-
 .confirmMore .confirmMoreBox span { font-size: 13px; color: #999; }
-
 .confirmMore .confirmMoreBox ul { padding: 15px; background: #fff; border: 1px solid #d7d7d7; }
-
 .confirmMore .confirmMoreBox ul li { position: relative; margin: 0; padding-left: 85px; }
-
 .confirmMore .confirmMoreBox ul li span.title { position: absolute; left: 0; top: 10px; color: #212529; font-size: 15px; }
-
 .confirmMore .confirmMoreBox ul li span.element { margin: 10px 10px 0 0; position: relative; display: inline-block; }
 
 
