@@ -21,6 +21,13 @@
 </head>
 <body>
     <input id="sidebarInput" type="checkbox" name="sidebar-input" hidden>
+    <script>
+        // 리턴할 때 사이드바 checked 해제(페이지 초기화)
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", document.getElementById("sidebarInput").checked);
+        document.getElementById("sidebarInput").checked = false;
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", document.getElementById("sidebarInput").checked);
+
+    </script>
     <header>
         <section class="header-gnb navbar">
             <div class="navbar-section"></div>
