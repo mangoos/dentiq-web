@@ -436,6 +436,16 @@ h6, .h6 { font-size: .8rem; }
 
 /*********** user_setting.html **************/
 
+.user-setting { position: relative; padding-top: 1rem; padding-left: 0.5rem; margin: 0 auto; margin-bottom: 2rem; overflow: hidden; }
+.user-setting h5 { color: #0083cb; padding-top: 0.5rem; }
+.user-setting-card { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e6e6e6; width: 95%; margin: 0 auto; 
+    margin-bottom: 0.5rem; padding-left: 0.5rem;  min-height: 61px; }
+.setting-title { flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: 70%; }
+.setting-desc { font-size: 0.55rem; color: #5d5d5d; }
+.setting-btn { flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: 30%; text-align: center; }
+.user-setting-card .btn.btn-primary { min-width: 3rem; }
+.btn.logout-btn { position: relative; float: right; margin-right: 1rem; color: #5d5d5d; border: 1px solid #c4c2c2; }
+
 /* .user-setting input ~ .fa-toggle-off, input ~ .fa-toggle-on { position: relative; font-size: 2rem; color: #0083cb; }
 .user-setting input:checked ~ .fa-toggle-on { display: inline-block; }
 .user-setting input:checked ~ .fa-toggle-on:after { content: "on"; font-size: 0.6rem; position: absolute; left: 5px; top: 50%; transform: translateY(-50%); }
@@ -2666,8 +2676,8 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
 @media screen and (min-width: 980px) {
 
     .jobpost-wrapper { display: flex; flex-direction: row; max-width: 980px; margin: 0 auto; }
-    .liveplus { width: 25%; }
-    .ad-wrapper { width: 75%; }
+    .liveplus { width: 250px; }
+    .ad-wrapper { width: 730px; }
     .liveplus-bar { flex-direction: column; }
     .liveplus-bar .navbar-section { width: 100%; }
     .liveplus-local label.liveplus-local-label { width: 50%; }
@@ -2802,4 +2812,26 @@ header section.header-main .navbar-section-search,
 
     .fixed-layer-btm { position: relative; margin-top: 3rem; }
 
+    /* fixed-layer-action css */
+    .fixed-layer-action { right: calc( 50% - 350px ); }
+
+
+    /* register-section css */
+    .register-section { max-width: 750px; margin: 0 auto; }
+
+
+    /* user_panel.html */
+    .user-panel-section { max-width: 750px; margin: 0 auto; }
+    .dental-cropper { max-width: 750px; margin: 0 auto; }
+    .dental-cropper.active { transform: translateY(3rem); }
+
+    /* dental-tabs */
+
+    .dental-tabs { max-width: 750px; }
+
+    /* user-setting */
+    .user-setting { max-width: 750px; }
+
+    /* notice-section */
+    .notice-section { max-width: 980px; margin: 0 auto; }
 } 
