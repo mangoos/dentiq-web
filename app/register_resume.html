@@ -1101,8 +1101,9 @@ var ResumeManagementApp = (function() {
                             
                             // 회원 기본 정보가 미입력 상태(또는 부족)인 경우에는 회원 기본 정보를 입력하도록 한다.
                             if ( !resData.name || !resData.telNo || !resData.birthday || !resData.gender || !resData.location ) {
-								dModal.alert("회원님의 기본 정보를 입력해 주세요.");
-								location.href='register_user.html?BASIC';
+								dModal.alert("회원님의 기본 정보를 입력해 주세요.", function() {
+                                    location.href='register_user.html?BASIC';
+                                });
                                 return;
                             }
                             document.getElementById("userEmail").innerText = resData.email;

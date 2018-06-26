@@ -1896,11 +1896,11 @@ input.liveplus-local-input:checked ~ .liveplus-bar .fa-chevron-up { color: #0083
 .liveplus-filter-overlay { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 300; background: rgba(0, 0, 0, 0.75);
     cursor: default; }
 .liveplus.active .liveplus-filter-overlay,
-input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { display: block; /* background-attachment: fixed; */ }
+input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { display: block; }
 
 
-.liveplus-filter-container { display: none; position: fixed; width: 98%; max-height: 100%;  max-width: 360px; top: 50%; left: 50%; transform: translate( -50%, -50%); z-index: 400; padding: 0; 
-    border-radius: 10px; background-color: #FFF; box-shadow: 0 0.2rem 0.5rem rgba(69,77,93,.3); overflow-y: auto;  }
+.liveplus-filter-container { display: none; position: fixed; width: 98%; max-height: 100%;  max-width: 360px; top: 50%; left: 50%; transform: translate( -50%, -50%); 
+    z-index: 400; padding: 0; border-radius: 10px; background-color: #FFF; box-shadow: 0 0.2rem 0.5rem rgba(69,77,93,.3); overflow-y: auto;  }
 .liveplus-filter-container-header { position: relative; background-color: #0083cb; border-radius: 10px 10px 0 0; padding: 1rem 0 0.5rem 0; }
 .liveplus-filter-container-header-title { margin-left: 1.2rem; margin-right: 1.2rem; font-size: 1.2rem; font-weight: bold; color: #FFF; }
 .liveplus-filter-container-header-desc { margin-left: 1.2rem; margin-right: 1.2rem; font-size: 0.7rem; color: #c4c2c2; }
@@ -1959,18 +1959,17 @@ input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { di
 /***********************************/
 .jobpost-list { position: relative; margin: 0 auto; }
 
+
 .jobpost-list-bar { position: relative; padding: 0.5rem 0; padding-left: 0.8rem; background-color: #FFF; }
-
 .jobpost-list-bar-counter { font-size: 0.7rem; color: #0083CB; }
-
 .jobpost-list-bar-counter:before { content:"( 총 "; }
-
 .jobpost-list-bar-counter:after { content:"건 )"; }
 
-.jobpost-list-body { position: relative; }
 
+.jobpost-list-body { position: relative; }
 .jobpost-list-body .btn-icon.d-scrap,
 .jobpost-list-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
+
 
 /* .jobpost-list-footer { } */
 
