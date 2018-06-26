@@ -31,7 +31,7 @@
     <header>
         <section class="header-gnb navbar">
             <div class="navbar-section"></div>
-            <div id="headerGNB" class="navbar-section" style="color: #0083cb;"></div>
+            <div class="navbar-section" id="headerGNB" style="color: #0083cb;"></div>
         </section>
         <script id="headerGNBTemplate" type="text/x-handlebars-template">
             {{#each .}}<a href="{{href}}">{{text}}</a>{{/each}}
@@ -195,7 +195,7 @@
     <!-- ======================== 공고 속성 선택 BOX ======================== -->
     <!-- 공고 속성 선택 BOX는 다른 것으로 변경될 수 있음 -->
     <section class="liveplus">
-        <input class="local-box-check" type="checkbox" id="liveplus-local-box-check" hidden>
+        <input class="liveplus-local-input" type="checkbox" id="liveplusLocalInput" hidden>
         <div class="liveplus-bar navbar">
 
 			<!-- 전국/특정시도 선택 영역 -->
@@ -206,62 +206,64 @@
 					<li class="liveplus-breadcrumb-item" id="currentLocationSidoLabel"></li>    <!-- :empty 사용, 여기는 클릭하면, 선택된 시도 표시 -->
 					<li class="liveplus-breadcrumb-item" id="countOfTotalAds"></li>
                 </ul>
-                <div class="liveplus-bar-rbox"><label class="liveplus-bar-icon" for="liveplus-local-box-check"><i class="fas fa-chevron-up"></i></label></div>
+                <div class="liveplus-bar-rbox"><label class="liveplus-bar-icon" for="liveplusLocalInput"><i class="fas fa-chevron-up"></i></label></div>
             </div>
 
 			<!-- LIVE FILTER 선택 영역-->
             <div class="navbar-section">
-                <label class="liveplus-bar-icon" for="livefilter-modal">
+                <label class="liveplus-bar-icon" for="liveplusFilterInput">
                     <i class="fas fa-filter"></i>
-                    <span>LIVE FILTER <span id="filterChipLength" style="color: #0083cb; font-size: 0.5rem;" data-chip-length="( 전체" > 선택 )</span></span>
+                    <span>LIVE FILTER <span class="liveplus-filter-chip-length" id="filterChipLength" data-chip-length="( 전체" > 선택 )</span></span>
                 </label>
                 <div class="liveplus-bar-rbox">
-                    <label class="liveplus-bar-icon" for="livefilter-modal"><i class="fas fa-cog"></i></label>
+                    <label class="liveplus-bar-icon" for="liveplusFilterInput"><i class="fas fa-cog"></i></label>
                 </div>
             </div>
         </div>
 
 
-        <form id="searchForm">
+        <form  class="liveplus-form" id="searchForm">
             <!-- ======================== 지역 선택 BOX ======================== -->
-            <div class="local-box" id="locationSelector"></div>
-            <div class="dental-modal liveplus-modal" id="jobAdAttrSelector">
-                <input type="checkbox" id="livefilter-modal" name="modal-toggle" hidden> <!-- 모달 체크박스, 위치 이동하면 안됨 -->
-                <input id="livefilter-reset" type="checkbox" hidden>
-                <label for="livefilter-modal"><div class="dental-modal-overlay"></div></label> <!-- 배경, 체크박스로 하면 배경을 레이블로 해서 모달 죽일 수 있음-->
-                <div class="dental-modal-container columns">
-                    <div class="modal-container-header">
-                        <div class="modal-container-header-title">LIVE Filter</div>
-                        <div class="modal-container-header-desc">필터를 선택해서 원하는 공고를 찾습니다.</div>
-                        <label class="modal-close-label" for="livefilter-modal" rel="dental-modal" title="닫기"><i class="fas fa-window-close"></i></label>
+            <div class="liveplus-local" id="locationSelector"></div>
+            <!-- ======================== 필터 선택 BOX ======================== -->
+            <div class="liveplus-filter" id="jobAdAttrSelector">
+                <input type="checkbox" id="liveplusFilterInput" name="liveplus-filter-toggle" hidden> <!-- 필터 팝업-모바일- 체크박스, 위치 이동하면 안됨 -->
+                <input id="liveplusFilterReset" type="checkbox" hidden>
+                <label for="liveplusFilterInput"><div class="liveplus-filter-overlay"></div></label>
+                <div class="liveplus-filter-container">
+                    <div class="liveplus-filter-container-header">
+                        <div class="liveplus-filter-container-header-title">LIVE Filter</div>
+                        <div class="liveplus-filter-container-header-desc">필터를 선택해서 원하는 공고를 찾습니다.</div>
+                        <label class="liveplus-filter-close-label" for="liveplusFilterInput" rel="liveplus-filter" title="닫기"><i class="fas fa-window-close"></i></label>
                     </div>
-                    <div class="modal-container-body">
-                        
-                        <div id="divJobAdAttrSelector"></div>   <!-- 라이브필터(공고 속성) -->
-                        
-                        <script id="jobAdAttrSelectorTemplate" type="text/x-handlebars-template">
-                            {{#each .}}
-                                <fieldset class="livefilter">
-                                    <div class="filter-title"><i class="fas fa-hospital"style="margin-right: 10px;"></i>{{text}}</div>
-                                        <label class="filter-{{group}}"><input id="attr-{{group}}" type="checkbox" name="attr" value="" data-checkbox-group="{{group}}"  hidden><span class="chip">전체</span></label>
-                                        {{#each element}}
-                                            <label class="filter-{{group}}"><input id="attr-{{value}}" type="checkbox" name="attr" value="{{value}}"  data-checkbox-group="{{group}}"  hidden><span class="chip">{{text}}</span></label>
-                                        {{/each}}
-                                </fieldset>
-                            {{/each}}
-                        </script>
-
-                        <script>
-                            document.getElementById("divJobAdAttrSelector").innerHTML = 
-                                Handlebars.compile(document.getElementById("jobAdAttrSelectorTemplate").innerHTML)(CODE_CONTAINER.getAttrs());
-                        </script>
-
-                    </div>
-                    <div class="modal-container-footer"></div>
+                    <!-- 라이브필터(공고 속성) -->
+                    <div class="liveplus-filter-container-body" id="divJobAdAttrSelector"></div>
+                    <div class="liveplus-filter-container-footer"></div>
                 </div>
+                <script id="jobAdAttrSelectorTemplate" type="text/x-handlebars-template">
+                    {{#each .}}
+                        <fieldset class="chip-box">
+                            <div class="chip-box-title"><i class="fas fa-hospital chip-box-icon"></i>{{text}}</div>
+                                <label class="filter-chip-{{group}}">
+                                    <input id="attr-{{group}}" type="checkbox" name="attr" value="" data-checkbox-group="{{group}}" hidden>
+                                    <span>전체</span>
+                                </label>
+                                {{#each element}}
+                                    <label class="filter-chip-{{group}}">
+                                        <input id="attr-{{value}}" type="checkbox" name="attr" value="{{value}}"  data-checkbox-group="{{group}}" hidden>
+                                        <span>{{text}}</span>
+                                    </label>
+                                {{/each}}
+                        </fieldset>
+                    {{/each}}
+                </script>
+                <script>
+                    document.getElementById("divJobAdAttrSelector").innerHTML = 
+                        Handlebars.compile(document.getElementById("jobAdAttrSelectorTemplate").innerHTML)(CODE_CONTAINER.getAttrs());
+                </script>
             </div>
-            <script>
 
+            <script>
                 function renderAttrChips() {
                     var allAttrs = document.querySelectorAll("input[type=checkbox][name='attr']:not([value=''])"); // parent 를 캐쉬해놓고 하면 더 나을 듯
                     var allAttrsChecked = document.querySelectorAll("input[type=checkbox][name='attr']:checked:not([value=''])"); // 선정우,
@@ -270,10 +272,10 @@
                     //allAttrs.forEach(showAttrChip(element, index));
                     allAttrs.forEach(function(element) {
                         if ( element.checked ) {
-                            $(".livefilter-chip .chip[for='" + element.id + "']").show(); 
+                            $(".liveplus-footer-chip-box .chip[for='" + element.id + "']").show(); 
                             liveplusFooter.style.display = "block"; // 선정우 한땀 땄음
                         } else {
-                            $(".livefilter-chip .chip[for='" + element.id + "']").hide();
+                            $(".liveplus-footer-chip-box .chip[for='" + element.id + "']").hide();
                             if ( !allAttrsChecked.length ) { 
                                 livepusFooter.removeAttribute("style"); // 선정우, 체크된 개별-전체 제외-칩이 0이면 푸터 박스 안보이게 합니다.
                                 filterChipLengthElm.dataset.chipLength = "( 전체"; // 선정우가 한땀 땄음
@@ -316,7 +318,7 @@
                     console.log("리프레쉬 아이콘 클릭 fa-refresh :   .liveplus --> click --> .fa-refresh ", this);
 
                     // B. 칩 전체 숨기기 (초기화)
-                    $(".livefilter-chip .chip").hide();
+                    $(".liveplus-footer-chip-box .chip").hide();
                     
                     checkboxGroup.check();  // 초기값 세팅 (지금은 모두 '전체'로)
                     
@@ -330,11 +332,10 @@
             </script>
 		</form>
 		
-
         <!-- 체크박스로 푸터 박스 on/off 할 수 있음, 지금은 그냥 스크립트로 되어 있음 -->
         <input class="liveplus-footer-check" type="checkbox" id="" hidden>
         <div class="liveplus-footer" id="liveplusFooter" hidden>
-            <div class="livefilter-chip" id="divJobAdAttrChip"></div>   <!-- 라이브필터(공고 속성) 칩 -->
+            <div class="liveplus-footer-chip-box" id="divJobAdAttrChip"></div>   <!-- 라이브필터(공고 속성) 칩 -->
             <script id="jobAdAttrChipTemplate" type="text/x-handlebars-template">
                 {{#each .}}
                     {{#each element}}
@@ -342,15 +343,12 @@
                     {{/each}}
                 {{/each}}
             </script>
-
             <script>
                 document.getElementById("divJobAdAttrChip").innerHTML = 
                     Handlebars.compile(document.getElementById("jobAdAttrChipTemplate").innerHTML)(CODE_CONTAINER.getAttrs());
             </script>
-
-            <div class="livefilter-box"><label for="livefilter-reset" title="라이브필터 초기화"><i class="fal fa-sync-alt fa-refresh"></i></label></div>
+            <div class="livefilter-box"><label for="liveplusFilterReset" title="라이브필터 초기화"><i class="fal fa-sync-alt fa-refresh"></i></label></div>
         </div>
-
     </section>
 
 
@@ -838,13 +836,13 @@ var LiveBoardApp = (function() {
 						if ( item.requested ) requestedChecker = " checked ";
 
 						if ( item.locationType=='1' ) {			// 전체(대한민국 시도들)인 경우
-							htmlStr += `<label class="local-label"><input type="checkbox" name="sidoCode" value="${item.sidoCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.locationName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
+							htmlStr += `<label class="liveplus-local-label"><input type="checkbox" name="sidoCode" value="${item.sidoCode}" hidden ${requestedChecker} ><div class='liveplus-local-item'><span class='liveplus-local-item-name'>${item.locationName}</span><span class='liveplus-local-item-cnt'>${item.cnt}</span></div></label>`;
 											
 						} else if ( item.locationType=='2' ) {	// 특정 시도를 선택해서, 해당 시도의 시구들인 경우
 							if ( ACTION_TYPE=="INTEREST" )
-								htmlStr += `<label class="my-local-label col-4"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='my-local-item'><span class='my-local-item-sido'>${item.sidoName}<span class='my-local-item-cnt'>${item.cnt}</span></span><span class='my-local-item-sigu'>${item.siguName}</span></div></label>`;
+								htmlStr += `<label class="my-liveplus-local-label col-4"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='my-liveplus-local-item'><span class='my-liveplus-local-item-sido'>${item.sidoName}<span class='my-liveplus-local-item-cnt'>${item.cnt}</span></span><span class='my-liveplus-local-item-sigu'>${item.siguName}</span></div></label>`;
 							else
-								htmlStr += `<label class="local-label"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='local-item'><span class='local-item-name'>${item.siguName}</span><span class='local-item-cnt'>${item.cnt}</span></div></label>`;
+								htmlStr += `<label class="liveplus-local-label"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='liveplus-local-item'><span class='liveplus-local-item-name'>${item.siguName}</span><span class='liveplus-local-item-cnt'>${item.cnt}</span></div></label>`;
 						}
 					});
 					document.getElementById("locationSelector").innerHTML = htmlStr;
