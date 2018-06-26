@@ -1816,8 +1816,9 @@ header.header-sub .navbar-section:last-child i.fal.fa-user-alt { font-size: 1.1r
     /* explore flex customizing 을 위해 width: 50% 꼭 넣어줘야 함 */
 .liveplus-bar .navbar-section:not(:first-child):last-child { justify-content: flex-start; }
 
-/* liveplus breadcrumb override css */
 
+
+/* liveplus breadcrumb override css */
 .liveplus-breadcrumb { list-style: none; margin: 0; padding: 0; font-size: 0.7rem; }
 
 .liveplus-breadcrumb-item { display: inline-block; margin: 0;color: #444; padding: .2rem 0; font-weight: bold;  }
@@ -1837,6 +1838,7 @@ header.header-sub .navbar-section:last-child i.fal.fa-user-alt { font-size: 1.1r
 input.liveplus-local-input:checked ~ .liveplus-bar .fa-chevron-up { color: #0083cb; transform: rotate(180deg); transition: all 0.3s ease; }
 .liveplus-filter-chip-length { color: #0083cb; font-size: 0.5rem; }
 .liveplus-filter-chip-length:before { content: attr(data-chip-length); }
+
 
 
 /* liveplus local 영역 css */
@@ -1869,13 +1871,13 @@ input.liveplus-local-input:checked ~ .liveplus-bar .fa-chevron-up { color: #0083
 .liveplus-local input[type=checkbox]:checked ~ div.my-liveplus-local-item .my-liveplus-local-item-sido {color: #FFF;}
 .liveplus-local input[type=checkbox]:checked ~ div.my-liveplus-local-item .my-liveplus-local-item-cnt {color: #FFF;}
 
-.liveplus input[name=attr]:checked ~ .liveplus-footer-chip-box label.chip { display: block; }
 
 .liveplus-local-item { position: relative; display: block; }
 .liveplus-local-item-name { display: inline-block; transform: translateY(-0.2rem); }
 .liveplus-local-item-cnt { position: absolute; bottom: -0.5rem ; left: 50%; transform: translateX(-50%); font-size: 0.5rem; color: #0083cb; }
 .liveplus-local-item-cnt:before { content: "("; display: inline-block; margin-right: 0.1rem; }
 .liveplus-local-item-cnt:after { content: ")"; display: inline-block; margin-left: 0.1rem; }
+
 
 .my-liveplus-local-item { position: relative; display: block; height: 2.3rem; line-height: 2.3rem; padding-left: 0.15rem; padding-top: 0.3rem; }
 .my-liveplus-local-item-sido { position: absolute; color: #777; top: -0.6rem; left: 0.2rem; font-size: 0.5rem; font-weight: bold; }
@@ -1885,37 +1887,32 @@ input.liveplus-local-input:checked ~ .liveplus-bar .fa-chevron-up { color: #0083
 
 
 
+
+/* liveplus-filter */
+.liveplus-filter input[name=liveplus-filter-toggle]:checked ~ .liveplus-filter-container,
+.liveplus.active .liveplus-filter-container { display: block; animation: slide-down .2s ease 1; -webkit-backface-visibility: hidden; } 
+
+
 .liveplus-filter-overlay { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 300; background: rgba(0, 0, 0, 0.75);
     cursor: default; }
-
-.active .liveplus-filter-overlay,
+.liveplus.active .liveplus-filter-overlay,
 input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { display: block; /* background-attachment: fixed; */ }
 
 
-input.liveplus-filter-close-input:checked ~ .liveplus-filter-close-label,
-input.liveplus-filter-close-input:checked ~ .liveplus-filter-container-header label[title=close]  { display: inline-block; z-index: 500;}
-
-
-/* liveplus-filter */
-
 .liveplus-filter-container { display: none; position: fixed; width: 98%; max-height: 100%;  max-width: 360px; top: 50%; left: 50%; transform: translate( -50%, -50%); z-index: 400; padding: 0; 
     border-radius: 10px; background-color: #FFF; box-shadow: 0 0.2rem 0.5rem rgba(69,77,93,.3); overflow-y: auto;  }
-
-input[name=liveplus-filter-toggle]:checked ~ .liveplus-filter-container,
-.active .liveplus-filter-container { display: block; animation: slide-down .2s ease 1; -webkit-backface-visibility: hidden; }     
-
-
 .liveplus-filter-container-header { position: relative; background-color: #0083cb; border-radius: 10px 10px 0 0; padding: 1rem 0 0.5rem 0; }
 .liveplus-filter-container-header-title { margin-left: 1.2rem; margin-right: 1.2rem; font-size: 1.2rem; font-weight: bold; color: #FFF; }
 .liveplus-filter-container-header-desc { margin-left: 1.2rem; margin-right: 1.2rem; font-size: 0.7rem; color: #c4c2c2; }
 .liveplus-filter-container-header label[title=close], 
 .liveplus-filter-close-label { position: absolute; color:#c4c2c2; top: 0; right: 0.5rem; font-size: 1.2rem; }
 
+
+
 .liveplus-filter-container-body { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: .8rem .4rem; position: relative; }
 .liveplus-filter-container-body label[for=liveplusFilterReset]:after { content:"refresh"; color: #c4c2c2; font-size: 1rem; margin-left: 0.2rem; display: inline-block; 
     transform: translateY(-3px); }
 .liveplus-filter-container-body label[for=liveplusFilterReset] { position: absolute; top:0; right: 0; color: #c4c2c2; margin-right: 0.5rem; font-size: 1rem; }
-
 .liveplus-filter-container-body .chip-box { display: block; padding: 0 5px; margin-bottom: 0.5rem; }
 .liveplus-filter-container-body .chip-box-title { font-size: 0.9rem; margin-bottom: 5px; padding-left: 1rem; }
 .liveplus-filter-container-body .chip-box-icon { margin-right: 10px; }
@@ -1923,8 +1920,9 @@ input[name=liveplus-filter-toggle]:checked ~ .liveplus-filter-container,
 .liveplus-filter-container-body .chip-box label{ display: inline-block; width: calc( 25% - 5px); overflow: hidden; white-space: nowrap; 
     text-overflow: ellipsis; margin-bottom: 4px; }
 .liveplus-filter-container-body .chip-box label span { font-size: 0.7rem; height: 2rem; border-radius: 0; width: 100%; margin: 0; background: #f0f1f4;
-display: inline-block; line-height: 2rem; text-align: center; padding: 0; }
+    display: inline-block; line-height: 2rem; text-align: center; padding: 0; }
 .liveplus-filter-container-body input[name=attr]:checked + span { background-color: #0083cb; color: #FFF; }
+
 
 .liveplus-filter-container-footer { display: flex; align-items: center; justify-content: flex-end; border-radius: 0 0 10px 10px; color: #FFF;
     padding: 0.4rem 0.8rem; background-color: #0083cb; }
@@ -1934,8 +1932,11 @@ display: inline-block; line-height: 2rem; text-align: center; padding: 0; }
 /* liveplus-footer */
 .liveplus-footer { padding: 2px 0 2px 5px; position: relative; background-color: #FFF; margin-top: 0.3rem; min-height: 2.5rem; 
     border-radius: 0.2rem; transition: all 0.5s ease; }
+
+
 .liveplus-footer input.liveplus-footer-check { position: absolute; right: 0; bottom: 0; }
 .liveplus-footer input.liveplus-footer-check:checked ~ .liveplus-footer { display: block; transition: all 0.5s ease; }
+
 
 .liveplus-footer-chip-box { position: relative; overflow-x: auto; white-space: nowrap; width: calc( 100% - 50px); 
     -webkit-overflow-scrolling: touch; }
@@ -1943,6 +1944,7 @@ display: inline-block; line-height: 2rem; text-align: center; padding: 0; }
 .liveplus-footer-chip-box label.chip { height: 1.5rem; margin: 0.4rem 0; border-radius: 0.2rem; background-color: #FFD100; 
     color: #000;}
 .liveplus-footer-chip-box label.chip span.btn { background-color: #000; color: #FFF; font-weight: bold; } 
+
 
 .liveplus-footer .livefilter-box { color: #c4c2c2; overflow: hidden; height: 100%; width: 50px; position: absolute; right: 0; 
     top: 0; box-shadow: -2px 0px 2px 0px #c4c2c2; text-align: center; font-size: 1.2rem;  background-color: #fafafa; 
