@@ -935,14 +935,16 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 .dental-alert2 .modal-container-footer .btn { border-color: #000; background-color: #333; color: #FFF; margin-left: 0.8rem; }
 .dental-alert2 .modal-container-footer .btn.btn-action { padding: .35rem .5rem; width: auto; }
 
-/* juso modal css modal component override */
 
 /* .juso-modal {  } */
+
 .juso-modal .dental-modal-container { display: block; top: -100rem; transition: all 1s ease; }
 .juso-modal input[name=modal-toggle]:checked ~ .dental-modal-container,
-.juso-modal.active .detnal-modal-container { top: 0; transition: all 1s ease; }
+.juso-modal.active .detnal-modal-container { top: 0; transform: translate( -50%, 0 ); transition: all 1s ease; }
 .juso-modal .dental-card { border: none; }
 .juso-modal .modal-container-body { padding-top: 0; max-height: 500px; }
+
+
     /* address-search css */
     /* .address_search {  } */
     .adderss-search-tip { padding: 5px 29px; background-color: #fff; -webkit-box-shadow: 0 1px #dedede; -moz-box-shadow: 0 1px #dedede;
