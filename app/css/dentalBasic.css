@@ -950,9 +950,9 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 
 .juso-modal .dental-modal-container { display: block; top: -100rem; transition: all 1s ease; }
 .juso-modal input[name=modal-toggle]:checked ~ .dental-modal-container,
-.juso-modal.active .detnal-modal-container { top: 0; transform: translate( -50%, 0 ); transition: all 1s ease; }
+.juso-modal.active .detnal-modal-container { top: 0; transform: translate( -50%, 0 ); transition: all 1s ease; background-color: transparent; }
 .juso-modal .dental-card { border: none; }
-.juso-modal .modal-container-body { padding-top: 0; max-height: 500px; }
+.juso-modal .modal-container-body { padding-top: 0; max-height: 500px; background-color: #FFF;}
 
 
     /* address-search css */
@@ -2822,6 +2822,10 @@ header section.header-main .navbar-section-search,
 
     /* user_panel.html */
     .user-panel-section { max-width: 750px; margin: 0 auto; }
+
+    /* dentist-panel */
+    .dentist-panel-section { max-width: 750px; margin: 0 auto; }
+
     .dental-cropper { max-width: 750px; margin: 0 auto; }
     .dental-cropper.active { transform: translateY(3rem); }
 
@@ -2834,4 +2838,7 @@ header section.header-main .navbar-section-search,
 
     /* notice-section */
     .notice-section { max-width: 980px; margin: 0 auto; }
+
+    /* payment-completion */
+    .payment-completion-section { max-width: 980px; margin: 0 auto; }
 } 
