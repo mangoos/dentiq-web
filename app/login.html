@@ -84,7 +84,11 @@
 
     function onSuccess() {
         dModal.alert("로그인 되었습니다.", function() {
-            window.history.back();
+            // 외부에서 바로 로그인 완료로 접근할 수 없다.(?), 
+            // 일단 임시로 변경 - 비회원에서 병원회원으로 로그인 했을때 history 개인화 메뉴에서 문제가 발생
+            // window.history.back();
+            location = document.referrer;
+
         });
     }
 
