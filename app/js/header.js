@@ -34,12 +34,12 @@ var HEADER = {
             "normal" : [ 
                 { "href" : "logout.html?returnUrl=" + location.pathname, "text" : "로그아웃" },
                 // { "href" : "signup.html" + location.href, "text" : "무료회원가입" },
-                { "href" : "user_panel.html" , "text" : "설정" } 
+                { "href" : "dentist_panel.html" , "text" : "설정" } 
             ],
             "annual" : [ 
                 { "href" : "logout.html?returnUrl=" + location.pathname, "text" : "로그아웃" },
                 // { "href" : "signup.html" + location.href, "text" : "무료회원가입" },
-                { "href" : "user_panel.html" , "text" : "설정" } 
+                { "href" : "dentist_panel.html" , "text" : "설정" } 
             ] 
         }        
     },
@@ -61,13 +61,13 @@ var HEADER = {
                 { "href" : "liveboard.html?LIVEBOARD", "text" : "라이브보드"},
                 { "href" : "hr_management.html", "text" : "추천인재"},
                 { "href" : "hospital_interaction.html", "text" : "공고 관리"},
-                { "href" : "dental_panel.html", "text" : "My 메뉴"},
+                { "href" : "dentist_panel.html", "text" : "My 메뉴"},
             ],
             "annual" : [ 
                 { "href" : "liveboard.html?LIVEBOARD", "text" : "라이브보드"},
                 { "href" : "hr_management.html", "text" : "추천인재"},
                 { "href" : "hospital_interaction.html", "text" : "공고 관리"},
-                { "href" : "dental_panel.html", "text" : "My 메뉴"},
+                { "href" : "dentist_panel.html", "text" : "My 메뉴"},
             ] 
         }        
     },
