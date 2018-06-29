@@ -948,11 +948,26 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 
 /* .juso-modal {  } */
 
-.juso-modal .dental-modal-container { display: block; top: -100rem; transition: all 1s ease; }
-.juso-modal input[name=modal-toggle]:checked ~ .dental-modal-container,
-.juso-modal.active .detnal-modal-container { top: 0; transform: translate( -50%, 0 ); transition: all 1s ease; background-color: transparent; }
-.juso-modal .dental-card { border: none; }
-.juso-modal .modal-container-body { padding-top: 0; max-height: 500px; background-color: #FFF;}
+.juso-search-wrapper .juso-search { display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; right: 0; 
+    transform: translateY(-1000%); background-color: #FFF; transition: all 0.5s ease; z-index: 400; }
+.juso-search-wrapper input[name=juso-search-toggle]:checked ~ .juso-search,
+.juso-search-wrapper.active .juso-search { transform: translateY(0); transition: all 0.5s ease; background-color: transparent; }
+
+
+.juso-search-header { position: relative; background-color: #0083cb; padding: 1rem 0 0.5rem 0; }
+.juso-search-header-title { margin-left: 1.2rem; margin-right: 1.2rem; font-size: 1.2rem; font-weight: bold; color: #FFF; }
+.juso-search-header-desc { margin-left: 1.2rem; margin-right: 1.2rem; font-size: 0.7rem; color: #c4c2c2; }
+.juso-search-header label[title=close], 
+.juso-search-close-label { position: absolute; color:#c4c2c2; top: 0; right: 0.5rem; font-size: 1.2rem; }
+
+.juso-search-body { position: relative; padding: .8rem .4rem; padding-top: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; height: 100%; width: 100%;
+    background-color: #FFF; max-width: 750px; margin: 0 auto; }
+
+.juso-search-footer  { position: fixed; bottom: 0; width: 100%; display: flex; align-items: center; justify-content: flex-end; color: #FFF;
+    padding: 0.4rem 0.8rem; background-color: #0083cb; }
+
+.juso-search-wrapper .dental-card { border: none; }
+
 
 
     /* address-search css */

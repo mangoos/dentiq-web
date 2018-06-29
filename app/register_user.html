@@ -49,20 +49,16 @@
     <!--                                         주소 모달                                               -->
     <!--                                                                                                -->
     <!--================================================================================================-->
-    <div class="dental-modal juso-modal" id="jusoModal">
-        <input type="checkbox" id="modal-juso" name="modal-toggle" hidden><!-- 모달 체크박스 -->
-        <label for="modal-juso"><div class="dental-modal-overlay"></div></label> <!-- 배경, 체크박스로 하면 배경을 레이블로 해서 모달 죽일 수 있음-->
-        <div class="dental-modal-container">
-            <style>
-                .juso-modal-top-dummy { height: 2rem; width: 100%; background-color: transparent; }
-            </style>
-            <div class="juso-modal-top-dummy"></div>
-            <div class="modal-container-header">
-                <div class="modal-container-header-title">주소 검색</div>
-                <div class="modal-container-header-desc">예시에 따라 검색하면 빠르게 찾을 수 있습니다.</div>
-                <label class="modal-close-label" for="modal-juso" rel="dental-modal" title="닫기"><i class="fa fa-window-close"></i></label>
+    <div class="juso-search-wrapper" id="jusoModal">
+        <input class="juso-search-input" type="checkbox" id="jusoSearchInput" name="juso-search-toggle" hidden><!-- 모달 체크박스 -->
+        <label for="jusoSearchInput"><div class="dental-modal-overlay"></div></label> <!-- 배경, 체크박스로 하면 배경을 레이블로 해서 모달 죽일 수 있음-->
+        <div class="juso-search">
+            <div class="juso-search-header">
+                <div class="juso-search-header-title">주소 검색</div>
+                <div class="juso-search-header-desc">예시에 따라 검색하면 빠르게 찾을 수 있습니다.</div>
+                <label class="juso-search-close-label" for="jusoSearchInput" rel="juso-search" title="닫기"><i class="fa fa-window-close"></i></label>
             </div>
-            <div class="modal-container-body address_search">
+            <div class="juso-search-body address_search">
                 <form id="jusoSearchForm">  <!-- 주소검색 Form -->
                     <div class="form-group">
                         <input type="text" class="styled-input" name="keyword" id="jusoSearchKeyword" maxlength="40" placeholder="예) 판교역로 235, 운중 산운마을" required>
@@ -102,7 +98,7 @@
                     </script>
                 </div>
             </div>
-            <div class="modal-container-footer"></div>
+            <div class="juso-search-footer"></div>
         </div>
     </div>
     <script>
@@ -249,12 +245,13 @@
 
             // 주소모달을 Open한다.
             function _openJusoModal() {
-                document.getElementById("modal-juso").checked = true;
-                document.getElementById("jusoSearchKeyword").focus();
+                document.getElementById("jusoSearchInput").checked = true;
+                // document.getElementById("addrMain").blur();
+                // document.getElementById("myInfoAddrMain").blur();
             }
             // 주소모달을 close한다.
             function _closeJusoModal() {
-                document.getElementById("modal-juso").checked = false;
+                document.getElementById("jusoSearchInput").checked = false;
                 // 클로즈 하면서 주소 모달 초기화(검색결과 날리고 결과 박스 hidden, tip 박스 on) 필요 -- 선정우 코멘트
                 addrTip.classList.add("on"); // 선정우가 한땀, 주소 검색 팀박스 on 처리 이미 있으면 무시함
                 addrResult.classList.remove("on"); // 선정우가 한땀, 주소 검색 결과 박스 hidden 처리, 이미 없으면 패쓰
@@ -301,7 +298,12 @@
                 closeJusoModal : function() {
                     _closeJusoModal();
                 },
-                openJusoModal : function() {
+                openJusoModal : function(e) {
+                    if(e) {
+                        e.preventDefault();
+                        dModal.instant(e.target); 
+                        e.target.blur();
+                    }
                     _openJusoModal();
 				},
 				setFuncAfterSelecting: function(_funcAfterSelecting) {
@@ -810,7 +812,8 @@
 
                     // 주소 모달 띄우기
                     document.getElementById("addrMain").addEventListener("click", function(event) {
-						// this.disabled = true;
+                        // this.disabled = true;
+
 						JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {
                         
 							selectedJuso = newSelectedJuso;
@@ -824,7 +827,7 @@
 							document.getElementById("addrDetail").focus();                                         // 포커스 이동
 						});
 						
-                        JUSO_MODAL.openJusoModal();
+                        JUSO_MODAL.openJusoModal(event);
                     });
 
                     return {
@@ -1041,7 +1044,7 @@
                     // 주소 모달 띄우기
                     document.getElementById("myInfoAddrMain").addEventListener("click", function(event) {
 						// this.disabled = true;
-						
+						event.preventDefault();
 						JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {                        
 							selectedJuso = newSelectedJuso;
 							console.log("기본정보 - 콜백으로 받은 주소 객체 : ", selectedJuso);
@@ -1054,7 +1057,7 @@
 							document.getElementById("myInfoAddrDetail").focus();                                         // 포커스 이동
 						});
 						
-                        JUSO_MODAL.openJusoModal();
+                        JUSO_MODAL.openJusoModal(event);
                     });
 
                     return {
