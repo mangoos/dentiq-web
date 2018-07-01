@@ -951,7 +951,7 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 .juso-search-wrapper .juso-search { display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; right: 0; 
     transform: translateY(-1000%); background-color: #FFF; transition: all 0.5s ease; z-index: 400; }
 .juso-search-wrapper input[name=juso-search-checkbox]:checked ~ .juso-search,
-.juso-search-wrapper.active .juso-search { transform: translateY(0); transition: all 0.5s ease; background-color: transparent; }
+.juso-search-wrapper.active .juso-search { transform: translateY(0); transition: all 0.5s ease; }
 
 
 .juso-search-header { position: relative; background-color: #0083cb; padding: 1rem 0 0.5rem 0; }
