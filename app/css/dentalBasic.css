@@ -884,13 +884,13 @@ h6, .h6 { font-size: .8rem; }
 /* modal-component css 최종 버젼 */
 /* .dental-modal { } */
 .dental-modal.active { display: block; }
-.dental-modal-overlay { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 300; background: rgba(0, 0, 0, 0.75);
+.dental-modal-overlay { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 8888; background: rgba(0, 0, 0, 0.75);
     cursor: default; }
 
 .active .dental-modal-overlay,
 input[name=modal-toggle]:checked ~ label .dental-modal-overlay { display: block; /* background-attachment: fixed; */ }
 
-.dental-modal-container { display: none; position: fixed; width: 98%; max-height: 100%;  max-width: 360px; top: 50%; left: 50%; transform: translate( -50%, -50%); z-index: 400; padding: 0; 
+.dental-modal-container { display: none; position: fixed; width: 98%; max-height: 100%;  max-width: 360px; top: 50%; left: 50%; transform: translate( -50%, -50%); z-index: 9999; padding: 0; 
     border-radius: 10px; background-color: #FFF; box-shadow: 0 0.2rem 0.5rem rgba(69,77,93,.3); overflow-y: auto;  }
 input[name=modal-toggle]:checked ~ .dental-modal-container,
 .active .dental-modal-container { display: block; animation: slide-down .2s ease 1; -webkit-backface-visibility: hidden; }  
@@ -950,7 +950,7 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 
 .juso-search-wrapper .juso-search { display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; right: 0; 
     transform: translateY(-1000%); background-color: #FFF; transition: all 0.5s ease; z-index: 400; }
-.juso-search-wrapper input[name=juso-search-toggle]:checked ~ .juso-search,
+.juso-search-wrapper input[name=juso-search-checkbox]:checked ~ .juso-search,
 .juso-search-wrapper.active .juso-search { transform: translateY(0); transition: all 0.5s ease; background-color: transparent; }
 
 
@@ -960,11 +960,11 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
 .juso-search-header label[title=close], 
 .juso-search-close-label { position: absolute; color:#c4c2c2; top: 0; right: 0.5rem; font-size: 1.2rem; }
 
-.juso-search-body { position: relative; padding: .8rem .4rem; padding-top: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; height: 100%; width: 100%;
+.juso-search-body { position: relative; padding: .8rem .4rem; padding-top: 0; -webkit-overflow-scrolling: touch; height: calc(100% - 86.8px); width: 100%;
     background-color: #FFF; max-width: 750px; margin: 0 auto; }
 
-.juso-search-footer  { position: fixed; bottom: 0; width: 100%; display: flex; align-items: center; justify-content: flex-end; color: #FFF;
-    padding: 0.4rem 0.8rem; background-color: #0083cb; }
+/* .juso-search-footer  { position: fixed; bottom: 0; width: 100%; display: flex; align-items: center; justify-content: flex-end; color: #FFF;
+    padding: 0.4rem 0.8rem; background-color: #0083cb; } */
 
 .juso-search-wrapper .dental-card { border: none; }
 
@@ -978,17 +978,18 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
     .desc_tip { margin-top: 14px; line-height: 22px; }
     .txt_example { display: block; margin-top: 3px; font-size: 13px; line-height: 19px; color: #008bd3; }
 
-    .address-search-result { min-height: 100%; padding: 12px 7px; background: #dedede;
+    .address-search-result { /* min-height: 100%; */ height: calc( 100% - 60px ); padding: 12px 7px; background: #dedede;
         border-top: 1px solid #c7c7c7; -webkit-overflow-scrolling: touch; }
     .address_search .result-amount { margin: 0 0 8px; padding: 0 9px; font-size: 14px; line-height: 17px; color: #222;
         font-weight: normal; }
     .address_search .result-amount strong { display: inline-block; font-size: 17px; color: #2e8de5; vertical-align: top; }
-    .address_search .result_list { overflow-y: scroll; max-height: 400px; background: #fff; border-radius: 2px; box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    .address_search .result_list { overflow-y: scroll; max-height: calc( 100% - 36.8px ); background: #fff; border-radius: 2px; box-shadow: 0 1px 1px rgba(0,0,0,0.1);
         -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
 
     .address_search .result_list li { position: relative; margin-bottom: 0.3rem; border-bottom: 1px dashed #000; }
     .address_search .result_list li:last-of-type { border-bottom: none; }
-    .address_search .result_list li .address-item { display: flex; align-items: center; position: relative; padding-left: 2.5rem; padding-right: 2rem; font-size: 0.7rem; min-height: 40px;}
+    .address_search .result_list li .address-item { display: flex; align-items: center; position: relative; padding-left: 2.5rem; padding-right: 2rem; 
+        font-size: 0.7rem; min-height: 40px;}
     .address_search .result_list li .address-item span { position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
     .road-name span { color: #2e8de5; border-color: #96c6f2; font-size: 0.6rem; margin-left: 0.3rem; }
     .jibun span { color: #5e636d; border-color: #ced0d3; font-size: 0.6rem; margin-left: 0.3rem; }
