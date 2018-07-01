@@ -12,15 +12,10 @@
 
 "use strict";
 
-
-
 /* API 서버 URL */
 // var API_SERVER_URL = "http://dentalplus.enqual.co.kr:8080";
 var API_SERVER_URL = "https://api.enqual.co.kr:9090";
 // var API_SERVER_URL = "https://localhost:9090";
-
-
-
 
 
 // var CONSTANTS = (function() {
@@ -53,6 +48,36 @@ var API_SERVER_URL = "https://api.enqual.co.kr:9090";
 
 // 	};
 // })();
+
+
+// CustomEvent constructor pollyfill, because of explore.
+
+if ( typeof window.CustomEvent != "function" ) {
+
+	function CustomEvent ( event, params ) {
+		params = params || { bubbles: false, cancelable: false, detail: undefined };
+		var evt = document.createEvent( 'CustomEvent' );
+		evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+		return evt;
+		}
+	
+		CustomEvent.prototype = window.Event.prototype;
+	
+		window.CustomEvent = CustomEvent;
+}
+
+// NodeList Method forEach polyfill
+
+if (window.NodeList && !NodeList.prototype.forEach) {
+	console.log("NodeList Method forEach polyfill 실행");
+    NodeList.prototype.forEach = function (callback, thisArg) {
+        thisArg = thisArg || window;
+        for (var i = 0; i < this.length; i++) {
+            callback.call(thisArg, this[i], i, this);
+        }
+    };
+}
+
 
 var SESSION_TOKEN_NAME = "X-ENQUAL-DENTALPLUST-TOKEN";
 
@@ -824,7 +849,7 @@ var CODE_CONTAINER = (function() {
 })();
 
 
-var CHANGE_EVENT = new Event("change");
+var CHANGE_EVENT = new CustomEvent("change");
 
 /*************************************************************************************************************** */
 
@@ -2008,6 +2033,7 @@ var JobSeekerJobAdActionPanel = function() {
 	
 
 	function onClickActionButton(event) {
+
 		if ( !event.target.dataset || !event.target.dataset.action || event.target.dataset.action!="popupActionPanel" ) return;
 
 		if ( !event.target.dataset.actionValueJobAdId )	throw "data-action-value-job-ad-id가 지정되어야 합니다.";
@@ -2050,7 +2076,9 @@ var JobSeekerJobAdActionPanel = function() {
         );
 	}
 
-	return onClickActionButton;
+	return {
+		onClickActionButton: onClickActionButton
+	};
 
 
 	// document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
@@ -2062,4 +2090,4 @@ var JobSeekerJobAdActionPanel = function() {
 	// 	element.addEventListener("click", onClickActionButton);
 	// });
 
-}
+};
