@@ -39,19 +39,20 @@
     <!--                                         주소 모달                                               -->
     <!--                                                                                                -->
     <!--================================================================================================-->
-    <div class="dental-modal juso-modal" id="jusoModal">
-        <input type="checkbox" id="modal-juso" name="modal-toggle" hidden><!-- 모달 체크박스 -->
-        <label for="modal-juso"><div class="dental-modal-overlay"></div></label> <!-- 배경, 체크박스로 하면 배경을 레이블로 해서 모달 죽일 수 있음-->
-        <div class="dental-modal-container">
-            <div class="modal-container-header">
-                <div class="modal-container-header-title">주소 검색</div>
-                <div class="modal-container-header-desc">예시에 따라 검색하면 빠르게 찾을 수 있습니다.</div>
-                <label class="modal-close-label" for="modal-juso" rel="dental-modal" title="닫기"><i class="fa fa-window-close"></i></label>
+    <div class="juso-search-wrapper" id="jusoModal">
+        <input class="juso-search-checkbox" type="checkbox" id="jusoSearchCheckbox" name="juso-search-checkbox" hidden><!-- 모달 체크박스 -->
+        <!-- 배경, 체크박스로 하면 배경을 레이블로 해서 모달 죽일 수 있음-->
+        <!-- <label for="jusoSearchCheckbox"><div class="dental-modal-overlay"></div></label>  -->
+        <div class="juso-search">
+            <div class="juso-search-header">
+                <div class="juso-search-header-title">주소 검색</div>
+                <div class="juso-search-header-desc">예시에 따라 검색하면 빠르게 찾을 수 있습니다.</div>
+                <label class="juso-search-close-label" for="jusoSearchCheckbox" rel="juso-search" title="닫기"><i class="fa fa-window-close"></i></label>
             </div>
-            <div class="modal-container-body address_search">
+            <div class="juso-search-body address_search">
                 <form id="jusoSearchForm">  <!-- 주소검색 Form -->
                     <div class="form-group">
-                        <input type="text" class="styled-input" name="keyword" id="jusoSearchKeyword" maxlength="40" placeholder="예) 판교역로 235, 운중 산운마을" required>
+                        <input type="text" class="styled-input" name="keyword" id="jusoSearchInput" maxlength="40" placeholder="예) 판교역로 235, 운중 산운마을" required>
                         <!-- <label class="styled-label">주소</label> -->
                         <!-- <span class="form-group-desc">정확하게 입력</span> -->
                         <!-- <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span> -->
@@ -88,7 +89,7 @@
                     </script>
                 </div>
             </div>
-            <div class="modal-container-footer"></div>
+            <!-- <div class="juso-search-footer"></div> -->
         </div>
     </div>
     <script>
@@ -96,7 +97,8 @@
          * 주소 모달 화면
          */
         //var JusoModal = function(selectedJuso, funcAfterSelecting) {
-        var JusoModal = function(funcAfterSelecting) {
+        //var JusoModal = function(funcAfterSelecting) {
+		var JUSO_MODAL =  (function() {
 
             var loadingModal = new LoadingModal(document.getElementById("loadingModal"));
 
@@ -131,9 +133,9 @@
                 }
 
                 var element = document.getElementById("jusoList");
-                console.log(element.scrollHeight, ", ", Math.ceil(element.scrollTop), ", ", element.clientHeight);
+                console.log(element.scrollHeight, ", ", Math.ceil(element.scrollTop), ", ", element.scrollHeight - Math.ceil(element.scrollTop), ", ", element.clientHeight);
                 
-                if ( element.scrollHeight - Math.ceil(element.scrollTop) == element.clientHeight ) {
+                if ( element.scrollHeight - Math.ceil(element.scrollTop) <= element.clientHeight ) {
                     console.log("바닥");
                     searchJuso(lastJusoKeyword, (lastPageNo+1));
                 }
@@ -148,7 +150,12 @@
                 lastPageNo = 1;         // 초기화
                 jusoContainer = {};     // 초기화
                 selectedJuso = null;    // 초기화
-                $("#jusoList").html('');
+				$("#jusoList").html('');
+				
+				// if ( !checkSearchedWord(lastJusoKeyword) ) {
+				// 	return;
+				// }
+
                 searchJuso(lastJusoKeyword, 1);
             });
 
@@ -181,24 +188,41 @@
                     function(resData) {
                         var errorCode = resData.common.errorCode;
                         if ( errorCode!="0" && errorCode!="00" ) {
-                            // 에러 팝업 띄울 것
-                            dModal.alert("juso.go.kr 에러 ", errorCode);
+							// 에러 팝업 띄울 것
+							if ( resData.common.errorMessage ) {
+								dModal.alert(resData.common.errorMessage + "  \n[" + errorCode + "]");
+							} else {
+								dModal.alert("주소 검색에 실패했습니다. [" + errorCode + "]");
+							}
+                            _resetJusoModal();
                             loadingModal.close(); // LOADING 표시 - 끝
                             return;
                         }
 
-                        console.log("주소 처리 시작");
+                        console.log("주소 처리 시작 : 수신 데이터 : ", resData.juso);
+                        
+                        totalJusoCount = resData.common.totalCount;  
+                      
+                        if ( totalJusoCount === "0" ) {
+                            dModal.alert("검색 결과가 없습니다. \n 팁을 참고해서 다른 키워드로 검색해 보세요.", function() {
+                                jusoSearchInput.focus();
+                            });
+                            _resetJusoModal();
+                            loadingModal.close();
+                            return;
+                        }
 
-                        totalJusoCount = resData.common.totalCount;
-                        if ( currentPage!=null ) lastPageNo = currentPage;
+                        if ( currentPage != null ) lastPageNo = currentPage;
+                        
                         resData.locationList.forEach(function(jusoItem) {
                             jusoContainer[jusoItem.jusoIdx] = jusoItem;
                             console.log("데이터 세팅 결과 : ", jusoContainer[jusoItem.jusoIdx]);
-                            console.log("\t\t!!!! 현재까지의 jusoContainer : ", jusoContainer)
+                            console.log("\t\t!!!! 현재까지의 jusoContainer : ", jusoContainer);
                         });
-
+                        
                         var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.locationList);
-                        if ( currentPage!=null && currentPage>1 ) {
+
+                        if ( currentPage != null && currentPage > 1 ) {
                             $("#jusoList").append(jusoListContent);
                         } else {
                             $("#jusoList").html(jusoListContent);
@@ -209,11 +233,12 @@
 
                         SCROLL_LOCK = false;
                         loadingModal.close(); // LOADING 표시 - 끝
-                        if( addrTip.classList.contains("on") ) { addrTip.classList.remove("on"); } // 선정우가 한땀, 주소 검색 팀박스 hidden 처리
+                        if( addrTip.classList.contains("on") ) { addrTip.classList.remove("on"); } // 선정우가 한땀, 주소 검색 팁박스 hidden 처리
                         if( !addrResult.classList.contains("on") ) { addrResult.classList.add("on"); } // 선정우가 한땀, 주소 검색 결과 박스 on 처리
+                        console.log("현재까지의 jusoContainer : ", jusoContainer);
                     },
                     function(errorCode, errorMsg) {
-                        alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                        dModal.alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
                         SCROLL_LOCK = false;
                         loadingModal.close(); // LOADING 표시 - 끝
                     }
@@ -222,16 +247,21 @@
 
             // 주소모달을 Open한다.
             function _openJusoModal() {
-                document.getElementById("modal-juso").checked = true;
-                document.getElementById("jusoSearchKeyword").focus();
+                document.getElementById("jusoSearchCheckbox").checked = true;
             }
+            
             // 주소모달을 close한다.
             function _closeJusoModal() {
-                document.getElementById("modal-juso").checked = false;
-                // 클로즈 하면서 주소 모달 초기화(검색결과 날리고 결과 박스 hidden, tip 박스 on) 필요 -- 선정우 코멘트
-                addrTip.classList.add("on"); // 선정우가 한땀, 주소 검색 팀박스 on 처리 이미 있으면 무시함
-                addrResult.classList.remove("on"); // 선정우가 한땀, 주소 검색 결과 박스 hidden 처리, 이미 없으면 패쓰
-                jusoList.innerHTML = ""; // 선정우가 한땀, 주소 검색 결과 리스트 초기화
+                document.getElementById("jusoSearchCheckbox").checked = false;
+            }
+
+            function _resetJusoModal() {
+                // 주소 검색 요소 초기화
+                SCROLL_LOCK = false;
+                addrTip.classList.add("on");
+                addrResult.classList.remove("on");
+                jusoList.innerHTML = "";
+                jusoSearchInput.value = ""
             }
 
 
@@ -240,6 +270,10 @@
                 var jusoIdx = $(this).attr("data-juso-idx");
 
                 console.log("선택된 주소 ", jusoContainer[jusoIdx]);
+                if ( !jusoContainer[jusoIdx] ) {
+                    console.log("ERROR : jusoContainer의 값이 없음");
+                    return;
+                }
 
                 // 1. 좌표 검색 수행
                 //getCoordiate(jusoContainer[jusoIdx]);
@@ -263,17 +297,29 @@
                     }
                 );
                 
-            });
+			});
+			
 
             return {
                 closeJusoModal : function() {
                     _closeJusoModal();
+                    _resetJusoModal();
                 },
-                openJusoModal : function() {
+                openJusoModal : function(e) {
+                    if(e) {
+                        e.preventDefault();
+                        // dModal.instant(e.target); 
+                        e.target.blur();
+                    }
+                    _resetJusoModal();
                     _openJusoModal();
-                }
+                    jusoSearchInput.focus();
+				},
+				setFuncAfterSelecting: function(_funcAfterSelecting) {
+					funcAfterSelecting = _funcAfterSelecting;
+				}
             }
-        }
+        })();
     
     </script>
     <!--================================================================================================-->
@@ -685,7 +731,7 @@ var HospitaInfoApp = (function() {
 		callApi("GET", "/api/user/" + userId + "/hospital/", null,
             function(resData) {
                 if ( resData ) {    // 기존 병원 정보 수정
-                    dModal.alert("기존에 등록된 정보가 있습니다. 수정 사항을 입력해 주세요.");
+                    dModal.alert("기존에 등록된 정보가 있습니다.\n수정 사항을 입력해 주세요.");
 
                     initFormData(document.getElementById("hospitalInfoForm"), resData);
 
@@ -837,29 +883,24 @@ var HospitaInfoApp = (function() {
     // 선택된 주소 정보 객체
     var selectedJusoResult;
 
-    // 주소 모달 바인딩
-    var jusoModal = new JusoModal(function(newSelectedJuso) {
-        
-        selectedJusoResult = newSelectedJuso;
-        console.log(selectedJusoResult);
-        
-        
-        document.getElementById("addrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
-        document.getElementById("addrMain").classList.add("hasValue");
-        console.log("주소 앞부분 [" + document.getElementById("addrMain").value + "]");                        
-        
-        document.getElementById("addrDetail").focus();                                         // 포커스 이동
-
-    });
-
-    console.log("TEST : 주소모달의 정체 ", jusoModal);
-
     // 주소 모달 띄우기
     document.getElementById("addrMain").addEventListener("click", function(event) {
         // this.disabled = true;
-        jusoModal.openJusoModal();
-        //this.disabled = true;
-        //document.getElementById("modal-juso").checked = true;
+
+        JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {
+        
+            selectedJusoResult = newSelectedJuso;
+            console.log("병원주소 - 콜백으로 받은 주소 객체 : ", selectedJusoResult);
+                                    
+            document.getElementById("addrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
+            console.log("병원주소 - 주소 앞부분 [" + document.getElementById("addrMain").value + "]");
+
+            document.getElementById("addrDetail").value = "";
+            document.getElementById("addrDetail").readOnly = false;
+            document.getElementById("addrDetail").focus();                                         // 포커스 이동
+        });
+        
+        JUSO_MODAL.openJusoModal(event);
     });
 
 

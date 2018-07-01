@@ -983,7 +983,7 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
     .address_search .result-amount { margin: 0 0 8px; padding: 0 9px; font-size: 14px; line-height: 17px; color: #222;
         font-weight: normal; }
     .address_search .result-amount strong { display: inline-block; font-size: 17px; color: #2e8de5; vertical-align: top; }
-    .address_search .result_list { overflow-y: scroll; height: calc( 100% - 36.8px ); background: #fff; border-radius: 2px; box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    .address_search .result_list { overflow-y: scroll; max-height: calc( 100% - 36.8px ); background: #fff; border-radius: 2px; box-shadow: 0 1px 1px rgba(0,0,0,0.1);
         -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
 
     .address_search .result_list li { position: relative; margin-bottom: 0.3rem; border-bottom: 1px dashed #000; }

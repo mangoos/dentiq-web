@@ -110,6 +110,8 @@
         //var JusoModal = function(funcAfterSelecting) {
 		var JUSO_MODAL =  (function() {
 
+            var jusoSearchInput = document.getElementById("jusoSearchInput");
+
             var loadingModal = new LoadingModal(document.getElementById("loadingModal"));
 
             var JUSO_PER_PAGE = 10;         // 한번에 조회할 주소 아이템의 개수
@@ -120,6 +122,8 @@
 
             var totalJusoCount = 0;         // 검색된 주소 아이템의 개수
             var jusoContainer = {};         // 검색된 주소의 누적
+
+            var _funcAfterSelecting = function() {};
 
             /******************************************************************************/
             /*  스크롤했을 때, 주소 아이템에 대한 append 처리
@@ -328,7 +332,7 @@
 				setFuncAfterSelecting: function(_funcAfterSelecting) {
 					funcAfterSelecting = _funcAfterSelecting;
 				}
-            }
+            };
         })();
     
     </script>
@@ -388,28 +392,28 @@
                     console.log("관심지역 탭");
                     document.getElementById("tabNav").style.display = 'none';
                     document.getElementById("tabLocal").checked = true;
-                    document.getElementById("tabLocal").dispatchEvent(new Event("change"));
+                    document.getElementById("tabLocal").dispatchEvent(new CustomEvent("change"));
                     SPECIFIC_TAB_MODE = true;
 
                 } else if ( htmlCallParamString && containsParamInParamString(htmlCallParamString, "HOME") ) {
                     console.log("우리동네");
                     document.getElementById("tabNav").style.display = 'none';
                     document.getElementById("tabHome").checked = true;
-                    document.getElementById("tabHome").dispatchEvent(new Event("change"));
+                    document.getElementById("tabHome").dispatchEvent(new CustomEvent("change"));
                     SPECIFIC_TAB_MODE = true;
     
                 } else if ( htmlCallParamString && containsParamInParamString(htmlCallParamString, "BASIC") ) {
                     console.log("기본정보");
                     document.getElementById("tabNav").style.display = 'none';
                     document.getElementById("tabBasic").checked = true;
-                    document.getElementById("tabBasic").dispatchEvent(new Event("change"));
+                    document.getElementById("tabBasic").dispatchEvent(new CustomEvent("change"));
                     SPECIFIC_TAB_MODE = true;
 
                 } else {
                     console.log("다중 탭 모드 ", htmlCallParamString);
                     document.getElementById("tabNav").style.display = 'flex';
                     document.getElementById("tabLocal").checked = true;  // 관심지역 탭을 클릭함
-                    document.getElementById("tabLocal").dispatchEvent(new Event("change"));
+                    document.getElementById("tabLocal").dispatchEvent(new CustomEvent("change"));
                     SPECIFIC_TAB_MODE = false;
                     
                 }
@@ -607,7 +611,7 @@
                         }
                     }
                     
-                    document.getElementsByName("locationCode").forEach(function(element) {
+                    $("[name='locationCode']").each(function(idx, element) {  // explore 에서는 HTMLCollection 을 리턴, 표준에서는 NodeList ㅠ
                         element.addEventListener("change", processCheckboxEvent1);
                         //element.addEventListener("change", processCheckboxEvent2);
                     });
@@ -657,7 +661,7 @@
                                     window.history.back();
                                 } else {
                                     document.getElementById("tabHome").checked = true;
-                                    document.getElementById("tabHome").dispatchEvent(new Event("change"));
+                                    document.getElementById("tabHome").dispatchEvent(new CustomEvent("change"));
                                 }
 
                             },
@@ -799,7 +803,7 @@
                                     window.history.back();
                                 } else {
                                     document.getElementById("tabFinal").checked = true;
-                                    document.getElementById("tabBasic").dispatchEvent(new Event("change"));
+                                    document.getElementById("tabBasic").dispatchEvent(new CustomEvent("change"));
                                 }
                             },
                             function(errorCode, errorMsg) {
@@ -1031,7 +1035,7 @@
                                         window.history.back();
                                     } else {
                                         document.getElementById("tabFinal").checked = true;
-                                        document.getElementById("tabFinal").dispatchEvent(new Event("change"));
+                                        document.getElementById("tabFinal").dispatchEvent(new CustomEvent("change"));
                                     }
                                 });
                             },
