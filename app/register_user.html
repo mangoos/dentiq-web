@@ -123,7 +123,6 @@
             var totalJusoCount = 0;         // 검색된 주소 아이템의 개수
             var jusoContainer = {};         // 검색된 주소의 누적
 
-            var _funcAfterSelecting = function() {};
 
             /******************************************************************************/
             /*  스크롤했을 때, 주소 아이템에 대한 append 처리
@@ -275,7 +274,7 @@
                 addrTip.classList.add("on");
                 addrResult.classList.remove("on");
                 jusoList.innerHTML = "";
-                jusoSearchInput.value = ""
+                jusoSearchInput.value = "";
             }
 
 
