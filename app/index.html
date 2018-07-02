@@ -27,7 +27,7 @@
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
     <script src="js/header.js"></script>
-    <script src="js/lib/address.js"></script>
+    
 
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
     <link rel="stylesheet" href="css/swiper.min.css"> 
@@ -45,7 +45,7 @@
             <a href="#">앱다운로드</a>
             <a href="#">고객센터</a>
             <a href="#">전체 메뉴</a>
-            <button id="newJusoSearch" type="button">주소검색</button>                
+            <input class="call-juso-search" type="text" placeholder="주소검색" style="width: 100px;">                
         </script>
         <script>
 
@@ -522,11 +522,12 @@
             </div>
             <!-- <div class="juso-search-footer"></div> -->
         </div>
-    </div>;
+    </div>
     <footer class="container">
         FOOTER
     </footer>
     <script src="js/dental_ui.js"></script>
+    <script src="js/lib/address.js"></script>
     <script>
         // ui 관련 초기화 관련 내용 쭉 적어본다
         // $("body").css({ "min-width" : "980px" });
@@ -1054,6 +1055,13 @@
             }
         
         })();
+
+        document.querySelector(".call-juso-search").addEventListener("click", function callJusoSearch(e) {
+            var objCalledJusoModule = e.target
+            var juso = new JusoSearch(".juso-search-wrapper", objCalledJusoModule);
+            juso.reset();
+            juso.open();
+        });
         
         </script>    
 </body>
