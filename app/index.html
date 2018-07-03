@@ -27,6 +27,7 @@
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
     <script src="js/header.js"></script>
+    
 
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
     <link rel="stylesheet" href="css/swiper.min.css"> 
@@ -43,7 +44,7 @@
             {{#each .}}<a href="{{href}}">{{text}}</a>{{/each}}
             <a href="#">앱다운로드</a>
             <a href="#">고객센터</a>
-            <a href="#">전체 메뉴</a>                
+            <a href="#">전체 메뉴</a>
         </script>
         <script>
 
@@ -189,7 +190,7 @@
     <script>
         function onChangeSidebar() {}
         document.getElementById("sidebar").addEventListener("change", onChangeSidebar);
-        document.getElementById("sidebar").dispatchEvent(new Event("change"));
+        document.getElementById("sidebar").dispatchEvent(new CustomEvent("change"));
     </script>
     <div class="dental-pc-wrapper">
         <!-- <section class="main-top">
@@ -472,10 +473,6 @@
         FOOTER
     </footer>
     <script src="js/dental_ui.js"></script>
-    <script>
-        // ui 관련 초기화 관련 내용 쭉 적어본다
-        // $("body").css({ "min-width" : "980px" });
-    </script>
     <script>
 
         Handlebars.registerHelper("eachNested", function(context, options) {
@@ -999,7 +996,7 @@
             }
         
         })();
-        
-        </script>    
+
+    </script>    
 </body>
 </html>
