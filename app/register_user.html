@@ -13,7 +13,7 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/handlebars.min.js"></script>
-    <script src="js/util.js"></script>
+    <script src="js/dental_steps.js"></script>
     <script>
         function getValueString(valueStr) {
             if ( !valueStr ) return "";
@@ -339,17 +339,17 @@
     
         
     <section class="dental-steps register-user" id="registerUserSteps">
-        <input type="radio" name="steps" id="tabLocal" checked hidden>
-        <input type="radio" name="steps" id="tabHome" hidden>
-        <input type="radio" name="steps" id="tabBasic" hidden>
-        <input type="radio" name="steps" id="tabFinal" hidden>
+        <input type="radio" name="steps" id="tabLocal" title="관심지역" checked hidden>
+        <input type="radio" name="steps" id="tabHome" title="우리동네" hidden>
+        <input type="radio" name="steps" id="tabBasic" title="기본정보" hidden>
+        <input type="radio" name="steps" id="tabFinal" title="완료" hidden>
         
-        <div class="step step-nav" id="tabNav" style="display: none">
+        <nav class="step" id="registerUserStepsNav" style="display: none">
             <label class="step-item" for="tabLocal"><span>관심지역</span></label>
             <label class="step-item" for="tabHome"><span>우리동네</span></label>
             <label class="step-item" for="tabBasic"><span>기본정보</span></label>
             <label class="step-item" for="tabFinal"><span>완료</span></label>
-        </div>
+        </nav>
         <script>
             // 탭을 클릭할 때, 각 탭에 대한 Javascript App을 실행한다.
 
@@ -386,28 +386,28 @@
 
                 if ( htmlCallParamString && containsParamInParamString(htmlCallParamString, "LOCAL") ) {
                     console.log("관심지역 탭");
-                    document.getElementById("tabNav").style.display = 'none';
+                    document.getElementById("registerUserStepsNav").style.display = 'none';
                     document.getElementById("tabLocal").checked = true;
                     document.getElementById("tabLocal").dispatchEvent(new Event("change"));
                     SPECIFIC_TAB_MODE = true;
 
                 } else if ( htmlCallParamString && containsParamInParamString(htmlCallParamString, "HOME") ) {
                     console.log("우리동네");
-                    document.getElementById("tabNav").style.display = 'none';
+                    document.getElementById("registerUserStepsNav").style.display = 'none';
                     document.getElementById("tabHome").checked = true;
                     document.getElementById("tabHome").dispatchEvent(new Event("change"));
                     SPECIFIC_TAB_MODE = true;
     
                 } else if ( htmlCallParamString && containsParamInParamString(htmlCallParamString, "BASIC") ) {
                     console.log("기본정보");
-                    document.getElementById("tabNav").style.display = 'none';
+                    document.getElementById("registerUserStepsNav").style.display = 'none';
                     document.getElementById("tabBasic").checked = true;
                     document.getElementById("tabBasic").dispatchEvent(new Event("change"));
                     SPECIFIC_TAB_MODE = true;
 
                 } else {
                     console.log("다중 탭 모드 ", htmlCallParamString);
-                    document.getElementById("tabNav").style.display = 'flex';
+                    document.getElementById("registerUserStepsNav").style.display = 'flex';
                     document.getElementById("tabLocal").checked = true;  // 관심지역 탭을 클릭함
                     document.getElementById("tabLocal").dispatchEvent(new Event("change"));
                     SPECIFIC_TAB_MODE = false;
@@ -415,10 +415,6 @@
                 }
             }
 
-            window.onload = function() {
-                loadSpecificTabOnly();
-            }
-    
         </script>
 
 
@@ -1102,6 +1098,16 @@
         </div>
     </section>
 <script src="js/dental_ui.js"></script>
+<script>
+    var STEPS = {};
+
+    window.onload = function() {
+        loadSpecificTabOnly();
+        STEPS = new Steps("registerUserSteps");
+
+        console.log(STEPS);
+    }
+</script>
 </body>
 
 </html>
