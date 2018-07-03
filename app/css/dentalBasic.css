@@ -983,18 +983,18 @@ input.modal-close-input:checked ~ .modal-container-header label[title=close]  { 
     .address_search .result-amount { margin: 0 0 8px; padding: 0 9px; font-size: 14px; line-height: 17px; color: #222;
         font-weight: normal; }
     .address_search .result-amount strong { display: inline-block; font-size: 17px; color: #2e8de5; vertical-align: top; }
-    .address_search .result_list { overflow-y: scroll; max-height: calc( 100% - 36.8px ); background: #fff; border-radius: 2px; box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    .address_search .result-list { overflow-y: scroll; max-height: calc( 100% - 36.8px ); background: #fff; border-radius: 2px; box-shadow: 0 1px 1px rgba(0,0,0,0.1);
         -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
 
-    .address_search .result_list li { position: relative; margin-bottom: 0.3rem; border-bottom: 1px dashed #000; }
-    .address_search .result_list li:last-of-type { border-bottom: none; }
-    .address_search .result_list li .address-item { display: flex; align-items: center; position: relative; padding-left: 2.5rem; padding-right: 2rem; 
+    .address_search .result-list li { position: relative; margin-bottom: 0.3rem; border-bottom: 1px dashed #000; }
+    .address_search .result-list li:last-of-type { border-bottom: none; }
+    .address_search .result-list li .address-item { display: flex; align-items: center; position: relative; padding-left: 2.5rem; padding-right: 2rem; 
         font-size: 0.7rem; min-height: 40px;}
-    .address_search .result_list li .address-item span { position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
+    .address_search .result-list li .address-item span { position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
     .road-name span { color: #2e8de5; border-color: #96c6f2; font-size: 0.6rem; margin-left: 0.3rem; }
     .jibun span { color: #5e636d; border-color: #ced0d3; font-size: 0.6rem; margin-left: 0.3rem; }
     .zip-code { color: #5e636d; }
-    .address_search .result_list li .zip-code { position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin-right: 0.3rem; 
+    .address_search .result-list li .zip-code { position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin-right: 0.3rem; 
         font-size: 0.6rem; }
 
 /* toast-alert css */

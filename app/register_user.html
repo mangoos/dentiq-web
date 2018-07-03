@@ -87,7 +87,7 @@
                 </div>
                 <div class="address-search-result" id="addrResult" hidden>
                     <p class="result-amount">총 <strong id="totalCount">0</strong>건</p>
-                    <ul id="jusoList" class="result_list"></ul>
+                    <ul id="jusoList" class="result-list"></ul>
                     <script id="jusoListTemplate" type="text/x-handlebars-template">
                         {{#each .}}
                         <li data-juso-idx="{{jusoIdx}}">
@@ -103,236 +103,236 @@
         </div>
     </div>
     <script>
-        /**
-         * 주소 모달 화면
-         */
-        //var JusoModal = function(selectedJuso, funcAfterSelecting) {
-        //var JusoModal = function(funcAfterSelecting) {
-		var JUSO_MODAL =  (function() {
+        // /**
+        //  * 주소 모달 화면
+        //  */
+        // //var JusoModal = function(selectedJuso, funcAfterSelecting) {
+        // //var JusoModal = function(funcAfterSelecting) {
+		// var JUSO_MODAL =  (function() {
 
-            var jusoSearchInput = document.getElementById("jusoSearchInput");
+        //     var jusoSearchInput = document.getElementById("jusoSearchInput");
 
-            var loadingModal = new LoadingModal(document.getElementById("loadingModal"));
+        //     var loadingModal = new LoadingModal(document.getElementById("loadingModal"));
 
-            var JUSO_PER_PAGE = 10;         // 한번에 조회할 주소 아이템의 개수
-            var SCROLL_LOCK = false;        // 주소 선택 영역 스크롤 락
+        //     var JUSO_PER_PAGE = 10;         // 한번에 조회할 주소 아이템의 개수
+        //     var SCROLL_LOCK = false;        // 주소 선택 영역 스크롤 락
 
-            var lastPageNo = 1;             // 마지막 주소 아이템 페이지의 번호
-            var lastJusoKeyword;            // 마지막 주소 검색 키워드 
+        //     var lastPageNo = 1;             // 마지막 주소 아이템 페이지의 번호
+        //     var lastJusoKeyword;            // 마지막 주소 검색 키워드 
 
-            var totalJusoCount = 0;         // 검색된 주소 아이템의 개수
-            var jusoContainer = {};         // 검색된 주소의 누적
+        //     var totalJusoCount = 0;         // 검색된 주소 아이템의 개수
+        //     var jusoContainer = {};         // 검색된 주소의 누적
 
 
-            /******************************************************************************/
-            /*  스크롤했을 때, 주소 아이템에 대한 append 처리
-            /*  
-            /*******************************************************************************/
-            $("#jusoList").scroll(function() {
-                //console.log(this);
+        //     /******************************************************************************/
+        //     /*  스크롤했을 때, 주소 아이템에 대한 append 처리
+        //     /*  
+        //     /*******************************************************************************/
+        //     $("#jusoList").scroll(function() {
+        //         //console.log(this);
                 
-                if ( totalJusoCount == 0 ) return;
+        //         if ( totalJusoCount == 0 ) return;
 
-                var maxPageNo = totalJusoCount / JUSO_PER_PAGE + 1;  // 한 페이지에 10개의 목록 지정 (개수 조정 시 변경 필요)
-                if ( (lastPageNo+1) >= maxPageNo ) return;
+        //         var maxPageNo = totalJusoCount / JUSO_PER_PAGE + 1;  // 한 페이지에 10개의 목록 지정 (개수 조정 시 변경 필요)
+        //         if ( (lastPageNo+1) >= maxPageNo ) return;
 
-                if ( SCROLL_LOCK ) {
-                    console.log("SCROLL : LOCKED" );
-                    setTimeout(function() {
-                        SCROLL_LOCK = false;
-                        console.log("SCROLL_LOCK 풀렸음");
-                    }, 500);
-                    return;
-                }
+        //         if ( SCROLL_LOCK ) {
+        //             console.log("SCROLL : LOCKED" );
+        //             setTimeout(function() {
+        //                 SCROLL_LOCK = false;
+        //                 console.log("SCROLL_LOCK 풀렸음");
+        //             }, 500);
+        //             return;
+        //         }
 
-                var element = document.getElementById("jusoList");
-                console.log(element.scrollHeight, ", ", Math.ceil(element.scrollTop), ", ", element.scrollHeight - Math.ceil(element.scrollTop), ", ", element.clientHeight);
+        //         var element = document.getElementById("jusoList");
+        //         console.log(element.scrollHeight, ", ", Math.ceil(element.scrollTop), ", ", element.scrollHeight - Math.ceil(element.scrollTop), ", ", element.clientHeight);
                 
-                if ( element.scrollHeight - Math.ceil(element.scrollTop) <= element.clientHeight ) {
-                    console.log("바닥");
-                    searchJuso(lastJusoKeyword, (lastPageNo+1));
-                }
+        //         if ( element.scrollHeight - Math.ceil(element.scrollTop) <= element.clientHeight ) {
+        //             console.log("바닥");
+        //             searchJuso(lastJusoKeyword, (lastPageNo+1));
+        //         }
                 
-            });
+        //     });
 
 
-            // 주소 모달 submit (검색 실행)
-            $("#jusoSearchForm").submit(function(e) {
-                e.preventDefault();
-                lastJusoKeyword = $("#jusoSearchForm input[name=keyword]").val();
-                lastPageNo = 1;         // 초기화
-                jusoContainer = {};     // 초기화
-                selectedJuso = null;    // 초기화
-				$("#jusoList").html('');
+        //     // 주소 모달 submit (검색 실행)
+        //     $("#jusoSearchForm").submit(function(e) {
+        //         e.preventDefault();
+        //         lastJusoKeyword = $("#jusoSearchForm input[name=keyword]").val();
+        //         lastPageNo = 1;         // 초기화
+        //         jusoContainer = {};     // 초기화
+        //         selectedJuso = null;    // 초기화
+		// 		$("#jusoList").html('');
 				
-				// if ( !checkSearchedWord(lastJusoKeyword) ) {
-				// 	return;
-				// }
+		// 		// if ( !checkSearchedWord(lastJusoKeyword) ) {
+		// 		// 	return;
+		// 		// }
 
-                searchJuso(lastJusoKeyword, 1);
-            });
+        //         searchJuso(lastJusoKeyword, 1);
+        //     });
 
 
 
-            // 지역코드 - 시도 선택 템플릿 객체
-            var jusoListTemplate = $("#jusoListTemplate").html();
+        //     // 지역코드 - 시도 선택 템플릿 객체
+        //     var jusoListTemplate = $("#jusoListTemplate").html();
 
-            // 주소 모달에서 주소 검색 실행
-            function searchJuso(keyword, currentPage) {
+        //     // 주소 모달에서 주소 검색 실행
+        //     function searchJuso(keyword, currentPage) {
 
-                if ( SCROLL_LOCK ) {
-                    console.log("SCROLL LOCKED - in JS");
-                    setTimeout(function() {
-                        SCROLL_LOCK = false;
-                        console.log("listJobAds:SCROLL_LOCK 풀렸음");
-                    }, 500);
-                    return;
-                }
-                SCROLL_LOCK = true;
+        //         if ( SCROLL_LOCK ) {
+        //             console.log("SCROLL LOCKED - in JS");
+        //             setTimeout(function() {
+        //                 SCROLL_LOCK = false;
+        //                 console.log("listJobAds:SCROLL_LOCK 풀렸음");
+        //             }, 500);
+        //             return;
+        //         }
+        //         SCROLL_LOCK = true;
 
-                var apiParam = "keyword=" + keyword;
-                if ( currentPage!=null ) apiParam += "&currentPage=" + currentPage;
+        //         var apiParam = "keyword=" + keyword;
+        //         if ( currentPage!=null ) apiParam += "&currentPage=" + currentPage;
 
-                // LOADING 표시 - 시작
-                loadingModal.open();
+        //         // LOADING 표시 - 시작
+        //         loadingModal.open();
                 
 
-                callApi("GET", "/api/location/", apiParam, 
-                    function(resData) {
-                        var errorCode = resData.common.errorCode;
-                        if ( errorCode!="0" && errorCode!="00" ) {
-							// 에러 팝업 띄울 것
-							if ( resData.common.errorMessage ) {
-								dModal.alert(resData.common.errorMessage + "  \n[" + errorCode + "]");
-							} else {
-								dModal.alert("주소 검색에 실패했습니다. [" + errorCode + "]");
-							}
-                            _resetJusoModal();
-                            loadingModal.close(); // LOADING 표시 - 끝
-                            return;
-                        }
+        //         callApi("GET", "/api/location/", apiParam, 
+        //             function(resData) {
+        //                 var errorCode = resData.common.errorCode;
+        //                 if ( errorCode!="0" && errorCode!="00" ) {
+		// 					// 에러 팝업 띄울 것
+		// 					if ( resData.common.errorMessage ) {
+		// 						dModal.alert(resData.common.errorMessage + "  \n[" + errorCode + "]");
+		// 					} else {
+		// 						dModal.alert("주소 검색에 실패했습니다. [" + errorCode + "]");
+		// 					}
+        //                     _resetJusoModal();
+        //                     loadingModal.close(); // LOADING 표시 - 끝
+        //                     return;
+        //                 }
 
-                        console.log("주소 처리 시작 : 수신 데이터 : ", resData.juso);
+        //                 console.log("주소 처리 시작 : 수신 데이터 : ", resData.juso);
                         
-                        totalJusoCount = resData.common.totalCount;  
+        //                 totalJusoCount = resData.common.totalCount;  
                       
-                        if ( totalJusoCount === "0" ) {
-                            dModal.alert("검색 결과가 없습니다. \n 팁을 참고해서 다른 키워드로 검색해 보세요.", function() {
-                                jusoSearchInput.focus();
-                            });
-                            _resetJusoModal();
-                            loadingModal.close();
-                            return;
-                        }
+        //                 if ( totalJusoCount === "0" ) {
+        //                     dModal.alert("검색 결과가 없습니다. \n 팁을 참고해서 다른 키워드로 검색해 보세요.", function() {
+        //                         jusoSearchInput.focus();
+        //                     });
+        //                     _resetJusoModal();
+        //                     loadingModal.close();
+        //                     return;
+        //                 }
 
-                        if ( currentPage != null ) lastPageNo = currentPage;
+        //                 if ( currentPage != null ) lastPageNo = currentPage;
                         
-                        resData.locationList.forEach(function(jusoItem) {
-                            jusoContainer[jusoItem.jusoIdx] = jusoItem;
-                            console.log("데이터 세팅 결과 : ", jusoContainer[jusoItem.jusoIdx]);
-                            console.log("\t\t!!!! 현재까지의 jusoContainer : ", jusoContainer);
-                        });
+        //                 resData.locationList.forEach(function(jusoItem) {
+        //                     jusoContainer[jusoItem.jusoIdx] = jusoItem;
+        //                     console.log("데이터 세팅 결과 : ", jusoContainer[jusoItem.jusoIdx]);
+        //                     console.log("\t\t!!!! 현재까지의 jusoContainer : ", jusoContainer);
+        //                 });
                         
-                        var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.locationList);
+        //                 var jusoListContent = Handlebars.compile(jusoListTemplate)(resData.locationList);
 
-                        if ( currentPage != null && currentPage > 1 ) {
-                            $("#jusoList").append(jusoListContent);
-                        } else {
-                            $("#jusoList").html(jusoListContent);
-                        }
+        //                 if ( currentPage != null && currentPage > 1 ) {
+        //                     $("#jusoList").append(jusoListContent);
+        //                 } else {
+        //                     $("#jusoList").html(jusoListContent);
+        //                 }
 
-                        $("#totalCount").html(totalJusoCount);
-                        //console.log(jusoList);
+        //                 $("#totalCount").html(totalJusoCount);
+        //                 //console.log(jusoList);
 
-                        SCROLL_LOCK = false;
-                        loadingModal.close(); // LOADING 표시 - 끝
-                        if( addrTip.classList.contains("on") ) { addrTip.classList.remove("on"); } // 선정우가 한땀, 주소 검색 팁박스 hidden 처리
-                        if( !addrResult.classList.contains("on") ) { addrResult.classList.add("on"); } // 선정우가 한땀, 주소 검색 결과 박스 on 처리
-                        console.log("현재까지의 jusoContainer : ", jusoContainer);
-                    },
-                    function(errorCode, errorMsg) {
-                        dModal.alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                        SCROLL_LOCK = false;
-                        loadingModal.close(); // LOADING 표시 - 끝
-                    }
-                );
-            }
+        //                 SCROLL_LOCK = false;
+        //                 loadingModal.close(); // LOADING 표시 - 끝
+        //                 if( addrTip.classList.contains("on") ) { addrTip.classList.remove("on"); } // 선정우가 한땀, 주소 검색 팁박스 hidden 처리
+        //                 if( !addrResult.classList.contains("on") ) { addrResult.classList.add("on"); } // 선정우가 한땀, 주소 검색 결과 박스 on 처리
+        //                 console.log("현재까지의 jusoContainer : ", jusoContainer);
+        //             },
+        //             function(errorCode, errorMsg) {
+        //                 dModal.alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+        //                 SCROLL_LOCK = false;
+        //                 loadingModal.close(); // LOADING 표시 - 끝
+        //             }
+        //         );
+        //     }
 
-            // 주소모달을 Open한다.
-            function _openJusoModal() {
-                document.getElementById("jusoSearchCheckbox").checked = true;
-            }
+        //     // 주소모달을 Open한다.
+        //     function _openJusoModal() {
+        //         document.getElementById("jusoSearchCheckbox").checked = true;
+        //     }
             
-            // 주소모달을 close한다.
-            function _closeJusoModal() {
-                document.getElementById("jusoSearchCheckbox").checked = false;
-            }
+        //     // 주소모달을 close한다.
+        //     function _closeJusoModal() {
+        //         document.getElementById("jusoSearchCheckbox").checked = false;
+        //     }
 
-            function _resetJusoModal() {
-                // 주소 검색 요소 초기화
-                SCROLL_LOCK = false;
-                addrTip.classList.add("on");
-                addrResult.classList.remove("on");
-                jusoList.innerHTML = "";
-                jusoSearchInput.value = "";
-            }
+        //     function _resetJusoModal() {
+        //         // 주소 검색 요소 초기화
+        //         SCROLL_LOCK = false;
+        //         addrTip.classList.add("on");
+        //         addrResult.classList.remove("on");
+        //         jusoList.innerHTML = "";
+        //         jusoSearchInput.value = "";
+        //     }
 
 
-            // 주소 모달에서 주소 선택했을 때, 부모 화면에 주소 값을 세팅해주고, 자신은 close.
-            $("#jusoList").on("click", "li", function() {
-                var jusoIdx = $(this).attr("data-juso-idx");
+        //     // 주소 모달에서 주소 선택했을 때, 부모 화면에 주소 값을 세팅해주고, 자신은 close.
+        //     $("#jusoList").on("click", "li", function() {
+        //         var jusoIdx = $(this).attr("data-juso-idx");
 
-                console.log("선택된 주소 ", jusoContainer[jusoIdx]);
-                if ( !jusoContainer[jusoIdx] ) {
-                    console.log("ERROR : jusoContainer의 값이 없음");
-                    return;
-                }
+        //         console.log("선택된 주소 ", jusoContainer[jusoIdx]);
+        //         if ( !jusoContainer[jusoIdx] ) {
+        //             console.log("ERROR : jusoContainer의 값이 없음");
+        //             return;
+        //         }
 
-                // 1. 좌표 검색 수행
-                //getCoordiate(jusoContainer[jusoIdx]);
-                var coordinateParam = convertObjectToFormDataString(jusoContainer[jusoIdx]);
-                console.log("보낼 데이터 ", coordinateParam);
+        //         // 1. 좌표 검색 수행
+        //         //getCoordiate(jusoContainer[jusoIdx]);
+        //         var coordinateParam = convertObjectToFormDataString(jusoContainer[jusoIdx]);
+        //         console.log("보낼 데이터 ", coordinateParam);
 
-                callApi("GET", "/api/coordinate/", coordinateParam, 
-                    function(resData) {
-                        console.log(resData);
+        //         callApi("GET", "/api/coordinate/", coordinateParam, 
+        //             function(resData) {
+        //                 console.log(resData);
 
-                        jusoContainer[jusoIdx].entX          =   resData[0].entX;           // 출입구 X좌표
-                        jusoContainer[jusoIdx].entY          =   resData[0].entY;           // 출입구 X좌표
-                        console.log("주소 & 좌표 검색 완료 : ", jusoContainer[jusoIdx]);
+        //                 jusoContainer[jusoIdx].entX          =   resData[0].entX;           // 출입구 X좌표
+        //                 jusoContainer[jusoIdx].entY          =   resData[0].entY;           // 출입구 X좌표
+        //                 console.log("주소 & 좌표 검색 완료 : ", jusoContainer[jusoIdx]);
 
-                        _closeJusoModal();              // 자신을 닫기
+        //                 _closeJusoModal();              // 자신을 닫기
 
-                        funcAfterSelecting(jusoContainer[jusoIdx]);     // 추가 Callback 함수 실행
-                    },
-                    function(errorCode, errorMsg) {
-                        alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                    }
-                );
+        //                 funcAfterSelecting(jusoContainer[jusoIdx]);     // 추가 Callback 함수 실행
+        //             },
+        //             function(errorCode, errorMsg) {
+        //                 alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+        //             }
+        //         );
                 
-			});
+		// 	});
 			
 
-            return {
-                closeJusoModal : function() {
-                    _closeJusoModal();
-                    _resetJusoModal();
-                },
-                openJusoModal : function(e) {
-                    if(e) {
-                        e.preventDefault();
-                        // dModal.instant(e.target); 
-                        e.target.blur();
-                    }
-                    _resetJusoModal();
-                    _openJusoModal();
-                    jusoSearchInput.focus();
-				},
-				setFuncAfterSelecting: function(_funcAfterSelecting) {
-					funcAfterSelecting = _funcAfterSelecting;
-				}
-            };
-        })();
+        //     return {
+        //         closeJusoModal : function() {
+        //             _closeJusoModal();
+        //             _resetJusoModal();
+        //         },
+        //         openJusoModal : function(e) {
+        //             if(e) {
+        //                 e.preventDefault();
+        //                 // dModal.instant(e.target); 
+        //                 e.target.blur();
+        //             }
+        //             _resetJusoModal();
+        //             _openJusoModal();
+        //             jusoSearchInput.focus();
+		// 		},
+		// 		setFuncAfterSelecting: function(_funcAfterSelecting) {
+		// 			funcAfterSelecting = _funcAfterSelecting;
+		// 		}
+        //     };
+        // })();
     
     </script>
     <!--================================================================================================-->
@@ -706,7 +706,7 @@
                         <div class="dental-card-header"><div class="dental-card-header-title h4">주소 검색</div></div>
                         <div class="card-body">
                             <div class="form-group">
-                                <input type="text" class="styled-input" maxlength="40" name="addrMain" id="addrMain" placeholder="주소 입력" readonly required>
+                                <input type="text" class="styled-input call-juso-search" maxlength="40" name="addrMain" id="addrMain" placeholder="주소 입력" readonly required>
                                 <!-- <label class="styled-label hasValue">주소를 검색해 주세요</label> -->
                                 <!-- <span class="form-group-desc">정확하게 입력</span> -->
                                 <!-- <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span> -->
@@ -732,7 +732,7 @@
                 /*******************************************************************************/
                 var MyHomeApp = (function() {
                 
-                    var selectedJuso = null;
+                    // var selectedJuso = null;
                 
                     function loadMyHome() {
                         var userId = LOGIN_INFO.getId();
@@ -833,24 +833,24 @@
                     //console.log("TEST : 주소모달의 정체 ", jusoModal);
 
                     // 주소 모달 띄우기
-                    document.getElementById("addrMain").addEventListener("click", function(event) {
-                        // this.disabled = true;
+                    // document.getElementById("addrMain").addEventListener("click", function(event) {
+                    //     // this.disabled = true;
 
-						JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {
+					// 	JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {
                         
-							selectedJuso = newSelectedJuso;
-							console.log("우리동네 - 콜백으로 받은 주소 객체 : ", selectedJuso);
+					// 		selectedJuso = newSelectedJuso;
+					// 		console.log("우리동네 - 콜백으로 받은 주소 객체 : ", selectedJuso);
 													
-							document.getElementById("addrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
-							console.log("우리동네 - 주소 앞부분 [" + document.getElementById("addrMain").value + "]");
+					// 		document.getElementById("addrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
+					// 		console.log("우리동네 - 주소 앞부분 [" + document.getElementById("addrMain").value + "]");
 
-							document.getElementById("addrDetail").value = "";
-							document.getElementById("addrDetail").readOnly = false;
-							document.getElementById("addrDetail").focus();                                         // 포커스 이동
-						});
+					// 		document.getElementById("addrDetail").value = "";
+					// 		document.getElementById("addrDetail").readOnly = false;
+					// 		document.getElementById("addrDetail").focus();                                         // 포커스 이동
+					// 	});
 						
-                        JUSO_MODAL.openJusoModal(event);
-                    });
+                    //     JUSO_MODAL.openJusoModal(event);
+                    // });
 
                     return {
                         init: function() {
@@ -905,7 +905,7 @@
                             <div class="form-group-msg2" hidden></div>
                         </div>
                         <div class="form-group"> <!-- 앞에서 입력한 우리동네 주소를 가져온다? -->
-                            <input class="styled-input" type="text" id="myInfoAddrMain" placeholder="이력서에 입력되는 기본 주소입니다." required>
+                            <input class="styled-input call-juso-search" type="text" id="myInfoAddrMain" placeholder="이력서에 입력되는 기본 주소입니다." required>
                             <label class="styled-label">주소</label>
                             <span class="form-group-desc">정확하게 입력</span>
                             <span class="form-group-icon" hidden><i class="fal fa-check-circle"></i></span>
@@ -945,7 +945,7 @@
                 var MyInfoApp = (function() {
                     var basicInfoForm = document.getElementById("basicInfoForm");
 
-					var selectedJuso = null;
+					// var selectedJuso = null;
 					
 					//var oldJuso = null;
 
@@ -1021,7 +1021,8 @@
 						var data = createObjectFromFormData(basicInfoForm);
 						data.location = selectedJuso;
 						data.userId = userId;
-						
+                        
+                        console.log("++++++++++++++++++++++++++++++++++++data+++++++++++++++++++++++++", data);
 
 						console.log("기본 정보 전송 : ", data);
 						callApi("PUT", "/api/user/" + userId+"/basicInfo/", JSON.stringify(data),
@@ -1044,6 +1045,7 @@
                             'application/json'
                         );
 
+                        selectedJuso = null;
                     }
                     basicInfoForm.addEventListener("submit", registerMyInfo);
 
@@ -1064,23 +1066,23 @@
 					
 
                     // 주소 모달 띄우기
-                    document.getElementById("myInfoAddrMain").addEventListener("click", function(event) {
-						// this.disabled = true;
-						event.preventDefault();
-						JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {                        
-							selectedJuso = newSelectedJuso;
-							console.log("기본정보 - 콜백으로 받은 주소 객체 : ", selectedJuso);
+                    // document.getElementById("myInfoAddrMain").addEventListener("click", function(event) {
+					// 	// this.disabled = true;
+					// 	event.preventDefault();
+					// 	JUSO_MODAL.setFuncAfterSelecting(function(newSelectedJuso) {                        
+					// 		selectedJuso = newSelectedJuso;
+					// 		console.log("기본정보 - 콜백으로 받은 주소 객체 : ", selectedJuso);
 													
-							document.getElementById("myInfoAddrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
-							console.log("기본정보 - 주소 앞부분 [" + document.getElementById("addrMain").value + "]");
+					// 		document.getElementById("myInfoAddrMain").value = newSelectedJuso.roadAddrPart1;          // 주소 앞 부분 설정
+					// 		console.log("기본정보 - 주소 앞부분 [" + document.getElementById("addrMain").value + "]");
 							
-							document.getElementById("myInfoAddrDetail").value = "";
-							document.getElementById("myInfoAddrDetail").readOnly = false;
-							document.getElementById("myInfoAddrDetail").focus();                                         // 포커스 이동
-						});
+					// 		document.getElementById("myInfoAddrDetail").value = "";
+					// 		document.getElementById("myInfoAddrDetail").readOnly = false;
+					// 		document.getElementById("myInfoAddrDetail").focus();                                         // 포커스 이동
+					// 	});
 						
-                        JUSO_MODAL.openJusoModal(event);
-                    });
+                    //     JUSO_MODAL.openJusoModal(event);
+                    // });
 
                     return {
                         init: function() {
@@ -1105,6 +1107,16 @@
         </div>
     </section>
 <script src="js/dental_ui.js"></script>
+<script src="js/lib/address.js"></script>
+<script>
+    $(".call-juso-search").on("click", function callJusoSearch(e) {
+
+        var juso = new JusoSearch(".juso-search-wrapper", e.target);
+        juso.reset();
+        juso.open();
+        this.blur();
+    });
+</script>
 </body>
 
 </html>
