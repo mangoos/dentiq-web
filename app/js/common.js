@@ -62,26 +62,25 @@ if ( typeof window.CustomEvent != "function" ) {
 
 	function CustomEvent ( event, params ) {
 		params = params || { bubbles: false, cancelable: false, detail: undefined };
-		var evt = document.createEvent( 'CustomEvent' );
+		var evt = document.createEvent( "CustomEvent" );
 		evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
 		return evt;
-		}
+	}
 	
-		CustomEvent.prototype = window.Event.prototype;
-	
-		window.CustomEvent = CustomEvent;
+	CustomEvent.prototype = window.Event.prototype;
+	window.CustomEvent = CustomEvent;
 }
 
 // NodeList Method forEach polyfill
 
 if (window.NodeList && !NodeList.prototype.forEach) {
 	console.log("NodeList Method forEach polyfill 실행");
-    NodeList.prototype.forEach = function (callback, thisArg) {
-        thisArg = thisArg || window;
-        for (var i = 0; i < this.length; i++) {
-            callback.call(thisArg, this[i], i, this);
-        }
-    };
+	NodeList.prototype.forEach = function (callback, thisArg) {
+		thisArg = thisArg || window;
+		for (var i = 0; i < this.length; i++) {
+			callback.call(thisArg, this[i], i, this);
+		}
+	};
 }
 
 
@@ -94,7 +93,7 @@ function uploadFile(apiUrl, formDataFileEncoded, callbackSuccessProcessFunction,
 	myHeaders[SESSION_TOKEN_NAME] = LOGIN_INFO.getToken();
 
 	$.ajax({
-		type: 'POST',
+		type: "POST",
 		url : API_SERVER_URL + apiUrl,
 		headers: myHeaders,
 		processData: false,        
@@ -744,62 +743,62 @@ var CODE_CONTAINER = (function() {
 		},
 
 		getHospitalTypeCode: function() {
-			return [{value:"HIRA_41", text:"치과의원"}, {value:"HIRA_51", text:"치과병원"}, {value:"DP_10", text:"치과기공소"}, 
-					{value:"HIRA_11", text:"종합병원"}, {value:"DP_45", text:"네트워크치과"}, {value:"DP_00", text:"개원예정"}, {value:"0", text:"기타(직접 입력)"} ];
+			return [
+				{value:"HIRA_41", text:"치과의원"}, {value:"HIRA_51", text:"치과병원"}, {value:"DP_10", text:"치과기공소"}, 
+				{value:"HIRA_11", text:"종합병원"}, {value:"DP_45", text:"네트워크치과"}, {value:"DP_00", text:"개원예정"}, 
+				{value:"0", text:"기타(직접 입력)"} 
+			];
 		},
 
 		getAdTypeCode: function() {
 			return [{value:"1", text:"일반공고"}, {value:"2", text:"프리미어"}];
 		},
-	 
-
-
 
 		getAttrs: function() {
 			return [
-						{
-							group:"EMP",
-							text: "고용형태",
-							element: [
-								//{value:"",      group:"EMP", text:"무관", default:true},   
-								{value:"EMP.1", group:"EMP", text:"정규직"}, 
-								{value:"EMP.2", group:"EMP", text:"계약직"},         
-								{value:"EMP.3", group:"EMP", text:"아르바이트"}
-							]
-						},
+				{
+					group:"EMP",
+					text: "고용형태",
+					element: [
+						//{value:"",      group:"EMP", text:"무관", default:true},   
+						{value:"EMP.1", group:"EMP", text:"정규직"}, 
+						{value:"EMP.2", group:"EMP", text:"계약직"},         
+						{value:"EMP.3", group:"EMP", text:"아르바이트"}
+					]
+				},
 
-						{
-							group:"AREA", 
-							text:"채용부문",
-							element: [
-								//{value:"",       group:"AREA", text:"무관", default:true},
-								{value:"AREA.1", group:"AREA", text:"치위생사"},
-								{value:"AREA.2", group:"AREA", text:"간호조무사"},
-								{value:"AREA.3", group:"AREA", text:"치기공사"},
-								{value:"AREA.4", group:"AREA", text:"보험청구사"},
-								{value:"AREA.5", group:"AREA", text:"코디네이터"},
-								{value:"AREA.6", group:"AREA", text:"의사"},
-								{value:"AREA.7", group:"AREA", text:"기타"}
-							]
-						},
+				{
+					group:"AREA", 
+					text:"채용부문",
+					element: [
+						//{value:"",       group:"AREA", text:"무관", default:true},
+						{value:"AREA.1", group:"AREA", text:"치위생사"},
+						{value:"AREA.2", group:"AREA", text:"간호조무사"},
+						{value:"AREA.3", group:"AREA", text:"치기공사"},
+						{value:"AREA.4", group:"AREA", text:"보험청구사"},
+						{value:"AREA.5", group:"AREA", text:"코디네이터"},
+						{value:"AREA.6", group:"AREA", text:"의사"},
+						{value:"AREA.7", group:"AREA", text:"기타"}
+					]
+				},
 
-						{
-							group:"TASK",
-							text:"담당업무",
-							element: [
-								//{value:"",       group:"TASK", text:"무관", default:true},
-								{value:"TASK.1", group:"TASK", text:"진료실"},
-								{value:"TASK.2", group:"TASK", text:"데스크"},
-								{value:"TASK.3", group:"TASK", text:"상담"},
-								{value:"TASK.4", group:"TASK", text:"보험청구"},
-								{value:"TASK.5", group:"TASK", text:"치과내 기공실"},
-								{value:"TASK.6", group:"TASK", text:"치과기공소"},
-								{value:"TASK.7", group:"TASK", text:"관리및경영"},
-								{value:"TASK.8", group:"TASK", text:"의사"},
-								{value:"TASK.9", group:"TASK", text:"기타"},
-							]
-						},
-					];            
+				{
+					group:"TASK",
+					text:"담당업무",
+					element: [
+						//{value:"",       group:"TASK", text:"무관", default:true},
+						{value:"TASK.1", group:"TASK", text:"진료실"},
+						{value:"TASK.2", group:"TASK", text:"데스크"},
+						{value:"TASK.3", group:"TASK", text:"상담"},
+						{value:"TASK.4", group:"TASK", text:"보험청구"},
+						{value:"TASK.5", group:"TASK", text:"치과내 기공실"},
+						{value:"TASK.6", group:"TASK", text:"치과기공소"},
+						{value:"TASK.7", group:"TASK", text:"관리및경영"},
+						{value:"TASK.8", group:"TASK", text:"의사"},
+						{value:"TASK.9", group:"TASK", text:"기타"},
+					]
+				},
+			];            
 		},
 
 		getAttrMap: function() {
@@ -846,12 +845,7 @@ var CODE_CONTAINER = (function() {
 
 			};
 		}
-
-
-
 	};
-
-
 })();
 
 
@@ -882,7 +876,6 @@ function convertObjectToFormDataString(obj) {
 	});
 
 	return str;
-
 }
 
 
@@ -892,7 +885,7 @@ function convertObjectToFormDataString(obj) {
  * @param {*} formElement 
  */
 function createObjectFromFormData(formElement) {
-	if ( !formElement ) throw '처리할 FORM이 지정되지 않았습니다.';
+	if ( !formElement ) throw "처리할 FORM이 지정되지 않았습니다.";
 
 	var obj = {};
 
