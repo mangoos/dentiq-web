@@ -54,6 +54,37 @@ var API_SERVER_URL = "https://api.enqual.co.kr:9090";
 // 	};
 // })();
 
+
+
+// CustomEvent constructor pollyfill, because of explore.
+
+if ( typeof window.CustomEvent != "function" ) {
+
+	function CustomEvent ( event, params ) {
+		params = params || { bubbles: false, cancelable: false, detail: undefined };
+		var evt = document.createEvent( 'CustomEvent' );
+		evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+		return evt;
+		}
+	
+		CustomEvent.prototype = window.Event.prototype;
+	
+		window.CustomEvent = CustomEvent;
+}
+
+// NodeList Method forEach polyfill
+
+if (window.NodeList && !NodeList.prototype.forEach) {
+	console.log("NodeList Method forEach polyfill 실행");
+    NodeList.prototype.forEach = function (callback, thisArg) {
+        thisArg = thisArg || window;
+        for (var i = 0; i < this.length; i++) {
+            callback.call(thisArg, this[i], i, this);
+        }
+    };
+}
+
+
 var SESSION_TOKEN_NAME = "X-ENQUAL-DENTALPLUST-TOKEN";
 
 
