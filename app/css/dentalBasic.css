@@ -2112,7 +2112,7 @@ input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { di
 .user-action-panel.active,
 .user-action-panel-input:checked ~ .user-action-panel { display: block; }
 
-.user-action-panel-body { display: flex; flex-direction: column; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+.user-action-panel-body { display: flex; flex-direction: column; position: fixed; max-width: 360px; top: 50%; left: 50%; transform: translate(-50%, -50%); 
     width: 70%; z-index: 2; }
 
 .user-action-panel-body::before { content: "버튼을 선택해 주세요"; display: block; text-align: center; background-color: #0083cb; 
@@ -2502,10 +2502,12 @@ section.register-dentist ::-moz-input-placeholder { font-size: 0.7rem; font-styl
 /**********************************/
 /********* jobad.html css *********/
 /**********************************/
+.jobad_wrapper { max-width: 750px; margin: 0 auto; }
+
 .jobad-fixed-layer{ display: none; background-color: #FFF; top: 0; left:0; width: 100%; padding-top: 0.5rem; }
 
-.jobad-btm-layer { display: flex; flex-wrap: wrap;  justify-content: space-between; background-color: #FFF; font-size: 0.85rem; bottom: 0; left: 0; 
-    width: 100%; border-top: 1px solid #c4c2c2; }
+.jobad-btm-layer { display: flex; flex-wrap: wrap;  justify-content: space-between; background-color: #FFF; font-size: 0.85rem; bottom: 0; left: 50%; 
+    transform: translateX(-50%); width: 100%; max-width: 750px; border-top: 1px solid #c4c2c2; }
 
 .jobad-btm-layer .btn.btn-icon { display: inline-flex; justify-content: center; flex-grow: 1; flex-shrink: 1; flex-basis: auto; width: calc( 100%/3);
     padding: 0.8rem 0; margin-right: 0; font-size: 0.85rem; border: none; border-radius: 0; }
@@ -2570,6 +2572,7 @@ section.register-dentist ::-moz-input-placeholder { font-size: 0.7rem; font-styl
 
 
 /*********** paymet_completion_history.html css **************/
+.payment-completion-section { max-width: 750px; margin: 0 auto; }
 .payment-completion-list { padding-top: 1rem; padding-bottom: 1rem; width: 95%; margin: 0 auto; }
 .payment-list-card { display: flex; align-items: center; justify-content: center; background-color: #FFF; 
     border-bottom: 1px dashed #5d5d5d; padding: 0.4rem 0; font-size: 0.7rem; }
@@ -2688,8 +2691,8 @@ span.subway-line span.subway401:before { content: "대전 1호선"; color: #FFF;
     .liveplus .liveplus-filter-container fieldset { display: flex; flex-direction: column; padding: 0 5px; margin-bottom: 0.5rem; }
     .liveplus .liveplus-filter-container fieldset label { width: 95%; margin: 0 auto; }
     .liveplus .liveplus-filter-overlay { display: none !important; }
-    input[name=liveplus-filter-toggle]:checked ~ .liveplus-filter-container, .active .liveplus-filter-container { animation: none; }
-
+    input[name=liveplus-filter-toggle]:checked ~ .liveplus-filter-container, .active .liveplus-filter-container { animation: none !important; }
+    .liveplus .liveplus-filter-close-label { display: none; }
     
 /******************************************************************/
 /************************* header css *****************************/
@@ -2838,5 +2841,5 @@ header section.header-main .navbar-section-search,
     .notice-section { max-width: 980px; margin: 0 auto; }
 
     /* payment-completion */
-    .payment-completion-section { max-width: 980px; margin: 0 auto; }
+    .payment-completion-section { max-width: 750px; margin: 0 auto; }
 } 

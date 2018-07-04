@@ -29,418 +29,420 @@
             <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
-    <section class="jobad-top">
-        <div class="dental-info-card">
-            <div class="info-card-header">
-                <div class="info-card-title-styled" id="jobAd-title-1">***욜씨미 일하겠습니다.욜씨미 일하겠습니다.욜씨미 일하겠습니다.욜씨미 일하겠습니다.욜씨미 일하겠습니다.</div>
-            </div>
-            <div class="info-card-body">
-                <div class="hospital-info">
-                    <div class="hospital-info-box">
-                        <div class="hospital-log-box">
-                            <div class="logo-frame-hospital"><img id="hospital-logoUrl"></div>
+    <div class="jobad_wrapper">
+        <section class="jobad-top">
+            <div class="dental-info-card">
+                <div class="info-card-header">
+                    <div class="info-card-title-styled" id="jobAd-title-1">***욜씨미 일하겠습니다.욜씨미 일하겠습니다.욜씨미 일하겠습니다.욜씨미 일하겠습니다.욜씨미 일하겠습니다.</div>
+                </div>
+                <div class="info-card-body">
+                    <div class="hospital-info">
+                        <div class="hospital-info-box">
+                            <div class="hospital-log-box">
+                                <div class="logo-frame-hospital"><img id="hospital-logoUrl"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="hospital-info-box">
-                        <p class="hospital-name" id="hospital-name-1">***우리은행 치과</p>
-                        <div class="hospital-info-divider"></div>
-                        <div class="jobad-detail">
-                            <span class="jobad-d-day" id="jobAd-dDay">***D-20</span>
-                            <div class="divider-vert"></div>
-							<!--<label><input type="checkbox" id="chkInterestHospital" hidden><span class="like-icon" title="좋아요"></span></label>-->
-							<span class="d-icon d-like" id="actionInterestHospital" data-action-checked></span>
+                        <div class="hospital-info-box">
+                            <p class="hospital-name" id="hospital-name-1">***우리은행 치과</p>
+                            <div class="hospital-info-divider"></div>
+                            <div class="jobad-detail">
+                                <span class="jobad-d-day" id="jobAd-dDay">***D-20</span>
+                                <div class="divider-vert"></div>
+                                <!--<label><input type="checkbox" id="chkInterestHospital" hidden><span class="like-icon" title="좋아요"></span></label>-->
+                                <span class="d-icon d-like" id="actionInterestHospital" data-action-checked></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <nav class="jobad-nav">
-        <span><a href="#jobpost-info">채용정보</a></span>
-        <span><a href="#hospital-info">기본정보</a></span>
-        <span><a href="#hospital-map">위치정보</a></span>
-    </nav>
-    <section class="jobad-fixed-layer">
-        <div class="info-card-title-styled" id="jobAd-title-2">***밝고 즐거운 열정넘지는 신입/경력 치위생사 선생님을 모십니다. </div>
+        </section>
         <nav class="jobad-nav">
             <span><a href="#jobpost-info">채용정보</a></span>
             <span><a href="#hospital-info">기본정보</a></span>
             <span><a href="#hospital-map">위치정보</a></span>
         </nav>
-    </section>
-    <section id="jobpost-info" class="recruit-info">
-        <div class="dental-info-card">
-            <div class="info-card-header">
-                <div class="info-card-header-title">모집요강</div>
-            </div>
-            <div class="info-card-body">
-                <ul id="divAttrs" class="info-card-list"></ul><!-- 공고 속성 출력 -->
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">채용인원</span>
-                        <p id="jobAd-hiringCnt" class="info-card-item-desc">***00명</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">급여</span>
-                        <p id="jobAd-salary" class="info-card-item-desc">***면접 후 협의</p>
-                    </li>
-                </ul>
-            </div>
-            <script>
-                function renderAttrs(attrVal) {
-                    //console.log("*** renderAttrs : ", attrVal);
-                    var htmlStr = "";
-                    var attrCodes = CODE_CONTAINER.getAttrs();
-                    attrCodes.forEach(function(group) {
-                        htmlStr += "<li class='info-card-item'>" + "<span class='info-card-item-title'>" + group.text + "</span>";
-                        htmlStr += "<p class='info-card-item-desc'>";
-                        var groupChecked = false;
-                        group.element.forEach(function(attr) {                        
-                            for ( var i=0; attrVal && i<attrVal.length; i++ ) {
-                                //console.log("attrVal [" + attrVal[i] + "] , attr.value [" + attr.value + "]");
-                                if ( attrVal[i]==attr.value ) {
-                                    htmlStr += "<span class='info-card-item-desc-elm'>" + attr.text + "</span>&nbsp;";
-                                    groupChecked = true;
-                                    console.log("** renderAttrs : attrVal 잡았음 [" + attrVal[i] + "] , attr.value [" + attr.value + "](" + attr.text + ")");
-                                }
-                            }
-                        });
-                        if ( !groupChecked ) {
-                            htmlStr += "<span>무관</span>";
-                        }
-
-                        htmlStr += "</p></li>";
-
-                    });
-                    
-                    //console.log(htmlStr);
-                    document.getElementById("divAttrs").innerHTML = htmlStr;
-                }
-
-                // 테스트 코드
-                // var attrVal =  [
-                //             "EMP.1",
-                //             "AREA.2",
-                //             "AREA.5",
-                //             //"TASK.9"
-                //             ];
-                // renderAttrs(attrVal);
-            
-            </script>
-        
-  <!--     위의 스크립트는 아래와 같은 코드를 만들게 됨. 디자인 수정 시 아래를 수정해 주시고, 말씀해주셈
-            <div class="card-body">
-                    <div id="divAttrs">
-                        <div>고용형태</div>
-                        <div>
-                            <p id="attrVal" data-tag="attrVal">***</p>
-                            <p class="textDesc"></p>
-                        </div>
-
-                        <div>채용부문</div>
-                        <div>
-                            <p id="attrVal" data-tag="attrVal">***</p>
-                            <p class="textDesc"></p>
-                        </div>
-
-                        <div>담당업무</div>
-                        <div>
-                            <p>***진료실</p>
-                            <p class="text-desc">* 상황에 따라 협의 하에 변동이 있을 수 있습니다. </p>
-                        </div>
-                    </div>
-
-                    <div>채용인원</div>
-                    <div><p id="jobAd-hiringCnt">***00명</p></div>
-                    <div>급여</div>
-                    <div><p>***면접 후 협의</p></div>
-            </div>
-        -->
-
-
-
-        </div>
-        <div class="dental-info-card card">
-            <div class="info-card-header">
-                <div class="info-card-header-title">자격요건</div>
-            </div>
-            <div class="info-card-body">
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">학력</span>
-                        <p id="jobAd-eduLevel" class="info-card-item-desc">***무관(졸업예정자 가능)</p>
-                        <p class="info-card-item-desc2"></p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">경력</span>
-                        <p id="jobAd-expType" class="info-card-item-desc">***신입/경력</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">자격요건</span>
-                        <p id="jobAd-licenseText" class="info-card-item-desc">***치위생사 면허증 또는 간호조무사 자격증</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="dental-info-card">
-            <div class="info-card-header">
-                <div class="info-card-header-title">근무환경</div>
-            </div>
-            <div class="info-card-body">
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">근무지역</span>
-                        <p id="hospital-locationText" class="info-card-item-desc">***서울> 강남구> 역삼동</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">근무요일</span>
-                        <p id="jobAd-workingDay" class="info-card-item-desc">***월/화/수</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">근무시간</span>
-                        <ul class="info-card-sublist2">
-                            <li class="info-card-subitem2">
-                                <span class="info-card-subitem-title2">평일</span>
-                                <p id="jobAd-workingTimeWeekday" class="info-card-item-desc3">***09시 ~ 18시</p>
-                            </li>
-                            <li class="info-card-subitem2">
-                                <span class="info-card-subitem-title2">주말</span>
-                                <p id="jobAd-workingTimeWeekend" class="info-card-item-desc3">***09시 ~ 18시</p>
-                            </li>
-                            <li class="info-card-subitem2">
-                                <span class="info-card-subitem-title2">참고 사항</span>
-                                <p id="jobAd-workingTimeText" class="info-card-item-desc3">***09시 ~ 18시</p>
-                            </li>
-                        </ul>                    
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">점심시간</span>
-                        <p class="info-card-item-desc">
-                            <span id="jobAd-lunchTimeStart">***13시</span>
-                            <span id="jobAd-lunchTimeEnd">***13시</span>
-                        </p>
-                        <p class="info-card-item-desc2">* 상황에 따라 협의 하에 변동이 있을 수 있습니다. </p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="dental-info-card">
-            <div class="info-card-header">
-                <div class="info-card-header-title">접수기간 및 방법</div>
-            </div>
-            <div class="info-card-body">
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">시작일</span>
-                        <p id="jobAd-hiringStartDate" class="info-card-item-desc txt-red">***</p>
-                    </li>
-                    <li class="info-card-item">
-                            <span class="info-card-item-title">마감일</span>
-                            <p id="jobAd-hiringEndDate" class="info-card-item-desc">***2017. 11. 18. (토) 18시</p>
-                            <p class="info-card-item-desc2">* 마감일은 기업의 사정, 조기마감 등으로 변경될 수 있습니다.</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">접수방법</span>
-                        <ul id="divApplyWay" class="info-card-sublist">
-                            <!-- <button class="btn btn-primary" name="jobAd-applyWay" value="homepage"    hidden disabled>병원홈페이지 ></button>
-                            <button class="btn btn-primary" name="jobAd-applyWay" value="oneclick"    hidden disabled>원클릭지원 ></button>
-                            <button class="btn btn-primary" name="jobAd-applyWay" value="email"       hidden disabled>이메일지원 ></button>
-                            <button class="btn btn-primary" name="jobAd-applyWay" value="tel"         hidden disabled>전화 문의 ></button> -->
-                        </ul>
-                    </li>
-                </ul>
-                
+        <section class="jobad-fixed-layer">
+            <div class="info-card-title-styled" id="jobAd-title-2">***밝고 즐거운 열정넘지는 신입/경력 치위생사 선생님을 모십니다. </div>
+            <nav class="jobad-nav">
+                <span><a href="#jobpost-info">채용정보</a></span>
+                <span><a href="#hospital-info">기본정보</a></span>
+                <span><a href="#hospital-map">위치정보</a></span>
+            </nav>
+        </section>
+        <section id="jobpost-info" class="recruit-info">
+            <div class="dental-info-card">
+                <div class="info-card-header">
+                    <div class="info-card-header-title">모집요강</div>
+                </div>
+                <div class="info-card-body">
+                    <ul id="divAttrs" class="info-card-list"></ul><!-- 공고 속성 출력 -->
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">채용인원</span>
+                            <p id="jobAd-hiringCnt" class="info-card-item-desc">***00명</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">급여</span>
+                            <p id="jobAd-salary" class="info-card-item-desc">***면접 후 협의</p>
+                        </li>
+                    </ul>
+                </div>
                 <script>
-
-                    //getApplyWay
-                    var htmlApplyWay = "";
-                    CODE_CONTAINER.getApplyWay().forEach(function(way) {
-                        if ( way.value == '') return;   // 전체인 경우는 표시 안함
-                        htmlApplyWay += '<button class="info-card-chip" name="jobAd-applyWay" value="' + way.value + '" hidden disabled>' + way.text + ' ></button>';
-                    });
-                    document.getElementById("divApplyWay").innerHTML = htmlApplyWay;
-
-
-                    // 지원방법을 클릭했을 때, 이벤트 처리
-                    function onClickApply(event) {
-                        console.log(this.value);
-                    }
-                    document.querySelectorAll("[name='jobAd-applyWay']").forEach(function(el) {
-                        el.addEventListener("click", onClickApply);
-                    });
-
-
-                    // 지원방법의 값을 로드한 데이터로 세팅
-                    function setupApplyWay(arr) {
-                        if ( !arr || !Array.isArray(arr) || arr.length<1 ) return;
-                        
-                        document.querySelectorAll("[name='jobAd-applyWay']").forEach(function(el) {
-                            el.hidden = true;
-                            el.disabled = true;
-                        });
-
-                        arr.forEach(function(e) {
-                            var target = document.querySelector("[name='jobAd-applyWay'][value='" + e + "']");
-                            if ( target ) {
-                                target.hidden = false;
-                                target.disabled = false;
+                    function renderAttrs(attrVal) {
+                        //console.log("*** renderAttrs : ", attrVal);
+                        var htmlStr = "";
+                        var attrCodes = CODE_CONTAINER.getAttrs();
+                        attrCodes.forEach(function(group) {
+                            htmlStr += "<li class='info-card-item'>" + "<span class='info-card-item-title'>" + group.text + "</span>";
+                            htmlStr += "<p class='info-card-item-desc'>";
+                            var groupChecked = false;
+                            group.element.forEach(function(attr) {                        
+                                for ( var i=0; attrVal && i<attrVal.length; i++ ) {
+                                    //console.log("attrVal [" + attrVal[i] + "] , attr.value [" + attr.value + "]");
+                                    if ( attrVal[i]==attr.value ) {
+                                        htmlStr += "<span class='info-card-item-desc-elm'>" + attr.text + "</span>&nbsp;";
+                                        groupChecked = true;
+                                        console.log("** renderAttrs : attrVal 잡았음 [" + attrVal[i] + "] , attr.value [" + attr.value + "](" + attr.text + ")");
+                                    }
+                                }
+                            });
+                            if ( !groupChecked ) {
+                                htmlStr += "<span>무관</span>";
                             }
+
+                            htmlStr += "</p></li>";
+
                         });
+                        
+                        //console.log(htmlStr);
+                        document.getElementById("divAttrs").innerHTML = htmlStr;
                     }
+
+                    // 테스트 코드
+                    // var attrVal =  [
+                    //             "EMP.1",
+                    //             "AREA.2",
+                    //             "AREA.5",
+                    //             //"TASK.9"
+                    //             ];
+                    // renderAttrs(attrVal);
+                
                 </script>
-            </div>
-        </div>
-        <div class="dental-info-card">
-            <div class="info-card-header"><div class="info-card-header-title">문의처</div></div>
-            <div class="info-card-body">
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">담당자</span>
-                        <p id="jobAd-hrOfficerName" class="info-card-item-desc">***김샛별 대리</p>
-                        <p class="info-card-item-desc2"></p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">이메일</span>
-                        <p id="jobAd-hrEmail" class="info-card-item-desc">***tomotafn@naver.com</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">전화</span>
-                        <p id="jobAd-hrTelNo" class="info-card-item-desc">***042-537-8620</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <section id="hospital-info" class="hospital-info">
-        <div class="dental-info-card">
-            <div class="info-card-header">
-                <div class="info-card-header-title">기본정보</div>
-            </div>
-            <div class="info-card-body">
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">사업장명</span>
-                        <p id="hospital-bizRegName" class="info-card-item-desc">***우리은행 치과</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">병원명</span>
-                        <p id="hospital-name-2" class="info-card-item-desc">***우리은행 치과</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">병원구분</span>
-                        <p id="hospital-hospitalType" class="info-card-item-desc">***통신판매중계업</p>
-                    </li>
+            
+    <!--     위의 스크립트는 아래와 같은 코드를 만들게 됨. 디자인 수정 시 아래를 수정해 주시고, 말씀해주셈
+                <div class="card-body">
+                        <div id="divAttrs">
+                            <div>고용형태</div>
+                            <div>
+                                <p id="attrVal" data-tag="attrVal">***</p>
+                                <p class="textDesc"></p>
+                            </div>
 
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">설립일</span>
-                        <p id="hospital-estDate" class="info-card-item-desc" data-tag="estDate">***1989년 12월 11일(15년)</p>
-                    </li>
+                            <div>채용부문</div>
+                            <div>
+                                <p id="attrVal" data-tag="attrVal">***</p>
+                                <p class="textDesc"></p>
+                            </div>
 
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">대표자명</span>
-                        <p id="hospital-ceoName" class="info-card-item-desc" data-tag="hospitalCEONm">***변사장</p>
-                    </li>
+                            <div>담당업무</div>
+                            <div>
+                                <p>***진료실</p>
+                                <p class="text-desc">* 상황에 따라 협의 하에 변동이 있을 수 있습니다. </p>
+                            </div>
+                        </div>
 
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">홈페이지</span>
-                        <p id="hospital-hospUrl" class="info-card-item-desc" data-tag="hospUrl">***</p>
-                    </li>
-
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">주소</span>
-                        <p class="info-card-item-desc"><span id="hospital-addrMain" data-tag="addr">***</span> <span id="hospital-addrDetail" data-tag="addr">***</span></p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="dental-info-card">
-            <div class="info-card-header">
-                <div class="info-card-header-title">진료 정보</div>
-            </div>
-            <div class="info-card-body">
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">휴일 휴진</span>
-                        <p id="hospital-holyday" class="info-card-item-desc">***주말 휴진</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">진료 시간</span>
-                        <ul class="info-card-sublist2">
-                            <li class="info-card-subitem2">
-                                <span class="info-card-subitem-title2">평일</span>
-                                <p id="hospital-workingTimeWeekday" class="info-card-item-desc3">***주말 휴진</p> 
-                            </li>
-                            <li class="info-card-subitem2">
-                                <span class="info-card-subitem-title2">주말</span>
-                                <p id="hospital-workingTimeWeekend" class="info-card-item-desc3">***주말 휴진</p>
-                            </li>
-                            <li class="info-card-subitem2">
-                                <span class="info-card-subitem-title2">참고 사항</span>
-                                <p id="hospital-workingTimeText" class="info-card-item-desc3">***주말 휴진</p>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">점심시간</span>
-                        <p class="info-card-item-desc">
-                            <span id="hospital-lunchTimeStart">***13시30분</span>
-                            <span>~</span>
-                            <span id="hospital-lunchTimeEnd">***13시30분</span>
-                        </p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">직원 구성</span>
-                        <p id="hospital-totalMemberCnt" class="info-card-item-desc">***00명</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">진료 과목</span>
-                        <p id="hospital-clinicSubject" class="info-card-item-desc">***교정</p>
-                    </li>
-                <!--
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">이메일</span>
-                        <p id="hospital-email" class="info-card-item-desc">***gmarket@gmail.com</p>
-                    </li>
-                -->
-                </ul>
-
-            </div>
-        </div>
-        <div class="dental-info-card">
-            <div class="info-card-header">
-                <h1 class="info-card-header-title">위치/교통 정보</h1>
-            </div>
-            <div class="info-card-body">
-                <ul class="info-card-list">
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">지하철</span>
-                        <p class="info-card-item-desc">***7호선 중화역 3번출구</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">시내버스</span>
-                        <p class="info-card-item-desc">***240, 241A, 241B, 1122, 2012, 2113, 2223, 2234</p>
-                    </li>
-                    <li class="info-card-item">
-                        <span class="info-card-item-title">주변 명소</span>
-                        <p class="info-card-item-desc">***서울성모병원, ***강남고속버스터미널 남쪽 200m</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div id="hospital-map" class="dental-info-card" style="height:400px; margin: 6px auto 30px;">
-            지도를 표시할 수 없습니다.
-        </div>
+                        <div>채용인원</div>
+                        <div><p id="jobAd-hiringCnt">***00명</p></div>
+                        <div>급여</div>
+                        <div><p>***면접 후 협의</p></div>
+                </div>
+            -->
 
 
-    </section>
-    <section class="jobad-btm-layer" id="jobAdBtmLayer">
-        <div class="jobad-btm-float-btn">
-            <label class="go-to-top"><input type="button" name="" hidden><i class="far fa-arrow-circle-up"></i></label>
-		</div>		
-		<span class="btn btn-icon d-scrap" id="actionScrap">스크랩</span>
-		<span class="btn btn-icon d-apply" id="actionApply"></span>
-		<span class="btn btn-icon d-phone" id="actionCall">전화문의</span>
-    </section>
+
+            </div>
+            <div class="dental-info-card card">
+                <div class="info-card-header">
+                    <div class="info-card-header-title">자격요건</div>
+                </div>
+                <div class="info-card-body">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">학력</span>
+                            <p id="jobAd-eduLevel" class="info-card-item-desc">***무관(졸업예정자 가능)</p>
+                            <p class="info-card-item-desc2"></p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">경력</span>
+                            <p id="jobAd-expType" class="info-card-item-desc">***신입/경력</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">자격요건</span>
+                            <p id="jobAd-licenseText" class="info-card-item-desc">***치위생사 면허증 또는 간호조무사 자격증</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dental-info-card">
+                <div class="info-card-header">
+                    <div class="info-card-header-title">근무환경</div>
+                </div>
+                <div class="info-card-body">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">근무지역</span>
+                            <p id="hospital-locationText" class="info-card-item-desc">***서울> 강남구> 역삼동</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">근무요일</span>
+                            <p id="jobAd-workingDay" class="info-card-item-desc">***월/화/수</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">근무시간</span>
+                            <ul class="info-card-sublist2">
+                                <li class="info-card-subitem2">
+                                    <span class="info-card-subitem-title2">평일</span>
+                                    <p id="jobAd-workingTimeWeekday" class="info-card-item-desc3">***09시 ~ 18시</p>
+                                </li>
+                                <li class="info-card-subitem2">
+                                    <span class="info-card-subitem-title2">주말</span>
+                                    <p id="jobAd-workingTimeWeekend" class="info-card-item-desc3">***09시 ~ 18시</p>
+                                </li>
+                                <li class="info-card-subitem2">
+                                    <span class="info-card-subitem-title2">참고 사항</span>
+                                    <p id="jobAd-workingTimeText" class="info-card-item-desc3">***09시 ~ 18시</p>
+                                </li>
+                            </ul>                    
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">점심시간</span>
+                            <p class="info-card-item-desc">
+                                <span id="jobAd-lunchTimeStart">***13시</span>
+                                <span id="jobAd-lunchTimeEnd">***13시</span>
+                            </p>
+                            <p class="info-card-item-desc2">* 상황에 따라 협의 하에 변동이 있을 수 있습니다. </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dental-info-card">
+                <div class="info-card-header">
+                    <div class="info-card-header-title">접수기간 및 방법</div>
+                </div>
+                <div class="info-card-body">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">시작일</span>
+                            <p id="jobAd-hiringStartDate" class="info-card-item-desc txt-red">***</p>
+                        </li>
+                        <li class="info-card-item">
+                                <span class="info-card-item-title">마감일</span>
+                                <p id="jobAd-hiringEndDate" class="info-card-item-desc">***2017. 11. 18. (토) 18시</p>
+                                <p class="info-card-item-desc2">* 마감일은 기업의 사정, 조기마감 등으로 변경될 수 있습니다.</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">접수방법</span>
+                            <ul id="divApplyWay" class="info-card-sublist">
+                                <!-- <button class="btn btn-primary" name="jobAd-applyWay" value="homepage"    hidden disabled>병원홈페이지 ></button>
+                                <button class="btn btn-primary" name="jobAd-applyWay" value="oneclick"    hidden disabled>원클릭지원 ></button>
+                                <button class="btn btn-primary" name="jobAd-applyWay" value="email"       hidden disabled>이메일지원 ></button>
+                                <button class="btn btn-primary" name="jobAd-applyWay" value="tel"         hidden disabled>전화 문의 ></button> -->
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <script>
+
+                        //getApplyWay
+                        var htmlApplyWay = "";
+                        CODE_CONTAINER.getApplyWay().forEach(function(way) {
+                            if ( way.value == '') return;   // 전체인 경우는 표시 안함
+                            htmlApplyWay += '<button class="info-card-chip" name="jobAd-applyWay" value="' + way.value + '" hidden disabled>' + way.text + ' ></button>';
+                        });
+                        document.getElementById("divApplyWay").innerHTML = htmlApplyWay;
+
+
+                        // 지원방법을 클릭했을 때, 이벤트 처리
+                        function onClickApply(event) {
+                            console.log(this.value);
+                        }
+                        document.querySelectorAll("[name='jobAd-applyWay']").forEach(function(el) {
+                            el.addEventListener("click", onClickApply);
+                        });
+
+
+                        // 지원방법의 값을 로드한 데이터로 세팅
+                        function setupApplyWay(arr) {
+                            if ( !arr || !Array.isArray(arr) || arr.length<1 ) return;
+                            
+                            document.querySelectorAll("[name='jobAd-applyWay']").forEach(function(el) {
+                                el.hidden = true;
+                                el.disabled = true;
+                            });
+
+                            arr.forEach(function(e) {
+                                var target = document.querySelector("[name='jobAd-applyWay'][value='" + e + "']");
+                                if ( target ) {
+                                    target.hidden = false;
+                                    target.disabled = false;
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+            <div class="dental-info-card">
+                <div class="info-card-header"><div class="info-card-header-title">문의처</div></div>
+                <div class="info-card-body">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">담당자</span>
+                            <p id="jobAd-hrOfficerName" class="info-card-item-desc">***김샛별 대리</p>
+                            <p class="info-card-item-desc2"></p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">이메일</span>
+                            <p id="jobAd-hrEmail" class="info-card-item-desc">***tomotafn@naver.com</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">전화</span>
+                            <p id="jobAd-hrTelNo" class="info-card-item-desc">***042-537-8620</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="hospital-info" class="hospital-info">
+            <div class="dental-info-card">
+                <div class="info-card-header">
+                    <div class="info-card-header-title">기본정보</div>
+                </div>
+                <div class="info-card-body">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">사업장명</span>
+                            <p id="hospital-bizRegName" class="info-card-item-desc">***우리은행 치과</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">병원명</span>
+                            <p id="hospital-name-2" class="info-card-item-desc">***우리은행 치과</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">병원구분</span>
+                            <p id="hospital-hospitalType" class="info-card-item-desc">***통신판매중계업</p>
+                        </li>
+
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">설립일</span>
+                            <p id="hospital-estDate" class="info-card-item-desc" data-tag="estDate">***1989년 12월 11일(15년)</p>
+                        </li>
+
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">대표자명</span>
+                            <p id="hospital-ceoName" class="info-card-item-desc" data-tag="hospitalCEONm">***변사장</p>
+                        </li>
+
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">홈페이지</span>
+                            <p id="hospital-hospUrl" class="info-card-item-desc" data-tag="hospUrl">***</p>
+                        </li>
+
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">주소</span>
+                            <p class="info-card-item-desc"><span id="hospital-addrMain" data-tag="addr">***</span> <span id="hospital-addrDetail" data-tag="addr">***</span></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dental-info-card">
+                <div class="info-card-header">
+                    <div class="info-card-header-title">진료 정보</div>
+                </div>
+                <div class="info-card-body">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">휴일 휴진</span>
+                            <p id="hospital-holyday" class="info-card-item-desc">***주말 휴진</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">진료 시간</span>
+                            <ul class="info-card-sublist2">
+                                <li class="info-card-subitem2">
+                                    <span class="info-card-subitem-title2">평일</span>
+                                    <p id="hospital-workingTimeWeekday" class="info-card-item-desc3">***주말 휴진</p> 
+                                </li>
+                                <li class="info-card-subitem2">
+                                    <span class="info-card-subitem-title2">주말</span>
+                                    <p id="hospital-workingTimeWeekend" class="info-card-item-desc3">***주말 휴진</p>
+                                </li>
+                                <li class="info-card-subitem2">
+                                    <span class="info-card-subitem-title2">참고 사항</span>
+                                    <p id="hospital-workingTimeText" class="info-card-item-desc3">***주말 휴진</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">점심시간</span>
+                            <p class="info-card-item-desc">
+                                <span id="hospital-lunchTimeStart">***13시30분</span>
+                                <span>~</span>
+                                <span id="hospital-lunchTimeEnd">***13시30분</span>
+                            </p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">직원 구성</span>
+                            <p id="hospital-totalMemberCnt" class="info-card-item-desc">***00명</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">진료 과목</span>
+                            <p id="hospital-clinicSubject" class="info-card-item-desc">***교정</p>
+                        </li>
+                    <!--
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">이메일</span>
+                            <p id="hospital-email" class="info-card-item-desc">***gmarket@gmail.com</p>
+                        </li>
+                    -->
+                    </ul>
+
+                </div>
+            </div>
+            <div class="dental-info-card">
+                <div class="info-card-header">
+                    <h1 class="info-card-header-title">위치/교통 정보</h1>
+                </div>
+                <div class="info-card-body">
+                    <ul class="info-card-list">
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">지하철</span>
+                            <p class="info-card-item-desc">***7호선 중화역 3번출구</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">시내버스</span>
+                            <p class="info-card-item-desc">***240, 241A, 241B, 1122, 2012, 2113, 2223, 2234</p>
+                        </li>
+                        <li class="info-card-item">
+                            <span class="info-card-item-title">주변 명소</span>
+                            <p class="info-card-item-desc">***서울성모병원, ***강남고속버스터미널 남쪽 200m</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="hospital-map" class="dental-info-card" style="height:400px; margin: 6px auto 30px;">
+                지도를 표시할 수 없습니다.
+            </div>
+
+
+        </section>
+        <section class="jobad-btm-layer" id="jobAdBtmLayer">
+            <div class="jobad-btm-float-btn">
+                <label class="go-to-top"><input type="button" name="" hidden><i class="far fa-arrow-circle-up"></i></label>
+            </div>		
+            <span class="btn btn-icon d-scrap" id="actionScrap">스크랩</span>
+            <span class="btn btn-icon d-apply" id="actionApply"></span>
+            <span class="btn btn-icon d-phone" id="actionCall">전화문의</span>
+        </section>
+    </div>
     <footer class="footer">
     footer
     </footer>
