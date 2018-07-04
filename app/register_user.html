@@ -375,7 +375,9 @@
                 // HTTP GET Query 문자열에서 특정 파라미터가 포함되어 있는지 확인한다. copy from liveboard.html
                 function containsParamInParamString(paramString, paramToBeSearch) {
                     if ( !paramString ) return false;
-    
+                    
+                    console.log(paramString);
+
                     var tokens = paramString.split("&");
                     for ( var i=0; tokens && i<tokens.length; i++ ) {
                         var paramName = tokens[i].split("=")[0];
@@ -616,26 +618,27 @@
                     // 이미 관심지역을 선택한 내역이 있으면, 화면에 렌더링
                     function loadInterestingLocation() {
 
-                        var userId = LOGIN_INFO.getId();
-                        if ( userId == null ) {
-                            dModal.alert("로그인 되어 있지 않습니다. ");
-                            return;
-                        }
+                        // 개인 멤버가 아니면 콜 안보내도록 래핑.
+                        // 기본적인 권한체크는 페이지 접근할 때 체크.
+                        if( LOGIN_INFO.isPersonalMember() ) {
 
-                        callApi("GET", "/api/user/"+userId+"/interestLocationCode/", null, 
-                            function(resData) {
-                                resData.forEach(function(locationCode) {
-                                    console.log("로딩됨 ", locationCode);
-                                    //console.log(item.siguCode);
-                                    document.getElementById("location-"+locationCode).checked = true;      // 시구 선택 check
-                                    //$(".chip[for='location-"+item.siguCode+"']").show();                    // 선택된 시구에 대한 chip 표시
-                                    renderSelectedLocationChips();
-                                });
-                            },
-                            function(errorCode, errorMsg) {
-                                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                            }
-                        );
+                            var userId = LOGIN_INFO.getId();
+
+                            callApi("GET", "/api/user/"+userId+"/interestLocationCode/", null, 
+                                function(resData) {
+                                    resData.forEach(function(locationCode) {
+                                        console.log("로딩됨 ", locationCode);
+                                        //console.log(item.siguCode);
+                                        document.getElementById("location-"+locationCode).checked = true;      // 시구 선택 check
+                                        //$(".chip[for='location-"+item.siguCode+"']").show();                    // 선택된 시구에 대한 chip 표시
+                                        renderSelectedLocationChips();
+                                    });
+                                },
+                                function(errorCode, errorMsg) {
+                                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                                }
+                            );
+                        }
                     }
 
 
@@ -728,31 +731,30 @@
                 /*******************************************************************************/
                 var MyHomeApp = (function() {
                 
-                    // var selectedJuso = null;
+                    // var selectedJuso = null;  주소 모듈 분리, 전역변수로 변경
                 
                     function loadMyHome() {
-                        var userId = LOGIN_INFO.getId();
-                        if ( userId == null ) {
-                            dModal.alert("로그인되어 있지 않음");
-                            return;
+
+                        if(LOGIN_INFO.isPersonalMember()) {
+                            var userId = LOGIN_INFO.getId();
+
+                            callApi("GET", "/api/user/"+userId+"/addr/", null, 
+                                function(resData) {
+                                    console.log("사용자 주소 로드 : ", resData);
+                                    if ( resData==null ) return;        // 사용자의 주소가 없을 수도 있음.
+                    
+                                    selectedJuso = resData;
+                    
+                                    //$("#addrMain").html(selectedJuso.roadAddr);
+                                    document.getElementById("addrMain").value = selectedJuso.addrMain;          // 도로명주소(참고항목 제외) 
+                                    document.getElementById("addrDetail").value = selectedJuso.addrDetail;      // 상세주소
+                    
+                                },
+                                function(errorCode, errorMsg) {
+                                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                                }
+                            );
                         }
-                
-                        callApi("GET", "/api/user/"+userId+"/addr/", null, 
-                            function(resData) {
-                                console.log("사용자 주소 로드 : ", resData);
-                                if ( resData==null ) return;        // 사용자의 주소가 없을 수도 있음.
-                
-                                selectedJuso = resData;
-                
-                                //$("#addrMain").html(selectedJuso.roadAddr);
-                                document.getElementById("addrMain").value = selectedJuso.addrMain;          // 도로명주소(참고항목 제외) 
-                                document.getElementById("addrDetail").value = selectedJuso.addrDetail;      // 상세주소
-                
-                            },
-                            function(errorCode, errorMsg) {
-                                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                            }
-                        );
                     }
                 
                                         
@@ -941,46 +943,45 @@
                 var MyInfoApp = (function() {
                     var basicInfoForm = document.getElementById("basicInfoForm");
 
-					// var selectedJuso = null;
+					// var selectedJuso = null; 주소 모듈 분리, 전역변수로 변경
 					
 					//var oldJuso = null;
 
                     // 먼저 기본 정보를 불러온다.
                     function loadMyInfo() {                        
-                        var userId = LOGIN_INFO.getId();
-                        if ( userId == null ) {
-                            dModal.alert("로그인되어 있지 않음");
-                            return;
-						}
-						
-						// 기본 정보 로드
-                        callApi("GET", "/api/user/"+userId+"/basicInfo/", null, 
-                            function(resData) {
-								console.log(resData);
-								
-                                basicInfoForm.querySelector("input[name='name']").value         = getValueString(resData.name);
-                                basicInfoForm.querySelector("input[name='telNo']").value        = getValueString(resData.telNo);
-								document.getElementById("myInfoEmail").value                    = getValueString(resData.email);
-								basicInfoForm.querySelector("input[name='birthday']").value     = getValueString(resData.birthday);
 
-								var gender = getValueString(resData.gender);
-                                if ( gender == 'M' ) document.getElementById("gender-M").checked = true;
-								else if ( gender == 'F' ) document.getElementById("gender-F").checked = true;
-								
+						if(LOGIN_INFO.isPersonalMember()) {
 
-								if ( resData.location ) {
-									selectedJuso = resData.location;
-									document.getElementById("myInfoAddrMain").value                 = getValueString(selectedJuso.addrMain);
-									document.getElementById("myInfoAddrDetail").value               = getValueString(selectedJuso.addrDetail);
-								}
+                            var userId = LOGIN_INFO.getId();
+
+                            // 기본 정보 로드
+                            callApi("GET", "/api/user/"+userId+"/basicInfo/", null, 
+                                function(resData) {
+                                    console.log(resData);
+                                    
+                                    basicInfoForm.querySelector("input[name='name']").value         = getValueString(resData.name);
+                                    basicInfoForm.querySelector("input[name='telNo']").value        = getValueString(resData.telNo);
+                                    document.getElementById("myInfoEmail").value                    = getValueString(resData.email);
+                                    basicInfoForm.querySelector("input[name='birthday']").value     = getValueString(resData.birthday);
+
+                                    var gender = getValueString(resData.gender);
+                                    if ( gender == 'M' ) document.getElementById("gender-M").checked = true;
+                                    else if ( gender == 'F' ) document.getElementById("gender-F").checked = true;
+                                    
+
+                                    if ( resData.location ) {
+                                        selectedJuso = resData.location;
+                                        document.getElementById("myInfoAddrMain").value                 = getValueString(selectedJuso.addrMain);
+                                        document.getElementById("myInfoAddrDetail").value               = getValueString(selectedJuso.addrDetail);
+                                    }
 
 
-                            },
-                            function(errorCode, errorMsg) {
-                                alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
-                            }
-                        );
-                        
+                                },
+                                function(errorCode, errorMsg) {
+                                    alert("에러 [" + errorCode + "] ==> [" + errorMsg + "]");
+                                }
+                            );
+                        }
                     }
 
                     
@@ -1104,14 +1105,15 @@
     </section>
 <script src="js/dental_ui.js"></script>
 <script>
-    var STEPS = {};
 
-    window.onload = function() {
+    window.addEventListener("load", function() {
+
+        LOGIN_INFO.checkAuthPersonal();
         loadSpecificTabOnly();
-        STEPS = new Steps("registerUserSteps");
 
+        var STEPS = new Steps("registerUserSteps");
         console.log(STEPS);
-    }
+    });
 </script>
 <script src="js/lib/address.js"></script>
 <script>

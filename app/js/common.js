@@ -555,7 +555,7 @@ var LOGIN_INFO = (function() {
 		return flag;
 	};
 
-	// 로컬  스토리지와 현재 메로리 상의 사용자 정보를 삭제한다.
+	// 로컬  스토리지와 현재 메모리 상의 사용자 정보를 삭제한다.
 	var _clear = function() { // return void
 		localStorage.removeItem(STORAGE_ITEM_NAME);
 		sessionStorage.removeItem(STORAGE_ITEM_NAME);
@@ -610,7 +610,7 @@ var LOGIN_INFO = (function() {
 		},
 		getId: function() {
 			if (userInfo != null) return userInfo.userId;
-			else return;
+			else return ;
 		},
 
 		getUserType: function() {   // 1:구직(개인)회원, 2:구인(병원)회원
@@ -639,14 +639,16 @@ var LOGIN_INFO = (function() {
 
 		checkAuthPersonal: function() {
 			if ( !userInfo || !userInfo.userId ) {
-				alert("로그인이 필요합니다.");
-				location.href = "login.html";
+				dModal.alert("로그인이 필요합니다.", function() {
+					location.href = "login.html";
+				});
 				return false;
 			}
 
 			if ( !userInfo.userType || userInfo.userType!=1 ) {
-				alert("개인회원만 이용 가능합니다.");
-				window.history.back();
+				dModal.alert("개인회원만 이용 가능합니다.", function () {
+					window.history.back();
+				});
 				return false;
 			}
 	
@@ -1740,7 +1742,7 @@ function initFormElementValues(formElement, selectedValues) {
  * 현재 페이지가 호출될 때의 GET 방식 파라미터 문자열을 추출한다.
  */
 function getHtmlCallParamString() {
-	var loc = document.location + "";
+	var loc = document.location.href;
 	var idx = loc.indexOf("?");
 	if ( idx > -1 ) {   // 파라미터가 있으면
 		return loc.substring(idx+1);
