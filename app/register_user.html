@@ -618,7 +618,7 @@
 
                         var userId = LOGIN_INFO.getId();
                         if ( userId == null ) {
-                            alert("로그인 되어 있지 않습니다. ");
+                            dModal.alert("로그인 되어 있지 않습니다. ");
                             return;
                         }
 
@@ -733,7 +733,7 @@
                     function loadMyHome() {
                         var userId = LOGIN_INFO.getId();
                         if ( userId == null ) {
-                            alert("로그인되어 있지 않음");
+                            dModal.alert("로그인되어 있지 않음");
                             return;
                         }
                 
@@ -949,7 +949,7 @@
                     function loadMyInfo() {                        
                         var userId = LOGIN_INFO.getId();
                         if ( userId == null ) {
-                            alert("로그인되어 있지 않음");
+                            dModal.alert("로그인되어 있지 않음");
                             return;
 						}
 						

@@ -855,7 +855,7 @@ var CODE_CONTAINER = (function() {
 })();
 
 
-var CHANGE_EVENT = new Event("change");
+var CHANGE_EVENT = new CustomEvent("change");
 
 /*************************************************************************************************************** */
 
