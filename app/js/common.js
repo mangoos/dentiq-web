@@ -50,6 +50,7 @@ var API_SERVER_URL = "https://api.enqual.co.kr:9090";
 // })();
 
 
+
 // CustomEvent constructor pollyfill, because of explore.
 
 if ( typeof window.CustomEvent != "function" ) {
