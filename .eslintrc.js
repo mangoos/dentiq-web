@@ -1,5 +1,7 @@
-{
-
+module.exports = {
+    "env": {
+        "browser": true
+    },
 	"parserOptions": {
 		"ecmaVersion": 5
 	},
@@ -7,12 +9,10 @@
 		"jQuery": true,
 		"$": true
 	},
-
-
     "env": {
         "browser": true
     },
-    "extends": "eslint:recommended",
+    "extends": "naver/es5",
     "rules": {
         "indent": [
             "error",
@@ -29,6 +29,9 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-console": "off",
+        "no-inner-declarations": "off",
+        "vars-on-top" : "off"
     }
 }
