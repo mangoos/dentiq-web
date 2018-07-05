@@ -10,9 +10,6 @@
 /*
 /******************************************************************************/
 
-"use strict";
-
-
 /* API 서버 URL */
 // var API_SERVER_URL = "http://dentalplus.enqual.co.kr:8080";
 var API_SERVER_URL = "https://api.enqual.co.kr:9090";
