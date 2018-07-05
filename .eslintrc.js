@@ -5,7 +5,8 @@ module.exports = {
 	},
 	"globals": {
 		"jQuery": true,
-		"$": true
+        "$": true,
+        "JSON": true
 	},
     "env": {
         "browser": true
