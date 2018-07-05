@@ -23,13 +23,13 @@ var API_SERVER_URL = "https://api.enqual.co.kr:9090";
 
 // 	// LOCAL STORAGE에 있는지 본다. 없다면 받아 온 후, LOCAL STORAGE에 넣는다.
 
-// 	//var HOSPITAL_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/hospital";
+var HOSPITAL_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/hospital";
 // 	var HOSPITAL_RESOURCE_URL	= "http://localhost:8887/resources/hospital";
-// 	var HOSPITAL_REROURCE_LOGO_SMALL_FILE_NAME = "logo_small.jpg";
+var HOSPITAL_REROURCE_LOGO_SMALL_FILE_NAME = "logo_small.jpg";
 
-// 	//var JOB_SEEKER_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/jobSeeker";
+var JOB_SEEKER_RESOURCE_URL	= "https://dentalplus.enqual.co.kr/resources/jobSeeker";
 // 	var JOB_SEEKER_RESOURCE_URL	= "http://localhost:8887/resources/jobSeeker";
-// 	var JOB_SEEKER_REROURCE_PROFILE_SMALL_FILE_NAME = "profile_small.jpg";
+var JOB_SEEKER_REROURCE_PROFILE_SMALL_FILE_NAME = "profile_small.jpg";
 
 // 	return {
 // 		refresh: function() {
