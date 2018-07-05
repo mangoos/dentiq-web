@@ -13,7 +13,7 @@
         var userAgent = new UserAgent().parse(navigator.userAgent);
         if(userAgent.isMobile) location = "liveboard.html";
 
-        if (userAgent.browser === "IE" && parseInt(userAgent.version) <= 10) { 
+        if (userAgent.browser === "IE" && parseInt(userAgent.version) <= 9) { 
             alert("웹 보안 및 표준 준수를 위해 익스플로어 하위 버젼은 지원하지 못합니다. 확인 버튼을 누르고 브라우져 최신 버젼 업데이트 후 이용해주세요.");
             location = "ie_should_update.html";
         }

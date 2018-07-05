@@ -104,7 +104,7 @@
     <script>
         function onChangeSidebar() {}
         document.getElementById("sidebar").addEventListener("change", onChangeSidebar);
-        document.getElementById("sidebar").dispatchEvent(new Event("change"));
+        document.getElementById("sidebar").dispatchEvent(new CustomEvent("change"));
     </script>
 
     <div class="jobpost-wrapper">
@@ -783,13 +783,21 @@ var LiveBoardApp = (function() {
 						if ( item.requested ) requestedChecker = " checked ";
 
 						if ( item.locationType=='1' ) {			// 전체(대한민국 시도들)인 경우
-							htmlStr += `<label class="liveplus-local-label"><input type="checkbox" name="sidoCode" value="${item.sidoCode}" hidden ${requestedChecker} ><div class='liveplus-local-item'><span class='liveplus-local-item-name'>${item.locationName}</span><span class='liveplus-local-item-cnt'>${item.cnt}</span></div></label>`;
+                            htmlStr += '<label class="liveplus-local-label"><input type="checkbox" name="sidoCode" value="' + 
+                                item.sidoCode + '" hidden ' + requestedChecker + 
+                                '><div class="liveplus-local-item"><span class="liveplus-local-item-name">'+ 
+                                item.locationName +'</span><span class="liveplus-local-item-cnt">'+item.cnt+'</span></div></label>';
 											
 						} else if ( item.locationType=='2' ) {	// 특정 시도를 선택해서, 해당 시도의 시구들인 경우
 							if ( ACTION_TYPE=="INTEREST" )
-								htmlStr += `<label class="my-liveplus-local-label col-4"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='my-liveplus-local-item'><span class='my-liveplus-local-item-sido'>${item.sidoName}<span class='my-liveplus-local-item-cnt'>${item.cnt}</span></span><span class='my-liveplus-local-item-sigu'>${item.siguName}</span></div></label>`;
+                                htmlStr += '<label class="my-liveplus-local-label col-4"><input type="checkbox" name="siguCode" value="'+
+                                    item.siguCode +'" hidden ' + requestedChecker +'><div class="my-liveplus-local-item"><span class="my-liveplus-local-item-sido">'+
+                                    item.sidoName + '<span class="my-liveplus-local-item-cnt">' + item.cnt +'</span></span><span class="my-liveplus-local-item-sigu">' +
+                                    item.siguName + '</span></div></label>';
 							else
-								htmlStr += `<label class="liveplus-local-label"><input type="checkbox" name="siguCode" value="${item.siguCode}" hidden ${requestedChecker} ><div class='liveplus-local-item'><span class='liveplus-local-item-name'>${item.siguName}</span><span class='liveplus-local-item-cnt'>${item.cnt}</span></div></label>`;
+                                htmlStr += '<label class="liveplus-local-label"><input type="checkbox" name="siguCode" value="' + item.siguCode +
+                                    '" hidden ' + requestedChecker + '><div class="liveplus-local-item"><span class="liveplus-local-item-name">' +
+                                    item.siguName + '</span><span class="liveplus-local-item-cnt">' + item.cnt + '</span></div></label>';
 						}
 					});
 					document.getElementById("locationSelector").innerHTML = htmlStr;

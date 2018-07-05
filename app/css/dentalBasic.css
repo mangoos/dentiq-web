@@ -1866,11 +1866,12 @@ input.liveplus-local-input:checked ~ .liveplus-bar .fa-chevron-up { color: #0083
     text-overflow: ellipsis; overflow: hidden; }
 .liveplus-local-input:checked ~ .liveplus-local, 
 .liveplus-local-input:checked ~ form.liveplus-form .liveplus-local{ display: none; transition: all 0.5s ease; }
-.liveplus-local:empty { display: none; }
+/* .liveplus-local:empty { display: none; } 익스플로어 이슈 있음 */
 .liveplus-local input[type=checkbox]:checked ~ div.liveplus-local-item { background-color: #0083cb; color: #FFF; }
 .liveplus-local input[type=checkbox]:checked ~ div.liveplus-local-item .liveplus-local-item-cnt { color: #FFF; }
 
-.liveplus-local-label { width: 33.3%; border-bottom: 1px dotted #e1e1e1; border-right: 1px dotted #e1e1e1; }
+.liveplus-local-label { display: block; width: 33.3333%; border-bottom: 1px dotted #e1e1e1; border-right: 1px dotted #e1e1e1; box-sizing: border-box;
+    -webkit-box-sizing: border-box; }
 
 .liveplus-local-label:nth-child(1),
 .liveplus-local-label:nth-child(2),
@@ -2788,7 +2789,7 @@ header section.header-main .navbar-section-search,
     /********* 프리미어 채용정보(premiere-ad) css *********/
     /*****************************************************/
 
-    .premiere-ad-card { /* flex-basis: calc(100%/3); */ width: calc(100%/3);}
+    .premiere-ad-card { /* flex-basis: calc(100%/3); */ width: 33.33333%;}
 
     .premiere-ad-card:nth-child(2n) { border-right: 1px solid #e7e9ed; }
 
