@@ -2060,55 +2060,51 @@ input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { di
 /*****************************************************/
 /********* 프리미어 채용정보(premiere-ad) css *********/
 /*****************************************************/
-.premiere-ad-box { margin: 0 0 10px; border: .05rem solid #e7e9ed; border-top: none; }
+.premiere-ad-box { display: flex; flex-wrap: wrap; margin: 0 0 10px; border: 1px solid #e7e9ed; border-top: none; }
 
-.premiere-ad-box .card { position: relative; border: none; border-right: .05rem solid #e7e9ed; border-top: .05rem solid #e7e9ed; 
-    background-color: #FFF; }
+.premiere-ad-card { position: relative; /* flex-basis: 50%; */ width: 50%; border: none; border-right: 1px solid #e7e9ed; border-top: 1px solid #e7e9ed; 
+    background-color: #FFF; box-sizing: border-box; -webkit-box-sizing: border-box;}
 
-.premiere-ad-box .card:nth-child(2n) { border-right: none; }
+.premiere-ad-card:nth-child(2n) { border-right: none; }
 
 .premiere-ad-box .card-image { margin: 10px auto 0; width: 100px; height: 45px; }
 
-.premiere-ad-box .hospital-log-box { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0 auto;
+.premiere-ad-card-logo { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0 auto;
      font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin: 1rem 0 0.5rem; }
 
-.premiere-ad-box .hospital-log-box:before { content: "\f2fc"; font-size: 3rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
+.premiere-ad-card-logo:before { content: "\f2fc"; font-size: 3rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
     line-height: 1; transform: translate(-50%, -50%); }
 
-.premiere-ad-box .hospital-log-box img { position: absolute; top: 50%; left: 50%; height: auto; width: 120px; transform: translate(-50%,-50%); }
+.premiere-ad-card-logo img { position: absolute; top: 50%; left: 50%; height: auto; width: 120px; transform: translate(-50%,-50%); }
 
-.premiere-ad-box .hospital-log-box .logo-frame-hospital { position: relative; width: 100%; max-width: 150px; min-height: 50px; 
-    background-color: transparent; overflow: hidden; margin: 0 auto; }
+.premiere-ad-card-logo .logo-frame-hospital { position: relative; width: 100%; max-width: 150px; min-height: 50px;background-color: transparent; 
+    overflow: hidden; margin: 0 auto; }
 
-.premiere-ad-box .hospital-log-box .logo-frame-hospital:before { content: "dental+"; font-size: 0.8rem; color: #e9e9e9; position: absolute; 
+.premiere-ad-card-logo .logo-frame-hospital:before { content: "dental+"; font-size: 0.8rem; color: #e9e9e9; position: absolute; 
     top: 50%; left: 50%; line-height: 1; transform: translate(-50%, -50%); font-weight: bold; }
 
-.premiere-ad-box .card-header { padding: 0; margin-bottom: 0.2rem; }
-
-.premiere-ad-box .card-title { height: 24px; padding: 2px 10px 2px 15px; font-weight: bold; font-size: 0.8rem; text-overflow: ellipsis;
+.premiere-ad-card-title { padding: 2px 10px 2px 15px; font-weight: bold; font-size: 1rem; text-overflow: ellipsis;
     white-space: nowrap; overflow: hidden; }
 
-.premiere-ad-box .card-subtitle { height: 38px; margin-bottom: 3px; padding: 4px 10px 0 15px; font-size: 0.7rem; line-height: 0.8rem;
-    word-wrap: break-word; white-space: normal; color: #212529; overflow: hidden; text-overflow: ellipsis; }
+.premiere-ad-card-subtitle { margin-bottom: 3px; padding: 4px 10px 0 15px; font-size: 0.8rem; line-height: 0.8rem;
+    text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; /* word-wrap: normal; */}
 
-.premiere-ad-box .card-body { position: relative; padding: 0 10px 0 15px; font-size: 12px; color: #888; margin-bottom: 5px; }
 
 .premiere-ad-box .btn-icon.d-scrap,
 .premiere-ad-box .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
 
-.premiere-ad-box .card-body { position: relative; padding: 0 10px 0 15px; font-size: 12px; color: #888; margin-bottom: 0.4rem; }
 
-.premiere-ad-box .card-body .dental-info { /* display: inline-flex; */ line-height: 0.8rem; padding: 0 0.1rem; overflow: hidden; 
-    text-overflow: ellipsis; white-space: nowrap; }
+.premiere-ad-card-info { display: flex; justify-content: space-around; font-size: 0.7rem; padding: 0 15%; padding-top: 5px;
+    color: #FFF; background-color: #0083cb; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.premiere-ad-box .card-body .dental-info:nth-child(1) .info-detail:nth-child(1) { font-weight: bold; color: #212529; }
+.premiere-ad-card-info:nth-child(1) .info-detail:nth-child(1) { font-weight: bold; color: #212529; }
 
-.premiere-ad-box .card-body .dental-info span.info-detail:not(:last-child):after { background: #888; border-radius: 50%; 
+.premiere-ad-card-info span.info-detail:not(:last-child):after { background: #888; border-radius: 50%; 
         content: ""; height: 3px; width: 3px; display: inline-block; margin: 0 2px 0 3px; margin-bottom: 0.2rem; }
 
-.premiere-ad-box .card-body .dental-info span.info-detail span:nth-of-type(n+2) { display: none; }
+.premiere-ad-card-info span.info-detail span:nth-of-type(n+2) { display: none; }
 
-.premiere-ad-box .card-body .dental-info span.info-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; }
+.premiere-ad-card-info span.info-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; }
 
 
 /*********************************/
@@ -2761,26 +2757,6 @@ header section.header-main .navbar-section-search,
     .main-top .main-lbox .lbox-btm .main-nav a span.nav-area:after { background: #000; border-radius: 50%; 
         content: ""; height: 1px; width: 1px; display: inline-block; margin: 0 2px 0 6px; margin-bottom: 0.3rem; }
 
-    /* .main-top .main-rbox { float: right; overflow: hidden; width: 30%; }
-    .main-top .main-rbox .login-box { position: relative; background-color: #FAFAFA; border: 1px solid #c4c2c2; height: 150px; 
-        overflow: hidden;}
-    .main-top .main-rbox .login-box label { position: relative; margin-left: 10px; margin-bottom: 0; }    
-    .main-top .main-rbox .login-box label.form-switch:after { content: "로그인 상태 유지"; font-size: 0.7rem; display: inline-block; }
-    .form-checkbox input:checked+.form-icon, .form-radio input:checked+.form-icon, .form-switch input:checked+.form-icon {
-        background: #0083cb; border-color: #0083cb; }
-    .form-switch .form-icon::before { border: .05rem solid #caced7; }
-    .main-top .main-rbox .login-box .login-input { position: relative; border: 1px solid #c4c2c2; margin: 0 5px 5px 5px; }
-    .main-top .main-rbox .login-box input[type=text] { border: none; width: 100%; text-overflow: ellipsis; white-space: nowrap; height: 2rem; 
-        padding: 7px 5px; font-size: 0.9rem; }
-    .main-top .main-rbox .login-box input[type=text]:focus { border-bottom: 2px solid #FFD100; color: #212529; }
-    .main-top .main-rbox .login-box input[type=text]:first-child:not(:focus) { border-bottom: 1px solid #e6e6e6; }
-    .main-top .main-rbox .login-box .login-btn { position: absolute; width: 45%; height: 82px; top: -1px; right: -46%; color: #FFF; font-size: 1rem;
-        border: 1px solid #0083cb; margin: 0; line-height: 82px; text-align: center; font-weight: bold;  background-color: #0083cb; }
-    .main-top .main-rbox .login-box .login-input + div span { font-size: 0.6rem; display: inline-block; margin-left: 15px; }
-    .main-top .main-rbox .login-box .login-input + div>span:not(:last-child):after { content: "|"; margin-left: 15px; }
-
-    .main-top .main-rbox .rbox-banner { background-color: #FFF; border: 1px solid #c4c2c2; height: 150px; margin-top: 5px; } */
-
     /* header.header-main { height: 4rem; } */
     .dental-pc-wrapper { width: 980px; margin: 0 auto; }
     .top-banner { max-width: 980px; max-height: 400px; }
@@ -2812,7 +2788,22 @@ header section.header-main .navbar-section-search,
     /********* 프리미어 채용정보(premiere-ad) css *********/
     /*****************************************************/
 
-    .premiere-ad-box .card { width: 49.5%; }
+    .premiere-ad-card { /* flex-basis: calc(100%/3); */ width: calc(100%/3);}
+
+    .premiere-ad-card:nth-child(2n) { border-right: 1px solid #e7e9ed; }
+
+    .premiere-ad-card:nth-child(3n) { border-right: none; }
+
+    .premiere-ad-card-logo {
+        position: relative;
+        overflow: hidden;
+        min-width: 100px;
+        min-height: 50px;
+        margin: 0 auto;
+        font-family: 'Font Awesome 5 Pro';
+        font-weight: 400;
+        margin: 1rem 0 0.5rem;
+    }
 
     .jobpost-list-body { display: flex; flex-wrap: wrap; }
     .jobpost-list-card { width: 33.2%; }

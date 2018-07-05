@@ -11,14 +11,13 @@
     <script type="text/javascript" src="js/express-useragent.js"></script>
     <script>
         var userAgent = new UserAgent().parse(navigator.userAgent);
-        if( userAgent.isMobile ) location = "liveboard.html";
+        if(userAgent.isMobile) location = "liveboard.html";
 
-        if ( userAgent.browser === "IE" && parseInt(userAgent.version) <= 10 ) { 
+        if (userAgent.browser === "IE" && parseInt(userAgent.version) <= 10) { 
             alert("웹 보안 및 표준 준수를 위해 익스플로어 하위 버젼은 지원하지 못합니다. 확인 버튼을 누르고 브라우져 최신 버젼 업데이트 후 이용해주세요.");
             location = "ie_should_update.html";
         }
         console.log("접속 브라우져: %s, 브라우져 버젼: %s",userAgent.browser, userAgent.version);
-
     </script>
 
     <!-- <script src="js/handlebars.min.js"></script> -->
@@ -204,23 +203,19 @@
 
                         {{#each .}}
                         <div class="swiper-slide">
-                            <div class="premiere-ad-box columns" id="premierJobAdsList">
+                            <div class="premiere-ad-box" id="premierJobAdsList">
 
                                 {{#each .}}			
-                                <div class="column col-4 card">
+                                <div class="premiere-ad-card">
                                     <a href="jobad.html?jobAdId={{jobAdId}}">
-                                        <div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
-                                        <div class="card-header">
-                                            <div class="card-title">{{hospital.hospitalName}}</div>
-                                            <div class="card-subtitle">{{title}}</div>
+                                        <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
+                                        <div class="premiere-ad-card-title">{{hospital.hospitalName}}</div>
+                                        <div class="premiere-ad-card-subtitle">{{title}}</div>
+                                        <div class="premiere-ad-card-info">
+                                            <span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
+                                            <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="dental-info">
-                                                <span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
-                                                <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
-                                            </div>
-                                            <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
-                                        </div>
+                                        <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
                                     </a>
                                     <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
                                 </div>
