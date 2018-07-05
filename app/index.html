@@ -26,32 +26,16 @@
     <script src="js/handlebars-v4.0.11.js"></script>
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
-    <script src="js/header.js"></script>
-    
-
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
     <link rel="stylesheet" href="css/swiper.min.css"> 
     <link rel="stylesheet" href="css/dentalBasic.css">
 </head>
 <body>
-    <input id="sidebarInput" type="checkbox" name="sidebar-input" hidden>
     <header>
         <section class="header-gnb navbar">
             <div class="navbar-section"></div>
-            <div id="headerGNB" class="navbar-section" style="color: #0083cb;"></div>
+            <div id="headerGNB" class="navbar-section"></div>
         </section>
-        <script id="headerGNBTemplate" type="text/x-handlebars-template">
-            {{#each .}}<a href="{{href}}">{{text}}</a>{{/each}}
-            <a href="#">앱다운로드</a>
-            <a href="#">고객센터</a>
-            <a href="#">전체 메뉴</a>
-        </script>
-        <script>
-
-            document.getElementById("headerGNB").innerHTML = 
-            Handlebars.compile( document.getElementById("headerGNBTemplate").innerHTML )( HEADER.returnAuth("GNB") );
-
-        </script>
         <section class="header-main navbar">
             <div class="navbar-section-first">
                 <!-- 모바일 사이드바 버튼 -->
@@ -65,36 +49,15 @@
             <div class="navbar-section-search">
                 <div class="main-search-box">
                     <input class="main-search-input" type="search" name="main-search" placeholder="키워드 입력">
-                    <label class="main-search-submit"><input type=submit hidden><i class="fal fa-search"></i></label> <!-- 버튼 방식으로 변경 해야하남? -->
+                    <!-- 버튼 방식으로 변경 해야하남? -->
+                    <label class="main-search-submit"><input type=submit hidden><i class="fal fa-search"></i></label> 
                 </div>
-                <script>
-                    var searchWindow = document.querySelector(".main-search-input");
-                    var checkboxForSearch = document.querySelector(".search-checkbox");
-                    // 선정우 - 검색창에서 포커스 아웃할 때, 값 없으면 검색창 안보이게 처리, 체크박스로 on/off 하고 있음
-                    searchWindow.addEventListener("focusout", function(e) {
-                        if (!searchWindow.value) { checkboxForSearch.checked = false; }
-                        else { console.log("search keyword: ", searchWindow.value); }
-                    });
-                </script>
             </div>
             <div class="navbar-section-last">
                 <div class="header-main-icon-box">
                     <label for="main-search-checkbox"><span class="header-main-icon"><i class="fal fa-search"></i></span></label>
                     <a id="aGotoPanel" href="javaScript:void(0);" class="header-main-icon"><i class="fal fa-user-alt"></i></a>
                 </div>
-                <script>
-
-                    aGotoPanel.addEventListener("click", function(e) {
-                        if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) location.href = "dentist_panel.html";
-                        else location.href = "user_panel.html";
-                    });
-
-                    var labelForSearch = document.querySelector(".search-checkbox");
-                    labelForSearch.addEventListener("change", function(e) {
-                        console.log(searchWindow, this);
-                        searchWindow.focus();
-                    });
-                </script>
             </div>
         </section>
         <section class="header-nav">
@@ -104,30 +67,11 @@
                 <li class="header-nav-item"><a href="register_jobad.html">채용공고 등록</a></li>
             </ul>
         </section>
-        <!-- <script>
-
-            if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) {           // 로그인 && 병원회원
-                var headerNavListHtml = 
-                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>'   +
-                    '<li class="header-nav-item"><a href="hr_management.html">추천 인재</a></li>'    +
-                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>'    +
-                    '<li class="header-nav-item"><a href="dental_panel.html">My 메뉴</a></li>';
-
-                document.getElementById("headerList").innerHTML = headerNavListHtml;
-            }
-
-        </script> -->
-        <script id="headerNavTemplate" type="text/x-handlebars-template">
-            {{#each .}}<li class="header-nav-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
-        </script>
-        <script>
-            document.getElementById("headerList").innerHTML = 
-                Handlebars.compile( document.getElementById("headerNavTemplate").innerHTML )( HEADER.returnAuth("HEADER_NAV") );
-        </script>
     </header>
     <!-- 사이드바 -->
-    <div class="off-canvas">
-        <div id="sidebar" class="off-canvas-sidebar">
+    <section class="sidebar-wrapper">
+        <input id="sidebarInput" type="checkbox" name="sidebar-input" hidden>
+        <div id="sidebar" class="sidebar-body">
             <ul class="menu" id="sidebarMenu">
                     <!-- 이메일 및 사진 -->
                     <li class="menu-item">
@@ -169,104 +113,16 @@
                 <li class="divider"></li>
                 <div id="sidebarLogInMenu"></div>
             </ul>
-            <script id="sidebarLogInMenuTemplate" type="text/x-handlebars-template">
-                {{#each .}}<li class="menu-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
-            </script>
-            <script>
-                document.getElementById("sidebarLogInMenu").innerHTML = 
-                Handlebars.compile( document.getElementById("sidebarLogInMenuTemplate").innerHTML )( HEADER.returnAuth("SIDEBAR") );
-            </script>
-            <script>
-                // login.html?returnUrl=` + location.href + `
-                document.getElementById("sidebarEmail").innerHTML = (function() {
-                    var userEmail = LOGIN_INFO.getEmail();
-                    if( userEmail ) return userEmail;
-                    else return "";
-                })();
-            </script>
         </div>
-        <label for="sidebarInput"><div class="off-canvas-overlay"></div></label>   <!-- 메뉴 close -->
-    </div>
+        <label for="sidebarInput"><div class="sidebar-overlay"></div></label>   <!-- 메뉴 close -->
+    </section>
+
     <script>
         function onChangeSidebar() {}
         document.getElementById("sidebar").addEventListener("change", onChangeSidebar);
         document.getElementById("sidebar").dispatchEvent(new CustomEvent("change"));
     </script>
     <div class="dental-pc-wrapper">
-        <!-- <section class="main-top">
-            <div class="main-lbox">
-                <div class="lbox-banner">
-                    메인배너
-                </div>
-                <div class="lbox-btm">
-                    <div class="main-nav">
-                        <div class="main-nav-header h5">지역별 채용정보</div>
-                        <a href="#"><span class="nav-sido">서울</span></a>
-                        <a href="#"><span class="nav-sido">부산</span></a>
-                        <a href="#"><span class="nav-sido">인천</span></a>
-                        <a href="#"><span class="nav-sido">대구</span></a>
-                        <a href="#"><span class="nav-sido">광주</span></a>
-                        <a href="#"><span class="nav-sido">대전</span></a>
-                        <a href="#"><span class="nav-sido">울산</span></a>
-                        <a href="#"><span class="nav-sido">경기</span></a>
-                        <a href="#"><span class="nav-sido">강원</span></a>
-                        <a href="#"><span class="nav-sido">충북</span></a>
-                        <a href="#"><span class="nav-sido">충남</span></a>
-                        <a href="#"><span class="nav-sido">전북</span></a>
-                        <a href="#"><span class="nav-sido">전남</span></a>
-                        <a href="#"><span class="nav-sido">경북</span></a>
-                        <a href="#"><span class="nav-sido">경남</span></a>
-                        <a href="#"><span class="nav-sido">제주</span></a>
-                        <a href="#"><span class="nav-sido">세종</span></a>
-                        <a href="#"><span class="nav-sido">전국</span></a>
-                    </div>
-                    <div class="main-nav">
-                        <div class="main-nav-header h5">업무별 채용정보</div>
-                        <a href="#"><span class="nav-task">진료실</span></a>
-                        <a href="#"><span class="nav-task">데스크</span></a>
-                        <a href="#"><span class="nav-task">상담</span></a>
-                        <a href="#"><span class="nav-task">보험청구</span></a>
-                        <a href="#"><span class="nav-task">치과내 기공실</span></a>
-                        <a href="#"><span class="nav-task">치과기공소</span></a>
-                        <a href="#"><span class="nav-task">관리/경영</span></a>
-                        <a href="#"><span class="nav-task">치과 의사</span></a>
-                        <a href="#"><span class="nav-task">기타</span></a>
-                    </div>
-                    <div class="main-nav col-4">
-                        <div class="main-nav-header h5">채용부문별 채용정보</div>
-                        <a href="#"><span class="nav-area">치위생사</span></a>
-                        <a href="#"><span class="nav-area">간호조무사</span></a>
-                        <a href="#"><span class="nav-area">치기공사</span></a>
-                        <a href="#"><span class="nav-area">보험청구사</span></a>
-                        <a href="#"><span class="nav-area">코디네이터</span></a>
-                        <a href="#"><span class="nav-area">상담실장</span></a>
-                        <a href="#"><span class="nav-area">치과의사</span></a>
-                        <a href="#"><span class="nav-area">기타</span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="main-rbox">
-                <div class="login-box">
-                    <label class="form-switch"><input type="checkbox" hidden><i class="form-icon"></i></label>
-                    <div class="login-input col-8">
-                        <input type="text" name="" class="" placeholder="아이디">
-                        <input type="text" name="" class="" placeholder="비밀번호">
-                        <div class="login-btn">
-                            <a href="login.html?returnUrl=` + currentHref + `">로그인</a>
-                        </div>  
-                    </div>
-                    <div>
-                        <span>회원가입</span>
-                        <span>아이디/비밀번호 찾기</span>
-                        <span>My메뉴</span>
-                    </div>
-                </div>
-                <div class="rbox-banner">
-                    프라임 배너
-                </div>
-            </div>
-        </section> -->
-        <section>
         <section class="main-top">
             <style>
                 .main-top input[name=attr]:checked + span.chip { background-color: #0083cb; color: #FFF; }
@@ -333,53 +189,6 @@
                 checkboxGroup.check();  // 초기값 세팅 (지금은 모두 '전체'로)
             </script>
         </section>
-        <!-- 사이드바 -->
-        <!-- <div id="sidebar" class="aside-menu-box">  
-            <ul class="menu">
-                <li class="menu-item">
-                    <div class="tile tile-centered">
-                      <div class="tile-icon"><img src="img/avatar-4.png" class="avatar" alt="Avatar"></div>
-                      <div class="tile-content">Lee, Juhyun@gmail.com</div>
-                    </div>
-                </li>
-                <li class="divider" data-content="개인회원"></li>
-                <li class="menu-item">
-                    <div class="menu-badge"><label class="label label-primary">설정하러가기</label></div>
-                    <a href="a.html#installation">관심 지역</a>
-                </li>
-                <li class="menu-item">
-                    <div class="menu-badge"><span>(채용중/병원수)</span><label class="label label-primary">2/30</label></div>
-                    <a href="a.html#installation">우리 동네</a>
-                </li>
-                <li class="menu-item">
-                    <div class="menu-badge"><label class="label label-primary">설정하러가기</label></div>
-                    <a href="a.html#installation">관심 병원</a>
-                </li>
-                <li class="menu-item">
-                    <div class="menu-badge"><label class="label label-primary">스크랩없음</label></div>
-                    <a href="a.html#installation">내 스크랩</a>
-                </li>
-                <li class="menu-item"><a href="a.html">이력서 관리</a></li>
-                <li class="divider" data-content="병원회원"></li>
-                <li class="menu-item"><a href="b.html">우리병원 기본 정보</a></li>
-                <li class="menu-item"><a href="b.html#carousels">채용공고 등록</a></li>
-                <li class="menu-item"><a href="b.html#carousels">채용공고 관리</a></li>
-                <li class="menu-item">
-                    <div class="menu-badge"><label class="label label-primary">2</label></div>
-                    <a href="b.html#carousels">면접 제안</a>
-                </li>
-                <li class="menu-item">
-                    <div class="menu-badge"><label class="label label-primary">2</label></div>
-                    <a href="b.html#carousels">지원자 관리</a>
-                </li>
-                <li class="divider"></li>
-                <li class="menu-item"><a href="#menus">로그인</a></li>
-                <li class="menu-item"><a href="#menus">회원가입</a></li>
-                <li class="menu-item"><a href="#menus">로그아웃</a></li>
-                <li class="menu-item"><a href="#menus">설정</a></li>
-            </ul>
-        </div> -->
-
 
         <!-- ======================== 프리미어 공고 ======================== -->
         <section id="section-premiereAds" class="premiere-ad">
@@ -472,6 +281,59 @@
     <footer class="container">
         FOOTER
     </footer>
+    <script src="js/header.js" type="text/javascript"></script>
+    <!-- 헤더 부분 템플릿 -->
+    <script id="headerGNBTemplate" type="text/x-handlebars-template">
+        {{#each .}}<a href="{{href}}">{{text}}</a>{{/each}}
+        <a href="#">앱다운로드</a>
+        <a href="#">고객센터</a>
+        <a href="#">전체 메뉴</a>
+    </script>
+    <script id="headerNavTemplate" type="text/x-handlebars-template">
+        {{#each .}}<li class="header-nav-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
+    </script>
+    <script type="text/javascript">
+        document.getElementById("headerGNB").innerHTML = 
+            Handlebars.compile(document.getElementById("headerGNBTemplate").innerHTML)(HEADER.returnAuth("GNB"));
+
+        document.getElementById("headerList").innerHTML = 
+            Handlebars.compile(document.getElementById("headerNavTemplate").innerHTML)(HEADER.returnAuth("HEADER_NAV"));
+    </script>
+    <!-- sidebar 부분 템플릿-->
+    <script id="sidebarLogInMenuTemplate" type="text/x-handlebars-template">
+        {{#each .}}<li class="menu-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
+    </script>
+    <script type="text/javascript">
+        document.getElementById("sidebarLogInMenu").innerHTML = 
+            Handlebars.compile( document.getElementById("sidebarLogInMenuTemplate").innerHTML)(HEADER.returnAuth("SIDEBAR"));
+
+        document.getElementById("sidebarEmail").innerHTML = (function() {
+            var userEmail = LOGIN_INFO.getEmail();
+            if( userEmail ) return userEmail;
+            else return "";
+        })()
+    </script>
+    <script type="text/javascript">
+        var searchWindow = document.querySelector(".main-search-input");
+        var checkboxForSearch = document.querySelector(".search-checkbox");
+        // 선정우 - 검색창에서 포커스 아웃할 때, 값 없으면 검색창 안보이게 처리, 체크박스로 on/off 하고 있음
+        searchWindow.addEventListener("focusout", function(e) {
+            if (!searchWindow.value) { checkboxForSearch.checked = false; }
+            else { console.log("search keyword: ", searchWindow.value); }
+        });
+    </script>
+    <script type="text/javascript">
+        aGotoPanel.addEventListener("click", function(e) {
+            if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) location.href = "dentist_panel.html";
+            else location.href = "user_panel.html";
+        });
+
+        var labelForSearch = document.querySelector(".search-checkbox");
+        labelForSearch.addEventListener("change", function(e) {
+            console.log(searchWindow, this);
+            searchWindow.focus();
+        });
+    </script>
     <script src="js/dental_ui.js"></script>
     <script>
 

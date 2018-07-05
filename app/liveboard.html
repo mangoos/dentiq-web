@@ -16,35 +16,13 @@
     <script src="js/handlebars.min.js"></script>
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
     <script src="js/common.js"></script>
-    <script src="js/header.js"></script>
-    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
 </head>
 <body>
-    <input id="sidebarInput" type="checkbox" name="sidebar-input" hidden>
-    <script>
-        // 리턴할 때 사이드바 checked 해제(페이지 초기화)
-        console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", document.getElementById("sidebarInput").checked);
-        document.getElementById("sidebarInput").checked = false;
-        console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", document.getElementById("sidebarInput").checked);
-
-    </script>
     <header>
         <section class="header-gnb navbar">
             <div class="navbar-section"></div>
-            <div class="navbar-section" id="headerGNB" style="color: #0083cb;"></div>
+            <div id="headerGNB" class="navbar-section"></div>
         </section>
-        <script id="headerGNBTemplate" type="text/x-handlebars-template">
-            {{#each .}}<a href="{{href}}">{{text}}</a>{{/each}}
-            <a href="#">앱다운로드</a>
-            <a href="#">고객센터</a>
-            <a href="#">전체 메뉴</a>                
-        </script>
-        <script>
-
-            document.getElementById("headerGNB").innerHTML = 
-            Handlebars.compile( document.getElementById("headerGNBTemplate").innerHTML )( HEADER.returnAuth("GNB") );
-
-        </script>
         <section class="header-main navbar">
             <div class="navbar-section-first">
                 <!-- 모바일 사이드바 버튼 -->
@@ -53,41 +31,20 @@
             <input class="search-checkbox" type="checkbox" id="main-search-checkbox" hidden>
             <div class="navbar-section-logo">
                 <!-- 브랜드 로고 -->
-                <a class="dental-logo" href="index.html" >Dental+</a>
+                <a class="dental-logo" href="index.html">Dental+</a>
             </div>
             <div class="navbar-section-search">
                 <div class="main-search-box">
                     <input class="main-search-input" type="search" name="main-search" placeholder="키워드 입력">
-                    <label class="main-search-submit"><input type=submit hidden><i class="fal fa-search"></i></label> <!-- 버튼 방식으로 변경 해야하남? -->
+                    <!-- 버튼 방식으로 변경 해야하남? -->
+                    <label class="main-search-submit"><input type=submit hidden><i class="fal fa-search"></i></label> 
                 </div>
-                <script>
-                    var searchWindow = document.querySelector(".main-search-input");
-                    var checkboxForSearch = document.querySelector(".search-checkbox");
-                    // 선정우 - 검색창에서 포커스 아웃할 때, 값 없으면 검색창 안보이게 처리, 체크박스로 on/off 하고 있음
-                    searchWindow.addEventListener("focusout", function(e) {
-                        if (!searchWindow.value) { checkboxForSearch.checked = false; }
-                        else { console.log("search keyword: ", searchWindow.value); }
-                    });
-                </script>
             </div>
             <div class="navbar-section-last">
                 <div class="header-main-icon-box">
                     <label for="main-search-checkbox"><span class="header-main-icon"><i class="fal fa-search"></i></span></label>
                     <a id="aGotoPanel" href="javaScript:void(0);" class="header-main-icon"><i class="fal fa-user-alt"></i></a>
                 </div>
-                <script>
-
-                    aGotoPanel.addEventListener("click", function(e) {
-                        if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) location.href = "dentist_panel.html";
-                        else location.href = "user_panel.html";
-                    });
-
-                    var labelForSearch = document.querySelector(".search-checkbox");
-                    labelForSearch.addEventListener("change", function(e) {
-                        console.log(searchWindow, this);
-                        searchWindow.focus();
-					});
-                </script>
             </div>
         </section>
         <section class="header-nav">
@@ -97,38 +54,16 @@
                 <li class="header-nav-item"><a href="register_jobad.html">채용공고 등록</a></li>
             </ul>
         </section>
-        <!-- <script>
-
-            if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) {           // 로그인 && 병원회원
-                var headerNavListHtml = 
-                    '<li class="header-nav-item"><a href="liveboard.html?LIVEBOARD">라이브보드</a></li>'   +
-                    '<li class="header-nav-item"><a href="hr_management.html">추천 인재</a></li>'    +
-                    '<li class="header-nav-item"><a href="hospital_interaction.html">공고 관리</a></li>'    +
-                    '<li class="header-nav-item"><a href="dental_panel.html">My 메뉴</a></li>';
-
-                document.getElementById("headerList").innerHTML = headerNavListHtml;
-            }
-
-        </script> -->
-        <script id="headerNavTemplate" type="text/x-handlebars-template">
-            {{#each .}}<li class="header-nav-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
-        </script>
-        <script>
-            document.getElementById("headerList").innerHTML = 
-                Handlebars.compile( document.getElementById("headerNavTemplate").innerHTML )( HEADER.returnAuth("HEADER_NAV") );
-        </script>
     </header>
 
     <!-- 사이드바 -->
-    <div class="off-canvas">
-        <div id="sidebar" class="off-canvas-sidebar">
+    <section class="sidebar-wrapper">
+        <input id="sidebarInput" type="checkbox" name="sidebar-input" hidden>
+        <div id="sidebar" class="sidebar-body">
             <ul class="menu" id="sidebarMenu">
-                 <!-- 이메일 및 사진 -->
-                 <li class="menu-item">
-                    <div class="tile tile-centered">
-                        <!-- <div class="tile-icon"><img src="img/avatar-4.png" class="avatar" alt="Avatar"></div> -->
-                        <div id="sidebarEmail" class="tile-content"></div>
-                    </div>
+                <!-- 이메일 및 사진 -->
+                <li class="menu-item">
+                    <div class="tile tile-centered"><div id="sidebarEmail" class="tile-content"></div></div>
                 </li>
 
                 <!-- 개인회원 -->
@@ -163,33 +98,15 @@
                 <li class="divider"></li>
                 <div id="sidebarLogInMenu"></div>
             </ul>
-            <script id="sidebarLogInMenuTemplate" type="text/x-handlebars-template">
-                {{#each .}}<li class="menu-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
-            </script>
-            <script>
-                document.getElementById("sidebarLogInMenu").innerHTML = 
-                Handlebars.compile( document.getElementById("sidebarLogInMenuTemplate").innerHTML )( HEADER.returnAuth("SIDEBAR") );
-            </script>
-            <script>
-                // login.html?returnUrl=` + location.href + `
-                document.getElementById("sidebarEmail").innerHTML = (function() {
-                    var userEmail = LOGIN_INFO.getEmail();
-                    if( userEmail ) return userEmail;
-                    else return "";
-                })();
-            </script>
         </div>
-        <label for="sidebarInput"><div class="off-canvas-overlay"></div></label>   <!-- 메뉴 close -->
-    </div>
+        <label for="sidebarInput"><div class="sidebar-overlay"></div></label>   <!-- 메뉴 close -->
+    </section>
     <script>
         function onChangeSidebar() {}
         document.getElementById("sidebar").addEventListener("change", onChangeSidebar);
         document.getElementById("sidebar").dispatchEvent(new Event("change"));
     </script>
 
-    
-
-    
     <div class="jobpost-wrapper">
 
     <!-- ======================== 공고 속성 선택 BOX ======================== -->
@@ -402,37 +319,7 @@
                 </div>
             </div>
         </script>
-
-
-        <!--
-        <div class="premiere-ad-box columns" id="premierJobAdsList"></div>
-        <script id="premierJobAdsTemplate" type="text/x-handlebars-template">
-			{{#eachNested .}}			
-			<div class="column col-6 card">
-				<a href="jobad.html?jobAdId={{jobAdId}}">
-					<div class="hospital-log-box"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
-					<div class="card-header">
-						<div class="card-title">{{hospital.hospitalName}}</div>
-						<div class="card-subtitle">{{title}}</div>
-					</div>
-					<div class="card-body">
-						<div class="dental-info">
-							<span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
-							<span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
-						</div>
-						<div class="dental-info">{{{renderAttrOnCard attr}}}</div>
-					</div>
-				</a>
-				<span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-			</div>
-            {{/eachNested}}
-        </script>
-        -->
     </section>
-
-
-
-
     <!-- ======================== 일반 공고 ======================== -->
     <section id="section-generalAds" class="jobpost-list">
         <div class="jobpost-list-bar">
@@ -476,6 +363,59 @@
     </section>
 </div>
 </div>
+<script src="js/header.js" type="text/javascript"></script>
+<!-- 헤더 부분 템플릿 -->
+<script id="headerGNBTemplate" type="text/x-handlebars-template">
+    {{#each .}}<a href="{{href}}">{{text}}</a>{{/each}}
+    <a href="#">앱다운로드</a>
+    <a href="#">고객센터</a>
+    <a href="#">전체 메뉴</a>
+</script>
+<script id="headerNavTemplate" type="text/x-handlebars-template">
+    {{#each .}}<li class="header-nav-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
+</script>
+<script type="text/javascript">
+    document.getElementById("headerGNB").innerHTML = 
+        Handlebars.compile(document.getElementById("headerGNBTemplate").innerHTML)(HEADER.returnAuth("GNB"));
+
+    document.getElementById("headerList").innerHTML = 
+        Handlebars.compile(document.getElementById("headerNavTemplate").innerHTML)(HEADER.returnAuth("HEADER_NAV"));
+</script>
+<!-- sidebar 부분 템플릿-->
+<script id="sidebarLogInMenuTemplate" type="text/x-handlebars-template">
+    {{#each .}}<li class="menu-item"><a href="{{href}}">{{text}}</a></li>{{/each}}
+</script>
+<script type="text/javascript">
+    document.getElementById("sidebarLogInMenu").innerHTML = 
+        Handlebars.compile( document.getElementById("sidebarLogInMenuTemplate").innerHTML)(HEADER.returnAuth("SIDEBAR"));
+
+    document.getElementById("sidebarEmail").innerHTML = (function() {
+        var userEmail = LOGIN_INFO.getEmail();
+        if( userEmail ) return userEmail;
+        else return "";
+    })()
+</script>
+<script type="text/javascript">
+    var searchWindow = document.querySelector(".main-search-input");
+    var checkboxForSearch = document.querySelector(".search-checkbox");
+    // 선정우 - 검색창에서 포커스 아웃할 때, 값 없으면 검색창 안보이게 처리, 체크박스로 on/off 하고 있음
+    searchWindow.addEventListener("focusout", function(e) {
+        if (!searchWindow.value) { checkboxForSearch.checked = false; }
+        else { console.log("search keyword: ", searchWindow.value); }
+    });
+</script>
+<script type="text/javascript">
+    aGotoPanel.addEventListener("click", function(e) {
+        if ( LOGIN_INFO.isLoggedIn() && LOGIN_INFO.isHospitalMember() ) location.href = "dentist_panel.html";
+        else location.href = "user_panel.html";
+    });
+
+    var labelForSearch = document.querySelector(".search-checkbox");
+    labelForSearch.addEventListener("change", function(e) {
+        console.log(searchWindow, this);
+        searchWindow.focus();
+    });
+</script>
 <script src="js/dental_ui.js"></script>
 <script>
 
@@ -677,7 +617,20 @@ var LiveBoardApp = (function() {
                 var itemList = premierJobAdsSwipeTemplateCompiled(bunchOfJobAds);
                 $('#premierJobAdsSwipeArea').html(itemList);
 
-                var swiper = new Swiper('.swiper-container');
+                var swiper = new Swiper('.swiper-container', {
+                    autoHeight: true, //enable auto height
+                    spaceBetween: 20,
+                    // pagination: {
+                    //     el: '.swiper-pagination',
+                    //     clickable: true,
+                    // },
+                    // navigation: {
+                    //     nextEl: '.swiper-button-next',
+                    //     prevEl: '.swiper-button-prev',
+                    // },
+                });
+
+
 
                 // var itemList = premierJobAdsTemplateCompiled(jobAdList);
 				// $('#premierJobAdsList').html(itemList);

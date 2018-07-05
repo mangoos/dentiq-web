@@ -13,21 +13,18 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/handlebars.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-
 </head>
 <body>
     <header class="header-sub navbar">
         <section class="navbar-section">
-            <span onclick="if(history.length>2){ history.back(); } else { location.href='liveboard.html'; }">
+            <span onclick="if(history.length>2){ history.back(); } else { location.href='index.html'; }">
                 <i class="fal fa-arrow-square-left"></i>
                 이전페이지
             </span>
         </section>
         <section class="navbar-section">
-            <a href="liveboard.html"><i class="fal fa-home"></i></a>
-            <a href="user_panel.html"><i class="fal fa-user-alt"></i></a>
+            <a href="index.html"><i class="fal fa-home"></i></a>
+            <a id="headerSubDynamicAnchor" href="user_panel.html"><i class="fal fa-user-alt"></i></a>
         </section>
     </header>
     <section class="login-section dental-card">
@@ -76,7 +73,8 @@
             </form>
         <!-- </div> -->
     </section>
-<script src="js/dental_ui.js"></script>
+<script src="js/dental_ui.js" type="text/javascript"></script>
+<script src="js/header.js" type="text/javascript"></script>
 <script>
     /*
      * 현재 로그인 상태 유지는 처리하지 않음
