@@ -311,24 +311,39 @@ var listZero= function () {
 function returnDateObj(yyyymmdd) {
 
     if (!yyyymmdd) return false;
+    var dateStr = yyyymmdd + "";
+    if(dateStr.length < 8 || dateStr.length > 8) return false;
 
-    var year = yyyymmdd.substring(0,4);
-	var month = yyyymmdd.substring(4,6);
-	var day = yyyymmdd.substring(6,8);
+    var year = dateStr.substring(0,4);
+	var month = dateStr.substring(4,6);
+	var day = dateStr.substring(6,8);
 	return new Date(year, month -1, day);
+}
+
+function returnYYYYMMDD(dateObj) {
+
+    var year = dateObj.getFullYear() + "";
+    var month = dateObj.getMonth() + 1;
+    month = (month < 10) ? ("0"+ month) : month;
+    var day = dateObj.getDate();
+    day = (day < 10) ? ("0"+ day) : day;
+    
+	return year + month + day + "";
 }
 
 function renderFullDateKR(yyyymmdd) {
 
-    if (!yyyymmdd) return false;
-
-	var date = returnDateObj(yyyymmdd);
-	var year = date.getFullYear();
-	var month = date.getMonth() + 1;
-	var day = date.getDate();
-	var dayOfWeek = returnDayOfWeekFromIndex(date.getDay());
-
-	return year + "년 " + month + "월 " + day + "일";
+    var date = returnDateObj(yyyymmdd);
+    if(date) {
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        // var dayOfWeek = returnDayOfWeekFromIndex(date.getDay());
+    
+        return year + "년 " + month + "월 " + day + "일";
+    }
+    console.log( "입력값: ", yyyymmdd, ", yyyymmdd 형식에 맞춰 입력해 주세요");
+    return false;
 }
 
 function renderTimeKR(hhmm) {
@@ -353,6 +368,18 @@ function renderMslashD(yyyymmdd) {
 	return month +"/" + day + " (" + dayOfWeek + ")";
 }
 
+// 주어진 날을 비교해서 남은 날을 계산, 2번째 인자가 없으면 오늘과 차이.
+function returnDday (yyyymmdd_end, yyyymmdd_start) {
+    var date1 = returnDateObj(yyyymmdd_start) || Date.now();
+    var date2 = returnDateObj(yyyymmdd_end);
+    if(date1 && date2) {
+        var dDay = (date2 - date1) / (60 * 60 * 24 * 1000);
+        return dDay;
+    }
+
+    return false;
+}
+
 function renderMstrDstr(yyyymmdd) {
 
     if (!yyyymmdd) return false;
@@ -373,6 +400,20 @@ function returnDayOfWeekFromIndex(index) {
 	return arr[index];
 }
 
+
+function renderAdCardHiringEndDate (yyyymmdd) {
+
+    if (!yyyymmdd) return false;
+
+    var hiringEndDate = yyyymmdd + "";
+    var today = returnYYYYMMDD(new Date());
+    var dDay = returnDday(hiringEndDate, today);
+
+    if(dDay < 10) return "D - " + dDay;
+    if(dDay == "1" ) return "오늘 마감";
+
+    return renderMslashD(hiringEndDate);
+}
 
 // 요기까지 선정우가 작성
 

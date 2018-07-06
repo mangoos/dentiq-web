@@ -298,12 +298,13 @@
                                     <div class="premiere-ad-card-title">{{hospital.hospitalName}}</div>
                                     <div class="premiere-ad-card-subtitle">{{title}}</div>
                                     <div class="premiere-ad-card-info">
-                                        <span class="info-detail">{{renderLocationOfJobAdCard hospital.location.locationCode}}</span>
-                                        <span class="info-detail">{{hiringEndDate}} ({{hiringEndDateDay}})</span>
+                                        <span class="premiere-ad-card-detail">{{{renderLocationOfJobAdCard hospital.location.locationCode}}}</span>
+                                        <span class="premiere-ad-card-detail">{{renderAdCardHiringEndDate hiringEndDate}}</span>
                                     </div>
                                     <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
                                 </a>
                                 <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                                <div class="premiere-ad-card-effect"></div>
                             </div>
                             {{/each}}
                         </div>
@@ -332,7 +333,7 @@
                     <div class="jobpost-list-card-body">
                         <div class="dental-info">
                             <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
-                            <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderMslashD hiringEndDate}}</span></span>
+                            <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderAdCardHiringEndDate hiringEndDate}}</span></span>
                             <span class="info-detail subway-line">
                                 <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
                                 <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
@@ -462,7 +463,7 @@ function renderAttrOnCard(attrList) {
 
     var defAttrGroupList = CODE_CONTAINER.getAttrs();
     defAttrGroupList.forEach(function(defAttrGroup) {
-        html += '<span class="info-detail">';
+        html += '<span class="premiere-ad-card-detail">';
         defAttrGroup.element.forEach(function(defAttr) {
             var defAttrValue = defAttr.value;
 
@@ -509,7 +510,7 @@ var LiveBoardApp = (function() {
     Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
         //console.log("LOCATION_HELPER ", code);
         var location = LOCATION_CODE.getByName(code);
-        if ( location ) return location.sidoName + " > " + location.siguName ;
+        if ( location ) return "<div>" +location.sidoName + "</div><div>" + location.siguName + "</div>";
         else return "입력안됨";
     });
     Handlebars.registerHelper("renderAttrOnCard", function(code) {
@@ -521,9 +522,9 @@ var LiveBoardApp = (function() {
 	// 	if ( flag ) return CONSTANTS.getHospitalLogoImageUrl(hospitalId);
     // });
 
-    Handlebars.registerHelper("renderMslashD", function(hiringEndDate) {
-        if (!hiringEndDate) return "";
-        return renderMslashD(hiringEndDate);
+    Handlebars.registerHelper("renderAdCardHiringEndDate", function(hiringEndDate) {
+        if (!hiringEndDate) return "상시채용";
+        return renderAdCardHiringEndDate(hiringEndDate);
     });
 
 

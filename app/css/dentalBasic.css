@@ -2068,44 +2068,46 @@ input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { di
 
 .premiere-ad-card:nth-child(2n) { border-right: none; }
 
-.premiere-ad-box .card-image { margin: 10px auto 0; width: 100px; height: 45px; }
+/* .premiere-ad-box .card-image { margin: 10px auto 0; width: 100px; height: 45px; } */
 
 .premiere-ad-card-logo { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0 auto;
-     font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin: 1rem 0 0.5rem; }
+     font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin-top: 1rem; }
 
 .premiere-ad-card-logo:before { content: "\f2fc"; font-size: 3rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
     line-height: 1; transform: translate(-50%, -50%); }
 
-.premiere-ad-card-logo img { position: absolute; top: 50%; left: 50%; height: auto; width: 120px; transform: translate(-50%,-50%); }
+.premiere-ad-card-logo img { position: absolute; height: auto; width: 120px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
 
-.premiere-ad-card-logo .logo-frame-hospital { position: relative; width: 100%; max-width: 150px; min-height: 50px;background-color: transparent; 
+.premiere-ad-card-logo .logo-frame-hospital { position: relative; width: 100%; max-width: 150px; min-height: 50px; background-color: transparent; 
     overflow: hidden; margin: 0 auto; }
 
 .premiere-ad-card-logo .logo-frame-hospital:before { content: "dental+"; font-size: 0.8rem; color: #e9e9e9; position: absolute; 
     top: 50%; left: 50%; line-height: 1; transform: translate(-50%, -50%); font-weight: bold; }
 
-.premiere-ad-card-title { padding: 2px 10px 2px 15px; font-weight: bold; font-size: 1rem; text-overflow: ellipsis;
+.premiere-ad-card-title { padding: 0 10px; font-weight: bold; font-size: 0.8rem; text-align: center; text-overflow: ellipsis;
     white-space: nowrap; overflow: hidden; }
 
-.premiere-ad-card-subtitle { margin-bottom: 3px; padding: 4px 10px 0 15px; font-size: 0.8rem; line-height: 0.8rem;
+.premiere-ad-card-subtitle { margin-bottom: 5px; padding: 0 10px; font-size: 0.65rem; line-height: 0.8rem; text-align: center;
     text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; /* word-wrap: normal; */}
 
+.premiere-ad-card-info { display: flex; justify-content: space-around; font-size: 0.65rem; padding: 0 10px; line-height: 1.2rem; 
+ color: #FFF; background-color: #0083cb; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-top: 5px;}
+
+.premiere-ad-card>a .premiere-ad-card-info:last-child { padding-top: o; padding-bottom: 5px; }
+
+.premiere-ad-card-detail { display: flex; align-items: center; }
+
+/* .premiere-ad-card-info:nth-child(1) .premiere-ad-card-detail:nth-child(1) { font-weight: bold; color: #212529; } */
+
+/* .premiere-ad-card-info span.premiere-ad-card-detail:not(:last-child):after { background: #888; border-radius: 50%; 
+        content: ""; height: 3px; width: 3px; display: inline-block; margin: 0 2px; } */
+
+.premiere-ad-card-detail span:nth-of-type(n+2) { display: none; }
+
+.premiere-ad-card-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; }
 
 .premiere-ad-box .btn-icon.d-scrap,
 .premiere-ad-box .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
-
-
-.premiere-ad-card-info { display: flex; justify-content: space-around; font-size: 0.7rem; padding: 0 15%; padding-top: 5px;
-    color: #FFF; background-color: #0083cb; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-.premiere-ad-card-info:nth-child(1) .info-detail:nth-child(1) { font-weight: bold; color: #212529; }
-
-.premiere-ad-card-info span.info-detail:not(:last-child):after { background: #888; border-radius: 50%; 
-        content: ""; height: 3px; width: 3px; display: inline-block; margin: 0 2px 0 3px; margin-bottom: 0.2rem; }
-
-.premiere-ad-card-info span.info-detail span:nth-of-type(n+2) { display: none; }
-
-.premiere-ad-card-info span.info-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; }
 
 
 /*********************************/
@@ -2788,23 +2790,21 @@ header section.header-main .navbar-section-search,
     /*****************************************************/
     /********* 프리미어 채용정보(premiere-ad) css *********/
     /*****************************************************/
+    .premiere-ad-box { justify-content: space-between; border: none; }
 
-    .premiere-ad-card { /* flex-basis: calc(100%/3); */ width: 33.33333%;}
+    .premiere-ad-card { width: 33%; margin-bottom: 5px; border: 1px solid #e7e9ed !important;}
 
-    .premiere-ad-card:nth-child(2n) { border-right: 1px solid #e7e9ed; }
+    .premiere-ad-card-logo img { width: 140px; }
 
-    .premiere-ad-card:nth-child(3n) { border-right: none; }
+    .premiere-ad-card-title { font-size: 1rem; }
 
-    .premiere-ad-card-logo {
-        position: relative;
-        overflow: hidden;
-        min-width: 100px;
-        min-height: 50px;
-        margin: 0 auto;
-        font-family: 'Font Awesome 5 Pro';
-        font-weight: 400;
-        margin: 1rem 0 0.5rem;
-    }
+    .premiere-ad-card-subtitle { font-size: 0.8rem; margin-bottom: 7px; }
+
+    .premiere-ad-card-info { font-size: 0.7rem; }
+
+    .premiere-ad-card-effect { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: transparent; }
+
+    .premiere-ad-card-effect:hover { background-color: #0083cb; opacity: 0.3; }
 
     .jobpost-list-body { display: flex; flex-wrap: wrap; }
     .jobpost-list-card { width: 33.2%; }

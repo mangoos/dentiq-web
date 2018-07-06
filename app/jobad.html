@@ -533,7 +533,7 @@
     
         // D-Day 부분
         console.log("resData.dday : ", resData.dday);
-        if ( resData.dday===undefined || resData.dday < 0 ) {
+        if (resData.dday === undefined || resData.dday < 0) {
             document.getElementById("jobAd-dDay").innerText             = "종료";
         } else {
             document.getElementById("jobAd-dDay").innerText             = "D-" + resData.dday;
