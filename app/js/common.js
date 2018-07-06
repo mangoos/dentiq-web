@@ -593,13 +593,27 @@ var LOGIN_INFO = (function() {
 				dModal.alert("로그인이 필요합니다.", function() {
 					location.href = "login.html";
 				});
-				return false;
+				return false; // 리다이렉트를 하더라도 함수내 이후 불필요한 실행 없도록 하기위해 필요.
 			}
 
 			if (!userInfo.userType || userInfo.userType != 1) {
 				dModal.alert("개인회원만 이용 가능합니다.", function() {
 					window.history.back();
 				});
+				return false;
+			}
+
+			return true;
+		},
+
+		checkAuthPersonalNoRedirect: function() {
+			if (!userInfo || !userInfo.userId) {
+				dModal.alert("로그인이 필요합니다.");
+				return false;
+			}
+
+			if (!userInfo.userType || userInfo.userType != 1) {
+				dModal.alert("개인회원만 이용 가능합니다.");
 				return false;
 			}
 
@@ -1889,17 +1903,18 @@ var JobSeekerJobAdActionPanel = function() {
 
 
 	function onClickActionButton(event) {
+		console.log("hihihihi");
 		if (!event.target.dataset || !event.target.dataset.action || event.target.dataset.action != "popupActionPanel") return;
 
 		if (!event.target.dataset.actionValueJobAdId)	throw "data-action-value-job-ad-id가 지정되어야 합니다.";
 		if (!event.target.dataset.actionValueTelNo) 	throw "data-action-value-tel-no가 지정되어야 합니다.";
 
 		if (!LOGIN_INFO.isLoggedIn()) {
-			alert("로그인이 필요한 기능입니다.");
+			dModal.alert("로그인이 필요한 기능입니다.");
 			return;
 		}
 		if (!LOGIN_INFO.isPersonalMember()) {
-			alert("개인회원만 이용 가능한 기능입니다.");
+			dModal.alert("개인회원만 이용 가능한 기능입니다.");
 			return;
 		}
 
@@ -1931,7 +1946,9 @@ var JobSeekerJobAdActionPanel = function() {
 		);
 	}
 
-	return onClickActionButton;
+	return {
+		onClickActionButton: onClickActionButton
+	};
 
 
 	// document.querySelectorAll(".jobpost-list-body").forEach(function(element) {

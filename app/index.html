@@ -216,9 +216,9 @@
                                             <span class="premiere-ad-card-detail">{{renderAdCardHiringEndDate hiringEndDate}}</span>
                                         </div>
                                         <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
+                                        <div class="premiere-ad-card-effect"></div>
                                     </a>
                                     <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                                    <div class="premiere-ad-card-effect"></div>
                                 </div>
                                 {{/each}}
 
@@ -409,16 +409,17 @@
             /* 스크랩 / 지원 / 전화 걸기 ACTION PANEL에 대한 Event 부착
             /******************************************************************************/
             var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
+            $(".dental-pc-wrapper").on("click", ".btn-icon.d-dots-v", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
             
-            document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
-                console.log("이벤트 걸었음 ", element);
-                element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
-            });
+            // document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
+            //     console.log("이벤트 걸었음 ", element);
+            //     element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+            // });
             
-            document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
-                console.log("이벤트 걸었음 ", element);
-                element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
-            });
+            // document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
+            //     console.log("이벤트 걸었음 ", element);
+            //     element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+            // });
         
             
         

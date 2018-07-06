@@ -384,8 +384,9 @@ h6, .h6 { font-size: .8rem; }
 .btn-icon.d-scrap::before { color: #c4c2c2; }
 .btn-icon.d-scrap[data-action-checked="true"]::before { color: #0083cb; }
 
-.btn-icon.d-dots-v::before { color: #c4c2c2; }
-
+.btn-icon.d-dots-v { color: #c4c2c2; }
+.btn-icon.d-dots-v::before { color: inherit; }
+.btn-icon.d-dots-v:hover { color: #0083cb; }
 
 .btn-icon.d-apply::before {  color: #0083cb; }
 .btn-icon.d-apply[data-action-checked="true"]::before,
@@ -2791,6 +2792,8 @@ header section.header-main .navbar-section-search,
     /********* 프리미어 채용정보(premiere-ad) css *********/
     /*****************************************************/
     .premiere-ad-box { justify-content: space-between; border: none; }
+
+    .ad-wrapper .premiere-ad-card { width: 50%; }
 
     .premiere-ad-card { width: 33%; margin-bottom: 5px; border: 1px solid #e7e9ed !important;}
 

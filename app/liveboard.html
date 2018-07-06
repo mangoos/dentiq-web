@@ -270,93 +270,93 @@
 
 
     <div class="ad-wrapper">
-    <!-- <div class="ad-summary" style="height: 5.4rem; padding: 0.3rem; background-color: #ebedee;">
-        AD SUMMARY
-    </div> -->
-    <!-- ======================== 프리미어 공고 ======================== -->
-    <section id="section-premiereAds" class="premiere-ad">
+        <!-- <div class="ad-summary" style="height: 5.4rem; padding: 0.3rem; background-color: #ebedee;">
+            AD SUMMARY
+        </div> -->
+        <!-- ======================== 프리미어 공고 ======================== -->
+        <section id="section-premiereAds" class="premiere-ad">
 
-        <div class="jobpost-list-bar">
-                <span class="typo-title2">프리미어 채용정보</span>
-                <span class="jobpost-list-bar-counter" id="countOfPremierAds">0</span>
-        </div>
-
-        <div class="my-swiper-area" id="premierJobAdsSwipeArea"></div>
-        <script id="premierJobAdsSwipeTemplate" type="text/x-handlebars-template">
-
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-
-                    {{#each .}}
-                    <div class="swiper-slide">
-                        <div class="premiere-ad-box columns" id="premierJobAdsList">
-
-                            {{#each .}}			
-                            <div class="premiere-ad-card">
-                                <a href="jobad.html?jobAdId={{jobAdId}}">
-                                    <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
-                                    <div class="premiere-ad-card-title">{{hospital.hospitalName}}</div>
-                                    <div class="premiere-ad-card-subtitle">{{title}}</div>
-                                    <div class="premiere-ad-card-info">
-                                        <span class="premiere-ad-card-detail">{{{renderLocationOfJobAdCard hospital.location.locationCode}}}</span>
-                                        <span class="premiere-ad-card-detail">{{renderAdCardHiringEndDate hiringEndDate}}</span>
-                                    </div>
-                                    <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
-                                </a>
-                                <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                                <div class="premiere-ad-card-effect"></div>
-                            </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                    {{/each}}
-
-                </div>
+            <div class="jobpost-list-bar">
+                    <span class="typo-title2">프리미어 채용정보</span>
+                    <span class="jobpost-list-bar-counter" id="countOfPremierAds">0</span>
             </div>
-        </script>
-    </section>
-    <!-- ======================== 일반 공고 ======================== -->
-    <section id="section-generalAds" class="jobpost-list">
-        <div class="jobpost-list-bar">
-            <span class="typo-title2">라이브 채용정보</span>
-            <span class="jobpost-list-bar-counter" id="countOfGeneralAds">0</span>
-        </div>
-        <div class="jobpost-list-body" id="generalJobAdsList"></div>
-        <script id="generalJobAdsTemplate" type="text/x-handlebars-template">
-            {{#each .}}
-            <div class="jobpost-list-card">
-                <a href="jobad.html?jobAdId={{jobAdId}}">
-                    <div class="jobpost-list-card-header">
-                        <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
-                        <div class="jobpost-list-card-subtitle">{{title}}</div>
-                    </div>
-                    <div class="jobpost-list-card-body">
-                        <div class="dental-info">
-                            <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
-                            <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderAdCardHiringEndDate hiringEndDate}}</span></span>
-                            <span class="info-detail subway-line">
-                                <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
-                                <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
-                                <span>서울 3호선<i></i></span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
-                                <span class="subway120"><i></i></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
-                            </span>
-                            <!-- 시도, 시구군 정보, 교통정보 -->
-                            <span class="info-detail">
-                                {{#each hashTag}}
-                                    <span>#{{.}}<i></i></span>
+
+            <div class="my-swiper-area" id="premierJobAdsSwipeArea"></div>
+            <script id="premierJobAdsSwipeTemplate" type="text/x-handlebars-template">
+
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+
+                        {{#each .}}
+                        <div class="swiper-slide">
+                            <div class="premiere-ad-box" id="premierJobAdsList">
+
+                                {{#each .}}			
+                                <div class="premiere-ad-card">
+                                    <a href="jobad.html?jobAdId={{jobAdId}}">
+                                        <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
+                                        <div class="premiere-ad-card-title">{{hospital.hospitalName}}</div>
+                                        <div class="premiere-ad-card-subtitle">{{title}}</div>
+                                        <div class="premiere-ad-card-info">
+                                            <span class="premiere-ad-card-detail">{{{renderLocationOfJobAdCard hospital.location.locationCode}}}</span>
+                                            <span class="premiere-ad-card-detail">{{renderAdCardHiringEndDate hiringEndDate}}</span>
+                                        </div>
+                                        <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
+                                        <div class="premiere-ad-card-effect"></div>
+                                    </a>
+                                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                                </div>
                                 {{/each}}
-                            </span>
-                            <!-- 주변 핫플레이스 -->
+                            </div>
                         </div>
-                        <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
+                        {{/each}}
+
                     </div>
-                </a>
-                <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                </div>
+            </script>
+        </section>
+        <!-- ======================== 일반 공고 ======================== -->
+        <section id="section-generalAds" class="jobpost-list">
+            <div class="jobpost-list-bar">
+                <span class="typo-title2">라이브 채용정보</span>
+                <span class="jobpost-list-bar-counter" id="countOfGeneralAds">0</span>
             </div>
-            {{/each}}
-        </script>
-    </section>
-</div>
+            <div class="jobpost-list-body" id="generalJobAdsList"></div>
+            <script id="generalJobAdsTemplate" type="text/x-handlebars-template">
+                {{#each .}}
+                <div class="jobpost-list-card">
+                    <a href="jobad.html?jobAdId={{jobAdId}}">
+                        <div class="jobpost-list-card-header">
+                            <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
+                            <div class="jobpost-list-card-subtitle">{{title}}</div>
+                        </div>
+                        <div class="jobpost-list-card-body">
+                            <div class="dental-info">
+                                <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
+                                <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderAdCardHiringEndDate hiringEndDate}}</span></span>
+                                <span class="info-detail subway-line">
+                                    <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
+                                    <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
+                                    <span>서울 3호선<i></i></span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
+                                    <span class="subway120"><i></i></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
+                                </span>
+                                <!-- 시도, 시구군 정보, 교통정보 -->
+                                <span class="info-detail">
+                                    {{#each hashTag}}
+                                        <span>#{{.}}<i></i></span>
+                                    {{/each}}
+                                </span>
+                                <!-- 주변 핫플레이스 -->
+                            </div>
+                            <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
+                        </div>
+                    </a>
+                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
+                </div>
+                {{/each}}
+            </script>
+        </section>
+    </div>
 </div>
 <script src="js/header.js" type="text/javascript"></script>
 <!-- 헤더 부분 템플릿 -->
@@ -487,16 +487,19 @@ var LiveBoardApp = (function() {
     /* 스크랩 / 지원 / 전화 걸기 ACTION PANEL에 대한 Event 부착
 	/******************************************************************************/
     var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
+
+    // document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
+	// 	console.log("이벤트 걸었음 ", element);
+	// 	element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+    // });
+
+    $(".ad-wrapper").on("click", ".btn-icon.d-dots-v", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+
     
-	document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
-		console.log("이벤트 걸었음 ", element);
-		element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
-    });
-    
-	document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
-		console.log("이벤트 걸었음 ", element);
-		element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
-	});
+	// document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
+	// 	console.log("이벤트 걸었음 ", element);
+	// 	element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
+	// });
 
 	
 
