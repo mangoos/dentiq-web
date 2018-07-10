@@ -11,7 +11,9 @@
     <script type="text/javascript" src="js/express-useragent.js"></script>
     <script>
         var userAgent = new UserAgent().parse(navigator.userAgent);
-        if(userAgent.isMobile) location = "liveboard.html";
+        var PREMIERE_PAGINATION = true;
+        if(userAgent.isMobile) { location = "liveboard.html" 
+        } else { PREMIERE_PAGINATION = false; }
 
         if (userAgent.browser === "IE" && parseInt(userAgent.version) <= 9) { 
             alert("웹 보안 및 표준 준수를 위해 익스플로어 하위 버젼은 지원하지 못합니다. 확인 버튼을 누르고 브라우져 최신 버젼 업데이트 후 이용해주세요.");
@@ -191,9 +193,9 @@
 
         <!-- ======================== 프리미어 공고 ======================== -->
         <section id="section-premiereAds" class="premiere-ad">
-            <div class="jobpost-list-bar">
+            <div class="general-ad-bar">
                     <span class="typo-title2">프리미어 채용정보</span>
-                    <span class="jobpost-list-bar-counter" id="countOfPremierAds">0</span>
+                    <span class="general-ad-bar-counter" id="countOfPremierAds">0</span>
             </div>
             <div class="my-swiper-area" id="premierJobAdsSwipeArea"></div>
             <script id="premierJobAdsSwipeTemplate" type="text/x-handlebars-template">
@@ -203,23 +205,20 @@
 
                         {{#each .}}
                         <div class="swiper-slide">
-                            <div class="premiere-ad-box" id="premierJobAdsList">
+                            <div class="premiere-ad-body" id="premierJobAdsList">
 
                                 {{#each .}}			
-                                <div class="premiere-ad-card">
-                                    <a href="jobad.html?jobAdId={{jobAdId}}">
-                                        <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
-                                        <div class="premiere-ad-card-title">{{hospital.hospitalName}}</div>
-                                        <div class="premiere-ad-card-subtitle">{{title}}</div>
-                                        <div class="premiere-ad-card-info">
-                                            <span class="premiere-ad-card-detail">{{{renderLocationOfJobAdCard hospital.location.locationCode}}}</span>
-                                            <span class="premiere-ad-card-detail">{{renderAdCardHiringEndDate hiringEndDate}}</span>
-                                        </div>
-                                        <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
-                                        <div class="premiere-ad-card-effect"></div>
-                                    </a>
+                                <a class="premiere-ad-card" href="jobad.html?jobAdId={{jobAdId}}">
+                                    <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
+                                    <div class="premiere-ad-card-title">{{hospital.hospitalName}}</div>
+                                    <div class="premiere-ad-card-subtitle">{{title}}</div>
+                                    <div class="premiere-ad-card-info">
+                                        <span class="ad-card-detail">{{{renderLocationOfJobAdCard hospital.location.locationCode}}}</span>
+                                        <span class="ad-card-detail">{{{renderAdCardHiringEndDate hiringEndDate}}}</span>
+                                    </div>
+                                    <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
                                     <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                                </div>
+                                </a>
                                 {{/each}}
 
 
@@ -233,43 +232,25 @@
         </section>
 
         <!-- ======================== 일반 공고 ======================== -->
-        <section id="section-generalAds" class="jobpost-list">
-            <div class="jobpost-list-bar">
+        <section id="section-generalAds" class="general-ad">
+            <div class="general-ad-bar">
                 <span class="typo-title2">라이브 채용정보</span>
-                <span class="jobpost-list-bar-counter" id="countOfGeneralAds">0</span>
+                <span class="general-ad-bar-counter" id="countOfGeneralAds">0</span>
             </div>
-            <div class="jobpost-list-body" id="generalJobAdsList"></div>
+            <div class="general-ad-body" id="generalJobAdsList"></div>
             <script id="generalJobAdsTemplate" type="text/x-handlebars-template">
                 {{#each .}}
-                <div class="jobpost-list-card">
-                    <a href="jobad.html?jobAdId={{jobAdId}}">
-                        <div class="jobpost-list-card-header">
-                            <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
-                            <div class="jobpost-list-card-subtitle">{{title}}</div>
-                        </div>
-                        <div class="jobpost-list-card-body">
-                            <div class="dental-info">
-                                <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
-                                <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderAdCardHiringEndDate hiringEndDate}}</span></span>
-                                <span class="info-detail subway-line">
-                                    <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
-                                    <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
-                                    <span>서울 3호선<i></i></span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
-                                    <span class="subway120"><i></i></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
-                                </span>
-                                <!-- 시도, 시구군 정보, 교통정보 -->
-                                <span class="info-detail">
-                                    {{#each hashTag}}
-                                        <span>#{{.}}<i></i></span>
-                                    {{/each}}
-                                </span>
-                                <!-- 주변 핫플레이스 -->
-                            </div>
-                            <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
-                        </div>
-                    </a>
+                <a class="general-ad-card" href="jobad.html?jobAdId={{jobAdId}}">
+                    <div class="general-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
+                    <div class="general-ad-card-title">{{hospital.hospitalName}}</div>
+                    <div class="general-ad-card-subtitle">{{title}}</div>
+                    <div class="general-ad-card-info">
+                        <span class="ad-card-detail">{{{renderLocationOfJobAdCard  hospital.location.locationCode}}}</span>
+                        <span class="ad-card-detail">{{{renderAdCardHiringEndDate hiringEndDate}}}</span>
+                    </div>
+                    <div class="general-ad-card-info">{{{renderAttrOnCard attr}}}</div>
                     <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                </div>
+                </a>
                 {{/each}}
             </script>
         </section>
@@ -376,25 +357,25 @@
         
         // 속도 느림. 그러나 ordering 됨
         function renderAttrOnCard(attrList) {
-            if ( attrList==null || attrList.length==0 ) return "";
-        
+            if (attrList == null || attrList.length == 0) return "";
+
             var html = "";
-        
+
             var defAttrGroupList = CODE_CONTAINER.getAttrs();
             defAttrGroupList.forEach(function(defAttrGroup) {
-                html += '<span class="premiere-ad-card-detail">';
+                html += '<span class="ad-card-detail">';
                 defAttrGroup.element.forEach(function(defAttr) {
                     var defAttrValue = defAttr.value;
-        
+
                     attrList.forEach(function(attr) {
-                        if ( defAttrValue == attr ) {
+                        if (defAttrValue == attr) {
                             html += "<span>" + defAttr.text + "<i></i></span>";
                         }
                     });
                 });
                 html += '</span>';
             });
-        
+
             return html;
         }
         
@@ -411,12 +392,12 @@
             var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
             $(".dental-pc-wrapper").on("click", ".btn-icon.d-dots-v", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
             
-            // document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
+            // document.querySelectorAll(".general-ad-body").forEach(function(element) {
             //     console.log("이벤트 걸었음 ", element);
             //     element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
             // });
             
-            // document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
+            // document.querySelectorAll(".premiere-ad-body").forEach(function(element) {
             //     console.log("이벤트 걸었음 ", element);
             //     element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
             // });
@@ -433,7 +414,7 @@
             Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
                 //console.log("LOCATION_HELPER ", code);
                 var location = LOCATION_CODE.getByName(code);
-                if ( location ) return "<p>" +location.sidoName + "</p><p>" + location.siguName + "</p>";
+                if ( location ) return location.sidoName + "<span style='font-size: 80%;'>" + location.siguName + "</span>";
                 else return "입력안됨";
             });
             Handlebars.registerHelper("renderAttrOnCard", function(code) {

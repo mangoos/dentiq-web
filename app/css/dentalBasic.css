@@ -434,6 +434,14 @@ h6, .h6 { font-size: .8rem; }
 .d-toggle[data-action-checked="true"]::after { content: "on"; font-size: 0.6rem; position: absolute; left: -15px; top: 50%; color: #0083cb; 
     font-weight: bold; transform: translateY(-50%); }
 
+/* dental-chip */
+
+.info-chip { display: inline-flex; align-items: center; justify-content: center; border: 1px solid #5d5d5d; border-radius: 2px;
+    color: #5d5d5d; font-size: 90%; line-height: .8rem; margin: 0 0.1rem; text-decoration: none; width: 50px; }
+
+.d-day { color: #0083cb; }
+
+.info-chip.end-day { background: #a2242f; font-weight: bolder; color: #FFF; border: none; width: 70px; }
 
 /*********** user_setting.html **************/
 
@@ -1975,104 +1983,127 @@ input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { di
 
 
 /***********************************/
-/*********jobpost-list css*********/
+/*********라이브 채용정보(general ad) css*********/
 /***********************************/
-.jobpost-list { position: relative; margin: 0 auto; }
+
+.general-ad { position: relative; margin: 0 auto; }
 
 
-.jobpost-list-bar { position: relative; padding: 0.5rem 0; padding-left: 0.8rem; background-color: #FFF; }
-.jobpost-list-bar-counter { font-size: 0.7rem; color: #0083CB; }
-.jobpost-list-bar-counter:before { content:"( 총 "; }
-.jobpost-list-bar-counter:after { content:"건 )"; }
+.general-ad-bar { position: relative; padding: 0.5rem 0; padding-left: 0.8rem; background-color: #FFF; }
+
+.general-ad-bar-counter { font-size: 0.7rem; color: #0083CB; }
+
+.general-ad-bar-counter:before { content:"( 총 "; }
+
+.general-ad-bar-counter:after { content:"건 )"; }
 
 
-.jobpost-list-body { position: relative; }
-.jobpost-list-body .btn-icon.d-scrap,
-.jobpost-list-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
+
+.general-ad-body { display: flex; position: relative; flex-wrap: wrap; justify-content: space-between; }
+
+.general-ad-card { position: relative; width: 50%; border: none; border-right: 1px solid #e7e9ed; border-top: 1px solid #e7e9ed; 
+    background-color: #FFF; box-sizing: border-box; -webkit-box-sizing: border-box; }
+
+.general-ad-card:nth-child(2n) { border-right: none; }
 
 
-/* .jobpost-list-footer { } */
 
-/* .jobpost-list-footer-item { } */
+.general-ad-card-logo { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0.5rem auto;
+        font-family: 'Font Awesome 5 Pro'; font-weight: 400; }
 
-/* jobpost-list-card css */
-.jobpost-list-card .dental-info { display: flex; align-items: center; justify-content: flex-start; flex-grow: 1; flex-shrink: 0; 
-    flex-basis: auto; overflow: hidden; line-height: 0.9rem; }
+.general-ad-card-logo:before { content: "\f2fc"; font-size: 2.5rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
+    line-height: 1; transform: translate(-50%, -50%); }
 
-.jobpost-list-card .dental-info span.info-detail { display: inline-flex; align-items: center; justify-content: flex-start; flex-grow: 0; 
-    flex-shrink: 0; flex-basis: auto; margin-right: 0.2rem; }
+.general-ad-card-logo img { position: absolute; height: auto; width: 100px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
 
-.jobpost-list-card .info-detail.hospital-region { font-weight: bold; color: #212529; }
+.general-ad-card-logo .logo-frame-hospital { position: relative; width: 100%; max-width: 150px; min-height: 50px; background-color: transparent; 
+    overflow: hidden; margin: 0 auto; }
 
-.jobpost-list-card .dental-info span.info-detail span { height: 0.9rem; overflow: hidden; margin-right: 0.2rem; }
+.general-ad-card-logo .logo-frame-hospital:before { content: "dental+"; font-size: 0.7rem; color: #e9e9e9; position: absolute; 
+    top: 50%; left: 50%; line-height: 1; transform: translate(-50%, -50%); font-weight: bold; }
 
-.jobpost-list-card .dental-info span.info-detail span:nth-of-type(n+2) { margin-right: 0; }
 
-/* .jobpost-list-card .dental-info span.info-detail span { padding: 0; padding-left: 0.1rem; margin-right: 0.1rem; } */
 
-.jobpost-list-card .dental-info span.info-detail:not(:first-child):not(:empty):before { background: #000; border-radius: 50%; 
-        content: ""; display: inline-block; /* margin-bottom: 0.2rem; */ height: 3px; width: 3px; margin-right: 0.1rem; 
-        transform: translateX(-5%); }
+.general-ad-card-title { padding: 0 10px; font-weight: bold; font-size: 0.8rem; text-overflow: ellipsis;
+    white-space: nowrap; overflow: hidden; }
 
-.jobpost-list-card .dental-info span.info-detail span:not(:nth-of-type(1)), 
-.jobpost-list-card .dental-info span.info-detail span:not(:nth-of-type(2)) { display: none; }
+.general-ad-card-subtitle { margin-bottom: 5px; padding: 0 10px; font-size: 0.65rem; line-height: 0.8rem; 
+    text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; }
 
-.jobpost-list-card .dental-info span.info-detail span:nth-of-type(1), 
-.jobpost-list-card .dental-info span.info-detail span:nth-of-type(2) { display: inline-block; }
 
-.jobpost-list-card .dental-info span.info-detail:not(.subway-line) span:first-of-type:not(:last-of-type):after { content: ", "; 
-    display: inline-block; }
+    
+.general-ad-card-info { display: flex; justify-content: flex-start; font-size: 0.65rem; font-weight: bold; padding: 0 5%; line-height: 1.2rem;
+    color: #212529; background-color: #f5f8ff; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-top: 5px;}
 
-.jobpost-list-card .dental-info span.info-detail span:nth-of-type(2):not(:last-of-type) i:after { content: "외"; display: inline-block; 
-    padding-left: 0.2rem; background-color: #FFF; }
+.general-ad-card-info:nth-last-child(3) { font-weight: normal; }
 
-/* 라이브 채용정보(general ad) css */
-.jobpost-list-card { position: relative; border-top: none; background: #fff; border: 1px solid #e7e9ed; border-radius: .1rem;
-    display: flex; display: -ms-flexbox; -ms-flex-direction: column; flex-direction: column; margin-bottom: 0.2rem; padding-bottom: 0.7rem; }
+.general-ad-card-info:nth-last-child(2) { padding-top: 0; padding-bottom: 5px; color: #5d5d5d; font-weight: normal; }
 
-.jobpost-list-card .jobpost-date { text-align: center; color: #5d5d5d; background-color: #e6e6e6; border-radius: 0.1rem; font-size: 0.6rem; padding: 0rem 0.4rem; }
+.general-ad-card .ad-card-detail { display: flex; align-items: center; padding-left: 10px; height: 24px; }
 
-.jobpost-list-card .jobpost-date:not(:empty)::before { content: "~ "; }
-.jobpost-list-card .jobpost-date:empty::before { content: "상시채용"; }
+.general-ad-card .ad-card-detail:first-child { padding-left: 0; }
+.general-ad-card .ad-card-detail span:nth-of-type(n+2) { display: none; }
+.ad-card-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; font-size: 80%; }
+.general-ad-body .btn-icon.d-scrap,
+.general-ad-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
 
-.jobpost-list-card:last-child { margin-bottom: 0; }
+.general-ad-card .ad-card-detail span:nth-of-type(n+2) { display: none; }
 
-.jobpost-list-card-header { padding: .8rem; padding-bottom: 0; }
+.general-ad-card .ad-card-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; }
 
-.jobpost-list-card-title { display: block; font-size: 0.9rem; line-height: 0.9rem; white-space: nowrap; overflow: hidden; font-weight: bolder;
-    text-overflow: ellipsis; color: #212529; padding-bottom: 0.2rem; }
+.general-ad-body .btn-icon.d-scrap,
+.general-ad-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
 
-.jobpost-list-card-subtitle { display: flex; align-items: center; overflow: hidden; padding-right: 1px; font-size: 0.8rem; line-height: 0.8rem; 
-    color: #212529; padding-bottom: 0.3rem; white-space: normal; text-overflow: ellipsis; word-break: break-all; height: 1.8rem; 
-    /* margin-bottom: 0.3rem; */ }
 
-.jobpost-list-card-body { font-size: .6rem; padding: 0 .8rem; /* padding-bottom: .8rem; */ color: #999; }
 
-.jobpost-list-card-footer { display: flex; position: relative; justify-content: flex-end; align-items: center; padding: 0.5rem; overflow: hidden; 
-    height: 2.3rem; border-top: 1px solid #FAFAFA; }
-
-.jobpost-list-card-footer .jobpost-date { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); text-align: center; 
-    color: #5d5d5d; background-color: #e6e6e6; border-radius: 0.1rem; font-size: 0.6rem; padding: 0rem 0.4rem; }
-
-.jobpost-list-card-footer .jobpost-date::before { content: "~ "; }
 
 
 
 
 /*****************************************************/
-/********* 프리미어 채용정보(premiere-ad) css *********/
-/*****************************************************/
-.premiere-ad-box { display: flex; flex-wrap: wrap; margin: 0 0 10px; border: 1px solid #e7e9ed; border-top: none; }
+/* 광고 50% 사이즈 css*/ 
 
-.premiere-ad-card { position: relative; /* flex-basis: 50%; */ width: 50%; border: none; border-right: 1px solid #e7e9ed; border-top: 1px solid #e7e9ed; 
+/* .premiere-ad-body { display: flex; flex-wrap: wrap; margin: 0 0 10px; border: 1px solid #e7e9ed; border-top: none; }
+
+.premiere-ad-card { position: relative; width: 50%; border: none; border-right: 1px solid #e7e9ed; border-top: 1px solid #e7e9ed; 
+    background-color: #FFF; box-sizing: border-box; -webkit-box-sizing: border-box;}
+.premiere-ad-card:nth-child(2n) { border-right: none; }
+.premiere-ad-card-logo { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0 auto;
+     font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin-top: 1rem; }
+.premiere-ad-card-logo:before { content: "\f2fc"; font-size: 3rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
+    line-height: 1; transform: translate(-50%, -50%); }
+.premiere-ad-card-logo img { position: absolute; height: auto; width: 120px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+.premiere-ad-card-logo .logo-frame-hospital { position: relative; width: 100%; max-width: 150px; min-height: 50px; background-color: transparent; 
+    overflow: hidden; margin: 0 auto; }
+.premiere-ad-card-logo .logo-frame-hospital:before { content: "dental+"; font-size: 0.8rem; color: #e9e9e9; position: absolute; 
+    top: 50%; left: 50%; line-height: 1; transform: translate(-50%, -50%); font-weight: bold; }
+.premiere-ad-card-title { padding: 0 10px; font-weight: bold; font-size: 0.8rem; text-align: center; text-overflow: ellipsis;
+    white-space: nowrap; overflow: hidden; }
+.premiere-ad-card-subtitle { margin-bottom: 5px; padding: 0 10px; font-size: 0.65rem; line-height: 0.8rem; 
+    text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; }
+.premiere-ad-card-info { display: flex; justify-content: space-around; font-size: 0.65rem; font-weight: bold; padding: 0 5%; line-height: 1.2rem;
+ color: #212529; background-color: #f5f8ff; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-top: 5px;}
+.premiere-ad-card-info:nth-last-child(2) { justify-content: flex-start; font-weight: normal; }
+.premiere-ad-card-info:nth-last-child(1) { padding-top: 0; padding-bottom: 5px; color: #5d5d5d; font-weight: normal; }
+.premiere-ad-card .ad-card-detail { display: flex; align-items: center; padding-left: 10px; height: 24px; }
+.premiere-ad-card .ad-card-detail:first-child { padding-left: 0; }
+.premiere-ad-card .ad-card-detail span:nth-of-type(n+2) { display: none; }
+.ad-card-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; font-size: 80%; }
+.premiere-ad-body .btn-icon.d-scrap,
+.premiere-ad-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; } */
+
+
+/* 광고 100% 사이즈 css*/
+
+/* .premiere-ad-body { display: flex; position: relative; flex-wrap: wrap; margin: 0 0 10px; border: 1px solid #e7e9ed; border-top: none; }
+
+.premiere-ad-card { position: relative; width: 100%; border: none; border-right: 1px solid #e7e9ed; border-top: 1px solid #e7e9ed; 
     background-color: #FFF; box-sizing: border-box; -webkit-box-sizing: border-box;}
 
 .premiere-ad-card:nth-child(2n) { border-right: none; }
 
-/* .premiere-ad-box .card-image { margin: 10px auto 0; width: 100px; height: 45px; } */
-
 .premiere-ad-card-logo { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0 auto;
-     font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin-top: 1rem; }
+     font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin-top: 0.5rem; }
 
 .premiere-ad-card-logo:before { content: "\f2fc"; font-size: 3rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
     line-height: 1; transform: translate(-50%, -50%); }
@@ -2085,30 +2116,135 @@ input[name=liveplus-filter-toggle]:checked ~ label .liveplus-filter-overlay { di
 .premiere-ad-card-logo .logo-frame-hospital:before { content: "dental+"; font-size: 0.8rem; color: #e9e9e9; position: absolute; 
     top: 50%; left: 50%; line-height: 1; transform: translate(-50%, -50%); font-weight: bold; }
 
-.premiere-ad-card-title { padding: 0 10px; font-weight: bold; font-size: 0.8rem; text-align: center; text-overflow: ellipsis;
+.premiere-ad-card-title { padding: 0 10px; font-weight: bold; font-size: 0.9rem; text-align: center; text-overflow: ellipsis;
     white-space: nowrap; overflow: hidden; }
 
-.premiere-ad-card-subtitle { margin-bottom: 5px; padding: 0 10px; font-size: 0.65rem; line-height: 0.8rem; text-align: center;
-    text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; /* word-wrap: normal; */}
+.premiere-ad-card-subtitle { margin-bottom: 5px; padding: 0 20px; font-size: 0.8rem; line-height: 0.8rem; 
+    text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; }
 
-.premiere-ad-card-info { display: flex; justify-content: space-around; font-size: 0.65rem; padding: 0 10px; line-height: 1.2rem; 
- color: #FFF; background-color: #0083cb; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-top: 5px;}
+.premiere-ad-card-info { display: flex; justify-content: space-around; font-size: 0.8rem; font-weight: bold; padding: 0 10%; line-height: 1.2rem;
+ color: #212529; background-color: #f5f8ff; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-top: 5px;}
 
-.premiere-ad-card>a .premiere-ad-card-info:last-child { padding-top: o; padding-bottom: 5px; }
+.premiere-ad-card-info:nth-last-child(3) { justify-content: flex-start; font-weight: normal; }
+.premiere-ad-card-info:nth-last-child(2) { padding-top: 0; padding-bottom: 5px; color: #5d5d5d; font-weight: normal; }
 
-.premiere-ad-card-detail { display: flex; align-items: center; }
+.premiere-ad-card .ad-card-detail { display: flex; align-items: center; padding-left: 10px; height: 24px; }
+.premiere-ad-card .ad-card-detail:first-child { padding-left: 0; }
 
-/* .premiere-ad-card-info:nth-child(1) .premiere-ad-card-detail:nth-child(1) { font-weight: bold; color: #212529; } */
+.premiere-ad-card .ad-card-detail span:nth-of-type(n+2) { display: none; }
 
-/* .premiere-ad-card-info span.premiere-ad-card-detail:not(:last-child):after { background: #888; border-radius: 50%; 
-        content: ""; height: 3px; width: 3px; display: inline-block; margin: 0 2px; } */
+.ad-card-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; font-size: 80%; } */
 
-.premiere-ad-card-detail span:nth-of-type(n+2) { display: none; }
+/* 카드타입 flex, big */
 
-.premiere-ad-card-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; }
+/* .premiere-ad-body { display: flex; position: relative; flex-wrap: wrap; margin: 0 0 10px; border: 1px solid #e7e9ed; border-top: none; }
 
-.premiere-ad-box .btn-icon.d-scrap,
-.premiere-ad-box .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
+.premiere-ad-card { display: flex; flex-wrap: wrap; position: relative; width: 100%; border: none; border-right: 1px solid #e7e9ed; border-top: 1px solid #e7e9ed; 
+    background-color: #FFF; box-sizing: border-box; -webkit-box-sizing: border-box;}
+
+.premiere-ad-card:nth-child(2n) { border-right: none; }
+
+.premiere-ad-card-logo { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0 auto;
+     font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin-top: 0.5rem; width: 35%; }
+
+.premiere-ad-card-logo:before { content: "\f2fc"; font-size: 2rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
+    line-height: 1; transform: translate(-50%, -50%); }
+
+.premiere-ad-card-logo img { position: absolute; height: auto; width: 120px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+.premiere-ad-card-logo .logo-frame-hospital { position: relative; width: 70%; max-width: 150px; min-height: 50px; background-color: transparent; 
+    overflow: hidden; margin: 0 auto; }
+
+.premiere-ad-card-logo .logo-frame-hospital:before { content: "dental+"; font-size: 0.6rem; color: #e9e9e9; position: absolute; 
+    top: 50%; left: 50%; line-height: 1; transform: translate(-50%, -50%); font-weight: bold; }
+
+.premiere-ad-card-title { padding-right: 15px; font-weight: bold; font-size: 0.9rem; line-height: 3rem;
+    text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 65%; }
+
+.premiere-ad-card-subtitle { margin-bottom: 5px; padding: 0 20px; font-size: 0.8rem; line-height: 1.2rem; 
+    text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; }
+
+.premiere-ad-card-info { display: flex; justify-content: space-around; width: 100%; font-size: 0.8rem; font-weight: bold; padding: 0 10%; line-height: 1.2rem;
+    color: #212529; background-color: #f5f8ff; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-top: 5px;}
+
+.premiere-ad-card-info:nth-last-child(3) { justify-content: flex-start; font-weight: normal; }
+.premiere-ad-card-info:nth-last-child(2) { padding-top: 0; padding-bottom: 5px; color: #5d5d5d; font-weight: normal; }
+
+.premiere-ad-card .ad-card-detail { display: flex; align-items: center; padding-left: 10px; height: 24px; }
+.premiere-ad-card .ad-card-detail:first-child { padding-left: 0; }
+
+.premiere-ad-card .ad-card-detail span:nth-of-type(n+2) { display: none; }
+
+.ad-card-detail span:first-of-type:not(:last-of-type) i:after { content: "외"; display: inline-block; margin-left: 0.1rem; font-size: 80%; } */
+
+
+/*****************************************************/
+/********* 프리미어 채용정보(premiere-ad) css *********/
+/*****************************************************/
+.premiere-ad-body { display: flex; position: relative; flex-wrap: wrap; margin: 0 0 10px; border: 1px solid #e7e9ed; border-top: none; }
+
+.premiere-ad-card { position: relative; width: 100%; border: none; border-right: 1px solid #e7e9ed; border-top: 1px solid #e7e9ed; 
+    background-color: #FFF; box-sizing: border-box; -webkit-box-sizing: border-box;}
+
+.premiere-ad-card:nth-child(2n) { border-right: none; }
+
+.premiere-ad-card-logo { position: relative; overflow: hidden; min-width: 100px; min-height: 50px; margin: 0 auto;
+     font-family: 'Font Awesome 5 Pro'; font-weight: 400; margin-top: 0.5rem; }
+
+.premiere-ad-card-logo:before { content: "\f2fc"; font-size: 3rem; color: #e9e9e9; position: absolute; top: 50%; left: 50%; 
+    line-height: 1; transform: translate(-50%, -50%); }
+
+.premiere-ad-card-logo img { position: absolute; height: auto; width: 120px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+.premiere-ad-card-logo .logo-frame-hospital { position: relative; width: 100%; max-width: 150px; min-height: 50px; background-color: transparent; 
+    overflow: hidden; margin: 0 auto; }
+
+.premiere-ad-card-logo .logo-frame-hospital:before { content: "dental+"; font-size: 0.8rem; color: #e9e9e9; position: absolute; 
+    top: 50%; left: 50%; line-height: 1; transform: translate(-50%, -50%); font-weight: bold; }
+
+.premiere-ad-card-title { padding: 0 8%; color: #212529; font-weight: bold; font-size: 0.9rem; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+
+.premiere-ad-card-subtitle { margin-bottom: 5px; padding: 0 8%; font-size: 0.8rem; line-height: 0.8rem; 
+    text-overflow: ellipsis; white-space: nowrap; color: #212529; overflow: hidden; width: 100%; }
+
+.premiere-ad-card-info { display: flex; justify-content: flex-start; font-size: 0.8rem; font-weight: bold; padding-left: 10%; line-height: 1.2rem;
+ color: #5d5d5d; background-color: #f5f8ff; margin: 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-top: 5px;}
+
+.premiere-ad-card-info:nth-last-child(3) { justify-content: flex-start; font-weight: normal; }
+.premiere-ad-card-info:nth-last-child(2) { padding-top: 0; padding-bottom: 5px; color: #5d5d5d; font-weight: normal; }
+
+.premiere-ad-card .ad-card-detail { padding-left: 10px; height: 24px; }
+
+.premiere-ad-card .ad-card-detail span:nth-of-type(n+2) { display: inline-block; }
+.premiere-ad-card .ad-card-detail span:nth-of-type(n+3) { display: none; }
+
+
+
+.premiere-ad-card-info:nth-child(1) .premiere-ad-card-detail:nth-child(1) { font-weight: bold; color: #212529; }
+
+.premiere-ad-card-info span.premiere-ad-card-detail:not(:last-child):after { background: #888; border-radius: 50%; 
+    content: ""; height: 3px; width: 3px; display: inline-block; margin: 0 2px; }
+
+.premiere-ad-body .btn-icon.d-scrap,
+.premiere-ad-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
+
+
+/* job-post, resume card 공통 */
+ 
+.ad-card-detail { padding-left: 10px; }
+
+.ad-card-detail:first-child { padding-left: 0; }
+
+.ad-card-detail span:nth-of-type(n+2) { display: none; }
+
+.ad-card-detail span:nth-of-type(2) { font-size: 70%; }
+
+.ad-card-detail span:nth-of-type(2)::before { content: ", "; display: inline-block; margin-right: 4px; }
+
+.ad-card-detail span:nth-of-type(2):not(:last-of-type) i:after { content: "외"; /* display: inline-block; */ margin-left: 0.1rem; font-size: 80%; }
+
+.premiere-ad-body .btn-icon.d-scrap,
+.premiere-ad-body .btn-icon.d-dots-v { position: absolute; top: 0; right: 0; padding: 0.4rem 0.7rem 0.3rem 0.7rem; }
 
 
 /*********************************/
@@ -2425,12 +2561,12 @@ section.register-dentist ::-moz-input-placeholder { font-size: 0.7rem; font-styl
 /********* login.html css *********/
 /**********************************/
 .dental-steps .login-section { width: 100%; max-width: none; min-width: none; } /* .dental-steps 에 정의*/
-.login-section { width: 95%; max-width: 580px; min-width: 360px; background-color: #eceff5; margin: 0 auto; margin-top: calc( 2% + 1rem );
+.login-section { width: 95%; max-width: 580px; min-width: 360px; background-color: #f5f8ff; margin: 0 auto; margin-top: calc( 2% + 1rem );
     border-radius: 1rem; padding: 0.5rem; }
 
 .login-section .facebook-login { background-color: #2a5082; line-height: 3rem; font-size: 0.9rem; color: #FFF; }
 .login-section .divider { text-align: center; }
-.login-section  div.divider[data-content]:after { background-color: #eceff5; }
+.login-section  div.divider[data-content]:after { background-color: #f5f8ff; }
 .login-section-footer { position: relative; width: 90%; margin: 0 auto 20px; text-align: center; }
 .login-section-body { position: relative; margin-bottom: 10px; padding: 0; }
 .login-section div.basic { height: 3rem; margin: 0 auto; margin-bottom: 0.5rem; position: relative; width: 95%; }
@@ -2791,11 +2927,11 @@ header section.header-main .navbar-section-search,
     /*****************************************************/
     /********* 프리미어 채용정보(premiere-ad) css *********/
     /*****************************************************/
-    .premiere-ad-box { justify-content: space-between; border: none; }
+    .premiere-ad-body { justify-content: space-between; border: none; }
 
-    .ad-wrapper .premiere-ad-card { width: 50%; }
+    .ad-wrapper .premiere-ad-card { width: 50%; } /*라이브보드 프리미어 카드*/
 
-    .premiere-ad-card { width: 33%; margin-bottom: 5px; border: 1px solid #e7e9ed !important;}
+    .premiere-ad-card { width: 33%; margin-bottom: 5px; border: 1px solid #e7e9ed !important;} /*index 페이지 프리미어 카드*/
 
     .premiere-ad-card-logo img { width: 140px; }
 
@@ -2805,12 +2941,29 @@ header section.header-main .navbar-section-search,
 
     .premiere-ad-card-info { font-size: 0.7rem; }
 
-    .premiere-ad-card-effect { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: transparent; }
+    .premiere-ad-card span.btn-icon.d-dots-v { z-index: 2; }
 
+    .premiere-ad-card::before { content: ""; display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: transparent; z-index: 1; }
+    
+    .premiere-ad-card:hover::before { content: ""; background-color: #0083cb; opacity: 0.3; }
+
+    .premiere-ad-card:hover::before ~ .premiere-ad-card-info:last-child { font-weight: bolder; }
+
+    .premiere-ad-card:hover::before ~ span.btn-icon.d-dots-v { color: #0083cb; }
+
+    /* .premiere-ad-card-effect { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: transparent; z-index: 1; }
     .premiere-ad-card-effect:hover { background-color: #0083cb; opacity: 0.3; }
+    .premiere-ad-card-effect:hover ~ .premiere-ad-card-info:last-child { font-weight: bolder; }
+    .premiere-ad-card-effect:hover ~ span.btn-icon.d-dots-v { color: #0083cb; } */
 
-    .jobpost-list-body { display: flex; flex-wrap: wrap; }
-    .jobpost-list-card { width: 33.2%; }
+
+    .general-ad-body {  }
+
+    .general-ad-card { width: 24.5%; border: 1px solid #e7e9ed !important; margin-bottom: 6px; }
+
+    .ad-wrapper .general-ad-card { width: 32.8%; } /*라이브보드 프리미어 카드*/
+
+    /* .info-chip { width: 70px; } */
 
     /* fixed-layer-btm css */
 

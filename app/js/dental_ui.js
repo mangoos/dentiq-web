@@ -318,6 +318,47 @@ function returnYYYYMMDD(dateObj) {
 	return year + month + day + "";
 }
 
+function returnMslashD(yyyymmdd) {
+	if (!yyyymmdd) return false;
+
+	var date = returnDateObj(yyyymmdd);
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	var dayOfWeek = returnDayOfWeekFromIndex(date.getDay());
+
+	return month + "/" + day; // + " (" + dayOfWeek + ")";
+}
+
+// 주어진 날을 비교해서 남은 날을 계산, 2번째 인자가 없으면 오늘과 차이.
+function returnDday(yyyymmdd_end, yyyymmdd_start) {
+	var date1 = returnDateObj(yyyymmdd_start) || Date.now();
+	var date2 = returnDateObj(yyyymmdd_end);
+	if (date1 && date2) {
+		var dDay = (date2 - date1) / (60 * 60 * 24 * 1000);
+		return dDay;
+	}
+
+	return false;
+}
+
+function returnMstrDstr(yyyymmdd) {
+	if (!yyyymmdd) return false;
+
+	var date = returnDateObj(yyyymmdd);
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	var dayOfWeek = returnDayOfWeekFromIndex(date.getDay());
+
+	return month + "월" + day + "일 (" + dayOfWeek + ")";
+}
+
+function returnDayOfWeekFromIndex(index) {
+	if (typeof index !== "number" && !index) return false;
+
+	var arr = ["일", "월", "화", "수", "목", "금", "토"];
+	return arr[index];
+}
+
 function renderFullDateKR(yyyymmdd) {
 	var date = returnDateObj(yyyymmdd);
 	if (date) {
@@ -341,59 +382,20 @@ function renderTimeKR(hhmm) {
 	return hour + "시 " + min + "분";
 }
 
-function renderMslashD(yyyymmdd) {
-	if (!yyyymmdd) return false;
-
-	var date = returnDateObj(yyyymmdd);
-	var month = date.getMonth() + 1;
-	var day = date.getDate();
-	var dayOfWeek = returnDayOfWeekFromIndex(date.getDay());
-
-	return month + "/" + day + " (" + dayOfWeek + ")";
-}
-
-// 주어진 날을 비교해서 남은 날을 계산, 2번째 인자가 없으면 오늘과 차이.
-function returnDday(yyyymmdd_end, yyyymmdd_start) {
-	var date1 = returnDateObj(yyyymmdd_start) || Date.now();
-	var date2 = returnDateObj(yyyymmdd_end);
-	if (date1 && date2) {
-		var dDay = (date2 - date1) / (60 * 60 * 24 * 1000);
-		return dDay;
-	}
-
-	return false;
-}
-
-function renderMstrDstr(yyyymmdd) {
-	if (!yyyymmdd) return false;
-
-	var date = returnDateObj(yyyymmdd);
-	var month = date.getMonth() + 1;
-	var day = date.getDate();
-	var dayOfWeek = returnDayOfWeekFromIndex(date.getDay());
-
-	return month + "월" + day + "일 (" + dayOfWeek + ")";
-}
-
-function returnDayOfWeekFromIndex(index) {
-	if (typeof index !== "number" && !index) return false;
-
-	var arr = ["일", "월", "화", "수", "목", "금", "토"];
-	return arr[index];
-}
-
-
 function renderAdCardHiringEndDate(yyyymmdd) {
 	if (!yyyymmdd) return false;
 
 	var hiringEndDate = yyyymmdd + "";
 	var today = returnYYYYMMDD(new Date());
 	var dDay = returnDday(hiringEndDate, today);
+	var returnHTML = "";
 
-	if (dDay < 10) return "D - " + dDay;
-	if (dDay == "1") return "오늘 마감";
+	returnHTML = "<b>~" + returnMslashD(hiringEndDate) + "</b>";
+	if (dDay < 8) returnHTML = "<b style='color: #0083cb;'>D-" + dDay + "</b>";
+	if (dDay < 4) returnHTML = "<b style='color: #a2242f'>마감 임박</b>";
+	if (dDay === "0") returnHTML = "<b class='info-chip end-day'>오늘 마감</b>";
 
-	return renderMslashD(hiringEndDate);
+	return returnHTML;
 }
 
 // 요기까지 선정우가 작성

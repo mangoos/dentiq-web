@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko"ㅁ>
 
 <head>
     <meta charset="utf-8">
@@ -8,10 +8,23 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="author" content="https://github.com/aaa/">
     <title>덴탈플러스</title>
+    
     <link href="css/fontawesome/css/fontawesome-all.css" rel="stylesheet"> <!-- font awesome 5.* pro -->
     <link rel="stylesheet" href="css/dentalBasic.css">
     <link rel="stylesheet" href="css/swiper.min.css">   <!-- Link Swiper's CSS -->
 
+    <script type="text/javascript" src="js/express-useragent.js"></script>
+    <script>
+        var userAgent = new UserAgent().parse(navigator.userAgent);
+        var PREMIERE_PAGINATION = true;
+        if(!userAgent.isMobile) PREMIERE_PAGINATION = false; 
+
+        if (userAgent.browser === "IE" && parseInt(userAgent.version) <= 9) { 
+            alert("웹 보안 및 표준 준수를 위해 익스플로어 하위 버젼은 지원하지 못합니다. 확인 버튼을 누르고 브라우져 최신 버젼 업데이트 후 이용해주세요.");
+            location = "ie_should_update.html";
+        }
+        console.log("접속 브라우져: %s, 브라우져 버젼: %s",userAgent.browser, userAgent.version);
+    </script>
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/handlebars.min.js"></script>
     <script src="js/swiper.min.js"></script>    <!-- Swiper JS -->
@@ -276,9 +289,9 @@
         <!-- ======================== 프리미어 공고 ======================== -->
         <section id="section-premiereAds" class="premiere-ad">
 
-            <div class="jobpost-list-bar">
+            <div class="general-ad-bar">
                     <span class="typo-title2">프리미어 채용정보</span>
-                    <span class="jobpost-list-bar-counter" id="countOfPremierAds">0</span>
+                    <span class="general-ad-bar-counter" id="countOfPremierAds">0</span>
             </div>
 
             <div class="my-swiper-area" id="premierJobAdsSwipeArea"></div>
@@ -286,26 +299,74 @@
 
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-
+                        <div class="swiper-slide">
+                            <div class="premiere-ad-body">
+                                <a class="premiere-ad-card" href="jobad.html?jobAdId=44">
+                                    <!-- <div class="premiere-ad-card-effect"></div> -->
+                                    <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src=""></div></div>
+                                    <div class="premiere-ad-card-title">하드코딩 오늘 마감 병원하드코딩 오늘 마감 병원</div>
+                                    <div class="premiere-ad-card-subtitle">오늘 마감 테스트용 지워야 합니다.</div>
+                                    <div class="premiere-ad-card-info" style="background-color: #eceff5">
+                                        <span class="ad-card-detail"><span>경기<span style="font-size: 80%;">안양 동안구</span></span></span>
+                                        <span class="ad-card-detail"><b class="info-chip end-day">오늘 마감</b></span>
+                                    </div>
+                                    <div class="premiere-ad-card-info" style="background-color: #eceff5"><span class="ad-card-detail"><span>실습/인턴<i></i></span><span>계약직<i></i></span><span>정규직<i></i></span></span><span class="ad-card-detail"><span>치위생사<i></i></span><span>간호조무사<i></i></span><span>치위생사<i></i></span></span><span class="ad-card-detail"><span>진료실<i></i></span><span>데스크<i></i></span><span>상담<i></i></span><span>보험청구<i></i></span><span>치과내 기공실<i></i></span><span>관리및경영<i></i></span><span>기타<i></i></span></span></div>
+                                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="44" data-action-value-tel-no="0316374628"></span>
+                                </a>
+                                <a class="premiere-ad-card" href="jobad.html?jobAdId=44">
+                                        <!-- <div class="premiere-ad-card-effect"></div> -->
+                                    <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="https://dentalplus.enqual.co.kr//resources/hospital/4/logo_small.jpg"></div></div>
+                                    <div class="premiere-ad-card-title">하드코딩 상시채용 병원</div>
+                                    <div class="premiere-ad-card-subtitle">상시 채용 테스트용 지워야 합니다.</div>
+                                    <div class="premiere-ad-card-info" style="background-color: #eceff5">
+                                        <span class="ad-card-detail"><span>경기<span style="font-size: 80%;">안양 동안구</span></span></span>
+                                        <span class="ad-card-detail">상시채용</span>
+                                    </div>
+                                    <div class="premiere-ad-card-info" style="background-color: #eceff5"><span class="ad-card-detail"><span>정규직<i></i></span></span><span class="ad-card-detail"><span>치위생사<i></i></span><span>간호조무사<i></i></span><span>보험청구사<i></i></span><span>코디네이터<i></i></span><span>기타<i></i></span></span><span class="ad-card-detail"><span>진료실<i></i></span><span>데스크<i></i></span><span>상담<i></i></span><span>보험청구<i></i></span><span>치과내 기공실<i></i></span><span>관리및경영<i></i></span><span>기타<i></i></span></span></div>
+                                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="44" data-action-value-tel-no="0316374628"></span>
+                                </a>
+                                    
+                                <a class="premiere-ad-card" href="jobad.html?jobAdId=44">
+                                        <!-- <div class="premiere-ad-card-effect"></div> -->
+                                    <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="https://dentalplus.enqual.co.kr//resources/hospital/4/logo_small.jpg"></div></div>
+                                    <div class="premiere-ad-card-title">하드코딩 D-day 병원</div>
+                                    <div class="premiere-ad-card-subtitle">D-day 테스트용 지워야 합니다.</div>
+                                    <div class="premiere-ad-card-info">
+                                        <span class="ad-card-detail"><span>경기<span style="font-size: 80%;">안양 동안구</span></span></span>
+                                        <span class="ad-card-detail"><b style="color: #0083cb;">D-7</b></span>
+                                    </div>
+                                    <div class="premiere-ad-card-info"><span class="ad-card-detail"><span>정규직<i></i></span></span><span class="ad-card-detail"><span>치위생사<i></i></span><span>간호조무사<i></i></span><span>보험청구사<i></i></span><span>코디네이터<i></i></span><span>기타<i></i></span></span><span class="ad-card-detail"><span>진료실<i></i></span><span>데스크<i></i></span><span>상담<i></i></span><span>보험청구<i></i></span><span>치과내 기공실<i></i></span><span>관리및경영<i></i></span><span>기타<i></i></span></span></div>
+                                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="44" data-action-value-tel-no="0316374628"></span>
+                                </a>
+                                <a class="premiere-ad-card" href="jobad.html?jobAdId=44">
+                                    <!-- <div class="premiere-ad-card-effect"></div> -->
+                                    <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="https://dentalplus.enqual.co.kr//resources/hospital/4/logo_small.jpg"></div></div>
+                                    <div class="premiere-ad-card-title">하드코딩 마감임박 병원</div>
+                                    <div class="premiere-ad-card-subtitle">마감임박 테스트용 지워야 합니다.</div>
+                                    <div class="premiere-ad-card-info">
+                                        <span class="ad-card-detail"><span>경기<span style="font-size: 80%;">안양 동안구</span></span></span>
+                                        <span class="ad-card-detail"><b style='color: #a2242f'>마감임박</b></span>
+                                    </div>
+                                    <div class="premiere-ad-card-info"><span class="ad-card-detail"><span>정규직<i></i></span></span><span class="ad-card-detail"><span>치위생사<i></i></span><span>간호조무사<i></i></span><span>보험청구사<i></i></span><span>코디네이터<i></i></span><span>기타<i></i></span></span><span class="ad-card-detail"><span>진료실<i></i></span><span>데스크<i></i></span><span>상담<i></i></span><span>보험청구<i></i></span><span>치과내 기공실<i></i></span><span>관리및경영<i></i></span><span>기타<i></i></span></span></div>
+                                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="44" data-action-value-tel-no="0316374628"></span>
+                                </a>
+                            </div>
+                        </div>
                         {{#each .}}
                         <div class="swiper-slide">
-                            <div class="premiere-ad-box" id="premierJobAdsList">
-
+                            <div class="premiere-ad-body" id="premierJobAdsList">
                                 {{#each .}}			
-                                <div class="premiere-ad-card">
-                                    <a href="jobad.html?jobAdId={{jobAdId}}">
+                                    <a class="premiere-ad-card" href="jobad.html?jobAdId={{jobAdId}}">
                                         <div class="premiere-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
                                         <div class="premiere-ad-card-title">{{hospital.hospitalName}}</div>
                                         <div class="premiere-ad-card-subtitle">{{title}}</div>
                                         <div class="premiere-ad-card-info">
-                                            <span class="premiere-ad-card-detail">{{{renderLocationOfJobAdCard hospital.location.locationCode}}}</span>
-                                            <span class="premiere-ad-card-detail">{{renderAdCardHiringEndDate hiringEndDate}}</span>
+                                            <span class="ad-card-detail">{{{renderLocationOfJobAdCard hospital.location.locationCode}}}</span>
+                                            <span class="ad-card-detail">{{{renderAdCardHiringEndDate hiringEndDate}}}</span>
                                         </div>
                                         <div class="premiere-ad-card-info">{{{renderAttrOnCard attr}}}</div>
-                                        <div class="premiere-ad-card-effect"></div>
+                                        <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
                                     </a>
-                                    <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                                </div>
                                 {{/each}}
                             </div>
                         </div>
@@ -316,43 +377,25 @@
             </script>
         </section>
         <!-- ======================== 일반 공고 ======================== -->
-        <section id="section-generalAds" class="jobpost-list">
-            <div class="jobpost-list-bar">
+        <section id="section-generalAds" class="general-ad">
+            <div class="general-ad-bar">
                 <span class="typo-title2">라이브 채용정보</span>
-                <span class="jobpost-list-bar-counter" id="countOfGeneralAds">0</span>
+                <span class="general-ad-bar-counter" id="countOfGeneralAds">0</span>
             </div>
-            <div class="jobpost-list-body" id="generalJobAdsList"></div>
+            <div class="general-ad-body" id="generalJobAdsList"></div>
             <script id="generalJobAdsTemplate" type="text/x-handlebars-template">
                 {{#each .}}
-                <div class="jobpost-list-card">
-                    <a href="jobad.html?jobAdId={{jobAdId}}">
-                        <div class="jobpost-list-card-header">
-                            <div class="jobpost-list-card-title">{{hospital.hospitalName}}</div>
-                            <div class="jobpost-list-card-subtitle">{{title}}</div>
-                        </div>
-                        <div class="jobpost-list-card-body">
-                            <div class="dental-info">
-                                <span class="info-detail hospital-region">{{renderLocationOfJobAdCard  hospital.location.locationCode}}</span>
-                                <span class="info-detail"><span class="jobpost-list-card-chip jobpost-date">{{renderAdCardHiringEndDate hiringEndDate}}</span></span>
-                                <span class="info-detail subway-line">
-                                    <span class="subway102"><i></i></span> <!-- 지하철 작업하면서 클래스 대신 data-tag 로 변경 필요, 검토해주세욧 -->
-                                    <span class="subway117"><i></i></span> <!-- 'span.info-detail' 하위에 span 이 3개 이상이면 i 태그에 "외" 삽입됨 -->
-                                    <span>서울 3호선<i></i></span> <!-- 3개부터는 안보임, css 로 display:none 처리 -->
-                                    <span class="subway120"><i></i></span> <!-- 텍스트가 들어오면 그냥 텍스트로 노출됨, 노출되는 개수 등 그 외 로직은 그대로 적용-->
-                                </span>
-                                <!-- 시도, 시구군 정보, 교통정보 -->
-                                <span class="info-detail">
-                                    {{#each hashTag}}
-                                        <span>#{{.}}<i></i></span>
-                                    {{/each}}
-                                </span>
-                                <!-- 주변 핫플레이스 -->
-                            </div>
-                            <div class="dental-info">{{{renderAttrOnCard attr}}}</div>
-                        </div>
-                    </a>
+                <a class="general-ad-card" href="jobad.html?jobAdId={{jobAdId}}">
+                    <div class="general-ad-card-logo"><div class="logo-frame-hospital"><img src="{{hospital.logoImageUrl}}"></div></div>
+                    <div class="general-ad-card-title">{{hospital.hospitalName}}</div>
+                    <div class="general-ad-card-subtitle">{{title}}</div>
+                    <div class="general-ad-card-info">
+                        <span class="ad-card-detail">{{{renderLocationOfJobAdCard  hospital.location.locationCode}}}</span>
+                        <span class="ad-card-detail">{{{renderAdCardHiringEndDate hiringEndDate}}}</span>
+                    </div>
+                    <div class="general-ad-card-info">{{{renderAttrOnCard attr}}}</div>
                     <span class="btn-icon d-dots-v" data-action="popupActionPanel" data-action-value-job-ad-id="{{jobAdId}}" data-action-value-tel-no="{{hospital.hospitalTelNo}}" ></span>
-                </div>
+                </a>
                 {{/each}}
             </script>
         </section>
@@ -457,18 +500,18 @@ function renderAttrOnCard2(attrList) {
 
 // 속도 느림. 그러나 ordering 됨
 function renderAttrOnCard(attrList) {
-    if ( attrList==null || attrList.length==0 ) return "";
+    if (attrList == null || attrList.length == 0) return "";
 
     var html = "";
 
     var defAttrGroupList = CODE_CONTAINER.getAttrs();
     defAttrGroupList.forEach(function(defAttrGroup) {
-        html += '<span class="premiere-ad-card-detail">';
+        html += '<span class="ad-card-detail">';
         defAttrGroup.element.forEach(function(defAttr) {
             var defAttrValue = defAttr.value;
 
             attrList.forEach(function(attr) {
-                if ( defAttrValue == attr ) {
+                if (defAttrValue == attr) {
                     html += "<span>" + defAttr.text + "<i></i></span>";
                 }
             });
@@ -488,7 +531,7 @@ var LiveBoardApp = (function() {
 	/******************************************************************************/
     var JOB_SEEKER_JOB_AD_ACTION_PANNEL = new JobSeekerJobAdActionPanel();
 
-    // document.querySelectorAll(".jobpost-list-body").forEach(function(element) {
+    // document.querySelectorAll(".general-ad-body").forEach(function(element) {
 	// 	console.log("이벤트 걸었음 ", element);
 	// 	element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
     // });
@@ -496,7 +539,7 @@ var LiveBoardApp = (function() {
     $(".ad-wrapper").on("click", ".btn-icon.d-dots-v", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
 
     
-	// document.querySelectorAll(".premiere-ad-box").forEach(function(element) {
+	// document.querySelectorAll(".premiere-ad-body").forEach(function(element) {
 	// 	console.log("이벤트 걸었음 ", element);
 	// 	element.addEventListener("click", JOB_SEEKER_JOB_AD_ACTION_PANNEL.onClickActionButton);
 	// });
@@ -513,8 +556,8 @@ var LiveBoardApp = (function() {
     Handlebars.registerHelper("renderLocationOfJobAdCard", function(code) {
         //console.log("LOCATION_HELPER ", code);
         var location = LOCATION_CODE.getByName(code);
-        if ( location ) return "<div>" +location.sidoName + "</div><div>" + location.siguName + "</div>";
-        else return "입력안됨";
+        if ( location ) return location.sidoName + "<span style='font-size: 80%;'>" + location.siguName + "</span>";
+        else return "";
     });
     Handlebars.registerHelper("renderAttrOnCard", function(code) {
         //console.log("renderAttrOnCard ", code);
@@ -596,11 +639,15 @@ var LiveBoardApp = (function() {
 
 
                 var bunchOfJobAds = [];
+
+                var countOnApage = 4;
+                // if ( !PREMIERE_PAGINATION ) countOnApage = 100;
+                // console.log("PREMIERE_PAGINATION", PREMIERE_PAGINATION, "countOnApage", countOnApage);
                 for ( var i=0; i<jobAdList.length;) {
                     //console.log("큰 루프 : ", i, "   ===> ", i%4);
                     var subBunchOfJobAds = [];
 
-                    for ( var j=0; j<4 && i<jobAdList.length; j++ ) {
+                    for ( var j=0; j<countOnApage && i<jobAdList.length; j++ ) {
                         //console.log("현재 : ", i, " ==> ", i%4);
                         subBunchOfJobAds.push(jobAdList[i]);
                         i++;
