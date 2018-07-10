@@ -622,20 +622,23 @@ var LOGIN_INFO = (function() {
 
 		checkAuthHospital: function(checkHospitalId) {
 			if (!userInfo || !userInfo.userId) {
-				alert("로그인이 필요합니다.");
-				location.href = "login.html";
+				dModal.alert("로그인이 필요합니다.", function() {
+					location.href = "login.html";
+				});
 				return false;
 			}
 
 			if (!userInfo.userType || userInfo.userType != 2) {
-				alert("병원회원만 이용 가능합니다.");
-				window.history.back();
+				dModal.alert("병원회원만 이용 가능합니다.", function() {
+					window.history.back();
+				});
 				return false;
 			}
 
 			if (checkHospitalId && !userInfo.hospitalId) {
-				alert("병원정보가 등록되지 않았습니다. 병원정보를 먼저 등록해 주십시오.");
-				location.href = "register_dentist.html";
+				dModal.alert("병원정보가 등록되지 않았습니다. 병원정보를 먼저 등록해 주십시오.", function() {
+					location.href = "register_dentist.html";
+				});
 				return false;
 			}
 
@@ -1903,7 +1906,8 @@ var JobSeekerJobAdActionPanel = function() {
 
 
 	function onClickActionButton(event) {
-		console.log("hihihihi");
+		event.preventDefault();
+
 		if (!event.target.dataset || !event.target.dataset.action || event.target.dataset.action != "popupActionPanel") return;
 
 		if (!event.target.dataset.actionValueJobAdId)	throw "data-action-value-job-ad-id가 지정되어야 합니다.";
